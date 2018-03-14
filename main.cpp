@@ -32,9 +32,6 @@ using namespace std;
  * 
  */
 
-
-
-
 int main(int argc, char** argv) {
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default);
@@ -121,9 +118,9 @@ int main(int argc, char** argv) {
             //std::cout << "UPDATE " << accumulator << std::endl;
             
             if(keys[16]) window.close();  //Cerrar
-        
-            /* IZQ */ if( keys[0])          player->SetLinearVelocity(b2Vec2(-speed, player->GetLinearVelocity().y));
-            /* DER */ else if( keys[3])     player->SetLinearVelocity(b2Vec2(speed, player->GetLinearVelocity().y));
+
+            /* IZQ */ if( keys[0])  {        player->SetLinearVelocity(b2Vec2(-speed, player->GetLinearVelocity().y)); Sprite.setScale(2, 2); } 
+            /* DER */ else if( keys[3]) {    player->SetLinearVelocity(b2Vec2(speed, player->GetLinearVelocity().y)); Sprite.setScale(-2, 2);}
             /* STOP */ else if(!keys[0] && !keys[3]) player->SetLinearVelocity(b2Vec2(0, player->GetLinearVelocity().y));
 
             if(keys[57]){
@@ -135,6 +132,8 @@ int main(int argc, char** argv) {
             accumulator -= TIME_STEP;
         }
      
+        double tick = accumulator/dt;
+        
         //std::cout << "RENDER == " << tick << std::endl;
         window.clear(sf::Color::Yellow);
                 
