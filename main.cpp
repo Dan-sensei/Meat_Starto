@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     //VISTA
     sf::View view(sf::FloatRect(0,0,window.getSize().x,window.getSize().y));
 
-    //view.zoom(1.7);
+    //view.zoom(2.7);
     view.zoom(1.7);
     window.setView(view);
     
@@ -94,6 +94,7 @@ int main(int argc, char** argv) {
             switch(event.type){
                 case sf::Event::EventType::KeyPressed:
                     keys[event.key.code] = true;
+                        //std::cout << event.key.code << std::endl;
                     break;
                 case sf::Event::EventType::KeyReleased:
                     keys[event.key.code] = false;     
@@ -123,8 +124,9 @@ int main(int argc, char** argv) {
             /* DER */ else if( keys[3]) {    player->SetLinearVelocity(b2Vec2(speed, player->GetLinearVelocity().y)); Sprite.setScale(-2, 2);}
             /* STOP */ else if(!keys[0] && !keys[3]) player->SetLinearVelocity(b2Vec2(0, player->GetLinearVelocity().y));
 
-            if(keys[57]){
+            if(keys[57] || keys[22]){
                 keys[57] = false;
+                keys[22] = false;
                 player->ApplyForceToCenter(b2Vec2(0, -jump*TICKS_PER_SEC/60), true);
             }
             

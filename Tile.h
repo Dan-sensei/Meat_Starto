@@ -37,6 +37,11 @@ public:
     
     virtual ~Tile();
 private:
+    //METODOS PRIVADOS
+    void createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_);
+    
+    //ATRIBUTOS
+    
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS TILES
     tinyxml2::XMLDocument doc;
     
@@ -67,7 +72,6 @@ private:
     
     bool m_tetris;
     
-    void createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_);
 };
 
 #endif /* TILE_H */
