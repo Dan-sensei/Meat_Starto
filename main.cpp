@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
     sf::Sprite Sprite;
     Sprite.setTexture(boxTexture);
     Sprite.setOrigin(19.f, 16.f);
-    Sprite.setScale(2, 2);
+    Sprite.setScale(-1.9, 1.9);
     
     b2BodyDef bodyDef;
     bodyDef.position = b2Vec2(1200/SCALE, 1200/SCALE);
@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
                 
         Sprite.setPosition(SCALE * player->GetPosition().x, SCALE * player->GetPosition().y);
         Sprite.setRotation(player->GetAngle() * 180/b2_pi);
-        tile.DibujaCasillas(window, Sprite.getPosition().x, 1200);
+        tile.DibujaCasillas(window, Sprite.getPosition().x, Sprite.getPosition().y);
 
         view.setCenter(Sprite.getPosition());
         window.draw(Sprite);

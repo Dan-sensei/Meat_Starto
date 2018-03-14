@@ -670,7 +670,7 @@ void Tile::CreaMapa(b2World& world_) {
     int nodo = 0;   //NODOS ADYACENTES A 0
     int iter = 0;   //CUENTA EL NUMERO DE ITERACIONES
     int r;          //EL NUMERO RANDOM
-    while(iter != 1){
+    while(iter != 10){
         
         bool num = false;
         while(!num){
