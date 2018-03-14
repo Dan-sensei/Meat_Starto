@@ -21,19 +21,19 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <list>
 #include <SFML/Graphics/ConvexShape.hpp>
-
+#include <Box2D/Box2D.h>
 
 class Tile {
 public:
     Tile();
     Tile(const Tile& orig);
     
-    void LeeNodo(std::string node_path);
+    void LeeNodo(std::string node_path, b2World& world_);
     void CreaCasilla(int id, int x, int y);
     void DibujaCasillas(sf::RenderWindow &window, int x, int y);
     
     void InitMatrix();
-    void CreaMapa();
+    void CreaMapa(b2World& world_);
     
     virtual ~Tile();
 private:
@@ -67,7 +67,7 @@ private:
     
     bool m_tetris;
     
-    
+    void createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_);
 };
 
 #endif /* TILE_H */

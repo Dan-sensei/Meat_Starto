@@ -18,7 +18,13 @@
 
 #include "Tile.h"
 
-#define SCALE 30.f
+#define SCALE 65.f
+#define FRAMERATE 60
+#define TICKS_PER_SEC 60.0
+#define TIME_STEP 1.0/TICKS_PER_SEC
+
+#define speed 10
+#define jump 1000
 
 using namespace std;
 
@@ -26,74 +32,63 @@ using namespace std;
  * 
  */
 
+
+
+
 int main(int argc, char** argv) {
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default);
     //sf::RenderWindow window(sf::VideoMode(1920,1080),"Carga de mapa",sf::Style::Default);
     window.setFramerateLimit(60);
     //41 - 6
-    Tile tile;
-    tile.CreaMapa();
-    
-    //BOX2D EJEMPLO DE CUERPO DINAMICO
-    b2Vec2 gravity(0.0f,-9.8f);                //VECTOR GRAVEDAD
-    b2World world (gravity);                   //OBJETO 'MUNDO'
-    
-    b2BodyDef bodyDef;                         //CREO UN b2BodyDef Y LE ASIGNO UNA POSICION
-    bodyDef.type = b2_dynamicBody;                      
-    bodyDef.position.Set(0.0f,10.0f);
-    
-    b2Body *body = world.CreateBody(&bodyDef); //AÑADO EL b2Body AL MUNDO
-    
-    b2PolygonShape dBox;                       //CREO UNA FORMA PARA EL BODY Y LE DOY DIMENSION DE 10mx10m
-    dBox.SetAsBox(5.0f,5.0f);
-    
-    b2FixtureDef fixDef;                       //CREO LA FIXTURE
-    fixDef.shape = &dBox;
-    fixDef.density = 1.0f;
-    fixDef.friction = 3.0f;
-    
-    body->CreateFixture(&fixDef);
-    
-    //BOX2D EJEMPLO DE CUERPO ESTATICO
-    /*
-    b2BodyDef cajaDef;
-    bodyDef.position.Set(0.0f,-5.0f);
-    b2Body *caja = world.CreateBody(&cajaDef);
-    
-    b2PolygonShape cBox;
-    cBox.SetAsBox(10.0f,2.0f);
-    
-    caja->CreateFixture(&cBox,0.0f);
-    */
-    
+    b2Vec2 gravity(0.0f, 40.f);     //Gravedad
+    b2World world (gravity);        //Mundo molón
 
+
+    Tile tile;
+    tile.CreaMapa(world);
     
+    //38x32
     
-    //SPRITE PARA PROBAR
-    sf::Sprite pl;
-    sf::Texture text;
-    text.loadFromFile("assets/prueba.png");
-    pl.setTexture(text);
-    pl.scale(sf::Vector2f(-1.9,1.9));
-    pl.setOrigin(19,16);
-    pl.setPosition(1000,1200);
+    sf::Texture boxTexture;
+    boxTexture.loadFromFile("assets/prueba.png");
+    sf::Sprite Sprite;
+    Sprite.setTexture(boxTexture);
+    Sprite.setOrigin(19.f, 16.f);
+    Sprite.setScale(2, 2);
     
-    //MOVIMIENTO
-    bool pl_d = false;
-    bool pl_w = false;
-    bool pl_a= false;
-    bool pl_s = false;
+    b2BodyDef bodyDef;
+    bodyDef.position = b2Vec2(1200/SCALE, 1200/SCALE);
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.fixedRotation = true;
+    b2Body* player = world.CreateBody(&bodyDef);
     
+    b2PolygonShape shape;
+    shape.SetAsBox((38.f)/SCALE,(32.f)/SCALE);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = 1.f;
+    fixtureDef.friction = 0.7f;
+    fixtureDef.shape = &shape;
+    
+    player->CreateFixture(&fixtureDef);
+
     //VISTA
     sf::View view(sf::FloatRect(0,0,window.getSize().x,window.getSize().y));
-    view.setCenter(pl.getPosition());
+
     //view.zoom(1.7);
-    view.zoom(2.5);
+    view.zoom(1.7);
     window.setView(view);
     
+    sf::Clock masterClock;
+    double dt;
+    bool keys[256];
+    for(int i = 0; i<256; i++) keys[i]=false;
     
-    float32 anterior = body->GetPosition().y;
+    float accumulator = 0.0f;
+    masterClock.restart();
+
+    
     while(window.isOpen()){
         int mov = 20;
         
@@ -101,36 +96,10 @@ int main(int argc, char** argv) {
         if(window.pollEvent(event)){
             switch(event.type){
                 case sf::Event::EventType::KeyPressed:
-                        if(event.key.code == sf::Keyboard::Q){
-                            window.close();
-                        }
-                        if(event.key.code == sf::Keyboard::D){
-                            pl_d = true;
-                        }
-                        if(event.key.code == sf::Keyboard::A){
-                            pl_a = true;
-                        }
-                        if(event.key.code == sf::Keyboard::W){
-                            pl_w = true;
-                        }
-                        if(event.key.code == sf::Keyboard::S){
-                            pl_s = true;
-                        }
+                    keys[event.key.code] = true;
                     break;
                 case sf::Event::EventType::KeyReleased:
-                    if(event.key.code == sf::Keyboard::D){
-                        pl_d = false;
-                    }
-                    if(event.key.code == sf::Keyboard::A){
-                        pl_a = false;
-                    }
-                    if(event.key.code == sf::Keyboard::W){
-                        pl_w = false;
-                    }
-                    if(event.key.code == sf::Keyboard::S){
-                        pl_s = false;
-                    }
-                    
+                    keys[event.key.code] = false;     
                     break;
                 default:
                     break;
@@ -140,38 +109,45 @@ int main(int argc, char** argv) {
         
         //UPDATE
         
-        if(pl_d){
-            pl.move(mov,0);
+        
+        // FIXED TIME STEP UPDATE
+        dt = masterClock.restart().asSeconds();
+        
+        //Spiral of death
+        if(dt > 0.25f)   dt = 0.25f;
+        
+        accumulator+=dt;
+        while(accumulator >= TIME_STEP){
+            //std::cout << "UPDATE " << accumulator << std::endl;
+            
+            if(keys[16]) window.close();  //Cerrar
+        
+            /* IZQ */ if( keys[0])          player->SetLinearVelocity(b2Vec2(-speed, player->GetLinearVelocity().y));
+            /* DER */ else if( keys[3])     player->SetLinearVelocity(b2Vec2(speed, player->GetLinearVelocity().y));
+            /* STOP */ else if(!keys[0] && !keys[3]) player->SetLinearVelocity(b2Vec2(0, player->GetLinearVelocity().y));
+
+            if(keys[57]){
+                keys[57] = false;
+                player->ApplyForceToCenter(b2Vec2(0, -jump*TICKS_PER_SEC/60), true);
+            }
+            
+            world.Step(TIME_STEP, 8.f, 3.f);
+            accumulator -= TIME_STEP;
         }
-        if(pl_a){
-            pl.move(-mov,0);
-        }
-        if(pl_w){
-            pl.move(0,-mov);
-        }
-        if(pl_s){
-            pl.move(0,mov);
-        }
-        
-        /*
-        world.Step(1.0f/60.0f,6,2);
-        pl.move(sf::Vector2f(0,anterior-body->GetPosition().y));
-        float32 anterior = body->GetPosition().y;
-        cout << "x: " << body->GetPosition().x << " | y: " << body->GetPosition().y <<endl;
-        */
-        
-        
-        
-        view.setCenter(pl.getPosition().x,1200);
-        window.setView(view);
-        
-        //RENDER
-        
+     
+        //std::cout << "RENDER == " << tick << std::endl;
         window.clear(sf::Color::Yellow);
-        
-        tile.DibujaCasillas(window,pl.getPosition().x,1200);
-        
-        window.draw(pl);
+                
+        Sprite.setPosition(SCALE * player->GetPosition().x, SCALE * player->GetPosition().y);
+        Sprite.setRotation(player->GetAngle() * 180/b2_pi);
+        tile.DibujaCasillas(window, Sprite.getPosition().x, 1200);
+
+        view.setCenter(Sprite.getPosition());
+        window.draw(Sprite);
+        window.setView(view);
+                
+
+        //RENDER
         
         window.display();
         

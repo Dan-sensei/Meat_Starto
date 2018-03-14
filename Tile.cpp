@@ -19,6 +19,8 @@
 #include <complex>
 #include "Tile.h"
 
+#define SCALE 65.f
+
 Tile::Tile() {
     
     //CARGA DEL DOCUMENTO
@@ -402,7 +404,7 @@ void Tile::InitMatrix() {
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
-void Tile::LeeNodo(std::string node_path) {
+void Tile::LeeNodo(std::string node_path, b2World& world_) {
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
     
     //std::cout << "Leo el nodo: " << node_path << std::endl;
@@ -552,6 +554,11 @@ void Tile::LeeNodo(std::string node_path) {
         //</DEBUG>
         
         colision.push_back(vec);    //GUARDO LOS PARES DE VERTICES
+        
+        /* SUPERCOMENTARIO++*/
+        createGround(world_, vec, vec.size());
+        
+        
         objetos.push_back(*cs);     //GUARDO LOS ConvexShapes PARA DEBUG
         //BORRAR cs -> !IMPORTANTE
         delete cs;
@@ -650,12 +657,12 @@ void Tile::DibujaCasillas(sf::RenderWindow &window, int x, int y) {
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
-void Tile::CreaMapa() {
+void Tile::CreaMapa(b2World& world_) {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
         std::cout << path << std::endl;
     
-    LeeNodo(path);
+    LeeNodo(path, world_);
     
     
     //EMPIEZA A LEER LA MATRIZ
@@ -685,7 +692,7 @@ void Tile::CreaMapa() {
             path = path.operator +=(".tmx");
                 std::cout << path << std::endl;
             
-            LeeNodo(path);
+            LeeNodo(path, world_);
 
             nodo = r;
         }
@@ -706,3 +713,26 @@ Tile::Tile(const Tile& orig) {
 Tile::~Tile() {
 }
 
+void Tile::createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_){
+
+    b2Vec2 vs[n_];
+    for(int i=0; i< n_; i++){
+        vs[i].Set(vertex_[i].x/SCALE, vertex_[i].y/SCALE);
+        std::cout << "X " << vertex_[i].x << " | Y " << vertex_[i].y << std::endl;
+    }
+    
+    b2ChainShape chain;
+    chain.CreateChain(vs, n_);
+    
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_staticBody;
+    
+    b2Body* body = world_.CreateBody(&bodyDef);
+   
+    b2FixtureDef fixtureDef;
+    //fixtureDef.density = 1.f;
+    //fixtureDef.restitution = 0.5f;
+    fixtureDef.shape = &chain;
+    
+    body->CreateFixture(&fixtureDef);
+}
