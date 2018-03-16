@@ -22,18 +22,19 @@
 #include <list>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <Box2D/Box2D.h>
+#include "physicsEngine.h"
 
 class Tile {
 public:
     Tile();
     Tile(const Tile& orig);
     
-    void LeeNodo(std::string node_path, b2World& world_);
+    void LeeNodo(std::string node_path);
     void CreaCasilla(int id, int x, int y);
     void DibujaCasillas(sf::RenderWindow &window, int x, int y);
     
     void InitMatrix();
-    void CreaMapa(b2World& world_);
+    void CreaMapa();
     
     virtual ~Tile();
 private:
@@ -58,7 +59,7 @@ private:
     
     //OBJETOS (colisiones del mapa)
     std::vector<sf::ConvexShape> objetos;
-    std::vector<std::vector<sf::Vector2f>> colision;
+    std::vector<std::vector<std::array<float, 2>>> colision;
     
     //PARA CONSTRUIR EL MAPA
     int x_max;

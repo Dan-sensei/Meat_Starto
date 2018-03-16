@@ -22,7 +22,7 @@
 #define SCALE 65.f
 
 Tile::Tile() {
-    
+
     //CARGA DEL DOCUMENTO
     doc.LoadFile("tiles_definitivo/tiles_fv.tsx");
     
@@ -404,7 +404,7 @@ void Tile::InitMatrix() {
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
-void Tile::LeeNodo(std::string node_path, b2World& world_) {
+void Tile::LeeNodo(std::string node_path) {
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
     
     //std::cout << "Leo el nodo: " << node_path << std::endl;
@@ -479,7 +479,7 @@ void Tile::LeeNodo(std::string node_path, b2World& world_) {
     int y, y2;
     std::string vertex, v_aux, v_aux2;
 
-    std::vector<sf::Vector2f> vec;
+    std::vector<std::array<float, 2>> vec;
     sf::ConvexShape *cs;
 
     obj = map->FirstChildElement("objectgroup")->FirstChildElement("object");
@@ -526,16 +526,15 @@ void Tile::LeeNodo(std::string node_path, b2World& world_) {
                     //std::cout << "y2:" << y2 << std::endl;
                     //std::cout << "vertices:" << vertex << std::endl;
                     //std::cout << "|=========================|" << std::endl;
-
                 }
-
             }
 
             //ALMACENO EL VERTICE
             //cs->setPoint(n,sf::Vector2f(x2,y2));
-            vec.push_back(sf::Vector2f(x2, y2));
+            std::array<float, 2> coords = {(float)x2, (float)y2};
+            vec.push_back(coords);
 
-
+            
             if (vertex == "") {
                 break;
             }
@@ -544,7 +543,7 @@ void Tile::LeeNodo(std::string node_path, b2World& world_) {
 
         cs->setPointCount(vec.size());
         for (int i = 0; i < vec.size(); i++) {
-            cs->setPoint(i, vec[i]);
+            cs->setPoint(i, sf::Vector2f(vec[i][0], vec[i][1]));
         }
         
         //<DEBUG>
@@ -555,8 +554,11 @@ void Tile::LeeNodo(std::string node_path, b2World& world_) {
         
         colision.push_back(vec);    //GUARDO LOS PARES DE VERTICES
         
-        /* SUPERCOMENTARIO++*/
-        createGround(world_, vec, vec.size());
+        /* SUPERCOMENTARIO++ */
+        physicsEngine* world;
+        
+        world->Instance().createGround(vec, vec.size());
+        
         
         
         objetos.push_back(*cs);     //GUARDO LOS ConvexShapes PARA DEBUG
@@ -657,12 +659,12 @@ void Tile::DibujaCasillas(sf::RenderWindow &window, int x, int y) {
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
-void Tile::CreaMapa(b2World& world_) {
+void Tile::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
         std::cout << path << std::endl;
     
-    LeeNodo(path, world_);
+    LeeNodo(path);
     
     
     //EMPIEZA A LEER LA MATRIZ
@@ -692,7 +694,7 @@ void Tile::CreaMapa(b2World& world_) {
             path = path.operator +=(".tmx");
                 std::cout << path << std::endl;
             
-            LeeNodo(path, world_);
+            LeeNodo(path);
 
             nodo = r;
         }
@@ -713,26 +715,3 @@ Tile::Tile(const Tile& orig) {
 Tile::~Tile() {
 }
 
-void Tile::createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_){
-
-    b2Vec2 vs[n_];
-    for(int i=0; i< n_; i++){
-        vs[i].Set(vertex_[i].x/SCALE, vertex_[i].y/SCALE);
-        std::cout << "X " << vertex_[i].x << " | Y " << vertex_[i].y << std::endl;
-    }
-    
-    b2ChainShape chain;
-    chain.CreateChain(vs, n_);
-    
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_staticBody;
-    
-    b2Body* body = world_.CreateBody(&bodyDef);
-   
-    b2FixtureDef fixtureDef;
-    //fixtureDef.density = 1.f;
-    //fixtureDef.restitution = 0.5f;
-    fixtureDef.shape = &chain;
-    
-    body->CreateFixture(&fixtureDef);
-}

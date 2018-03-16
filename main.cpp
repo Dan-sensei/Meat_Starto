@@ -17,6 +17,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Tile.h"
+#include "physicsEngine.h"
 
 #define SCALE 65.f
 #define FRAMERATE 60
@@ -38,12 +39,15 @@ int main(int argc, char** argv) {
     //sf::RenderWindow window(sf::VideoMode(1920,1080),"Carga de mapa",sf::Style::Default);
     window.setFramerateLimit(60);
     //41 - 6
-    b2Vec2 gravity(0.0f, 40.f);     //Gravedad
-    b2World world (gravity);        //Mundo molón
-
-
+    
+    physicsEngine* world;
+    world->Instance();  //Creo el Singleton en la primera llamada a Instancia
+    
+    physicsEngine::body player = world->Instance().createBody(38.f, 32.f, 1200, 1200, 'D');
+ 
+    
     Tile tile;
-    tile.CreaMapa(world);
+    tile.CreaMapa();
     
     //38x32
     
@@ -54,22 +58,6 @@ int main(int argc, char** argv) {
     Sprite.setOrigin(19.f, 16.f);
     Sprite.setScale(-1.9, 1.9);
     
-    b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(1200/SCALE, 1200/SCALE);
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.fixedRotation = true;
-    b2Body* player = world.CreateBody(&bodyDef);
-    
-    b2PolygonShape shape;
-    shape.SetAsBox((38.f)/SCALE,(32.f)/SCALE);
-    
-    b2FixtureDef fixtureDef;
-    fixtureDef.density = 1.f;
-    fixtureDef.friction = 0.7f;
-    fixtureDef.shape = &shape;
-    
-    player->CreateFixture(&fixtureDef);
-
     //VISTA
     sf::View view(sf::FloatRect(0,0,window.getSize().x,window.getSize().y));
 
@@ -87,7 +75,6 @@ int main(int argc, char** argv) {
 
     
     while(window.isOpen()){
-        int mov = 20;
         
         sf::Event event;
         if(window.pollEvent(event)){
@@ -110,7 +97,6 @@ int main(int argc, char** argv) {
         
         // FIXED TIME STEP UPDATE
         dt = masterClock.restart().asSeconds();
-        
         //Spiral of death
         if(dt > 0.25f)   dt = 0.25f;
         
@@ -120,27 +106,29 @@ int main(int argc, char** argv) {
             
             if(keys[16]) window.close();  //Cerrar
 
-            /* IZQ */ if( keys[0])  {        player->SetLinearVelocity(b2Vec2(-speed, player->GetLinearVelocity().y)); Sprite.setScale(2, 2); } 
-            /* DER */ else if( keys[3]) {    player->SetLinearVelocity(b2Vec2(speed, player->GetLinearVelocity().y)); Sprite.setScale(-2, 2);}
-            /* STOP */ else if(!keys[0] && !keys[3]) player->SetLinearVelocity(b2Vec2(0, player->GetLinearVelocity().y));
-
+            /* IZQ */ if( keys[0])  {        player.setLinealVelocicty(-speed, player.getLinearVelocityY()); Sprite.setScale(2, 2); } 
+            /* DER */ else if( keys[3]) {    player.setLinealVelocicty(speed, player.getLinearVelocityY()); Sprite.setScale(-2, 2);}
+            /* STOP */ else if(!keys[0] && !keys[3]) player.setLinealVelocicty(0, player.getLinearVelocityY());
+                
             if(keys[57] || keys[22]){
                 keys[57] = false;
                 keys[22] = false;
-                player->ApplyForceToCenter(b2Vec2(0, -jump*TICKS_PER_SEC/60), true);
+                player.addForceToCenter(0, -jump*TICKS_PER_SEC/60);
             }
             
-            world.Step(TIME_STEP, 8.f, 3.f);
+            world->Instance().updateWorld(TIME_STEP);
             accumulator -= TIME_STEP;
         }
+        
      
         double tick = accumulator/dt;
         
         //std::cout << "RENDER == " << tick << std::endl;
         window.clear(sf::Color::Yellow);
-                
-        Sprite.setPosition(SCALE * player->GetPosition().x, SCALE * player->GetPosition().y);
-        Sprite.setRotation(player->GetAngle() * 180/b2_pi);
+        
+        Sprite.setPosition(player.getXPosition(), player.getYPosition());
+        Sprite.setRotation(player.getRoation());
+        
         tile.DibujaCasillas(window, Sprite.getPosition().x, Sprite.getPosition().y);
 
         view.setCenter(Sprite.getPosition());
