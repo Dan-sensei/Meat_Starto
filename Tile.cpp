@@ -652,9 +652,11 @@ void Tile::DibujaCasillas(sf::RenderWindow &window, int x, int y) {
     }
     
     //PARA DEBUGGEAR
+    /*
     for(int i=0 ; i<objetos.size() ; i++){
         window.draw(objetos[i]);
     }
+    */
     
 }
 
@@ -665,7 +667,6 @@ void Tile::CreaMapa() {
         std::cout << path << std::endl;
     
     LeeNodo(path);
-    
     
     //EMPIEZA A LEER LA MATRIZ
     int n = 15;     //DIMENSION DE LA MATRIZ DE ADYACENCIA

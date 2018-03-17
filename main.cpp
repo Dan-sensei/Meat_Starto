@@ -23,6 +23,7 @@
 #define FRAMERATE 60
 #define TICKS_PER_SEC 60.0
 #define TIME_STEP 1.0/TICKS_PER_SEC
+#define CAM_H 1250
 
 #define speed 10
 #define jump 1000
@@ -35,8 +36,8 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default);
-    //sf::RenderWindow window(sf::VideoMode(1920,1080),"Carga de mapa",sf::Style::Default);
+    //sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode(1920,1080),"Carga de mapa",sf::Style::Default);
     window.setFramerateLimit(60);
     //41 - 6
     
@@ -45,12 +46,14 @@ int main(int argc, char** argv) {
     
     physicsEngine::body player = world->Instance().createBody(38.f, 32.f, 1200, 1200, 'D');
  
+    //MUNDO
+    Tile *tile;
+    tile->Instance();
     
-    Tile tile;
-    tile.CreaMapa();
+    tile->Instance().CreaMapa();
+    
     
     //38x32
-    
     sf::Texture boxTexture;
     boxTexture.loadFromFile("assets/prueba.png");
     sf::Sprite Sprite;
@@ -62,7 +65,7 @@ int main(int argc, char** argv) {
     sf::View view(sf::FloatRect(0,0,window.getSize().x,window.getSize().y));
 
     //view.zoom(2.7);
-    view.zoom(1.7);
+    view.zoom(2);
     window.setView(view);
     
     sf::Clock masterClock;
@@ -129,9 +132,11 @@ int main(int argc, char** argv) {
         Sprite.setPosition(player.getXPosition(), player.getYPosition());
         Sprite.setRotation(player.getRoation());
         
-        tile.DibujaCasillas(window, Sprite.getPosition().x, Sprite.getPosition().y);
+        
+        //DRAW
+        tile->Instance().DibujaCasillas(window, Sprite.getPosition().x, CAM_H);
 
-        view.setCenter(Sprite.getPosition());
+        view.setCenter(Sprite.getPosition().x,CAM_H);
         window.draw(Sprite);
         window.setView(view);
                 

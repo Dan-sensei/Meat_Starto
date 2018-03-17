@@ -12,6 +12,7 @@
  */
 
 #include "physicsEngine.h"
+#include "Tile.h"
 
 /*
 physicsEngine* physicsEngine::pInstance = nullptr;

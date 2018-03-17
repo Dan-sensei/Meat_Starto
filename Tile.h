@@ -26,23 +26,29 @@
 
 class Tile {
 public:
-    Tile();
-    Tile(const Tile& orig);
+    //----------------SINGLETON
+    static Tile& Instance(){
+        static Tile instance;
+        return instance;
+    }
     
-    void LeeNodo(std::string node_path);
-    void CreaCasilla(int id, int x, int y);
+    void CreaMapa();
     void DibujaCasillas(sf::RenderWindow &window, int x, int y);
     
-    void InitMatrix();
-    void CreaMapa();
-    
     virtual ~Tile();
+    
 private:
-    //METODOS PRIVADOS
+    Tile();
+    Tile(const Tile& orig);
+    void operator=(Tile const& orig);
+    
+    //----------------METODOS PRIVADOS
+    void LeeNodo(std::string node_path);
+    void CreaCasilla(int id, int x, int y);
+    void InitMatrix();
     void createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_);
     
-    //ATRIBUTOS
-    
+    //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS TILES
     tinyxml2::XMLDocument doc;
     
