@@ -24,67 +24,58 @@ physicsEngine* physicsEngine::Instance(){
 }
 */
 #define PI 3.1415926535
-#define SCALE 65.f
+#define SCALE 60.f
 
-physicsEngine::physicsEngine()
-:world(b2Vec2(0.0f, 40.f))
-{
-}
+physicsEngine::physicsEngine():world(b2Vec2(0.f, 40.f)) {}
 
 void physicsEngine::setGravity(float gx_, float gy_){
     b2Vec2 gravity(gx_, gy_);
     world.SetGravity(gravity);
 }
 
-physicsEngine::body physicsEngine::createBody(float width_, float height_, float px_, float py_, char type_){
+physicsEngine::pBody physicsEngine::createBody(float width_, float height_, float px_, float py_, char type_){
     
-    physicsEngine::body result;
+    pBody result;       //Creo un pBody
     
     b2PolygonShape shape;
-    shape.SetAsBox(pixelToWorld(width_), pixelToWorld(height_));
+    shape.SetAsBox(pixelToWorld(width_), pixelToWorld(height_));    // Como serán cuadrados lo creo con SetAsBox, pasándole ancho y alto (dividiendo por 2, ya que Box2D, cuenta desde el centro)
     
-    b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(pixelToWorld(px_), pixelToWorld(py_));
-    switch (type_){
-        case 'S':   bodyDef.type = b2_staticBody;
+    b2BodyDef bodyDef;                                                  // Preparamos las características del cuerpo con b2BodyDef
+    bodyDef.position = b2Vec2(pixelToWorld(px_), pixelToWorld(py_));    // Le asignamos una posición inicial (pasándo al sistema de coordenadas de Box2D)
+    
+    switch (type_){                                                     // Asignamos el tipo en función de la letra que nos han pasado, en caso de que no te pasen una letra correcta, será STATIC
+        case 's':
+        case 'S':   bodyDef.type = b2_staticBody;                       //    STATIC: No se moverá con nada
                     break;
-        case 'D':   bodyDef.type = b2_dynamicBody;
+                    
+        case 'd':
+        case 'D':   bodyDef.type = b2_dynamicBody;                      //   DYNAMIC: Se puede controlar y se verá afectado por las fuerzas del mundo y otros cuerpos
                     break;
-        case 'K':   bodyDef.type = b2_kinematicBody;
+                    
+        case 'k':
+        case 'K':   bodyDef.type = b2_kinematicBody;                    // KINEMATIC: Se puede controlar, pero no se verá afectado por otros cuerpos ni las fuerzas del mundo
                     break;
-        default:    std::cout << "ERROR " << std::endl;
+                    
+        default:    bodyDef.type = b2_staticBody;
                     break;
     }
     
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.fixedRotation = true;
-    result.body = world.CreateBody(&bodyDef);
-    b2FixtureDef fixtureDef;
+    bodyDef.fixedRotation = true;                                       // Determina si el cuerpo puede rotar
+    result.setBody(world.CreateBody(&bodyDef));                         // Creamos el cuerpo usando el world
+    
+    b2FixtureDef fixtureDef;                                            // Creamos las características físicas del cuerpo con un b2FixtureDef
     fixtureDef.density = 1.f;
     fixtureDef.friction = 0.7f;
+    fixtureDef.restitution = 0.f;                                       
     fixtureDef.shape = &shape;
     
-    result.body->CreateFixture(&fixtureDef);
+    result.getBody()->CreateFixture(&fixtureDef);                       // Finalizamos la creación del Body creado su Fixture
     
-    //std::cout << "body " << result.body->GetPosition().x<< std::endl;
-    return result;
+    return result;                                                      // Lo devolvemos
 }
 
-b2World* physicsEngine::getWorld() { return &world;}
+
 void physicsEngine::updateWorld(float tick_){ world.Step(tick_, 8.f, 3.f); }
-
-
-void physicsEngine::body::setLinealVelocicty(float vx_, float vy_){
-    b2Vec2 velocity(vx_, vy_);
-    this->body->SetLinearVelocity(velocity);
-}
-
-float physicsEngine::body::getLinearVelocityY(){ return this->body->GetLinearVelocity().y; }
-void physicsEngine::body::addForceToCenter(float vx_, float vy_){ this->body->ApplyForceToCenter(b2Vec2(vx_, vy_), true); }
-
-float physicsEngine::body::getXPosition() { return worldToPixel(this->body->GetPosition().x); }
-float physicsEngine::body::getYPosition() { return worldToPixel(this->body->GetPosition().y); }
-float physicsEngine::body::getRoation()   { return this->body->GetAngle()*180/PI; }
 
 float physicsEngine::pixelToWorld(float p_) { return p_/SCALE; }
 float physicsEngine::worldToPixel(float w_) { return w_*SCALE; }
@@ -92,10 +83,8 @@ float physicsEngine::worldToPixel(float w_) { return w_*SCALE; }
 void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int n_){
 
     b2Vec2 vs[n_];
-    for(int i=0; i< n_; i++){
+    for(int i=0; i< n_; i++)
         vs[i].Set(vertex_[i][0]/SCALE, vertex_[i][1]/SCALE);
-        //std::cout << "X " << vertex_[i][0] << " | Y " << vertex_[i][1] << std::endl;
-    }
     
     b2ChainShape chain;
     chain.CreateChain(vs, n_);
@@ -112,3 +101,28 @@ void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int 
     
     body->CreateFixture(&fixtureDef);
 }
+
+
+/* ============================================= CLASE BODY ============================================= */
+physicsEngine::physicsEngine::pBody::pBody() {}
+
+void physicsEngine::pBody::setLinealVelocicty(float vx_, float vy_){
+    b2Vec2 velocity(vx_, vy_);
+    body->SetLinearVelocity(velocity);
+}
+
+float   physicsEngine::pBody::getLinearXVelocity()  { return body->GetLinearVelocity().x; }
+
+float   physicsEngine::pBody::getLinearYVelocity()  { return body->GetLinearVelocity().y; }
+
+void    physicsEngine::pBody::addForceToCenter      (float vx_, float vy_){ body->ApplyForceToCenter(b2Vec2(vx_, vy_), true); }
+
+float   physicsEngine::pBody::getXPosition()        { return physicsEngine::worldToPixel(body->GetPosition().x); }
+
+float   physicsEngine::pBody::getYPosition()        { return physicsEngine::worldToPixel(body->GetPosition().y); }
+
+float   physicsEngine::pBody::getRotation()         { return body->GetAngle()*180/PI; }
+
+b2Body* physicsEngine::pBody::getBody()             { return body; }
+
+void    physicsEngine::pBody::setBody(b2Body* body_){ body = body_; }

@@ -19,14 +19,14 @@
 #include "Tile.h"
 #include "physicsEngine.h"
 
-#define SCALE 65.f
 #define FRAMERATE 60
 #define TICKS_PER_SEC 60.0
+
 #define TIME_STEP 1.0/TICKS_PER_SEC
 #define CAM_H 1250
 
-#define speed 10
-#define jump 1000
+#define speed 17
+#define jump 3000
 
 using namespace std;
 
@@ -43,9 +43,10 @@ int main(int argc, char** argv) {
     
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
+    world->Instance().setGravity(0.f, 100.f);
     
-    physicsEngine::body player = world->Instance().createBody(38.f, 32.f, 1200, 1200, 'D');
- 
+    physicsEngine::pBody player = world->Instance().createBody(38.f, 32.f, 2400, 1200, 'D');
+    
     //MUNDO
     Tile *tile;
     tile->Instance();
@@ -109,9 +110,9 @@ int main(int argc, char** argv) {
             
             if(keys[16]) window.close();  //Cerrar
 
-            /* IZQ */ if( keys[0])  {        player.setLinealVelocicty(-speed, player.getLinearVelocityY()); Sprite.setScale(2, 2); } 
-            /* DER */ else if( keys[3]) {    player.setLinealVelocicty(speed, player.getLinearVelocityY()); Sprite.setScale(-2, 2);}
-            /* STOP */ else if(!keys[0] && !keys[3]) player.setLinealVelocicty(0, player.getLinearVelocityY());
+            /* IZQ */ if( keys[0])  {        player.setLinealVelocicty(-speed, player.getLinearYVelocity()); Sprite.setScale(2, 2); } 
+            /* DER */ else if( keys[3]) {    player.setLinealVelocicty(speed, player.getLinearYVelocity()); Sprite.setScale(-2, 2);}
+            /* STOP */ else if(!keys[0] && !keys[3]) player.setLinealVelocicty(0, player.getLinearYVelocity());
                 
             if(keys[57] || keys[22]){
                 keys[57] = false;
@@ -130,12 +131,11 @@ int main(int argc, char** argv) {
         window.clear(sf::Color::Yellow);
         
         Sprite.setPosition(player.getXPosition(), player.getYPosition());
-        Sprite.setRotation(player.getRoation());
-        
+        Sprite.setRotation(player.getRotation());
         
         //DRAW
         tile->Instance().DibujaCasillas(window, Sprite.getPosition().x, CAM_H);
-
+        
         view.setCenter(Sprite.getPosition().x,CAM_H);
         window.draw(Sprite);
         window.setView(view);

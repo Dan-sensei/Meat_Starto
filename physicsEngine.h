@@ -28,22 +28,33 @@ public:
     }
     //============================
     
-    struct body{
-        b2Body* body;
-        void setLinealVelocicty(float vx_, float vy_);
-        void addForceToCenter(float vx_, float vy_);
-        float getLinearVelocityY();
-        
-        float getXPosition();
-        float getYPosition();
-        float getRoation();
+    class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo donde ponerlos, lo creo como una Nested Class dentro de PhysicsEngine
+                    // Con una clase independiente se puede crear múltiples instancias de Bodies, y referenciarlos desde otras clases
+        public:
+
+            pBody();
+
+            void setLinealVelocicty(float vx_, float vy_);      // Ajusta la velocidad lineal del cuerpo
+            void addForceToCenter(float vx_, float vy_);        // Añade una fuerza al centro del cuerpo
+            float getLinearXVelocity();                         // Obtiene la velocidad lineal en el eje X
+            float getLinearYVelocity();                         // Obtiene la velocidad lienal en el eje Y
+
+            float getXPosition();                               // Posición en el eje X
+            float getYPosition();                               // Posición en el eje Y
+            float getRotation();                                // Rotación
+
+            void setBody(b2Body* body_);                        // Da valor a la variable Body de Box2D (usado en createBody(...)
+            b2Body* getBody();                                  // Devuelve la variable Body de Box2D
+
+        private:
+
+            b2Body* body;                                       //Variable b2Body de Box2D
     };
     
-    body createBody(float width_, float height_, float px_, float py_, char type_);
-    void createGround(std::vector<std::array<float, 2>> vertex_, int n_);
-    void setGravity(float gx_, float gy_);
-    void updateWorld(float tick_);
-    b2World* getWorld();
+    pBody createBody(float width_, float height_, float px_, float py_, char type_);        // Crea y devuelve un pBody pasándole, ancho, alto, posicionX, posicionY, tipo ('S'tatic, 'D'ynamic, 'K'inematic)
+    void createGround(std::vector<std::array<float, 2>> vertex_, int n_);                   // Crea el suelo del mapa, pasándole un vector de coordenadas, que serán los vértices que lo forman, y el número de vértices totales
+    void setGravity(float gx_, float gy_);                                                  // Ajusta la gravedad del mundo
+    void updateWorld(float tick_);                                                          // Actualiza el mundo
     
 private:
     
@@ -53,17 +64,16 @@ private:
     void operator=(physicsEngine const& orig);    // <----------------'
     //===================================
     
+    float static pixelToWorld(float p_);        // Convierte los pixeles de pantalla al sistema de coordenadas de Box2D
+    float static worldToPixel(float w_);        // Convierte del sitema de coordenadas de Box2D a pixeles en patanlla
     
-    float static pixelToWorld(float p_);
-    float static worldToPixel(float w_);
-    
-    b2World world;
+    b2World world;                              // Variable b2World de Box2D
     
 };
 
 #endif /* PHYSICSENGINE_H */
 
-/*  FORMA DEL PDF DE FV___________________
+/*  SINGLETON: FORMA DEL PDF DE FV___________________
 
  public:
     static physicsEngine* Instance();
