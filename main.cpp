@@ -27,8 +27,11 @@
 #define CAM_H 1250
 
 #define force 200
-#define speed 17.f
+#define speed 15.f
 #define jump 2500
+
+#define PLAYER_DIM_X 1.9
+#define PLAYER_DIM_Y 1.9
 
 using namespace std;
 
@@ -56,14 +59,13 @@ int main(int argc, char** argv) {
     
     tile->Instance().CreaMapa();
     
-    
     //38x32
     sf::Texture boxTexture;
     boxTexture.loadFromFile("assets/prueba.png");
     sf::Sprite Sprite;
     Sprite.setTexture(boxTexture);
     Sprite.setOrigin(19.f, 16.f);
-    Sprite.setScale(-1.9, 1.9);
+    Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y);
     
     //VISTA
     sf::View view(sf::FloatRect(0,0,window.getSize().x,window.getSize().y));
@@ -118,7 +120,7 @@ int main(int argc, char** argv) {
                 else 
                     player.setLinealVelocicity(-speed, player.getLinearYVelocity());
                 
-                Sprite.setScale(2, 2); 
+                Sprite.setScale(PLAYER_DIM_X, PLAYER_DIM_Y); 
             }
             
             else if( keys[3]) {             //D
@@ -126,7 +128,8 @@ int main(int argc, char** argv) {
                     player.addForceToCenter(force, player.getLinearYVelocity()); 
                 else
                     player.setLinealVelocicity(speed, player.getLinearYVelocity());
-                Sprite.setScale(-2, 2);
+
+                Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y); 
             }
             
             
@@ -138,7 +141,10 @@ int main(int argc, char** argv) {
                 keys[22] = false;
                 player.addForceToCenter(0, -jump*TICKS_PER_SEC/60);
             }
+            
+            
             //std::cout << "V " << player.getLinearXVelocity() << std::endl;
+            
             world->Instance().updateWorld(TIME_STEP);
             accumulator -= TIME_STEP;
         }
@@ -159,7 +165,6 @@ int main(int argc, char** argv) {
         window.draw(Sprite);
         window.setView(view);
                 
-        
         //RENDER
         
         window.display();

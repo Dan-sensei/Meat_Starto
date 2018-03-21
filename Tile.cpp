@@ -708,8 +708,6 @@ void Tile::CreaMapa() {
         iter++;
     }
     
-    
-    
 }
 
 Tile::Tile(const Tile& orig) {

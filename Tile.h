@@ -74,7 +74,7 @@ private:
         sf::RectangleShape rect;
         sf::Texture text;
     };
-    std::vector<_cas> vector_casillas;
+    std::vector<_cas> vector_casillas; //TEMPORAL
     int v[15][15];
     
     bool m_tetris;
