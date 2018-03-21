@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Tile.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/physicsEngine.o
+	${OBJECTDIR}/physicsEngine.o \
+	${OBJECTDIR}/renderEngine.o
 
 
 # C Compiler Flags
@@ -92,6 +93,11 @@ ${OBJECTDIR}/physicsEngine.o: physicsEngine.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine.o physicsEngine.cpp
+
+${OBJECTDIR}/renderEngine.o: renderEngine.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine.o renderEngine.cpp
 
 # Subprojects
 .build-subprojects:
