@@ -15,6 +15,7 @@
 #include <iostream>
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 #include "Tile.h"
 #include "physicsEngine.h"
@@ -25,8 +26,9 @@
 #define TIME_STEP 1.0/TICKS_PER_SEC
 #define CAM_H 1250
 
-#define speed 17
-#define jump 3000
+#define force 200
+#define speed 17.f
+#define jump 2500
 
 using namespace std;
 
@@ -45,7 +47,8 @@ int main(int argc, char** argv) {
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);
     
-    physicsEngine::pBody player = world->Instance().createBody(38.f, 32.f, 2400, 1200, 'D');
+    physicsEngine::pBody player = world->Instance().createBody(76.f, 64.f, 2400, 1200, 'D');
+    //player.setFixedRotation(false);
     
     //MUNDO
     Tile *tile;
@@ -81,11 +84,10 @@ int main(int argc, char** argv) {
     while(window.isOpen()){
         
         sf::Event event;
-        if(window.pollEvent(event)){
+        while(window.pollEvent(event)){
             switch(event.type){
                 case sf::Event::EventType::KeyPressed:
                     keys[event.key.code] = true;
-                        //std::cout << event.key.code << std::endl;
                     break;
                 case sf::Event::EventType::KeyReleased:
                     keys[event.key.code] = false;     
@@ -110,21 +112,38 @@ int main(int argc, char** argv) {
             
             if(keys[16]) window.close();  //Cerrar
 
-            /* IZQ */ if( keys[0])  {        player.setLinealVelocicty(-speed, player.getLinearYVelocity()); Sprite.setScale(2, 2); } 
-            /* DER */ else if( keys[3]) {    player.setLinealVelocicty(speed, player.getLinearYVelocity()); Sprite.setScale(-2, 2);}
-            /* STOP */ else if(!keys[0] && !keys[3]) player.setLinealVelocicty(0, player.getLinearYVelocity());
+            if( keys[0])  {                 // A
+                if(player.getLinearXVelocity() > -speed)
+                    player.addForceToCenter(-force, player.getLinearYVelocity()); 
+                else 
+                    player.setLinealVelocicity(-speed, player.getLinearYVelocity());
                 
+                Sprite.setScale(2, 2); 
+            }
+            
+            else if( keys[3]) {             //D
+                if(player.getLinearXVelocity() < speed)
+                    player.addForceToCenter(force, player.getLinearYVelocity()); 
+                else
+                    player.setLinealVelocicity(speed, player.getLinearYVelocity());
+                Sprite.setScale(-2, 2);
+            }
+            
+            
+            if(!keys[0] && !keys[3])   //W
+                player.setLinealVelocicity(0, player.getLinearYVelocity());
+            
             if(keys[57] || keys[22]){
                 keys[57] = false;
                 keys[22] = false;
                 player.addForceToCenter(0, -jump*TICKS_PER_SEC/60);
             }
-            
+            //std::cout << "V " << player.getLinearXVelocity() << std::endl;
             world->Instance().updateWorld(TIME_STEP);
             accumulator -= TIME_STEP;
         }
         
-     
+        
         double tick = accumulator/dt;
         
         //std::cout << "RENDER == " << tick << std::endl;
@@ -135,12 +154,12 @@ int main(int argc, char** argv) {
         
         //DRAW
         tile->Instance().DibujaCasillas(window, Sprite.getPosition().x, CAM_H);
-        
         view.setCenter(Sprite.getPosition().x,CAM_H);
+        
         window.draw(Sprite);
         window.setView(view);
                 
-
+        
         //RENDER
         
         window.display();

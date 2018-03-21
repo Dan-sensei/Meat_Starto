@@ -29,13 +29,15 @@ public:
     //============================
     
     class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo donde ponerlos, lo creo como una Nested Class dentro de PhysicsEngine
-                    // Con una clase independiente se puede crear múltiples instancias de Bodies, y referenciarlos desde otras clases
+                    // Con una clase independiente se puede crear múltiples instancias de pBodies, y referenciarlos desde otras clases
         public:
 
             pBody();
 
-            void setLinealVelocicty(float vx_, float vy_);      // Ajusta la velocidad lineal del cuerpo
+            void setLinealVelocicity(float vx_, float vy_);      // Ajusta la velocidad lineal del cuerpo
             void addForceToCenter(float vx_, float vy_);        // Añade una fuerza al centro del cuerpo
+            void applyLinearImpulse(float ix_, float iy_);
+            void setFixedRotation(bool flag_);                  // Determina si la rotación es fija
             float getLinearXVelocity();                         // Obtiene la velocidad lineal en el eje X
             float getLinearYVelocity();                         // Obtiene la velocidad lienal en el eje Y
 
@@ -43,7 +45,7 @@ public:
             float getYPosition();                               // Posición en el eje Y
             float getRotation();                                // Rotación
 
-            void setBody(b2Body* body_);                        // Da valor a la variable Body de Box2D (usado en createBody(...)
+            void setBody(b2Body* body_);                        // Da valor a la variable Body de Box2D (usado en createBody(...))
             b2Body* getBody();                                  // Devuelve la variable Body de Box2D
 
         private:

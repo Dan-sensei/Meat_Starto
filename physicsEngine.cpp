@@ -12,7 +12,6 @@
  */
 
 #include "physicsEngine.h"
-#include "Tile.h"
 
 /*
 physicsEngine* physicsEngine::pInstance = nullptr;
@@ -38,7 +37,7 @@ physicsEngine::pBody physicsEngine::createBody(float width_, float height_, floa
     pBody result;       //Creo un pBody
     
     b2PolygonShape shape;
-    shape.SetAsBox(pixelToWorld(width_), pixelToWorld(height_));    // Como serán cuadrados lo creo con SetAsBox, pasándole ancho y alto (dividiendo por 2, ya que Box2D, cuenta desde el centro)
+    shape.SetAsBox(pixelToWorld(width_/2), pixelToWorld(height_/2));    // Como serán cuadrados lo creo con SetAsBox, pasándole ancho y alto (dividiendo por 2, ya que Box2D, cuenta desde el centro)
     
     b2BodyDef bodyDef;                                                  // Preparamos las características del cuerpo con b2BodyDef
     bodyDef.position = b2Vec2(pixelToWorld(px_), pixelToWorld(py_));    // Le asignamos una posición inicial (pasándo al sistema de coordenadas de Box2D)
@@ -60,7 +59,7 @@ physicsEngine::pBody physicsEngine::createBody(float width_, float height_, floa
                     break;
     }
     
-    bodyDef.fixedRotation = true;                                       // Determina si el cuerpo puede rotar
+    bodyDef.fixedRotation = true;                                       // Determina si la rotación del cuerpo es fija
     result.setBody(world.CreateBody(&bodyDef));                         // Creamos el cuerpo usando el world
     
     b2FixtureDef fixtureDef;                                            // Creamos las características físicas del cuerpo con un b2FixtureDef
@@ -78,6 +77,7 @@ physicsEngine::pBody physicsEngine::createBody(float width_, float height_, floa
 void physicsEngine::updateWorld(float tick_){ world.Step(tick_, 8.f, 3.f); }
 
 float physicsEngine::pixelToWorld(float p_) { return p_/SCALE; }
+
 float physicsEngine::worldToPixel(float w_) { return w_*SCALE; }
 
 void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int n_){
@@ -96,7 +96,6 @@ void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int 
    
     b2FixtureDef fixtureDef;
     //fixtureDef.density = 1.f;
-    //fixtureDef.restitution = 0.5f;
     fixtureDef.shape = &chain;
     
     body->CreateFixture(&fixtureDef);
@@ -106,16 +105,16 @@ void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int 
 /* ============================================= CLASE BODY ============================================= */
 physicsEngine::physicsEngine::pBody::pBody() {}
 
-void physicsEngine::pBody::setLinealVelocicty(float vx_, float vy_){
+void physicsEngine::pBody::setLinealVelocicity(float vx_, float vy_){
     b2Vec2 velocity(vx_, vy_);
     body->SetLinearVelocity(velocity);
 }
 
+void    physicsEngine::pBody::addForceToCenter( float vx_, float vy_) { body->ApplyForceToCenter(b2Vec2(vx_, vy_), true); }
+
 float   physicsEngine::pBody::getLinearXVelocity()  { return body->GetLinearVelocity().x; }
 
 float   physicsEngine::pBody::getLinearYVelocity()  { return body->GetLinearVelocity().y; }
-
-void    physicsEngine::pBody::addForceToCenter      (float vx_, float vy_){ body->ApplyForceToCenter(b2Vec2(vx_, vy_), true); }
 
 float   physicsEngine::pBody::getXPosition()        { return physicsEngine::worldToPixel(body->GetPosition().x); }
 
@@ -126,3 +125,7 @@ float   physicsEngine::pBody::getRotation()         { return body->GetAngle()*18
 b2Body* physicsEngine::pBody::getBody()             { return body; }
 
 void    physicsEngine::pBody::setBody(b2Body* body_){ body = body_; }
+
+void    physicsEngine::pBody::setFixedRotation(bool flag_) { body->SetFixedRotation(flag_); }
+
+void    physicsEngine::pBody::applyLinearImpulse(float ix_, float iy_) { body->ApplyLinearImpulse(b2Vec2(ix_, iy_), body->GetWorldCenter(), true); }

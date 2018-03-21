@@ -20,6 +20,7 @@
 #include "Tile.h"
 
 #define SCALE 65.f
+#define MAP_ITERATION 10
 
 Tile::Tile() {
 
@@ -425,6 +426,7 @@ void Tile::LeeNodo(std::string node_path) {
     //std::cout << map_width << std::endl;
 
     //CONSIGO EL TEXTO
+    
     std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
     //std::cout << v_mapa << std::endl;
 
@@ -439,7 +441,7 @@ void Tile::LeeNodo(std::string node_path) {
 
             //ELIMINO EL SALTO DE LINEA DE CADA FILA
             v_mapa.erase(0, 1);
-
+            
             //CONSIGO EL NUMERO
             partes = v_mapa.substr(0, 1);
             v_mapa.erase(0, 1);
@@ -673,7 +675,7 @@ void Tile::CreaMapa() {
     int nodo = 0;   //NODOS ADYACENTES A 0
     int iter = 0;   //CUENTA EL NUMERO DE ITERACIONES
     int r;          //EL NUMERO RANDOM
-    while(iter != 10){
+    while(iter != MAP_ITERATION){
         
         bool num = false;
         while(!num){
