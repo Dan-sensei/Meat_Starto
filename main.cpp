@@ -43,6 +43,17 @@ int main(int argc, char** argv) {
     window.setFramerateLimit(60);
     //41 - 6
     
+    
+    int finisher;
+    std::string test  = "Tes:ting:MoarTesting";
+    std::string out;
+    finisher = test.find_first_of(":");
+    out.append(test, finisher+1, test.size());
+    test.erase(finisher);
+
+    std::cout << "OUT " << out << std::endl;
+    std::cout << "TEST " << test << std::endl;
+    
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);
