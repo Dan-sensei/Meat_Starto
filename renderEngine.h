@@ -15,7 +15,6 @@
 #define RENDERENGINE_H
 
 #include <SFML/Graphics.hpp>
-
 class renderEngine {
 public:
     //<SINGLETON>
@@ -26,15 +25,16 @@ public:
     //</SINGLETON>
     
     class rTexture {
+        friend class renderEngine;
         public:
             rTexture();                             //CONSTRUCTOR SIN ARGUMENTOS
             rTexture(std::string path);             //CONSTRUCTOR CON ARGUMENTOS
             
             void loadFromFile(std::string path);    //APLICAR UNA IMAGEN A LA TEXTURA
             
-            sf::Texture* getTexture();              //DEVUELVE LA TEXTURA (USAR SOLO INTERNAMENTE)
             
         private:
+            sf::Texture* getTexture();              //DEVUELVE LA TEXTURA (USAR SOLO INTERNAMENTE)
             sf::Texture text;
     };
     
@@ -54,15 +54,37 @@ public:
             sf::Sprite sprite;
     };
     
+    
     class rView {
+        friend class renderEngine;
         public:
             rView(float pos_x, float pos_y, float size_x, float size_y);        //CONSTRUCTOR
             
             void zoom(float z);
             
+        private:
+            sf::View getView();
+            sf::View view;
+    };
+    
+    class rClock {
+        public:
+            rClock();
+            
+            void restart();
+        private:
+            sf::Clock clock;
+    };
+    
+    class rEvent {
+        public:
+            rEvent();
+            
             
         private:
-            sf::View view;
+            sf::Event event;
+            sf::Event::EventType EventType;
+            
     };
     
     //METODOS PUBLICOS
@@ -71,7 +93,7 @@ public:
     void display();                                 //DIBUJA LA VENTANA
     std::array<float,2> getSize();                  //DEVUELVE LAS DIMENSIONES DE LA VENTANA
     
-    //void setView(rView v);
+    void setView(rView v);
     
     
 private:

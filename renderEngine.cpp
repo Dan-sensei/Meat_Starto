@@ -59,11 +59,11 @@ std::array<float, 2> renderEngine::getSize() {
     
     return v;
 }
-/*
+
 void renderEngine::setView(rView v) {
-    window.setView(v);
+    window.setView(v.getView());
 }
-*/
+
 
 renderEngine::renderEngine(const renderEngine& orig) {
 }
@@ -85,8 +85,7 @@ sf::Texture* renderEngine::rTexture::getTexture() {
 
 
 //============================= SPRITE =============================//
-renderEngine::rSprite::rSprite() {
-}
+renderEngine::rSprite::rSprite() {}
 
 void renderEngine::rSprite::draw() {
     renderEngine* sfml;
@@ -115,7 +114,6 @@ void renderEngine::rSprite::setRotation(float a) {
 }
 
 //============================= VISTA =============================//
-
 renderEngine::rView::rView(float pos_x, float pos_y, float size_x, float size_y):
 view(sf::FloatRect(pos_x,pos_y,size_x,size_y))
 {
@@ -124,6 +122,25 @@ view(sf::FloatRect(pos_x,pos_y,size_x,size_y))
 void renderEngine::rView::zoom(float z) {
     view.zoom(z);
 }
+
+sf::View renderEngine::rView::getView() {
+    return view;
+}
+
+//============================= RELOJ =============================//
+renderEngine::rClock::rClock() {}
+
+void renderEngine::rClock::restart() {
+    clock.restart();
+}
+        
+//============================= EVENTOS =============================//
+
+renderEngine::rEvent::rEvent() {
+    
+}
+
+
 
 
 

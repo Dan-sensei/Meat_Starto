@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     
     //41 - 6
     
-    
+    //TEST
     int finisher;
     std::string test  = "Tes:LUJAN:MoarTesting";
     std::string out;
@@ -57,6 +57,9 @@ int main(int argc, char** argv) {
 
     std::cout << "OUT " << out << std::endl;
     std::cout << "TEST " << test << std::endl;
+    //TEST
+    
+    
     
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
@@ -80,12 +83,11 @@ int main(int argc, char** argv) {
     
     //VISTA
     renderEngine::rView view(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
-    /*
     //view.zoom(2.7);
     view.zoom(2);
-    window.setView(view);
+    sfml->Instance().setView(view);
     
-    sf::Clock masterClock;
+    renderEngine::rClock masterClock;
     double dt;
     bool keys[256];
     for(int i = 0; i<256; i++) keys[i]=false;
@@ -93,7 +95,6 @@ int main(int argc, char** argv) {
     float accumulator = 0.0f;
     masterClock.restart();
 
-    */
     
     while(sfml->Instance().isOpen()){
         /*
@@ -247,7 +248,7 @@ int main(int argc, char** argv) {
 
     
     
-    while(window.isOpen();){
+    while(window.isOpen()){
         
         sf::Event event;
         while(window.pollEvent(event)){
