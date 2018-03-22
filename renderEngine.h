@@ -77,14 +77,18 @@ public:
     };
     
     class rEvent {
+        friend class renderEngine;
         public:
             rEvent();
+            enum EventType{};
             
+            sf::Event::EventType type();
+            int getKeyCode();
             
         private:
-            sf::Event event;
-            sf::Event::EventType EventType;
+            sf::Event getEvent();
             
+            sf::Event event;
     };
     
     //METODOS PUBLICOS
@@ -94,6 +98,7 @@ public:
     std::array<float,2> getSize();                  //DEVUELVE LAS DIMENSIONES DE LA VENTANA
     
     void setView(rView v);
+    bool pollEvent(rEvent &e);
     
     
 private:

@@ -64,6 +64,9 @@ void renderEngine::setView(rView v) {
     window.setView(v.getView());
 }
 
+bool renderEngine::pollEvent(rEvent &e) {
+    return window.pollEvent(e.getEvent());
+}
 
 renderEngine::renderEngine(const renderEngine& orig) {
 }
@@ -137,10 +140,24 @@ void renderEngine::rClock::restart() {
 //============================= EVENTOS =============================//
 
 renderEngine::rEvent::rEvent() {
-    
+    enum EventType{
+        KeyPressed      = sf::Event::EventType::KeyPressed,
+        KeyReleased     = sf::Event::EventType::KeyReleased,
+    };
 }
 
 
+sf::Event::EventType renderEngine::rEvent::type() {
+    return EventType;
+}
+
+int renderEngine::rEvent::getKeyCode() {
+    return event.key.code;
+}
+
+sf::Event renderEngine::rEvent::getEvent() {
+    return event;
+}
 
 
 

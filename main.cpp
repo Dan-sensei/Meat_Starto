@@ -97,22 +97,24 @@ int main(int argc, char** argv) {
 
     
     while(sfml->Instance().isOpen()){
+        
         /*
-        sf::Event event;
-        while(window.pollEvent(event)){
-            switch(event.type){
-                case sf::Event::EventType::KeyPressed:
-                    keys[event.key.code] = true;
+        renderEngine::rEvent event;
+        while(sfml->Instance().pollEvent(event)){
+            switch(event.type()){
+                case renderEngine::rEvent::EventType :
+                    keys[event.getKeyCode()] = true;
                     break;
-                case sf::Event::EventType::KeyReleased:
-                    keys[event.key.code] = false;     
+                    
+                case event.type().KeyReleased :
+                    keys[event.getKeyCode()] = false;     
                     break;
+                    
                 default:
                     break;
             }
             
         }
-        
         //UPDATE
         
         
