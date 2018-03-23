@@ -13,11 +13,11 @@
 
 #include <random>
 #include <iostream>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <math.h>
 #include <complex>
+
 #include "Tile.h"
+#include "renderEngine.h"
 
 #define SCALE 65.f
 #define MAP_ITERATION 10
@@ -482,7 +482,8 @@ void Tile::LeeNodo(std::string node_path) {
     std::string vertex, v_aux, v_aux2;
 
     std::vector<std::array<float, 2>> vec;
-    sf::ConvexShape *cs;
+    //sf::ConvexShape *cs;
+    renderEngine::rConvexShape *cs;
 
     obj = map->FirstChildElement("objectgroup")->FirstChildElement("object");
         //std::cout << obj->Attribute("x") << std::endl;
@@ -493,7 +494,7 @@ void Tile::LeeNodo(std::string node_path) {
 
         //============================================//
         //PARA CREAR LOS VERTICES DEL ConvexShape
-        cs = new sf::ConvexShape;
+        cs = new renderEngine::rConvexShape;
 
         //============================================//
 
@@ -545,12 +546,12 @@ void Tile::LeeNodo(std::string node_path) {
 
         cs->setPointCount(vec.size());
         for (int i = 0; i < vec.size(); i++) {
-            cs->setPoint(i, sf::Vector2f(vec[i][0], vec[i][1]));
+            cs->setPoint(i, vec[i][0], vec[i][1]);
         }
         
         //<DEBUG>
-        cs->setFillColor(sf::Color::Transparent);
-        cs->setOutlineColor(sf::Color::Red);
+        cs->setFillColor('t');
+        cs->setOutlineColor('r');
         cs->setOutlineThickness(5);
         //</DEBUG>
         
@@ -581,12 +582,12 @@ void Tile::LeeNodo(std::string node_path) {
 //CREA LA CASILLA
 void Tile::CreaCasilla(int id, int x, int y) {
     
-    sf::Texture text;
+    renderEngine::rTexture text;
     text.loadFromFile(tiles[id-1]->path);
         //std::cout << tiles[id-1]->path << std::endl;
     
-    sf::RectangleShape casilla(sf::Vector2f(ancho,alto));
-    casilla.setTexture(&text);
+    renderEngine::rRectangleShape casilla(ancho,alto);
+    casilla.setTexture(text);
     casilla.setPosition(x,y);
     
     _cas aux;
@@ -598,7 +599,7 @@ void Tile::CreaCasilla(int id, int x, int y) {
 
 }
 
-void Tile::DibujaCasillas(sf::RenderWindow &window, int x, int y) {
+void Tile::DibujaCasillas(int x, int y) {
     //REDONDEO LA COORDENADA x
         //std::cout << x << std::endl;
     bool pos = false;
@@ -635,20 +636,24 @@ void Tile::DibujaCasillas(sf::RenderWindow &window, int x, int y) {
     int y_max = y_2 +(alto*12);
     
     
-    sf::RectangleShape *r;
-    sf::Texture *t;
+    //sf::RectangleShape *r;
+    //sf::Texture *t;
+    renderEngine::rRectangleShape *r;
+    renderEngine::rTexture *t;
+    renderEngine* sfml;
         
     for(int i=0 ; i<vector_casillas.size() ; i++){
-        if(     (int)vector_casillas[i].rect.getPosition().x >= x_min && (int)vector_casillas[i].rect.getPosition().x <= x_max &&
-                (int)vector_casillas[i].rect.getPosition().y >= y_min && (int)vector_casillas[i].rect.getPosition().y <= y_max){
+        if(     (int)vector_casillas[i].rect.getPosition()[0] >= x_min && (int)vector_casillas[i].rect.getPosition()[0] <= x_max &&
+                (int)vector_casillas[i].rect.getPosition()[1] >= y_min && (int)vector_casillas[i].rect.getPosition()[1] <= y_max){
                 //std::cout << i << std::endl;
             
             r = &(vector_casillas[i].rect);
             t = &(vector_casillas[i].text);
 
-            r->setTexture(t);
+            r->setTexture(*t);
 
-            window.draw(*r);
+            //window.draw(*r);
+            r->draw();
         }
             
     }

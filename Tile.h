@@ -16,13 +16,10 @@
 
 #include <tinyxml2.h>
 #include <vector>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <list>
-#include <SFML/Graphics/ConvexShape.hpp>
 #include <Box2D/Box2D.h>
 #include "physicsEngine.h"
+#include "renderEngine.h"
 
 class Tile {
 public:
@@ -33,7 +30,7 @@ public:
     }
     
     void CreaMapa();
-    void DibujaCasillas(sf::RenderWindow &window, int x, int y);
+    void DibujaCasillas(int x, int y);
     
     virtual ~Tile();
     
@@ -46,7 +43,6 @@ private:
     void LeeNodo(std::string node_path);
     void CreaCasilla(int id, int x, int y);
     void InitMatrix();
-    void createGround(b2World& world_, std::vector<sf::Vector2f> vertex_, int n_);
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS TILES
@@ -64,17 +60,20 @@ private:
     _tile *tiles[37];
     
     //OBJETOS (colisiones del mapa)
-    std::vector<sf::ConvexShape> objetos;
+    std::vector<renderEngine::rConvexShape> objetos;
     std::vector<std::vector<std::array<float, 2>>> colision;
     
     //PARA CONSTRUIR EL MAPA
     int x_max;
     struct _cas{
         int id;
-        sf::RectangleShape rect;
-        sf::Texture text;
+        //sf::RectangleShape rect;
+        renderEngine::rRectangleShape rect;
+        
+        //sf::Texture text;
+        renderEngine::rTexture text;
     };
-    std::vector<_cas> vector_casillas; //TEMPORAL
+    std::vector<_cas> vector_casillas;
     int v[15][15];
     
     bool m_tetris;

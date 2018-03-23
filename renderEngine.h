@@ -50,7 +50,7 @@ public:
             void setPosition(float x, float y);         //ESTABLECER LA POSICION
             void setRotation(float a);                  //ESTABLECER UNA ROTACION
             
-            std::array<float,2> getPosition();
+            std::array<float,2> getPosition();          //DEVUELVE LA POSICION
         private:
             sf::Sprite sprite;
     };
@@ -61,12 +61,12 @@ public:
         public:
             rView(float pos_x, float pos_y, float size_x, float size_y);        //CONSTRUCTOR
             
-            void zoom(float z);
-            void setCenter(float x, float y);
-            std::array<float,2> getCenter();
+            void zoom(float z);                       //ZOOM A LA VISTA
+            void setCenter(float x, float y);         //CENTRO DE LA VISTA
+            std::array<float,2> getCenter();          //CENTRO DE LA VISTA
             
         private:
-            sf::View getView();
+            sf::View getView();             //CONSIGUE LA VISTA. USO PRIVADO
             sf::View view;
     };
     
@@ -74,9 +74,9 @@ public:
         public:
             rTime();
             
-            float asSeconds();
-            float asMilliseconds();
-            float asMicroseconds();
+            float asSeconds();                     //TIEMPO EN SEGUNDOS
+            float asMilliseconds();                //TIEMPO EN MILISEGUNDOS
+            float asMicroseconds();                //TIEMPO EN MICROSEGUNDOS
         private:
             sf::Time time;
     };
@@ -85,8 +85,7 @@ public:
         public:
             rClock();
             
-            renderEngine::rTime restart();
-            float asSeconds();
+            renderEngine::rTime restart();          //REINICIAR EL RELOJ
         private:
             sf::Clock clock;
     };
@@ -95,14 +94,14 @@ public:
         friend class renderEngine;
         public:
             rEvent();
-            enum EventType{
+            enum EventType{                //ENUMERACION CON LOS DISTINTOS EVENTOS (FALTA PONER LOS QUE SE VAYAN A UTILIZAR)
                 KeyPressed      = sf::Event::EventType::KeyPressed,
                 KeyReleased     = sf::Event::EventType::KeyReleased,
             };
             sf::Event::EventType sfType();
             
             
-            int getKeyCode();
+            int getKeyCode();                                                   //DEVUELVE EL CODIGO DEL EVENTO DE TECLADO
             
         private:
             sf::Event* getEvent();
@@ -110,15 +109,43 @@ public:
             sf::Event event;
     };
     
+    class rConvexShape {
+        public:
+            rConvexShape();
+            
+            void setPointCount(int s);                      //NUMERO DE PUNTOS
+            void setPoint(int p, float x, float y);         //ESTABLECER UN PUNTO
+            void setFillColor(char c);                      //ESTABLECER UN COLOR DE FONDO
+            void setOutlineColor(char c);                   //ESTABLECER UN COLOR PARA EL BORDE
+            void setOutlineThickness(float f);              //ESTABLECER UN ANCHO PARA EL BORDE
+        private:
+            sf::ConvexShape cs;
+    };
+    
+    class rRectangleShape {
+        public:
+            rRectangleShape();
+            rRectangleShape(float x, float y);
+            
+            void draw();                                    //DIBUJAR
+            
+            void setTexture(rTexture &t);                   //ESTABLECER TEXTURA
+            void setPosition(float x, float y);             //ESTABLECER POSICION
+            
+            std::array<float,2> getPosition();              //CONSEGUIR POSICION
+        private:
+            sf::RectangleShape rs;
+    };
+    
     //METODOS PUBLICOS
     bool isOpen();                                  //TRUE SI LA VENTANA ESTA ABIERTA
-    void close();
+    void close();                                   //CIERRA LA VENTANA
     void clear(char c);                             //CLEAR DE SFML
     void display();                                 //DIBUJA LA VENTANA
     std::array<float,2> getSize();                  //DEVUELVE LAS DIMENSIONES DE LA VENTANA
     
-    void setView(rView v);
-    bool pollEvent(rEvent &e);
+    void setView(rView v);                          //ESTABLECER UNA VISTA
+    bool pollEvent(rEvent &e);                      //PARA CONTROLAR LOS EVENTOS
     
     
 private:

@@ -14,7 +14,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <Box2D/Box2D.h>
-#include <SFML/Graphics.hpp>
 #include <math.h>
 
 #include "Tile.h"
@@ -174,7 +173,7 @@ int main(int argc, char** argv) {
         Sprite.setRotation(player.getRotation());
         
         //DRAW
-        //tile->Instance().DibujaCasillas(window, Sprite.getPosition()[0], CAM_H);
+        tile->Instance().DibujaCasillas(Sprite.getPosition()[0], CAM_H);
         view.setCenter(Sprite.getPosition()[0],CAM_H);
 
         sfml->Instance().setView(view);

@@ -1,8 +1,10 @@
 build/Debug/GNU-Linux/Tile.o: Tile.cpp /usr/include/tinyxml2.h Tile.h \
- physicsEngine.h
+ physicsEngine.h renderEngine.h
 
 /usr/include/tinyxml2.h:
 
 Tile.h:
 
 physicsEngine.h:
+
+renderEngine.h:
