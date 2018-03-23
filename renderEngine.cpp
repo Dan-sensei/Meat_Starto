@@ -65,7 +65,11 @@ void renderEngine::setView(rView v) {
 }
 
 bool renderEngine::pollEvent(rEvent &e) {
-    return window.pollEvent(e.getEvent());
+    return window.pollEvent(*e.getEvent());
+}
+
+void renderEngine::close() {
+    window.close();
 }
 
 renderEngine::renderEngine(const renderEngine& orig) {
@@ -116,6 +120,14 @@ void renderEngine::rSprite::setRotation(float a) {
     sprite.setRotation(a);
 }
 
+std::array<float, 2> renderEngine::rSprite::getPosition() {
+    std::array<float,2> ret;
+    ret[0] = sprite.getPosition().x;
+    ret[1] = sprite.getPosition().y;
+    
+    return ret;
+}
+
 //============================= VISTA =============================//
 renderEngine::rView::rView(float pos_x, float pos_y, float size_x, float size_y):
 view(sf::FloatRect(pos_x,pos_y,size_x,size_y))
@@ -130,37 +142,63 @@ sf::View renderEngine::rView::getView() {
     return view;
 }
 
+std::array<float, 2> renderEngine::rView::getCenter() {
+    std::array<float, 2> ret;
+    ret[0] = view.getCenter().x;
+    ret[1] = view.getCenter().y;
+    
+    return ret;
+}
+
+void renderEngine::rView::setCenter(float x, float y) {
+    view.setCenter(x,y);
+}
+
 //============================= RELOJ =============================//
 renderEngine::rClock::rClock() {}
 
-void renderEngine::rClock::restart() {
+renderEngine::rTime renderEngine::rClock::restart() {
     clock.restart();
+}
+
+float renderEngine::rClock::asSeconds() {
+    
 }
         
 //============================= EVENTOS =============================//
-
 renderEngine::rEvent::rEvent() {
-    enum EventType{
-        KeyPressed      = sf::Event::EventType::KeyPressed,
-        KeyReleased     = sf::Event::EventType::KeyReleased,
-    };
-}
-
-
-sf::Event::EventType renderEngine::rEvent::type() {
-    return EventType;
+    
 }
 
 int renderEngine::rEvent::getKeyCode() {
     return event.key.code;
 }
 
-sf::Event renderEngine::rEvent::getEvent() {
-    return event;
+sf::Event* renderEngine::rEvent::getEvent() {
+    return &event;
+}
+
+sf::Event::EventType renderEngine::rEvent::sfType() {
+    return event.type;
 }
 
 
+//============================= TIEMPO =============================//
+renderEngine::rTime::rTime() {
 
+}
+
+float renderEngine::rTime::asSeconds() {
+    return time.asSeconds();
+}
+
+float renderEngine::rTime::asMilliseconds() {
+    return time.asMilliseconds();
+}
+
+float renderEngine::rTime::asMicroseconds() {
+    return time.asMicroseconds();
+}
 
 
 

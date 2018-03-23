@@ -50,6 +50,7 @@ public:
             void setPosition(float x, float y);         //ESTABLECER LA POSICION
             void setRotation(float a);                  //ESTABLECER UNA ROTACION
             
+            std::array<float,2> getPosition();
         private:
             sf::Sprite sprite;
     };
@@ -61,17 +62,31 @@ public:
             rView(float pos_x, float pos_y, float size_x, float size_y);        //CONSTRUCTOR
             
             void zoom(float z);
+            void setCenter(float x, float y);
+            std::array<float,2> getCenter();
             
         private:
             sf::View getView();
             sf::View view;
     };
     
+    class rTime {
+        public:
+            rTime();
+            
+            float asSeconds();
+            float asMilliseconds();
+            float asMicroseconds();
+        private:
+            sf::Time time;
+    };
+    
     class rClock {
         public:
             rClock();
             
-            void restart();
+            renderEngine::rTime restart();
+            float asSeconds();
         private:
             sf::Clock clock;
     };
@@ -80,19 +95,24 @@ public:
         friend class renderEngine;
         public:
             rEvent();
-            enum EventType{};
+            enum EventType{
+                KeyPressed      = sf::Event::EventType::KeyPressed,
+                KeyReleased     = sf::Event::EventType::KeyReleased,
+            };
+            sf::Event::EventType sfType();
             
-            sf::Event::EventType type();
+            
             int getKeyCode();
             
         private:
-            sf::Event getEvent();
+            sf::Event* getEvent();
             
             sf::Event event;
     };
     
     //METODOS PUBLICOS
     bool isOpen();                                  //TRUE SI LA VENTANA ESTA ABIERTA
+    void close();
     void clear(char c);                             //CLEAR DE SFML
     void display();                                 //DIBUJA LA VENTANA
     std::array<float,2> getSize();                  //DEVUELVE LAS DIMENSIONES DE LA VENTANA

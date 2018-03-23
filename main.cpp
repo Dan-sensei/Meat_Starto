@@ -98,18 +98,18 @@ int main(int argc, char** argv) {
     
     while(sfml->Instance().isOpen()){
         
-        /*
         renderEngine::rEvent event;
+        //0x7fff11e212f0
         while(sfml->Instance().pollEvent(event)){
-            switch(event.type()){
-                case renderEngine::rEvent::EventType :
+            switch(event.sfType()){
+                case renderEngine::rEvent::EventType::KeyPressed :
                     keys[event.getKeyCode()] = true;
                     break;
-                    
-                case event.type().KeyReleased :
+                
+                case renderEngine::rEvent::EventType::KeyReleased :
                     keys[event.getKeyCode()] = false;     
                     break;
-                    
+                
                 default:
                     break;
             }
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
         while(accumulator >= TIME_STEP){
             //std::cout << "UPDATE " << accumulator << std::endl;
             
-            if(keys[16]) window.close();  //Cerrar
+            if(keys[16]) sfml->Instance().close();  //Cerrar
 
             if( keys[0])  {                 // A
                 if(player.getLinearXVelocity() > -speed)
@@ -168,19 +168,17 @@ int main(int argc, char** argv) {
         double tick = accumulator/dt;
         
         //std::cout << "RENDER == " << tick << std::endl;
-        */
         sfml->Instance().clear('y');
         
-        //Sprite.setPosition(player.getXPosition(), player.getYPosition());
-        Sprite.setPosition(100,100);
+        Sprite.setPosition(player.getXPosition(), player.getYPosition());
         Sprite.setRotation(player.getRotation());
-        /*
-        //DRAW
-        tile->Instance().DibujaCasillas(window, Sprite.getPosition().x, CAM_H);
-        view.setCenter(Sprite.getPosition().x,CAM_H);
         
-        window.setView(view);
-        */
+        //DRAW
+        //tile->Instance().DibujaCasillas(window, Sprite.getPosition()[0], CAM_H);
+        view.setCenter(Sprite.getPosition()[0],CAM_H);
+
+        sfml->Instance().setView(view);
+
         Sprite.draw();
                 
         //RENDER
