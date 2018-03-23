@@ -20,14 +20,14 @@
 #include "physicsEngine.h"
 #include "renderEngine.h"
 
-#define FRAMERATE 60
-#define TICKS_PER_SEC 60.0
+#define FRAMERATE 60.f
+#define UPDATE_STEP 15.f
+#define BOX2D_STEP 1.f/FRAMERATE
 
-#define TIME_STEP 1.0/TICKS_PER_SEC
 #define CAM_H 1250
 
-#define force 200
-#define speed 15.f
+#define force 50.f*FRAMERATE/UPDATE_STEP
+#define speed 12.f
 #define jump 2500
 
 #define PLAYER_DIM_X 1.9f
@@ -115,58 +115,87 @@ int main(int argc, char** argv) {
             
         }
         //UPDATE
-        
+
+        if(keys[16]) sfml->Instance().close();  //Cerrar
         
         // FIXED TIME STEP UPDATE
         dt = masterClock.restart().asSeconds();
+        
         //Spiral of death
         if(dt > 0.25f)   dt = 0.25f;
         
+        /*
+        
+            FRAMERATE A 60
+               UPDATE A 15 
+            STEP BOX2D = FRAMERATE
+         
+            0    5    10   15   20   25   30   35   40   45   50   55   60
+            |----|----|----|----|----|----|----|----|----|----|----|----| 
+                |                                                       Al cabo de un segundo_
+             FRAME 4                                                    RENDER [ 60 VECES ] 
+                |                                                       UPDATE [ 15 VECES ]     --> 60 / 15 = CADA 4
+                |                                                       STEP DE BOX2D [ 60 VECES ]
+                x1 UPDATE
+                x4 STEPS DE BOX2D
+         
+            Por tanto dentro del update ejecutamos un bucle con las actualizaciones del mundo de Box2D con FRAMERATE / UPDATE iteraciones
+         
+            En la variable dt guardamos el tiempo que ha pasado desde el frame anterior y lo vamos acumulando en la variable accumulator de manera que:
+            Si el acumulador es mayor que 0'067 (1/15) entramos al bucle, ejecutamos el UPDATE, y ejecutamos los STEPS necesarios en el mundo de Box2D
+            Terminado esto, le restamos a nuestro accumulator 0'067 y como está en un bucle, comprobará de nuevo si puede volver a ejecutar el update
+            Esto casi nunca ocurrirá pero, en caso de haya un bajón y se quede atrás, ejecutará tantos updates como sean necesarios
+        
+        
+        */
+        
         accumulator+=dt;
-        while(accumulator >= TIME_STEP){
-            //std::cout << "UPDATE " << accumulator << std::endl;
+        while(accumulator >= 1/UPDATE_STEP){
+            std::cout << "UPDATE-- " << accumulator << std::endl;
             
-            if(keys[16]) sfml->Instance().close();  //Cerrar
-
-            if( keys[0])  {                 // A
+            // TECLA A
+            if( keys[0])  {
                 if(player.getLinearXVelocity() > -speed)
-                    player.addForceToCenter(-force, player.getLinearYVelocity()); 
+                    player.addForceToCenter(-force, 0); 
                 else 
                     player.setLinealVelocicity(-speed, player.getLinearYVelocity());
-                
-                Sprite.setScale(PLAYER_DIM_X, PLAYER_DIM_Y); 
+                Sprite.setScale(PLAYER_DIM_X, PLAYER_DIM_Y);
             }
             
-            else if( keys[3]) {             //D
+            // TECLA D
+            else if( keys[3]) {             
                 if(player.getLinearXVelocity() < speed)
-                    player.addForceToCenter(force, player.getLinearYVelocity()); 
+                    player.addForceToCenter(force, 0); 
                 else
                     player.setLinealVelocicity(speed, player.getLinearYVelocity());
-
-                Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y); 
+                Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y);
             }
             
-            
-            if(!keys[0] && !keys[3])   //W
-                player.setLinealVelocicity(0, player.getLinearYVelocity());
-            
-            if(keys[57] || keys[22]){
+            // TECLA W / ESPACIO
+            if(keys[57] || keys[22]){ 
                 keys[57] = false;
                 keys[22] = false;
-                player.addForceToCenter(0, -jump*TICKS_PER_SEC/60);
+                player.addForceToCenter(0, -jump);
             }
             
             
-            //std::cout << "V " << player.getLinearXVelocity() << std::endl;
+            //STOP
+            if(!keys[0] && !keys[3])        
+                player.setLinealVelocicity(0, player.getLinearYVelocity());
             
-            world->Instance().updateWorld(TIME_STEP);
-            accumulator -= TIME_STEP;
+            // BUCLE DE STEPS DE BOX2D
+            for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
+                std::cout << "      |--STEP" << std::endl;
+                world->Instance().updateWorld(BOX2D_STEP);
+                //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
+            }
+            accumulator -= 1/UPDATE_STEP;
         }
         
-        
+        // TICK PARA LA INTERPOLAÇAO
         double tick = accumulator/dt;
         
-        //std::cout << "RENDER == " << tick << std::endl;
+        std::cout << "RENDER == " << tick << std::endl;
         sfml->Instance().clear('y');
         
         Sprite.setPosition(player.getXPosition(), player.getYPosition());

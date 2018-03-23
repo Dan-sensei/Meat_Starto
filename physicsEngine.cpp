@@ -64,7 +64,7 @@ physicsEngine::pBody physicsEngine::createBody(float width_, float height_, floa
     
     b2FixtureDef fixtureDef;                                            // Creamos las características físicas del cuerpo con un b2FixtureDef
     fixtureDef.density = 1.f;
-    fixtureDef.friction = 0.7f;
+    fixtureDef.friction = 0.0f;
     fixtureDef.restitution = 0.f;                                       
     fixtureDef.shape = &shape;
     
