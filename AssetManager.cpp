@@ -28,6 +28,7 @@ renderEngine::rTexture& AssetManager::GetTexture(const std::string& filename){
         return texture;
     }
 }
+
 /*
 sf::SoundBuffer& AssetManager::GetSoundBuffer(const std::string& filename){
     

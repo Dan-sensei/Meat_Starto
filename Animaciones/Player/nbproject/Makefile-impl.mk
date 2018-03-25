@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Meat_Starto
+PROJECTNAME=Player
 
 # Active Configuration
 DEFAULTCONF=Debug
