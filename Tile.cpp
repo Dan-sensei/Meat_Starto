@@ -20,7 +20,7 @@
 #include "renderEngine.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 30
 
 Tile::Tile() {
 
@@ -405,7 +405,7 @@ void Tile::InitMatrix() {
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
-void Tile::LeeNodo(std::string node_path) {
+void Tile::LeeNodo(std::string const& node_path) {
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
     
     //std::cout << "Leo el nodo: " << node_path << std::endl;
@@ -595,7 +595,7 @@ void Tile::LeeNodo(std::string node_path) {
             obj->QueryIntAttribute("y", &yCoord);
             obj->QueryAttribute("height", &height);
             
-            std::uniform_real_distribution<float> distribution(xCoord, xCoord+width);
+            std::uniform_int_distribution<int> distribution(xCoord, xCoord+width);
             
             renderEngine::rSprite npc;
             npc.setTexture(AssetManager::GetTexture("assets/BOSS.jpg"));
@@ -603,14 +603,13 @@ void Tile::LeeNodo(std::string node_path) {
                 
             int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize()/2;
             
-            npc.setPosition(x_max+distribution(gen), y_spawn);
+            npc.setPosition(x_max + distribution(gen), y_spawn);
             vector_enemigos.push_back(npc);
             
             obj = obj->NextSiblingElement("object");
         }
     }
     x_max = x_max_aux+ancho;
-        //std::cout << x_max << std::endl;
 }
 
 //CREA LA CASILLA
@@ -633,21 +632,18 @@ void Tile::CreaCasilla(int id, int x, int y) {
 }
 
 void Tile::DibujaCasillas(int x, int y) {
-    //REDONDEO LA COORDENADA x
-        //std::cout << x << std::endl;
-    bool pos = false;
-    int x_2;
+    
     int i=0;
     
+    //REDONDEO LA COORDENADA x
+    int x_2;
     i = x/ancho+1;
     x_2 = i*ancho;
 
     //REDONDEO LA COORDENADA y
-
     int y_2;
     i = y/alto+1;
     y_2 = i*alto;
-        //std::cout << y_2 << std::endl;
 
     
     int x_min = x_2 -(ancho*26);
@@ -666,7 +662,7 @@ void Tile::DibujaCasillas(int x, int y) {
         if(     static_cast<int>(vector_casillas[i].rect.getPosition()[0]) >= x_min && static_cast<int>(vector_casillas[i].rect.getPosition()[0]) <= x_max &&
                 static_cast<int>(vector_casillas[i].rect.getPosition()[1]) >= y_min && static_cast<int>(vector_casillas[i].rect.getPosition()[1]) <= y_max){
                 //std::cout << i << std::endl;
-            
+
             r = &(vector_casillas[i].rect);
             t = &(vector_casillas[i].text);
 
@@ -699,7 +695,7 @@ void Tile::DibujaCasillas(int x, int y) {
 void Tile::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
-        std::cout << path << std::endl;
+        //std::cout << path << std::endl;
     
     LeeNodo(path);
     
@@ -728,12 +724,13 @@ void Tile::CreaMapa() {
             std::string rand = std::to_string(r);
             path = path.operator +=(rand);
             path = path.operator +=(".tmx");
-                std::cout << path << std::endl;
+                //std::cout << path << std::endl;
             
             LeeNodo(path);
 
             nodo = r;
         }
+        std::cout << "Vector size " << vector_casillas.size() << std::endl;
         
         //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
         if(r == 6) m_tetris = true;

@@ -51,5 +51,4 @@
    <polyline points="0,0 0,-140 70,-140 70,-280 2030,-280 2030,-210 2100,-210 2100,-70 2170,-70 2170,0 0,0"/>
   </object>
  </objectgroup>
- <objectgroup name="spawn"/>
 </map>

@@ -41,7 +41,7 @@ private:
     void operator=(Tile const& orig);
     
     //----------------METODOS PRIVADOS
-    void LeeNodo(std::string node_path);
+    void LeeNodo(std::string const& node_path);
     void CreaCasilla(int id, int x, int y);
     void InitMatrix();
     

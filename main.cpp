@@ -67,8 +67,6 @@ int main(int argc, char** argv) {
     state previous;
     state actual;
     
-    
-    
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);
@@ -229,10 +227,10 @@ int main(int argc, char** argv) {
         }
         
         // TICK PARA LA INTERPOLAÇAO
-        double tick = min(1.f, static_cast<float>(accumulator/(1/UPDATE_STEP)));
+        double tick = min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
         
         //std::cout << "RENDER == " << tick << std::endl;
-        sfml->Instance().clear('y');
+        sfml->Instance().clear('w');
         
         // CALCULO LAS POSICINES INTERPOLADAS DE ACUERDO AL TICK
         float x = previous.x *(1-tick) + actual.x*tick;

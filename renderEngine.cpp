@@ -34,6 +34,7 @@ bool                renderEngine::pollEvent (rEvent &e) {   return window.pollEv
 
 void renderEngine::clear(char c) {              //COLOR DEL CLEAR
     switch(c){
+        case 'w':   window.clear(sf::Color::White);       break;
         case 'r':   window.clear(sf::Color::Red);       break;
         case 'y':   window.clear(sf::Color::Yellow);    break;
         default:    window.clear(sf::Color::Black);     break;
