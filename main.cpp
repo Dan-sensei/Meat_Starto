@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA WINDOW
     
     //41 - 6
-    
+     
     //TEST
     int finisher;
     std::string test  = "Tes:LUJAN:MoarTesting";
