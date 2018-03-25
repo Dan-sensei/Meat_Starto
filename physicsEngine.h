@@ -35,7 +35,7 @@ public:
             pBody();
 
             void setLinealVelocicity(float vx_, float vy_);      // Ajusta la velocidad lineal del cuerpo
-            void addForceToCenter(float vx_, float vy_);        // Añade una fuerza al centro del cuerpo
+            void applyForceToCenter(float vx_, float vy_);        // Añade una fuerza al centro del cuerpo
             void applyLinearImpulse(float ix_, float iy_);
             void setFixedRotation(bool flag_);                  // Determina si la rotación es fija
             float getLinearXVelocity();                         // Obtiene la velocidad lineal en el eje X
@@ -49,7 +49,7 @@ public:
             b2Body* getBody();                                  // Devuelve la variable Body de Box2D
 
         private:
-
+                
             b2Body* body;                                       //Variable b2Body de Box2D
     };
     
@@ -57,6 +57,7 @@ public:
     void createGround(std::vector<std::array<float, 2>> vertex_, int n_);                   // Crea el suelo del mapa, pasándole un vector de coordenadas, que serán los vértices que lo forman, y el número de vértices totales
     void setGravity(float gx_, float gy_);                                                  // Ajusta la gravedad del mundo
     void updateWorld(float tick_);                                                          // Actualiza el mundo
+    float static PI();
     
 private:
     

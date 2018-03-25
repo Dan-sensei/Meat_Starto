@@ -7,7 +7,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/main.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/main.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/physicsEngine.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Tile.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/physicsEngine.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/AssetManager.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Tile.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/AssetManager.h</file>
         </group>
     </open-files>
 </project-private>

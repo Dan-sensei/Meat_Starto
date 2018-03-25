@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>AssetManager.h</itemPath>
       <itemPath>Tile.h</itemPath>
       <itemPath>physicsEngine.h</itemPath>
       <itemPath>renderEngine.h</itemPath>
@@ -15,6 +16,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>AssetManager.cpp</itemPath>
       <itemPath>Tile.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>physicsEngine.cpp</itemPath>
@@ -69,6 +71,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="AssetManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AssetManager.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Tile.h" ex="false" tool="3" flavor2="0">
@@ -104,6 +110,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="AssetManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AssetManager.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Tile.h" ex="false" tool="3" flavor2="0">

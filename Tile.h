@@ -18,6 +18,7 @@
 #include <vector>
 #include <list>
 #include <Box2D/Box2D.h>
+#include "AssetManager.h"
 #include "physicsEngine.h"
 #include "renderEngine.h"
 
@@ -62,6 +63,7 @@ private:
     //OBJETOS (colisiones del mapa)
     std::vector<renderEngine::rConvexShape> objetos;
     std::vector<std::vector<std::array<float, 2>>> colision;
+    std::vector<std::array<float, 2>> spawn;
     
     //PARA CONSTRUIR EL MAPA
     int x_max;
@@ -74,6 +76,7 @@ private:
         renderEngine::rTexture text;
     };
     std::vector<_cas> vector_casillas;
+    std::vector<renderEngine::rSprite> vector_enemigos;
     int v[15][15];
     
     bool m_tetris;

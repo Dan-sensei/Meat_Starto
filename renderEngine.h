@@ -31,7 +31,8 @@ public:
             rTexture(std::string path);             //CONSTRUCTOR CON ARGUMENTOS
             
             void loadFromFile(std::string path);    //APLICAR UNA IMAGEN A LA TEXTURA
-            
+            int getXSize();
+            int getYSize();
             
         private:
             sf::Texture* getTexture();              //DEVUELVE LA TEXTURA (USAR SOLO INTERNAMENTE)
@@ -86,6 +87,7 @@ public:
             rClock();
             
             renderEngine::rTime restart();          //REINICIAR EL RELOJ
+            renderEngine::rTime getElapsedTime();   //TIEMPO SIN REINICIAR EL RELOJ
         private:
             sf::Clock clock;
     };

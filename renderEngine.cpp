@@ -54,18 +54,20 @@ renderEngine::renderEngine(const renderEngine& orig) {}
 renderEngine::rTexture::rTexture() {}
 renderEngine::rTexture::rTexture(std::string path) {    text.loadFromFile(path);}
 
-void            renderEngine::rTexture::loadFromFile(std::string path)  {   text.loadFromFile(path);}
-sf::Texture*    renderEngine::rTexture::getTexture()                    {   return &text;}
+void            renderEngine::rTexture::loadFromFile(std::string path)  {   text.loadFromFile(path);    }
+int             renderEngine::rTexture::getXSize()                      {   text.getSize().x;           }
+int             renderEngine::rTexture::getYSize()                      {   text.getSize().y;           }
+sf::Texture*    renderEngine::rTexture::getTexture()                    {   return &text;               }
 
 
 //============================= SPRITE =============================//
 renderEngine::rSprite::rSprite() {}
 
-void renderEngine::rSprite::setTexture  (rTexture &t)       {   sprite.setTexture(*t.getTexture());}
-void renderEngine::rSprite::setRotation (float a)           {   sprite.setRotation(a);}
-void renderEngine::rSprite::setOrigin   (float x, float y)  {   sprite.setOrigin(x,y);}
-void renderEngine::rSprite::setScale    (float x, float y)  {   sprite.setScale(x,y);}
-void renderEngine::rSprite::setPosition (float x, float y)  {   sprite.setPosition(x,y);}
+void renderEngine::rSprite::setTexture  (rTexture &t)       {   sprite.setTexture(*t.getTexture()); }
+void renderEngine::rSprite::setRotation (float a)           {   sprite.setRotation(a);              }
+void renderEngine::rSprite::setOrigin   (float x, float y)  {   sprite.setOrigin(x,y);              }
+void renderEngine::rSprite::setScale    (float x, float y)  {   sprite.setScale(x,y);               }
+void renderEngine::rSprite::setPosition (float x, float y)  {   sprite.setPosition(x,y);            }
 void renderEngine::rSprite::draw() {
     renderEngine* sfml;
     sfml->Instance().getWindow()->draw(sprite);
@@ -100,6 +102,7 @@ std::array<float, 2>    renderEngine::rView::getCenter  () {
 renderEngine::rClock::rClock() {}
 
 renderEngine::rTime renderEngine::rClock::restart() {clock.restart();}
+renderEngine::rTime renderEngine::rClock::getElapsedTime() {clock.getElapsedTime();}
 
 //============================= EVENTOS =============================//
 renderEngine::rEvent::rEvent() {}

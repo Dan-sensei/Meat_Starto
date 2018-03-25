@@ -29,6 +29,7 @@
 #define force 50.f*FRAMERATE/UPDATE_STEP
 #define speed 12.f
 #define jump 2500
+#define stop_mult 1.2f
 
 #define PLAYER_DIM_X 1.9f
 #define PLAYER_DIM_Y 1.9f
@@ -58,19 +59,29 @@ int main(int argc, char** argv) {
     std::cout << "TEST " << test << std::endl;
     //TEST
     
+    struct state{
+        float x;     // Posicion X
+        float y;     // Posicion Y
+        float r;     // Rotacion
+    };
+    state previous;
+    state actual;
+    
     
     
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);
     
-    physicsEngine::pBody player = world->Instance().createBody(76.f, 64.f, 2400, 1200, 'D');
+    physicsEngine::pBody player = world->Instance().createBody(76.f, 64.f, 1960, 1200, 'D');
     //player.setFixedRotation(false);
+    
     
     //MUNDO
     Tile *tile;
     tile->Instance();
     tile->Instance().CreaMapa();
+    
 
     
     //38x32
@@ -84,7 +95,12 @@ int main(int argc, char** argv) {
     renderEngine::rView view(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
     //view.zoom(2.7);
     view.zoom(2);
+    
     sfml->Instance().setView(view);
+    
+    previous.x = actual.x = player.getXPosition();
+    previous.y = actual.y = player.getYPosition();
+    previous.r = actual.r = player.getRotation();
     
     renderEngine::rClock masterClock;
     double dt;
@@ -151,59 +167,86 @@ int main(int argc, char** argv) {
         
         accumulator+=dt;
         while(accumulator >= 1/UPDATE_STEP){
-            std::cout << "UPDATE-- " << accumulator << std::endl;
+            //std::cout << "UPDATE-- " << accumulator << std::endl;
             
-            // TECLA A
-            if( keys[0])  {
-                if(player.getLinearXVelocity() > -speed)
-                    player.addForceToCenter(-force, 0); 
-                else 
-                    player.setLinealVelocicity(-speed, player.getLinearYVelocity());
-                Sprite.setScale(PLAYER_DIM_X, PLAYER_DIM_Y);
-            }
+            previous = actual;      // GUARDO EL ESTADO ANTERIOR
             
-            // TECLA D
-            else if( keys[3]) {             
-                if(player.getLinearXVelocity() < speed)
-                    player.addForceToCenter(force, 0); 
-                else
-                    player.setLinealVelocicity(speed, player.getLinearYVelocity());
-                Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y);
-            }
+            // TECLA A  ======================================================================
+            if( keys[0])  {                                                                 //
+                if(player.getLinearXVelocity() > -speed)                                    //
+                    player.applyForceToCenter(-force, 0);                                   //
+                else                                                                        //  IZQUIERDA
+                    player.setLinealVelocicity(-speed, player.getLinearYVelocity());        //
+                Sprite.setScale(PLAYER_DIM_X, PLAYER_DIM_Y);                                //
+            }                                                                               //
+            // ===============================================================================
             
-            // TECLA W / ESPACIO
-            if(keys[57] || keys[22]){ 
-                keys[57] = false;
-                keys[22] = false;
-                player.addForceToCenter(0, -jump);
-            }
+            // TECLA D  ======================================================================
+            else if( keys[3]) {                                                             //
+                if(player.getLinearXVelocity() < speed)                                     //
+                    player.applyForceToCenter(force, 0);                                    //
+                else                                                                        //  DERECHA
+                    player.setLinealVelocicity(speed, player.getLinearYVelocity());         //
+                Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y);                               //
+            }                                                                               //
+            // ===============================================================================
             
+            // TECLA W / ESPACIO  ============================================================
+            if(keys[57] || keys[22]){                                                       //
+                keys[57] = false;                                                           //
+                keys[22] = false;                                                           //  SALTO
+                player.applyForceToCenter(0, -jump);                                        //
+            }                                                                               //
+            // ===============================================================================
             
-            //STOP
-            if(!keys[0] && !keys[3])        
-                player.setLinealVelocicity(0, player.getLinearYVelocity());
+            //STOP CON DESLIZAMIENTO  ================================================================================
+            if(!keys[0] && player.getLinearXVelocity() < -2){                                                       //
+                player.applyForceToCenter(force*stop_mult, 0);                                                      //
+            }                                                                                                       //
+            else if(!keys[3] && player.getLinearXVelocity() > 2)                                                    //
+                player.applyForceToCenter(-force*stop_mult, 0);                                                     //
+                                                                                                                    // FRENADO
+            if(!keys[0] && !keys[3] && player.getLinearXVelocity() >= -2 && player.getLinearXVelocity() <= 2){      //
+                player.applyForceToCenter(0, 0);                                                                    //
+                player.setLinealVelocicity(0, player.getLinearYVelocity());                                         //
+            }                                                                                                       //
+            //  ======================================================================================================
+            
             
             // BUCLE DE STEPS DE BOX2D
             for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
-                std::cout << "      |--STEP" << std::endl;
+                //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
                 world->Instance().updateWorld(BOX2D_STEP);
                 //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
             }
+            
             accumulator -= 1/UPDATE_STEP;
+            
+            // ACTUALIZO EL ESTADO ACTUAL
+            actual.x = player.getXPosition();
+            actual.y = player.getYPosition();
+            actual.r = player.getRotation();
         }
         
         // TICK PARA LA INTERPOLAÇAO
-        double tick = accumulator/dt;
+        double tick = min(1.f, static_cast<float>(accumulator/(1/UPDATE_STEP)));
         
-        std::cout << "RENDER == " << tick << std::endl;
+        //std::cout << "RENDER == " << tick << std::endl;
         sfml->Instance().clear('y');
         
-        Sprite.setPosition(player.getXPosition(), player.getYPosition());
-        Sprite.setRotation(player.getRotation());
+        // CALCULO LAS POSICINES INTERPOLADAS DE ACUERDO AL TICK
+        float x = previous.x *(1-tick) + actual.x*tick;
+        float y = previous.y *(1-tick) + actual.y*tick;
+            // Para las rotaciones es mejor interpolar los senos y cosenos, ya que si no, al calcular el ángulo entre 350 y 10, no nos devolvería 20, que sería lo correcto
+        float s = sin(previous.r * physicsEngine::PI()/180) * (1-tick) + sin(actual.r * physicsEngine::PI()/180)*tick;
+        float c = cos(previous.r * physicsEngine::PI()/180) * (1-tick) + cos(actual.r * physicsEngine::PI()/180)*tick;
+        
+        Sprite.setPosition(x, y);
+        Sprite.setRotation(atan2(s,c)*180/physicsEngine::PI());
+        view.setCenter(Sprite.getPosition()[0],CAM_H);
         
         //DRAW
         tile->Instance().DibujaCasillas(Sprite.getPosition()[0], CAM_H);
-        view.setCenter(Sprite.getPosition()[0],CAM_H);
 
         sfml->Instance().setView(view);
 

@@ -22,7 +22,7 @@ physicsEngine* physicsEngine::Instance(){
     return pInstance;
 }
 */
-#define PI 3.1415926535
+#define pi 3.1415926535
 #define SCALE 60.f
 
 physicsEngine::physicsEngine():world(b2Vec2(0.f, 40.f)) {}
@@ -80,6 +80,8 @@ float physicsEngine::pixelToWorld(float p_) { return p_/SCALE; }
 
 float physicsEngine::worldToPixel(float w_) { return w_*SCALE; }
 
+float physicsEngine::PI() { return pi; }
+
 void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int n_){
 
     b2Vec2 vs[n_];
@@ -110,7 +112,7 @@ void physicsEngine::pBody::setLinealVelocicity(float vx_, float vy_){
     body->SetLinearVelocity(velocity);
 }
 
-void    physicsEngine::pBody::addForceToCenter( float vx_, float vy_) { body->ApplyForceToCenter(b2Vec2(vx_, vy_), true); }
+void    physicsEngine::pBody::applyForceToCenter( float vx_, float vy_) { body->ApplyForceToCenter(b2Vec2(vx_, vy_), true); }
 
 float   physicsEngine::pBody::getLinearXVelocity()  { return body->GetLinearVelocity().x; }
 
@@ -120,7 +122,7 @@ float   physicsEngine::pBody::getXPosition()        { return physicsEngine::worl
 
 float   physicsEngine::pBody::getYPosition()        { return physicsEngine::worldToPixel(body->GetPosition().y); }
 
-float   physicsEngine::pBody::getRotation()         { return body->GetAngle()*180/PI; }
+float   physicsEngine::pBody::getRotation()         { return body->GetAngle()*180/pi; }
 
 b2Body* physicsEngine::pBody::getBody()             { return body; }
 

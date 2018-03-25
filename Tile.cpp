@@ -575,6 +575,40 @@ void Tile::LeeNodo(std::string node_path) {
     }
     // </editor-fold>
 
+    
+    if(map->FirstChildElement("objectgroup")->NextSibling()){
+        
+        obj = map->FirstChildElement("objectgroup")->NextSibling()->FirstChildElement("object");
+
+        int xCoord = 0;
+        int yCoord = 0;
+        int width = 0;
+        int height = 0;
+        std::random_device rd;
+        std::default_random_engine gen(rd());
+
+
+        while(obj){
+            obj->QueryIntAttribute("x", &xCoord);
+            obj->QueryIntAttribute("width", &width);
+            
+            obj->QueryIntAttribute("y", &yCoord);
+            obj->QueryAttribute("height", &height);
+            
+            std::uniform_real_distribution<float> distribution(xCoord, xCoord+width);
+            
+            renderEngine::rSprite npc;
+            npc.setTexture(AssetManager::GetTexture("assets/BOSS.jpg"));
+            npc.setOrigin(AssetManager::GetTexture("assets/BOSS.jpg").getXSize()/2, AssetManager::GetTexture("assets/BOSS.jpg").getYSize()/2);
+                
+            int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize()/2;
+            
+            npc.setPosition(x_max+distribution(gen), y_spawn);
+            vector_enemigos.push_back(npc);
+            
+            obj = obj->NextSiblingElement("object");
+        }
+    }
     x_max = x_max_aux+ancho;
         //std::cout << x_max << std::endl;
 }
@@ -582,17 +616,16 @@ void Tile::LeeNodo(std::string node_path) {
 //CREA LA CASILLA
 void Tile::CreaCasilla(int id, int x, int y) {
     
-    renderEngine::rTexture text;
-    text.loadFromFile(tiles[id-1]->path);
+
         //std::cout << tiles[id-1]->path << std::endl;
     
     renderEngine::rRectangleShape casilla(ancho,alto);
-    casilla.setTexture(text);
+    casilla.setTexture(AssetManager::GetTexture(tiles[id-1]->path));
     casilla.setPosition(x,y);
     
     _cas aux;
     aux.id = id;
-    aux.text = text;
+    aux.text = AssetManager::GetTexture(tiles[id-1]->path);
     aux.rect = casilla;
     
     vector_casillas.push_back(aux);
@@ -605,27 +638,15 @@ void Tile::DibujaCasillas(int x, int y) {
     bool pos = false;
     int x_2;
     int i=0;
-    int mult = ancho;
-    while(!pos){
-        if(mult*i>x){
-            x_2 = mult*i;
-            pos = true;
-        }
-        i++;
-    }
     
+    i = x/ancho+1;
+    x_2 = i*ancho;
+
     //REDONDEO LA COORDENADA y
-    pos = false;
+
     int y_2;
-    i=0;
-    mult = alto;
-    while(!pos){
-        if(mult*i>y){
-            y_2 = mult*i;
-            pos = true;
-        }
-        i++;
-    }
+    i = y/alto+1;
+    y_2 = i*alto;
         //std::cout << y_2 << std::endl;
 
     
@@ -633,18 +654,17 @@ void Tile::DibujaCasillas(int x, int y) {
     int x_max = x_2 +(ancho*24);
     
     int y_min = y_2 -(alto*15);
-    int y_max = y_2 +(alto*12);
+    int y_max = y_2 +(alto*15);
     
     
     //sf::RectangleShape *r;
     //sf::Texture *t;
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
-    renderEngine* sfml;
-        
+
     for(int i=0 ; i<vector_casillas.size() ; i++){
-        if(     (int)vector_casillas[i].rect.getPosition()[0] >= x_min && (int)vector_casillas[i].rect.getPosition()[0] <= x_max &&
-                (int)vector_casillas[i].rect.getPosition()[1] >= y_min && (int)vector_casillas[i].rect.getPosition()[1] <= y_max){
+        if(     static_cast<int>(vector_casillas[i].rect.getPosition()[0]) >= x_min && static_cast<int>(vector_casillas[i].rect.getPosition()[0]) <= x_max &&
+                static_cast<int>(vector_casillas[i].rect.getPosition()[1]) >= y_min && static_cast<int>(vector_casillas[i].rect.getPosition()[1]) <= y_max){
                 //std::cout << i << std::endl;
             
             r = &(vector_casillas[i].rect);
@@ -654,9 +674,17 @@ void Tile::DibujaCasillas(int x, int y) {
 
             //window.draw(*r);
             r->draw();
+            
         }
+        
+        for(int j = 0; j < vector_enemigos.size(); j++)
+            if(vector_enemigos[j].getPosition()[0] > x_min && vector_enemigos[j].getPosition()[0] < x_max){
+                vector_enemigos[j].draw();
+            }
             
     }
+    
+    
     
     //PARA DEBUGGEAR
     /*
