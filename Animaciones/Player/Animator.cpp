@@ -37,7 +37,6 @@ Animator::Animation& Animator::CreateAnimation(std::string const& name, std::str
     //si no hay otra animacion utiliza la actual
     if(m_CurrentAnimation == nullptr){
         SwitchAnimation(&m_Animations.back());
-        std::cout<<"crea";
     }
     
     return m_Animations.back();
@@ -49,6 +48,16 @@ void Animator::SwitchAnimation(Animator::Animation* animation)
     if(animation != nullptr)
     {   
         m_Sprite.setTexture(AssetManager::GetTexture(animation->m_TextureName));
+        /*
+        sf::Texture tex;
+        if (!tex.loadFromFile("resources/player6.png"))
+        {
+        std::cerr << "Error cargando la imagen sprites.png";
+        exit(0);
+        }
+        m_Sprite.setTexture(tex);
+        */
+        
     }
     m_CurrentAnimation = animation;
     m_CurrentTime = sf::Time::Zero; //Reset time
@@ -113,4 +122,13 @@ void Animator::Update(sf::Time const& dt)
     
     
 }
+
+sf::Sprite& Animator::GetSprite(){
+    
+    m_Sprite.rotate(m_Sprite.getRotation()+30);
+    
+    return m_Sprite;
+}
+
+
 

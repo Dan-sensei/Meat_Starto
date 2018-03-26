@@ -5,66 +5,28 @@
 #include "Animator.h"
 #include "AssetManager.h"
 #include <SFML/Graphics/Sprite.hpp>
-#define kVel 5
+
 
 int main()
 {
     //Creamos una ventana 
-    sf::RenderWindow window(sf::VideoMode(640, 480), "P0. Fundamentos de los Videojuegos. DCCIA");
+    sf::RenderWindow window(sf::VideoMode(640, 480), "Animaciones Player");
 
-    Player jugador(1,"Javi");
+    //Creación de jugadores
+    Player jugador(0,"Jugador 1");
+    
     std::cout << jugador.getId() << std::endl;
     std::cout << jugador.getName() << std::endl;
-    jugador.setId(2);
-    std::cout << jugador.getId() << std::endl;
-    std::cout << jugador.getName() << std::endl;
     
-
+    Player jugador2(1,"Jugador 2");
     
-    AssetManager manager;
-    manager.GetTexture("resources/player6.png");    
-    
-    sf::Vector2i spriteSize(60,60);
-    sf::Sprite sprite;
-    
-    sf::Sprite sprite2;
-    Animator animator2(sprite2);
-    
-  
-    Animator animator(sprite);
-    auto& a_base = animator.CreateAnimation("a_base","resources/player6.png", sf::seconds(3), false);
-    a_base.AddFrames(sf::Vector2i(0,0), spriteSize ,1);
-    
-    //Giro izquierda
-    auto& a_left = animator.CreateAnimation("a_left","resources/player6.png", sf::seconds(0.3), false);
-    a_left.AddFrames(sf::Vector2i(0,0), spriteSize , 3);
-    auto& a_base_l = animator.CreateAnimation("a_base_l","resources/player6.png", sf::seconds(0.2), false);
-    a_base_l.AddFrames(sf::Vector2i(180,0), spriteSize , 2);
-    
-    //Giro derecha
-    auto& a_rigth = animator.CreateAnimation("a_rigth","resources/player6.png", sf::seconds(0.3), false);
-    a_rigth.AddFrames(sf::Vector2i(300,0), spriteSize , 3);
-    auto& a_base_r = animator.CreateAnimation("a_base_r","resources/player6.png", sf::seconds(0.2), false);
-    a_base_r.AddFrames(sf::Vector2i(480,0), spriteSize , 2);
-    
-    //Salto izquierda
-    auto& a_jump_l = animator.CreateAnimation("a_jump_l","resources/player6.png", sf::seconds(2), false);
-    a_jump_l.AddFrames(sf::Vector2i(0,60), spriteSize ,9);          
-    
-    //Salto derecha
-    auto& a_jump_r = animator.CreateAnimation("a_jump_r","resources/player6.png", sf::seconds(2), false);
-    a_jump_r.AddFrames(sf::Vector2i(0,180), spriteSize ,9);   
-    
-    //Para colision
-    auto& a_fall_l = animator.CreateAnimation("a_fall_l","resources/player6.png", sf::seconds(0.5), false);
-    a_fall_l.AddFrames(sf::Vector2i(0,120), spriteSize ,3);
-    auto& a_fall_r = animator.CreateAnimation("a_fall_r","resources/player6.png", sf::seconds(0.5), false);
-    a_fall_r.AddFrames(sf::Vector2i(180,120), spriteSize ,3);
+    std::cout << jugador2.getId() << std::endl;
+    std::cout << jugador2.getName() << std::endl;
     
     
-    
-    
-    
+    //INICIALIZAR ASSET MANAGER
+    AssetManager* manager;
+    manager->Instance();
     
     
     //sf::Time deltaTime;
@@ -74,14 +36,15 @@ int main()
     while (window.isOpen())
     {
         sf::Time deltaTime = clock.restart();
-        animator.Update(deltaTime);
+        
+        //Cambiar el sprite de los jugadores
+        jugador.update(deltaTime);
+        jugador2.update(deltaTime);
         
         //Bucle de obtención de eventos
         sf::Event event;
         while (window.pollEvent(event))
         {
-            //deltaTime =clock.restart();
-            //float dtAsSeconds = deltaTime.asSeconds();
             
             switch(event.type){
                 
@@ -91,52 +54,41 @@ int main()
                     break;
                 
                
-                //Se pulsó una tecla, imprimo su codigo
+                //Se pulsó una tecla
                 case sf::Event::KeyPressed:
                     
                     //Verifico si se pulsa alguna tecla de movimiento
                     switch(event.key.code) {
                         
-                        //Mapeo del cursor
+                        //JUGADOR 1
                         case sf::Keyboard::Right:
-                            if(animator.GetCurrentAnimationName() != "a_rigth"){
-                                animator.SwitchAnimation("a_rigth");
-                            }
-                                                    
-                            
+                            jugador.moveRigth();
                         break;
 
                         case sf::Keyboard::Left:
-                           
-                            if(animator.GetCurrentAnimationName() != "a_left"){
-                                animator.SwitchAnimation("a_left");
-                            }
-                                                                                  
+                            jugador.moveLeft();
                         break;
                         
                         case sf::Keyboard::Up:     
-                            if(animator.GetCurrentAnimationName() == "a_base_r"){
-                                
-                            }
-                            
-                            if(animator.GetCurrentAnimationName() == "a_left"){
-                                animator.SwitchAnimation("a_jump_l");
-                            }
-                            if(animator.GetCurrentAnimationName() == "a_rigth"){
-                                animator.SwitchAnimation("a_jump_r");
-                            }
-                            
+                            jugador.moveUp();
                         break;
                         
                         case sf::Keyboard::Down:
-                            if(animator.GetCurrentAnimationName() == "a_jump_l" || animator.GetCurrentAnimationName() == "a_base_l" ){
-                                animator.SwitchAnimation("a_fall_l");
-                            }
-                            if(animator.GetCurrentAnimationName() == "a_jump_r" || animator.GetCurrentAnimationName() == "a_base_r" ){
-                                animator.SwitchAnimation("a_fall_r");
-                            }
-                            
+                            jugador.moveDown();
                          
+                        break;
+                        //JUGADOR 2
+                        case sf::Keyboard::D:
+                            jugador2.moveRigth();
+                        break;
+                        case sf::Keyboard::A:
+                            jugador2.moveLeft();
+                        break;
+                        case sf::Keyboard::W:
+                            jugador2.moveUp();
+                        break;
+                        case sf::Keyboard::S:
+                            jugador2.moveDown();
                         break;
                         
                         
@@ -156,37 +108,36 @@ int main()
                     
                 case sf::Event::EventType::KeyReleased:
                     switch(event.key.code) {
+                        //JUGADOR 1
                         case sf::Keyboard::Left:
-                            if(animator.GetCurrentAnimationName() != "a_base_l"){
-                                animator.SwitchAnimation("a_base_l");
-                            }
-                        break;
-                        case sf::Keyboard::Right:
-                            if(animator.GetCurrentAnimationName() != "a_base_r"){
-                                animator.SwitchAnimation("a_base_r");
-                            }
+                            jugador.moveLeft_b();
                         break;
                         
-                        case sf::Keyboard::Down:
-                            if(animator.GetCurrentAnimationName() == "a_jump_l"){
-                                animator.SwitchAnimation("fall_l");
-                            }
-                            if(animator.GetCurrentAnimationName() == "a_jump_r"){
-                                animator.SwitchAnimation("fall_r");
-                            }
-                            
+                        case sf::Keyboard::Right:
+                            jugador.moveRigth_b();
+                        break;
+                        
+                        //JUGADOR 2
+                        case sf::Keyboard::A:
+                            jugador2.moveLeft_b();
+                        break;
+                        
+                        case sf::Keyboard::D:
+                            jugador2.moveRigth_b();
                         break;
                     }
                 break;
+                    
                 
                 
             }
             
         }
         
+        //Dibujado
         window.clear();
-        window.draw(sprite);
-        //window.draw(jugador.getSprite());
+        window.draw(jugador.getSprite());
+        window.draw(jugador2.getSprite());
         window.display();
     }
 

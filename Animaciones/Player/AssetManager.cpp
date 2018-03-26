@@ -24,20 +24,16 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-AssetManager* AssetManager::sInstance = nullptr;
 
 AssetManager::AssetManager() {
-    //SINGLETON
-    //si hay más de una, lanza exception
-    assert(sInstance == nullptr);
-    sInstance = this;
+    
     
 }
 
 sf::Texture& AssetManager::GetTexture(std::string const& filename)
 {
     
-    auto& texMap = sInstance->m_Textures;
+    auto& texMap = Instance().m_Textures;
     //Mira si la textura ya ha sido cargada
     auto pairFound = texMap.find(filename);
     //Si es asi, devuelve la textura

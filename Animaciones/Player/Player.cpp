@@ -18,9 +18,10 @@
 #include "Animator.h"
 #include "AssetManager.h"
 
-Player::Player(int id, std::string name) {
+Player::Player(int id, std::string name) : animator(sprite) {
     setId(id);
     setName(name);
+    
     switch(id){
     //Asigna la textura con su color dependiendo del id del jugador
                 case 0:
@@ -28,52 +29,53 @@ Player::Player(int id, std::string name) {
                 break;
                 case 1:
                         texture="resources/player1.png";
+                        sprite.setPosition(100,0);
                 break;
                 case 2:
-                        texture="resources/player2.png";             
+                        texture="resources/player2.png";    
                 break;
                 case 3:
                         texture="resources/player3.png";                        
                 break;                           
             }
+   
     
     sf::Vector2i spriteSize(60,60);
-    //Cargo la imagen donde reside la textura del sprite
-    sf::Texture tex;
-    if (!tex.loadFromFile("resources/player6.png"))
-    {
-        std::cerr << "Error cargando la imagen sprites.png";
-        exit(0);
-    }
-    
-    //Y creo el spritesheet a partir de la imagen anterior
-    sf::Sprite sprite2(tex);
-    sprite2.setTextureRect(sf::IntRect(0*75, 0*75, 75, 75));
-    sprite2.setPosition(320, 240);
-    
-    sprite=sprite2;
-    //Animator animator(sprite);
    
-    //Animator animatorp(sprite);
+    Animator::Animation* anim = &animator.CreateAnimation("a_bas",texture, sf::seconds(3), false);
+    anim->AddFrames(sf::Vector2i(0,0), sf::Vector2i(60,60), 1);
+    animator.SwitchAnimation("a_bas");
     
-    //auto& p = animatorp.CreateAnimation("p","resources/player6.png", sf::seconds(3), false);
-     //Y creo el spritesheet a partir de la imagen anterior
+    Animator::Animation* a_base = &animator.CreateAnimation("a_base",texture, sf::seconds(3), false);
+    a_base->AddFrames(sf::Vector2i(0,0), spriteSize ,1);
+    
+    //Giro Derecha
+    Animator::Animation* a_rigth = &animator.CreateAnimation("a_rigth",texture, sf::seconds(0.3), false);
+    a_rigth->AddFrames(sf::Vector2i(300,0), spriteSize , 3);
+    Animator::Animation* a_base_r = &animator.CreateAnimation("a_base_r",texture, sf::seconds(0.2), false);
+    a_base_r->AddFrames(sf::Vector2i(480,0), spriteSize , 2);
+    
+    //Giro Izquierda
+    Animator::Animation* a_left = &animator.CreateAnimation("a_left",texture, sf::seconds(0.3), false);
+    a_left->AddFrames(sf::Vector2i(0,0), spriteSize , 3);
+    Animator::Animation* a_base_l = &animator.CreateAnimation("a_base_l",texture, sf::seconds(0.2), false);
+    a_base_l->AddFrames(sf::Vector2i(180,0), spriteSize , 2);
+    
+    //Salto izquierda
+    Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l",texture, sf::seconds(2), false);
+    a_jump_l->AddFrames(sf::Vector2i(0,60), spriteSize ,9);          
+    
+    //Salto derecha
+    Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r",texture, sf::seconds(2), false);
+    a_jump_r->AddFrames(sf::Vector2i(0,180), spriteSize ,9);   
+    
+    //Para colision
+    Animator::Animation*  a_fall_l = &animator.CreateAnimation("a_fall_l",texture, sf::seconds(0.5), false);
+    a_fall_l->AddFrames(sf::Vector2i(0,120), spriteSize ,3);
+    Animator::Animation*  a_fall_r = &animator.CreateAnimation("a_fall_r",texture, sf::seconds(0.5), false);
+    a_fall_r->AddFrames(sf::Vector2i(180,120), spriteSize ,3);
    
-    //Cojo el sprite que me interesa por defecto del sheet
-    //sprite.setTexture("resources/player6.png");
-    //sprite.setTextureRect(sf::IntRect(0*75, 0*75, 75, 75));
-    // Lo dispongo en el centro de la pantalla
-    //sprite.setPosition(320, 240);
     
-    //Animator animator2(sprite);
-    //auto& a_base2 = animator2.CreateAnimation("a_base",texture, sf::seconds(3), false);
-    //a_base2.AddFrames(sf::Vector2i(0,0), spriteSize ,1);
-    std::cout<<"animacion";
-    //std::cout<< animator2.GetCurrentAnimationName();
-    
-}
-
-Player::Player(const Player& orig) {
 }
 
 Player::~Player() {
@@ -105,6 +107,52 @@ sf::Sprite Player::getSprite(){
     return sprite;
 }
 
+void Player::update(sf::Time deltatime){
+    animator.Update(deltatime);
+}
 
 
+void Player::moveRigth(){
+    if(animator.GetCurrentAnimationName() != "a_rigth"){
+        animator.SwitchAnimation("a_rigth");
+    }
+}
 
+void Player::moveRigth_b(){
+    if(animator.GetCurrentAnimationName() != "a_base_r"){
+        animator.SwitchAnimation("a_base_r");
+    }
+}
+
+void Player::moveLeft(){
+    if(animator.GetCurrentAnimationName() != "a_left"){
+        animator.SwitchAnimation("a_left");
+    }
+}
+
+void Player::moveLeft_b(){
+    if(animator.GetCurrentAnimationName() != "a_base_l"){
+        animator.SwitchAnimation("a_base_l");
+    }
+}
+
+void Player::moveUp(){
+    if(animator.GetCurrentAnimationName() == "a_base_r"){
+                                
+    }                     
+    if(animator.GetCurrentAnimationName() == "a_left"){
+        animator.SwitchAnimation("a_jump_l");
+    }
+    if(animator.GetCurrentAnimationName() == "a_rigth"){
+        animator.SwitchAnimation("a_jump_r");
+    }
+}
+
+void Player::moveDown(){
+    if(animator.GetCurrentAnimationName() == "a_jump_l" || animator.GetCurrentAnimationName() == "a_base_l" || animator.GetCurrentAnimationName() == "a_left" ){
+        animator.SwitchAnimation("a_fall_l");
+    }
+    if(animator.GetCurrentAnimationName() == "a_jump_r" || animator.GetCurrentAnimationName() == "a_base_r" || animator.GetCurrentAnimationName() == "a_rigth"){
+        animator.SwitchAnimation("a_fall_r");
+    }                       
+}

@@ -61,6 +61,7 @@ public:
     //Devuelve si el switch fue bien
     bool SwitchAnimation(std::string const& name);
     std::string GetCurrentAnimationName() const;
+    sf::Sprite& GetSprite();
 
 private:
         //Returns the animation with the passed name

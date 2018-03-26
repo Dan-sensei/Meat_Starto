@@ -33,6 +33,14 @@ public:
     std::string getName();
     sf::Sprite getSprite();
     
+    void update(sf::Time deltatime);
+    void moveRigth();
+    void moveRigth_b();
+    void moveLeft();
+    void moveLeft_b();
+    void moveUp();
+    void moveDown();
+    
 private:
     int id;
     int level;
@@ -40,7 +48,7 @@ private:
     std::string name; 
     std::string texture;
     sf::Sprite sprite;
-    Animator a();
+    Animator animator;
     
 };
 

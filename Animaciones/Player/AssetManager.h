@@ -27,13 +27,23 @@
 
 class AssetManager {
 public:
-    AssetManager();
     static sf::Texture& GetTexture(std::string const& filemane);
+    
+    static AssetManager& Instance(){
+            static AssetManager instance;        // Las variables estáticas se destruyen al terminar el programa
+            return instance;                // Return molón
+        }
     
 private:
     std::map<std::string,sf::Texture>m_Textures;
     //AssetManager is a singleton, solo una instancia puede existir en el mismo tiempo
     static AssetManager* sInstance;
+    
+    //============ SINGLETON ============
+        AssetManager();
+        AssetManager(AssetManager const& orig);           // <--------------------- No implementar estos métodos
+        void operator=(AssetManager const& orig);    // <----------------'
+    //===================================
 
 };
 
