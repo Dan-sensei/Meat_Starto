@@ -115,11 +115,13 @@ public:
         public:
             rConvexShape();
             
+            void draw();
             void setPointCount(int s);                      //NUMERO DE PUNTOS
             void setPoint(int p, float x, float y);         //ESTABLECER UN PUNTO
             void setFillColor(char c);                      //ESTABLECER UN COLOR DE FONDO
             void setOutlineColor(char c);                   //ESTABLECER UN COLOR PARA EL BORDE
             void setOutlineThickness(float f);              //ESTABLECER UN ANCHO PARA EL BORDE
+            
         private:
             sf::ConvexShape cs;
     };

@@ -20,7 +20,7 @@
 #include "renderEngine.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 30
+#define MAP_ITERATION 10
 
 Tile::Tile() {
 
@@ -575,9 +575,9 @@ void Tile::LeeNodo(std::string const& node_path) {
     }
     // </editor-fold>
 
-    
-    if(map->FirstChildElement("objectgroup")->NextSibling()){
-        
+    // <editor-fold defaultstate="collapsed" desc="ENEMIGOS">
+    if (map->FirstChildElement("objectgroup")->NextSibling()) {
+
         obj = map->FirstChildElement("objectgroup")->NextSibling()->FirstChildElement("object");
 
         int xCoord = 0;
@@ -588,34 +588,57 @@ void Tile::LeeNodo(std::string const& node_path) {
         std::default_random_engine gen(rd());
 
 
-        while(obj){
+        while (obj) {
             obj->QueryIntAttribute("x", &xCoord);
             obj->QueryIntAttribute("width", &width);
-            
+
             obj->QueryIntAttribute("y", &yCoord);
             obj->QueryAttribute("height", &height);
-            
-            std::uniform_int_distribution<int> distribution(xCoord, xCoord+width);
-            
+
+            std::uniform_int_distribution<int> distribution(xCoord, xCoord + width);
+
             renderEngine::rSprite npc;
             npc.setTexture(AssetManager::GetTexture("assets/BOSS.jpg"));
-            npc.setOrigin(AssetManager::GetTexture("assets/BOSS.jpg").getXSize()/2, AssetManager::GetTexture("assets/BOSS.jpg").getYSize()/2);
-                
-            int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize()/2;
-            
+            npc.setOrigin(AssetManager::GetTexture("assets/BOSS.jpg").getXSize() / 2, AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2);
+
+            int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
+
             npc.setPosition(x_max + distribution(gen), y_spawn);
             vector_enemigos.push_back(npc);
-            
+
             obj = obj->NextSiblingElement("object");
         }
     }
+    // </editor-fold>
+
+    _cas *a_cas = new _cas[vector_casillas.size()];
+    int n = 0;
+    for(std::vector<_cas>::iterator it=vector_casillas.begin(); it!=vector_casillas.end(); ++it){
+        a_cas[n] = (*it);
+        n++;
+    }
+
+    
+    
+    //HA LEIDO UN NODO
+    /*
+    if(lista_casillas.size()<6){
+        lista_casillas.push_back(vector_casillas);
+        vector_casillas.clear();
+    }
+    else{
+        lista_casillas_aux.push_back(vector_casillas);
+        vector_casillas.clear();
+    }
+    */
+    lista_casillas.push_back(vector_casillas);
+    vector_casillas.clear();
+    
     x_max = x_max_aux+ancho;
 }
 
 //CREA LA CASILLA
 void Tile::CreaCasilla(int id, int x, int y) {
-    
-
         //std::cout << tiles[id-1]->path << std::endl;
     
     renderEngine::rRectangleShape casilla(ancho,alto);
@@ -626,7 +649,7 @@ void Tile::CreaCasilla(int id, int x, int y) {
     aux.id = id;
     aux.text = AssetManager::GetTexture(tiles[id-1]->path);
     aux.rect = casilla;
-    
+        
     vector_casillas.push_back(aux);
 
 }
@@ -658,29 +681,29 @@ void Tile::DibujaCasillas(int x, int y) {
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
 
-    for(int i=0 ; i<vector_casillas.size() ; i++){
-        if(     static_cast<int>(vector_casillas[i].rect.getPosition()[0]) >= x_min && static_cast<int>(vector_casillas[i].rect.getPosition()[0]) <= x_max &&
-                static_cast<int>(vector_casillas[i].rect.getPosition()[1]) >= y_min && static_cast<int>(vector_casillas[i].rect.getPosition()[1]) <= y_max){
-                //std::cout << i << std::endl;
-
-            r = &(vector_casillas[i].rect);
-            t = &(vector_casillas[i].text);
+    
+    for(std::list<std::vector<_cas>>::iterator it=lista_casillas.begin(); it!=lista_casillas.end(); ++it){
+        for(std::vector<_cas>::iterator it2=(*it).begin(); it2!=(*it).end(); ++it2){
+            if(static_cast<int>((*it2).rect.getPosition()[0]) >= x_min && 
+                    static_cast<int>((*it2).rect.getPosition()[0]) <= x_max &&
+                    static_cast<int>((*it2).rect.getPosition()[1]) >= y_min && 
+                    static_cast<int>((*it2).rect.getPosition()[1]) <= y_max){
+                
+            r = &((*it2).rect);
+            t = &((*it2).text);
 
             r->setTexture(*t);
-
-            //window.draw(*r);
             r->draw();
+            }
             
         }
         
-        for(int j = 0; j < vector_enemigos.size(); j++)
-            if(vector_enemigos[j].getPosition()[0] > x_min && vector_enemigos[j].getPosition()[0] < x_max){
-                vector_enemigos[j].draw();
-            }
-            
     }
-    
-    
+
+    for(int j = 0; j < vector_enemigos.size(); j++)
+        if(vector_enemigos[j].getPosition()[0] > x_min && vector_enemigos[j].getPosition()[0] < x_max){
+            vector_enemigos[j].draw();
+    }
     
     //PARA DEBUGGEAR
     /*

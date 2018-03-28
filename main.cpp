@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
         
         accumulator+=dt;
         while(accumulator >= 1/UPDATE_STEP){
-            //std::cout << "UPDATE-- " << accumulator << std::endl;
+            std::cout << "UPDATE-- " << accumulator << std::endl;
             
             previous = actual;      // GUARDO EL ESTADO ANTERIOR
             
@@ -213,7 +213,7 @@ int main(int argc, char** argv) {
             
             // BUCLE DE STEPS DE BOX2D
             for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
-                //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
+                std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
                 world->Instance().updateWorld(BOX2D_STEP);
                 //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
             }
@@ -229,7 +229,7 @@ int main(int argc, char** argv) {
         // TICK PARA LA INTERPOLAÇAO
         double tick = min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
         
-        //std::cout << "RENDER == " << tick << std::endl;
+        std::cout << "RENDER == " << tick << std::endl;
         sfml->Instance().clear('w');
         
         // CALCULO LAS POSICINES INTERPOLADAS DE ACUERDO AL TICK

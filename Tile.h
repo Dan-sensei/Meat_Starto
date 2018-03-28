@@ -75,6 +75,9 @@ private:
         //sf::Texture text;
         renderEngine::rTexture text;
     };
+    std::list<std::vector<_cas>> lista_casillas;
+    std::list<std::vector<_cas>> lista_casillas_aux;
+    
     std::vector<_cas> vector_casillas;
     std::vector<renderEngine::rSprite> vector_enemigos;
     int v[15][15];

@@ -121,8 +121,13 @@ float renderEngine::rTime::asMilliseconds   () {    return time.asMilliseconds()
 float renderEngine::rTime::asMicroseconds   () {    return time.asMicroseconds();}
 
 //============================= CONVEXSHAPE =============================//
-renderEngine::rConvexShape::rConvexShape() {}
+renderEngine::rConvexShape::rConvexShape() {
+}
 
+void renderEngine::rConvexShape::draw() {
+    renderEngine* sfml;
+    sfml->Instance().getWindow()->draw(cs);
+}
 void renderEngine::rConvexShape::setPointCount      (int s)                     {   cs.setPointCount(s);}
 void renderEngine::rConvexShape::setOutlineThickness(float f)                   {   cs.setOutlineThickness(f);}
 void renderEngine::rConvexShape::setPoint           (int p, float x, float y)   {   cs.setPoint(p,sf::Vector2f(x,y));}
