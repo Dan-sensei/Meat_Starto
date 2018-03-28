@@ -17,7 +17,7 @@
 #include <math.h>
 
 #include "Tile.h"
-#include "physicsEngine.h"
+#include "physicsEngine/physicsEngine.h"
 #include "renderEngine.h"
 
 #define FRAMERATE 60.f
@@ -55,8 +55,9 @@ int main(int argc, char** argv) {
     out.append(test, finisher+1, test.size());
     test.erase(finisher);
 
-    std::cout << "OUT " << out << std::endl;
-    std::cout << "TEST " << test << std::endl;
+    std::cout << "UEE " << sqrt(pow(3, 2)) << std::endl;
+    //std::cout << "OUT " << out << std::endl;
+    //std::cout << "TEST " << test << std::endl;
     //TEST
     
     struct state{
@@ -71,8 +72,9 @@ int main(int argc, char** argv) {
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);
     
-    physicsEngine::pBody player = world->Instance().createBody(76.f, 64.f, 1960, 1200, 'D');
+    pBody player = world->Instance().createBody(76.f, 64.f, 1960, 1200, 'D');
     //player.setFixedRotation(false);
+    
     
     
     //MUNDO
@@ -236,11 +238,11 @@ int main(int argc, char** argv) {
         float x = previous.x *(1-tick) + actual.x*tick;
         float y = previous.y *(1-tick) + actual.y*tick;
             // Para las rotaciones es mejor interpolar los senos y cosenos, ya que si no, al calcular el ángulo entre 350 y 10, no nos devolvería 20, que sería lo correcto
-        float s = sin(previous.r * physicsEngine::PI()/180) * (1-tick) + sin(actual.r * physicsEngine::PI()/180)*tick;
-        float c = cos(previous.r * physicsEngine::PI()/180) * (1-tick) + cos(actual.r * physicsEngine::PI()/180)*tick;
+        float s = sin(previous.r * M_PI/180) * (1-tick) + sin(actual.r * M_PI/180)*tick;
+        float c = cos(previous.r * M_PI/180) * (1-tick) + cos(actual.r * M_PI/180)*tick;
         
         Sprite.setPosition(x, y);
-        Sprite.setRotation(atan2(s,c)*180/physicsEngine::PI());
+        Sprite.setRotation(atan2(s,c)*180/M_PI);
         view.setCenter(Sprite.getPosition()[0],CAM_H);
         
         //DRAW
