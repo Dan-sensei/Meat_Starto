@@ -18,7 +18,9 @@
 
 #include "Tile.h"
 #include "physicsEngine/physicsEngine.h"
+#include "physicsEngine/pBody.h"
 #include "renderEngine.h"
+#include "mj_t.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -77,12 +79,13 @@ int main(int argc, char** argv) {
     
     
     
-    //MUNDO
+    //SINGLETON MUNDO
     Tile *tile;
     tile->Instance();
     tile->Instance().CreaMapa();
     
-
+    //SINGLETON TETRIS
+    mj_t *tetris;   
     
     //38x32
     renderEngine::rTexture boxTexture("assets/prueba.png");
@@ -167,7 +170,7 @@ int main(int argc, char** argv) {
         
         accumulator+=dt;
         while(accumulator >= 1/UPDATE_STEP){
-            std::cout << "UPDATE-- " << accumulator << std::endl;
+            //std::cout << "UPDATE-- " << accumulator << std::endl;
             
             previous = actual;      // GUARDO EL ESTADO ANTERIOR
             
@@ -215,7 +218,7 @@ int main(int argc, char** argv) {
             
             // BUCLE DE STEPS DE BOX2D
             for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
-                std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
+                //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
                 world->Instance().updateWorld(BOX2D_STEP);
                 //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
             }
@@ -231,22 +234,27 @@ int main(int argc, char** argv) {
         // TICK PARA LA INTERPOLAÇAO
         double tick = min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
         
-        std::cout << "RENDER == " << tick << std::endl;
+        //std::cout << "RENDER == " << tick << std::endl;
         sfml->Instance().clear('w');
         
-        // CALCULO LAS POSICINES INTERPOLADAS DE ACUERDO AL TICK
+        // CALCULO LAS POSICIONES INTERPOLADAS DE ACUERDO AL TICK
         float x = previous.x *(1-tick) + actual.x*tick;
         float y = previous.y *(1-tick) + actual.y*tick;
             // Para las rotaciones es mejor interpolar los senos y cosenos, ya que si no, al calcular el ángulo entre 350 y 10, no nos devolvería 20, que sería lo correcto
         float s = sin(previous.r * M_PI/180) * (1-tick) + sin(actual.r * M_PI/180)*tick;
         float c = cos(previous.r * M_PI/180) * (1-tick) + cos(actual.r * M_PI/180)*tick;
         
+        //ACTUALIÇAÇAO
         Sprite.setPosition(x, y);
         Sprite.setRotation(atan2(s,c)*180/M_PI);
-        view.setCenter(Sprite.getPosition()[0],CAM_H);
+        if(!tetris->Instance().isTetrisOn())    //TRUE: SE MUEVE LA CAMARA
+            view.setCenter(Sprite.getPosition()[0],CAM_H);
+        
+        tile->Instance().update();
+        
         
         //DRAW
-        tile->Instance().DibujaCasillas(Sprite.getPosition()[0], CAM_H);
+        tile->Instance().DibujaCasillas();
 
         sfml->Instance().setView(view);
 

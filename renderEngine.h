@@ -147,6 +147,7 @@ public:
     void clear(char c);                             //CLEAR DE SFML
     void display();                                 //DIBUJA LA VENTANA
     std::array<float,2> getSize();                  //DEVUELVE LAS DIMENSIONES DE LA VENTANA
+    std::array<float,2> getViewCenter();            //DEVUELVE EL CENTRO DE LA VENTANA
     
     void setView(rView v);                          //ESTABLECER UNA VISTA
     bool pollEvent(rEvent &e);                      //PARA CONTROLAR LOS EVENTOS

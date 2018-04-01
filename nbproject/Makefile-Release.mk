@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/AssetManager.o \
 	${OBJECTDIR}/Tile.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/mj_t.o \
 	${OBJECTDIR}/physicsEngine/pBody.o \
 	${OBJECTDIR}/physicsEngine/pConverter.o \
 	${OBJECTDIR}/physicsEngine/physicsEngine.o \
@@ -82,6 +83,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/mj_t.o: mj_t.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mj_t.o mj_t.cpp
 
 ${OBJECTDIR}/physicsEngine/pBody.o: physicsEngine/pBody.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine

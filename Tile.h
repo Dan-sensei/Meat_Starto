@@ -21,6 +21,7 @@
 #include "AssetManager.h"
 
 #include "renderEngine.h"
+#include "mj_t.h"
 
 class Tile {
 public:
@@ -31,7 +32,8 @@ public:
     }
     
     void CreaMapa();
-    void DibujaCasillas(int x, int y);
+    void DibujaCasillas();
+    void update();
     
     virtual ~Tile();
     
@@ -82,6 +84,8 @@ private:
     std::vector<renderEngine::rSprite> vector_enemigos;
     int v[15][15];
     
+    //TETRIS
+    mj_t *tetris;
     bool m_tetris;
     
 };

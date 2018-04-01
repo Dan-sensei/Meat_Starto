@@ -49,6 +49,16 @@ std::array<float, 2> renderEngine::getSize() {          //X: getSize()[0] , Y: g
     return v;
 }
 
+std::array<float, 2> renderEngine::getViewCenter() {
+    std::array<float,2> v;
+    
+    v[0] = window.getView().getCenter().x;
+    v[1] = window.getView().getCenter().y;
+    
+    return v;
+}
+
+
 renderEngine::renderEngine(const renderEngine& orig) {}
 
 //============================= TEXTURA =============================//

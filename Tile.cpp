@@ -76,7 +76,9 @@ Tile::Tile() {
     
     //LO UTILIZO AL LEER TODOS LOS NODOS DE LA MATRIZ
     x_max = 0;
+    
     //TETRIS
+    tetris->Instance(); //INICIALIZO EL SINGLETON
     m_tetris = false;
     
 }
@@ -654,7 +656,10 @@ void Tile::CreaCasilla(int id, int x, int y) {
 
 }
 
-void Tile::DibujaCasillas(int x, int y) {
+void Tile::DibujaCasillas() {
+    renderEngine *sfml;
+    int x = sfml->Instance().getViewCenter()[0];
+    int y = sfml->Instance().getViewCenter()[1];
     
     int i=0;
     
@@ -718,7 +723,7 @@ void Tile::DibujaCasillas(int x, int y) {
 void Tile::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
-        //std::cout << path << std::endl;
+        std::cout << path << std::endl;
     
     LeeNodo(path);
     
@@ -747,21 +752,38 @@ void Tile::CreaMapa() {
             std::string rand = std::to_string(r);
             path = path.operator +=(rand);
             path = path.operator +=(".tmx");
-                //std::cout << path << std::endl;
+                std::cout << path << std::endl;
             
             LeeNodo(path);
 
             nodo = r;
         }
-        std::cout << "Vector size " << vector_casillas.size() << std::endl;
+        //std::cout << "Vector size " << vector_casillas.size() << std::endl;
         
         //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
-        if(r == 6) m_tetris = true;
+        if(r == 6 && !m_tetris){
+            std::cout << "He creado el minijuego Tetris" << std::endl;
+            
+            //CREO LA CLASE TETRIS
+            tetris->Instance().init(x_max);
+            
+            m_tetris = true;
+        }
         
         iter++;
     }
     
 }
+
+void Tile::update() {
+    //SOLO LLAMARA A LOS UPDATE DE LOS MINIJUEGOS
+    renderEngine *sfml;
+    int x = sfml->Instance().getViewCenter()[0];
+    
+    tetris->Instance().update(x);
+    
+}
+
 
 Tile::Tile(const Tile& orig) {
 }
