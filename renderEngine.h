@@ -62,9 +62,10 @@ public:
         public:
             rView(float pos_x, float pos_y, float size_x, float size_y);        //CONSTRUCTOR
             
-            void zoom(float z);                       //ZOOM A LA VISTA
-            void setCenter(float x, float y);         //CENTRO DE LA VISTA
-            std::array<float,2> getCenter();          //CENTRO DE LA VISTA
+            void zoom(float z);                         //ZOOM A LA VISTA
+            void setCenter(float x, float y);           //CENTRO DE LA VISTA
+            std::array<float,2> getCenter();            //CENTRO DE LA VISTA
+            void move(float x, float y);                //MOVER LA VISTA  
             
         private:
             sf::View getView();             //CONSIGUE LA VISTA. USO PRIVADO
@@ -121,6 +122,9 @@ public:
             void setFillColor(char c);                      //ESTABLECER UN COLOR DE FONDO
             void setOutlineColor(char c);                   //ESTABLECER UN COLOR PARA EL BORDE
             void setOutlineThickness(float f);              //ESTABLECER UN ANCHO PARA EL BORDE
+            std::array<float,2> getPosition();              //CONSEGUIR POSICION
+            void setPosition(float x, float y);             //ESTABLECER LA POSICION
+            void move(float x, float y);                    //MOVER
             
         private:
             sf::ConvexShape cs;

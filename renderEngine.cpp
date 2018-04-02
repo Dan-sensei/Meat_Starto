@@ -96,8 +96,10 @@ std::array<float, 2> renderEngine::rSprite::getPosition() {
 renderEngine::rView::rView(float pos_x, float pos_y, float size_x, float size_y):
 view(sf::FloatRect(pos_x,pos_y,size_x,size_y)){}
 
-void renderEngine::rView::zoom      (float z)           {   view.zoom(z);}
-void renderEngine::rView::setCenter (float x, float y)  {   view.setCenter(x,y);}
+void renderEngine::rView::zoom      (float z)           {   view.zoom(z);           }
+void renderEngine::rView::setCenter (float x, float y)  {   view.setCenter(x,y);    }
+void renderEngine::rView::move(float x, float y)        {   view.move(x,y);         }
+
 
 sf::View                renderEngine::rView::getView    () {    return view;}
 std::array<float, 2>    renderEngine::rView::getCenter  () {
@@ -141,9 +143,13 @@ void renderEngine::rConvexShape::draw() {
 void renderEngine::rConvexShape::setPointCount      (int s)                     {   cs.setPointCount(s);}
 void renderEngine::rConvexShape::setOutlineThickness(float f)                   {   cs.setOutlineThickness(f);}
 void renderEngine::rConvexShape::setPoint           (int p, float x, float y)   {   cs.setPoint(p,sf::Vector2f(x,y));}
+void renderEngine::rConvexShape::move               (float x, float y)          {   cs.move(x,y);}
+void renderEngine::rConvexShape::setPosition        (float x, float y)          {   cs.setPosition(x,y);}
 void renderEngine::rConvexShape::setFillColor(char c) {
     switch(c){
         case 't':   cs.setFillColor(sf::Color::Transparent);    break;
+        case 'r':   cs.setFillColor(sf::Color::Red);            break;
+        case 'g':   cs.setFillColor(sf::Color::Green);            break;
         default:    break;
     }
 }
@@ -154,6 +160,15 @@ void renderEngine::rConvexShape::setOutlineColor(char c) {
         default:    break;
     }
 }
+std::array<float, 2> renderEngine::rConvexShape::getPosition() {
+    std::array<float,2> a;
+    
+    a[0] = cs.getPosition().x;
+    a[1] = cs.getPosition().y;
+    
+    return a;
+}
+
 
 //============================= RECTANGLESHAPE =============================//
 renderEngine::rRectangleShape::rRectangleShape() {}

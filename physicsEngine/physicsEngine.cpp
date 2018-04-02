@@ -88,10 +88,11 @@ void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int 
     bodyDef.type = b2_staticBody;
     
     b2Body* body = world.CreateBody(&bodyDef);
-   
+       
     b2FixtureDef fixtureDef;
     //fixtureDef.density = 1.f;
     fixtureDef.shape = &chain;
     
     body->CreateFixture(&fixtureDef);
+    
 }

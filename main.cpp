@@ -249,14 +249,11 @@ int main(int argc, char** argv) {
         Sprite.setRotation(atan2(s,c)*180/M_PI);
         if(!tetris->Instance().isTetrisOn())    //TRUE: SE MUEVE LA CAMARA
             view.setCenter(Sprite.getPosition()[0],CAM_H);
-        
         tile->Instance().update();
         
-        
         //DRAW
-        tile->Instance().DibujaCasillas();
-
         sfml->Instance().setView(view);
+        tile->Instance().render();
 
         Sprite.draw();
                 

@@ -91,7 +91,7 @@ void Tile::InitMatrix() {
     //////////////////////////////
     
     //  v es n x n
-    //  n = 3
+    //  n = 15
     int x;
     
     //NODO 0
@@ -656,8 +656,10 @@ void Tile::CreaCasilla(int id, int x, int y) {
 
 }
 
-void Tile::DibujaCasillas() {
+void Tile::render() {
     renderEngine *sfml;
+
+    //------------|  CASILLAS DEL MAPA  |------------//
     int x = sfml->Instance().getViewCenter()[0];
     int y = sfml->Instance().getViewCenter()[1];
     
@@ -705,17 +707,24 @@ void Tile::DibujaCasillas() {
         
     }
 
+    //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < vector_enemigos.size(); j++)
         if(vector_enemigos[j].getPosition()[0] > x_min && vector_enemigos[j].getPosition()[0] < x_max){
             vector_enemigos[j].draw();
     }
     
-    //PARA DEBUGGEAR
+    //DIBUJA LOS BORDES DE LAS COLISIONES. SOLO PARA DE BUGGEO
     /*
     for(int i=0 ; i<objetos.size() ; i++){
         window.draw(objetos[i]);
     }
     */
+    
+    //------------|  TETRIS  |------------//
+    tetris->Instance().render();
+    
+    
+    
     
 }
 

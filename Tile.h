@@ -32,7 +32,7 @@ public:
     }
     
     void CreaMapa();
-    void DibujaCasillas();
+    void render();
     void update();
     
     virtual ~Tile();

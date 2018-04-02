@@ -15,6 +15,8 @@
 #define MJ_T_H
 
 #include "renderEngine.h"
+#include "physicsEngine/physicsEngine.h"
+#include "physicsEngine/pBody.h"
 
 class mj_t {
 public:
@@ -28,6 +30,7 @@ public:
     void init(int x_);
     
     void update(int x_);
+    void render();
     bool isTetrisOn();
     
 private:
@@ -37,12 +40,31 @@ private:
     void operator=(mj_t const& orig);
     //</SINGLETON>
     
-    renderEngine::rClock clock;
-    int x_min;
-    int x_max;
-    bool restart;
-    bool on;
-    bool fin;
+    //METODOS
+    void crearPieza();
+    
+    //ATRIBUTOS
+    struct muro_{
+        renderEngine::rConvexShape convex;      //FORMA
+        std::vector<std::array<float,2>> v;     //COLISIONES CON BOX2D
+        //pBody pb;
+    };
+    muro_ m1;
+    muro_ m2;
+    
+    struct pieza_{
+        renderEngine::rConvexShape c;           //FORMA
+        std::vector<std::array<float,2>> v;     //COLISIONES CON BOX2D
+    };
+    //POSIBLE CAMBIO A pieza_ *v_piezas;
+    std::vector<pieza_> v_piezas;               //VECTOR QUE ALMACENA TODAS LAS PIEZAS
+    
+    renderEngine::rClock clock; //TIEMPO MAXIMO DEL MINIJUEGO
+    int x_min;                  //POSICION MINIMA DONDE SE EJECUTA EL MINIJUEGO
+    int x_max;                  //POSICION MAXIMA DONDE SE EJECUTA EL MINIJUEGO
+    bool restart;               //TRUE: SE HA REINICIADO clock Y SE HA INICIADO EL MINIJUEGO
+    bool on;                    //TRUE: EL MINIJUEGO ESTA EN MARCHA
+    bool fin;                   //TRUE: SE HA ACABADO EL MINIJUEGO
 };
 
 #endif /* MJ_T_H */
