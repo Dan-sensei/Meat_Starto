@@ -149,7 +149,8 @@ void renderEngine::rConvexShape::setFillColor(char c) {
     switch(c){
         case 't':   cs.setFillColor(sf::Color::Transparent);    break;
         case 'r':   cs.setFillColor(sf::Color::Red);            break;
-        case 'g':   cs.setFillColor(sf::Color::Green);            break;
+        case 'g':   cs.setFillColor(sf::Color::Green);          break;
+        case 'b':   cs.setFillColor(sf::Color::Blue);           break;
         default:    break;
     }
 }
@@ -182,6 +183,17 @@ void renderEngine::rRectangleShape::draw() {
 }
 void renderEngine::rRectangleShape::setTexture  (rTexture &t)       {   rs.setTexture(t.getTexture());}
 void renderEngine::rRectangleShape::setPosition (float x, float y)  {   rs.setPosition(x,y);}
+void renderEngine::rRectangleShape::setSize     (float x, float y)  {   rs.setSize(sf::Vector2f(x,y));}
+
+void renderEngine::rRectangleShape::setFillColor(char c) {
+    switch(c){
+        case 't':   rs.setFillColor(sf::Color::Transparent);    break;
+        case 'r':   rs.setFillColor(sf::Color::Red);            break;
+        case 'g':   rs.setFillColor(sf::Color::Green);          break;
+        case 'b':   rs.setFillColor(sf::Color::Blue);           break;
+        default:    break;
+    }
+}
 
 std::array<float, 2> renderEngine::rRectangleShape::getPosition() {
     std::array<float, 2> ret;
@@ -190,6 +202,8 @@ std::array<float, 2> renderEngine::rRectangleShape::getPosition() {
     
     return ret;
 }
+
+
 
 
 

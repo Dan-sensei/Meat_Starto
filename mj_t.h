@@ -46,8 +46,9 @@ private:
     //ATRIBUTOS
     struct muro_{
         renderEngine::rConvexShape convex;      //FORMA
+        renderEngine::rRectangleShape rect;     //FORMA
         std::vector<std::array<float,2>> v;     //COLISIONES CON BOX2D
-        //pBody pb;
+        pBody pb;
     };
     muro_ m1;
     muro_ m2;

@@ -15,6 +15,8 @@
 #include "mj_t.h"
 #include <random>
 
+#define DES 700
+
 mj_t::mj_t() {}
 
 void mj_t::init(int x_) {
@@ -27,38 +29,48 @@ void mj_t::init(int x_) {
     on = false;
     fin = false;
     
-    //CREO LOS DOS MUROS (EN REALIDAD AHORA SOLO CREO UNO, JK)
+    //------ CREO LOS DOS MUROS ------//
+    physicsEngine *world;
+    //  MURO1 (DERECHA)
     int a = 70; //ANCHO TILE
     float x = x_max-(6*a);
     float y = a*2;
-    int n = 26;
+    int n = 23;
     
-    physicsEngine *world;
-    std::array<float,2> arr;
     
-    m1.convex.setPointCount(5);
-    m1.convex.setPoint(0,x,y);
-    m1.convex.setPoint(1,x+a,y);
-    m1.convex.setPoint(2,x+a,y+(a*n));
-    m1.convex.setPoint(3,x,y+(a*n));
-    m1.convex.setPoint(4,x,y);
-    m1.convex.setFillColor('r');
+    m1.rect.setSize(a,a*n);
+    m1.rect.setPosition(x,y);
+    m1.rect.setFillColor('b');
     
-    //SE NECESITA HACER UN METODO EN physicsEngine PARA DESTRUIR
-    //EL BODY Y EL FIXTURE DEL QUE FORMAN LAS COLISIONES DE LOS DOS MUROS
-    /*
-    arr = {x    ,   y       };  m1.v.push_back(arr);
-    arr = {x+a  ,   y       };  m1.v.push_back(arr);
-    arr = {x+a  ,   y+(a*n) };  m1.v.push_back(arr);
-    arr = {x    ,   y+(a*n) };  m1.v.push_back(arr);
-    arr = {x    ,   y       ];  m1.v.push_back(arr);
+    y = a;
+    m1.pb = world->Instance().createBody(a,a*44,x+(a/2),y-DES,'k');
     
-    world->Instance().createGround(m1.v,m1.v.size());
-    */
+    float px = m1.pb.getXPosition();
+    float py = m1.pb.getYPosition();
+    m1.rect.setPosition(x,py);
+    
+    
+    //  MURO2 (IZQUIERDA)
+    x = x_min-(16*a);
+    y = a*2;
+    n = 23;
+        
+    m2.rect.setSize(a,a*n);
+    m2.rect.setPosition(x,y);
+    m2.rect.setFillColor('b');
+    
+    y = a;
+    m2.pb = world->Instance().createBody(a,a*44,x+(a/2),y-DES,'k');
+    
+    px = m2.pb.getXPosition();
+    py = m2.pb.getYPosition();
+    m2.rect.setPosition(x,py);
+    
+    
+    
     
     //CREO LAS PIEZAS
     for(int i = 0 ; i<1 ; i++){
-        
         crearPieza();
     }
     
@@ -95,6 +107,7 @@ void mj_t::update(int x_) {
             on = true;
 
             if(restart == false){
+                //(RE)INICIO DEL JUEGO
                     //std::cout << "REINICIO RELOJ" << std::endl;
                 clock.restart();
                 restart = true;
@@ -103,20 +116,41 @@ void mj_t::update(int x_) {
                 std::cout << "  Tiempo TETRIS: " << clock.getElapsedTime().asSeconds() << std::endl;
             }
             
+            //MUEVO LOS MUROS (BOX2D+SFML)
+            if(m2.pb.getYPosition()>500){
+                m2.pb.setLinealVelocicity(0,0);
+            }
+            else{
+                m2.pb.setLinealVelocicity(0,5);
+                m2.rect.setPosition(m2.rect.getPosition()[0],m2.pb.getYPosition());
+            }
+            
+            if(m1.pb.getYPosition()>500){
+                m1.pb.setLinealVelocicity(0,0);
+            }
+            else{
+                m1.pb.setLinealVelocicity(0,5);
+                m1.rect.setPosition(m1.rect.getPosition()[0],m1.pb.getYPosition());
+            }
+            
             //MUEVO LAS PIEZAS
-            int des = 1200;
+            int fin_pieza = 1500;
             for(int i = 0 ; i<v_piezas.size() ; i++){
-                if(v_piezas[i].c.getPosition()[1] < des){
-                    v_piezas[i].c.move(0,5);
+                if(v_piezas[i].c.getPosition()[1] < fin_pieza){
+                    v_piezas[i].c.move(0,7);
                 }
                 else{
                     v_piezas[i].c.setPosition(x_min, 2000);
                 }
             }
             
+            //DETECTA EL FIN DEL MINIJUEGO
             if(clock.getElapsedTime().asSeconds() > 15){
                 fin = true;
                 on = false;
+                
+                m1.pb.setLinealVelocicity(0,-20);
+                m1.rect.setPosition(m1.rect.getPosition()[0],-140);
             }
         }
         else if(x_ < x_min || x_ > x_max){
@@ -130,9 +164,10 @@ bool mj_t::isTetrisOn() {
 }
 
 void mj_t::render() {
+    m1.rect.draw(); 
+    m2.rect.draw(); 
+    
     if(on == true){
-        m1.convex.draw();
-        
         for(int i = 0 ; i<v_piezas.size() ; i++){
             v_piezas[i].c.draw();
         }

@@ -139,6 +139,8 @@ public:
             
             void setTexture(rTexture &t);                   //ESTABLECER TEXTURA
             void setPosition(float x, float y);             //ESTABLECER POSICION
+            void setFillColor(char c);                      //ESTABLECER UN COLOR
+            void setSize(float x, float y);                 //ESTABLECER UN TAMANYO
             
             std::array<float,2> getPosition();              //CONSEGUIR POSICION
         private:
