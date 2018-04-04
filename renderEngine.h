@@ -76,9 +76,10 @@ public:
         public:
             rTime();
             
-            float asSeconds();                     //TIEMPO EN SEGUNDOS
-            float asMilliseconds();                //TIEMPO EN MILISEGUNDOS
-            float asMicroseconds();                //TIEMPO EN MICROSEGUNDOS
+            float asSeconds();                      //TIEMPO EN SEGUNDOS
+            float asMilliseconds();                 //TIEMPO EN MILISEGUNDOS
+            float asMicroseconds();                 //TIEMPO EN MICROSEGUNDOS
+            void Zero();                            //TENER A 0 EL TIEMPO
         private:
             sf::Time time;
     };
@@ -125,6 +126,7 @@ public:
             std::array<float,2> getPosition();              //CONSEGUIR POSICION
             void setPosition(float x, float y);             //ESTABLECER LA POSICION
             void move(float x, float y);                    //MOVER
+            void setTexture(rTexture &t);                   //ESTABLECER TEXTURAS
             
         private:
             sf::ConvexShape cs;

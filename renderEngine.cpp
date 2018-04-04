@@ -128,9 +128,11 @@ sf::Event::EventType    renderEngine::rEvent::sfType    () {    return event.typ
 //============================= TIEMPO =============================//
 renderEngine::rTime::rTime() {}
 
-float renderEngine::rTime::asSeconds        () {    return time.asSeconds();}
-float renderEngine::rTime::asMilliseconds   () {    return time.asMilliseconds();}
-float renderEngine::rTime::asMicroseconds   () {    return time.asMicroseconds();}
+float renderEngine::rTime::asSeconds        ()  {   return time.asSeconds();}
+float renderEngine::rTime::asMilliseconds   ()  {   return time.asMilliseconds();}
+float renderEngine::rTime::asMicroseconds   ()  {   return time.asMicroseconds();}
+void renderEngine::rTime::Zero              ()  {   time = sf::Time::Zero;}
+
 
 //============================= CONVEXSHAPE =============================//
 renderEngine::rConvexShape::rConvexShape() {
@@ -145,19 +147,24 @@ void renderEngine::rConvexShape::setOutlineThickness(float f)                   
 void renderEngine::rConvexShape::setPoint           (int p, float x, float y)   {   cs.setPoint(p,sf::Vector2f(x,y));}
 void renderEngine::rConvexShape::move               (float x, float y)          {   cs.move(x,y);}
 void renderEngine::rConvexShape::setPosition        (float x, float y)          {   cs.setPosition(x,y);}
+void renderEngine::rConvexShape::setTexture         (rTexture &t)               {   cs.setTexture(t.getTexture());}
 void renderEngine::rConvexShape::setFillColor(char c) {
     switch(c){
         case 't':   cs.setFillColor(sf::Color::Transparent);    break;
         case 'r':   cs.setFillColor(sf::Color::Red);            break;
+        case 'y':   cs.setFillColor(sf::Color::Yellow);         break;
+        case 'm':   cs.setFillColor(sf::Color::Magenta);        break;
+        case 'w':   cs.setFillColor(sf::Color::White);          break;
         case 'g':   cs.setFillColor(sf::Color::Green);          break;
         case 'b':   cs.setFillColor(sf::Color::Blue);           break;
-        default:    break;
+        case 'k':   cs.setFillColor(sf::Color::Black);          break;
+        default:    cs.setFillColor(sf::Color::Black);          break;
     }
 }
 void renderEngine::rConvexShape::setOutlineColor(char c) {
     switch(c){
-        case 'r':   cs.setFillColor(sf::Color::Red);    break;
-        case 'g':   cs.setFillColor(sf::Color::Green);  break;
+        case 'r':   cs.setOutlineColor(sf::Color::Red);    break;
+        case 'g':   cs.setOutlineColor(sf::Color::Green);  break;
         default:    break;
     }
 }
@@ -191,6 +198,8 @@ void renderEngine::rRectangleShape::setFillColor(char c) {
         case 'r':   rs.setFillColor(sf::Color::Red);            break;
         case 'g':   rs.setFillColor(sf::Color::Green);          break;
         case 'b':   rs.setFillColor(sf::Color::Blue);           break;
+        case 'y':   rs.setFillColor(sf::Color::Yellow);           break;
+        case 'k':   rs.setFillColor(sf::Color::Black);           break;
         default:    break;
     }
 }
