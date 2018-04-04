@@ -191,6 +191,7 @@ void renderEngine::rRectangleShape::draw() {
 void renderEngine::rRectangleShape::setTexture  (rTexture &t)       {   rs.setTexture(t.getTexture());}
 void renderEngine::rRectangleShape::setPosition (float x, float y)  {   rs.setPosition(x,y);}
 void renderEngine::rRectangleShape::setSize     (float x, float y)  {   rs.setSize(sf::Vector2f(x,y));}
+void renderEngine::rRectangleShape::move        (float x, float y)  {   rs.move(x,y);}
 
 void renderEngine::rRectangleShape::setFillColor(char c) {
     switch(c){

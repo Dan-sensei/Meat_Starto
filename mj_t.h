@@ -45,20 +45,16 @@ private:
     
     //ATRIBUTOS
     struct muro_{
-        renderEngine::rConvexShape convex;      //FORMA
         renderEngine::rRectangleShape rect;     //FORMA
-        std::vector<std::array<float,2>> v;     //COLISIONES CON BOX2D
         pBody pb;
     };
     muro_ m1;
     muro_ m2;
     
     struct pieza_{
-        renderEngine::rConvexShape c;           //FORMA
-        renderEngine::rRectangleShape r[4];
-        renderEngine::rTexture t;               //TEXTURA
+        renderEngine::rRectangleShape r[4];     //FORMA
+        renderEngine::rTexture t[4];            //TEXTURA
         float vel;                              //VELOCIDAD DE BAJADA
-        pBody pb[4];
     };
     //POSIBLE CAMBIO A pieza_ *v_piezas;
     std::vector<pieza_> v_piezas;               //VECTOR QUE ALMACENA TODAS LAS PIEZAS

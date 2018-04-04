@@ -86,7 +86,7 @@ void mj_t::crearPieza() {
     std::default_random_engine gen(rd());
     std::uniform_int_distribution<int> dx(0,24);
     std::uniform_int_distribution<int> dp(0,6);
-    
+    std::uniform_int_distribution<int> dtex(0,6);
     //std::uniform_real_distribution<float> dv(4,8);
     std::uniform_real_distribution<float> dv(8,10);
     
@@ -94,181 +94,163 @@ void mj_t::crearPieza() {
     int rx = dx(gen);
     int np = dp(gen);
     float rv = dv(gen);
+    int nt;
     
     //COORD
     int a = 70;
     int x = rx*70+(x_min-(16*70))+(a);
     int y = 0;
-    int xb = x+(a/2);
-    //int yb = y+(a/2);
-    int yb = y+a;
     
-    int xb2;
-    int yb2;
-    int y2;
-    int x2;
+    int x2, y2;
     
     //PIEZAS
     pieza_ *p = new pieza_;
     p->vel = rv;
     
     for(int i=0 ; i<4 ; i++){
-        p->r[i].setSize(a,a);
+        nt = dtex(gen);
         p->r[i].setFillColor('r');
+        p->r[i].setSize(a,a);
+        switch(nt){
+            case 1:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03_1.png");
+                break;
+            case 2:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03_2.png");
+                break;
+            case 3:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03_3.png");
+                break;
+            case 4:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03_4.png");
+                break;
+            case 5:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03_5.png");
+                break;
+            case 6:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03.png");
+                break;
+            default:
+                p->t[i].loadFromFile("tiles_definitivo/tiles/slice03_03_1.png");
+                break;
+        }
     }
-    switch(np){
-        case 1:
-            x2 = x;
-            xb2 = xb;
-            yb2 = yb;
-            p->r[0].setPosition(x2,y);
-            p->pb[0] = world->Instance().createBody(a,a,xb2,yb2,'k');
-
-            x2 = x+a;
-            xb2 = xb+a;
-            yb2 = yb;
-            p->r[1].setPosition(x2,y);
-            p->pb[1] = world->Instance().createBody(a,a,xb2,yb2,'k');
-
-            x2 = x+(a*2);
-            xb2 = xb+(a*2);
-            yb2 = yb;
-            p->r[2].setPosition(x2,y);
-            p->pb[2] = world->Instance().createBody(a,a,xb2,yb2,'k');
-
-            x2 = x+(a*3);
-            xb2 = xb+(a*3);
-            yb2 = yb;
-            p->r[3].setPosition(x2,y);
-            p->pb[3] = world->Instance().createBody(a,a,xb2,yb2,'k');
-            
-            break;
-        default:
-            x2 = x;
-            y2 = y;
-            xb2 = xb;
-            yb2 = yb;
-            p->r[0].setPosition(x2,y2);
-            p->pb[0] = world->Instance().createBody(a,a,xb2,yb2,'k');
-
-            x2 = x+a;
-            y2 = y;
-            xb2 = xb+a;
-            yb2 = yb;
-            p->r[1].setPosition(x2,y2);
-            p->pb[1] = world->Instance().createBody(a,a,xb2,yb2,'k');
-
-            x2 = x;
-            y2 = y+a;
-            xb2 = xb;
-            yb2 = yb+a;
-            p->r[2].setPosition(x2,y);
-            p->pb[2] = world->Instance().createBody(a,a,xb2,yb2,'k');
-
-            x2 = x+a;
-            y2 = y+a;
-            xb2 = xb+a;
-            yb2 = yb+a;
-            p->r[3].setPosition(x2,y);
-            p->pb[3] = world->Instance().createBody(a,a,xb2,yb2,'k');
-            
-            break;
-    }
-    
-    
-    
-    
-    
-    
-    /*
     switch(np){
         case 1:
             //I
-            for(int i=0 ; i<1 ; i++){
-                p->r[i].setSize(a,a);
-            }
-            p->r[0].setPosition(x,y);
-            p->pb[0] = world->Instance().createBody(a,a,x,y,'k');
+            x2 = x;
+            y2 = y;
+            p->r[0].setPosition(x2,y2);
 
+            x2 = x+a;
+            y2 = y;
+            p->r[1].setPosition(x2,y2);
 
+            x2 = x+(a*2);
+            y2 = y;
+            p->r[2].setPosition(x2,y2);
 
-
-            p->c.setPointCount(5);
-            p->c.setPoint(0,x,-y);
-            p->c.setPoint(1,x+(a*4),-y);
-            p->c.setPoint(2,x+(a*4),-y+a);
-            p->c.setPoint(3,x,-y+a);
-            p->c.setPoint(4,x,-y);
+            x2 = x+(a*3);
+            y2 = y;
+            p->r[3].setPosition(x2,y2);
             
-            p->t.loadFromFile("assets/tetris/1.png");
-            //p->c.setFillColor('b');
             break;
         case 2:
-            //Z
-            p->c.setPointCount(9);
-            p->c.setPoint(0,x,-y);
-            p->c.setPoint(1,x+a,-y);
-            p->c.setPoint(2,x+a,-y+(a*2));
-            p->c.setPoint(3,x,-y+(a*2));
-            p->c.setPoint(4,x,-y+(a*3));
-            p->c.setPoint(5,x-a,-y+(a*3));
-            p->c.setPoint(6,x-a,-y+a);
-            p->c.setPoint(7,x,-y+a);
-            p->c.setPoint(8,x,-y);
+            //L NORMAL
+            x2 = x;
+            y2 = y;
+            p->r[0].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y;
+            p->r[1].setPosition(x2,y2);
+
+            x2 = x+(a*2);
+            y2 = y;
+            p->r[2].setPosition(x2,y2);
+
+            x2 = x+(a*2);
+            y2 = y-a;
+            p->r[3].setPosition(x2,y2);
             
-            p->t.loadFromFile("assets/tetris/3.png");
-            //p->c.setFillColor('g');
             break;
         case 3:
-            //L (AL REVES)
-            p->c.setPointCount(11);
-            p->c.setPoint(0,x,-y);
-            p->c.setPoint(1,x+a,-y);
-            p->c.setPoint(2,x+a,-y+a);
-            p->c.setPoint(3,x+(a*2),-y+a);
-            p->c.setPoint(4,x+(a*3),-y+a);
-            p->c.setPoint(5,x+(a*3),-y+(a*2));
-            p->c.setPoint(6,x+(a*2),-y+(a*2));
-            p->c.setPoint(7,x+a,-y+(a*2));
-            p->c.setPoint(8,x,-y+(a*2));
-            p->c.setPoint(9,x,-y+a);
-            p->c.setPoint(10,x,-y);
+            //T
+            x2 = x;
+            y2 = y;
+            p->r[0].setPosition(x2,y2);
 
-            p->t.loadFromFile("assets/tetris/4.png");
-            //p->c.setFillColor('k');
+            x2 = x+a;
+            y2 = y;
+            p->r[1].setPosition(x2,y2);
+
+            x2 = x+(a*2);
+            y2 = y;
+            p->r[2].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y+a;
+            p->r[3].setPosition(x2,y2);
+            
             break;
         case 4:
-            //L (NORMAL)
-            p->c.setPointCount(7);
-            p->c.setPoint(0,x,-y);
-            p->c.setPoint(1,x+(a*2),-y);
-            p->c.setPoint(2,x+(a*2),-y+(a*3));
-            p->c.setPoint(3,x+a,-y+(a*3));
-            p->c.setPoint(4,x+a,-y+a);
-            p->c.setPoint(5,x,-y+a);
-            p->c.setPoint(6,x,-y);
+            //Z
+            x2 = x;
+            y2 = y;
+            p->r[0].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y;
+            p->r[1].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y+a;
+            p->r[2].setPosition(x2,y2);
+
+            x2 = x+(a*2);
+            y2 = y+a;
+            p->r[3].setPosition(x2,y2);
             
-            p->t.loadFromFile("assets/tetris/2.png");
-            //p->c.setFillColor('m');
             break;
-        default:
-            //O
-            p->c.setPointCount(5);
-            p->c.setPoint(0,x,-y);
-            p->c.setPoint(1,x+(a*2),-y);
-            p->c.setPoint(2,x+(a*2),-y+(a*2));
-            p->c.setPoint(3,x,-y+(a*2));
-            p->c.setPoint(4,x,-y);
+        case 5:
+            //S
+            x2 = x;
+            y2 = y;
+            p->r[0].setPosition(x2,y2);
+
+            x2 = x;
+            y2 = y+a;
+            p->r[1].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y+a;
+            p->r[2].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y+(a*2);
+            p->r[3].setPosition(x2,y2);
             
-            p->t.loadFromFile("assets/tetris/t_tetris.png");
-            //p->c.setFillColor('y');
+            break;
+        case 6:
+            //O
+            x2 = x;
+            y2 = y;
+            p->r[0].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y;
+            p->r[1].setPosition(x2,y2);
+
+            x2 = x;
+            y2 = y+a;
+            p->r[2].setPosition(x2,y2);
+
+            x2 = x+a;
+            y2 = y+a;
+            p->r[3].setPosition(x2,y2);
+            
             break;
     }
-    */
-    
-    
-    
-    
     
     //p->c.setFillColor('r');
     //p->c.setOutlineColor('r');
@@ -314,7 +296,7 @@ void mj_t::update(int x_) {
             }
             
             //CREO LAS PIEZAS
-            if(dt.getElapsedTime().asSeconds() >= 0.5 && clock.getElapsedTime().asSeconds() < 55){
+            if(dt.getElapsedTime().asSeconds() >= 0.2 && clock.getElapsedTime().asSeconds() < 55){
                 std::cout << "CREO PIEZA: " << clock.getElapsedTime().asSeconds() << std::endl;
                 dt.restart();
                 crearPieza();
@@ -324,37 +306,26 @@ void mj_t::update(int x_) {
             int fin_pieza = 5000;
             float v = 0.5f;
             
-            int x;
-            int y;
             for(int i = 0 ; i<v_piezas.size() ; i++){
                 for(int j=0 ; j<4 ; j++){
-                    v_piezas[i].pb[j].setLinealVelocicity(0,3);
-                    
-                    x = v_piezas[i].pb[j].getXPosition();
-                    y = v_piezas[i].pb[j].getYPosition();
-                    
-                    v_piezas[i].r[j].setPosition(x,y);
-                }
-                
-                /*
-                if(v_piezas[i].c.getPosition()[i] < fin_pieza){
-                    if(clock.getElapsedTime().asSeconds()<20){
-                        v_piezas[i].c.move(0,v_piezas[i].vel);
-                    }
-                    else if(clock.getElapsedTime().asSeconds()<40){
-                        v_piezas[i].c.move(0,v_piezas[i].vel+v);
-                    }
-                    else if(clock.getElapsedTime().asSeconds()<50){
-                        v_piezas[i].c.move(0,v_piezas[i].vel+(v*2));
+                    if(v_piezas[i].r[j].getPosition()[1] < fin_pieza){
+                        if(clock.getElapsedTime().asSeconds()<20){
+                            v_piezas[i].r[j].move(0,v_piezas[i].vel);
+                        }
+                        else if(clock.getElapsedTime().asSeconds()<40){
+                            v_piezas[i].r[j].move(0,v_piezas[i].vel+v);
+                        }
+                        else if(clock.getElapsedTime().asSeconds()<50){
+                            v_piezas[i].r[j].move(0,v_piezas[i].vel+(v*2));
+                        }
+                        else{
+                            v_piezas[i].r[j].move(0,v_piezas[i].vel+(v*10));
+                        }
                     }
                     else{
-                        v_piezas[i].c.move(0,v_piezas[i].vel+(v*10));
+                        v_piezas[i].r[j].setPosition(x_min, 2000);
                     }
                 }
-                else{
-                    v_piezas[i].c.setPosition(x_min, 2000);
-                }
-                */
             }
             
             //DETECTA EL FIN DEL MINIJUEGO
@@ -382,16 +353,9 @@ void mj_t::render() {
     m2.rect.draw(); 
     
     if(on == true){
-        /*
-        for(int i = 0 ; i<v_piezas.size() ; i++){
-            v_piezas[i].c.setTexture(v_piezas[i].t);
-            v_piezas[i].c.draw();
-        }
-        */
         for(int i = 0 ; i<v_piezas.size() ; i++){
             for(int j = 0 ; j<4 ; j++){
-                //std::cout << "x: " <<  v_piezas[i].r[j].getPosition()[0] << " | y: " << v_piezas[i].r[j].getPosition()[1] << std::endl;
-
+                v_piezas[i].r[j].setTexture(v_piezas[i].t[j]);
                 v_piezas[i].r[j].draw();
             }
         }

@@ -143,6 +143,7 @@ public:
             void setPosition(float x, float y);             //ESTABLECER POSICION
             void setFillColor(char c);                      //ESTABLECER UN COLOR
             void setSize(float x, float y);                 //ESTABLECER UN TAMANYO
+            void move(float x, float y);                    //MOVER
             
             std::array<float,2> getPosition();              //CONSEGUIR POSICION
         private:
