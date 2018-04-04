@@ -40,3 +40,4 @@ void    pBody::setFixedRotation(bool flag_) { body->SetFixedRotation(flag_); }
 
 void    pBody::applyLinearImpulse(float ix_, float iy_) { body->ApplyLinearImpulse(b2Vec2(ix_, iy_), body->GetWorldCenter(), true); }
 
+void    pBody::setUserData(void* data){ body->SetUserData(data); }

@@ -34,6 +34,7 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         float getYPosition();                               // Posición en el eje Y
         float getRotation();                                // Rotación
 
+        void setUserData(void* data);
         void setBody(b2Body* body_);                        // Da valor a la variable Body de Box2D (usado en createBody(...))
         b2Body* getBody();                                  // Devuelve la variable Body de Box2D
 

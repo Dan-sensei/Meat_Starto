@@ -21,6 +21,7 @@
 #include "physicsEngine/pBody.h"
 #include "renderEngine.h"
 #include "mj_t.h"
+#include "Player.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -47,38 +48,19 @@ int main(int argc, char** argv) {
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA WINDOW
     
-    //41 - 6
-     
-    //TEST
-    int finisher;
-    std::string test  = "Tes:LUJAN:MoarTesting";
-    std::string out;
-    finisher = test.find_first_of(":");
-    out.append(test, finisher+1, test.size());
-    test.erase(finisher);
-
-    std::cout << "UEE " << sqrt(pow(3, 2)) << std::endl;
-    //std::cout << "OUT " << out << std::endl;
-    //std::cout << "TEST " << test << std::endl;
-    //TEST
     
-    struct state{
-        float x;     // Posicion X
-        float y;     // Posicion Y
-        float r;     // Rotacion
-    };
-    state previous;
-    state actual;
     
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);
     
-    pBody player = world->Instance().createBody(76.f, 64.f, 1960, 1200, 'D');
     //player.setFixedRotation(false);
+    //player.setUserData("Player1");
     
+    bool* keys = new bool [256];
+    for(int i = 0; i<256; i++) keys[i]=false;
     
-    
+    Player readyPlayerOne(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys);
     //SINGLETON MUNDO
     Tile *tile;
     tile->Instance();
@@ -87,13 +69,6 @@ int main(int argc, char** argv) {
     //SINGLETON TETRIS
     mj_t *tetris;   
     
-    //38x32
-    renderEngine::rTexture boxTexture("assets/prueba.png");
-    renderEngine::rSprite Sprite;
-    Sprite.setTexture(boxTexture);
-    Sprite.setOrigin(19.f, 16.f);
-    Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y);
-    
     //VISTA
     renderEngine::rView view(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
     //view.zoom(2.7);
@@ -101,14 +76,12 @@ int main(int argc, char** argv) {
     
     sfml->Instance().setView(view);
     
-    previous.x = actual.x = player.getXPosition();
-    previous.y = actual.y = player.getYPosition();
-    previous.r = actual.r = player.getRotation();
+    
     
     renderEngine::rClock masterClock;
+    renderEngine::rClock animationClock;
+    
     double dt;
-    bool keys[256];
-    for(int i = 0; i<256; i++) keys[i]=false;
     
     float accumulator = 0.0f;
     masterClock.restart();
@@ -172,49 +145,8 @@ int main(int argc, char** argv) {
         while(accumulator >= 1/UPDATE_STEP){
             //std::cout << "UPDATE-- " << accumulator << std::endl;
             
-            previous = actual;      // GUARDO EL ESTADO ANTERIOR
-            
-            // TECLA A  ======================================================================
-            if( keys[0])  {                                                                 //
-                if(player.getLinearXVelocity() > -speed)                                    //
-                    player.applyForceToCenter(-force, 0);                                   //
-                else                                                                        //  IZQUIERDA
-                    player.setLinealVelocicity(-speed, player.getLinearYVelocity());        //
-                Sprite.setScale(PLAYER_DIM_X, PLAYER_DIM_Y);                                //
-            }                                                                               //
-            // ===============================================================================
-            
-            // TECLA D  ======================================================================
-            else if( keys[3]) {                                                             //
-                if(player.getLinearXVelocity() < speed)                                     //
-                    player.applyForceToCenter(force, 0);                                    //
-                else                                                                        //  DERECHA
-                    player.setLinealVelocicity(speed, player.getLinearYVelocity());         //
-                Sprite.setScale(-PLAYER_DIM_X, PLAYER_DIM_Y);                               //
-            }                                                                               //
-            // ===============================================================================
-            
-            // TECLA W / ESPACIO  ============================================================
-            if(keys[57] || keys[22]){                                                       //
-                keys[57] = false;                                                           //
-                keys[22] = false;                                                           //  SALTO
-                player.applyForceToCenter(0, -jump);                                        //
-            }                                                                               //
-            // ===============================================================================
-            
-            //STOP CON DESLIZAMIENTO  ================================================================================
-            if(!keys[0] && player.getLinearXVelocity() < -2){                                                       //
-                player.applyForceToCenter(force*stop_mult, 0);                                                      //
-            }                                                                                                       //
-            else if(!keys[3] && player.getLinearXVelocity() > 2)                                                    //
-                player.applyForceToCenter(-force*stop_mult, 0);                                                     //
-                                                                                                                    // FRENADO
-            if(!keys[0] && !keys[3] && player.getLinearXVelocity() >= -2 && player.getLinearXVelocity() <= 2){      //
-                player.applyForceToCenter(0, 0);                                                                    //
-                player.setLinealVelocicity(0, player.getLinearYVelocity());                                         //
-            }                                                                                                       //
-            //  ======================================================================================================
-            
+            readyPlayerOne.preState();  
+            readyPlayerOne.movement();
             
             // BUCLE DE STEPS DE BOX2D
             for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
@@ -226,9 +158,8 @@ int main(int argc, char** argv) {
             accumulator -= 1/UPDATE_STEP;
             
             // ACTUALIZO EL ESTADO ACTUAL
-            actual.x = player.getXPosition();
-            actual.y = player.getYPosition();
-            actual.r = player.getRotation();
+            readyPlayerOne.newState();
+            
         }
         
         // TICK PARA LA INTERPOLAÇAO
@@ -237,26 +168,21 @@ int main(int argc, char** argv) {
         //std::cout << "RENDER == " << tick << std::endl;
         sfml->Instance().clear('w');
         
-        // CALCULO LAS POSICIONES INTERPOLADAS DE ACUERDO AL TICK
-        float x = previous.x *(1-tick) + actual.x*tick;
-        float y = previous.y *(1-tick) + actual.y*tick;
-            // Para las rotaciones es mejor interpolar los senos y cosenos, ya que si no, al calcular el ángulo entre 350 y 10, no nos devolvería 20, que sería lo correcto
-        float s = sin(previous.r * M_PI/180) * (1-tick) + sin(actual.r * M_PI/180)*tick;
-        float c = cos(previous.r * M_PI/180) * (1-tick) + cos(actual.r * M_PI/180)*tick;
+        
+        readyPlayerOne.update(animationClock.restart());
         
         //ACTUALIÇAÇAO
-        Sprite.setPosition(x, y);
-        Sprite.setRotation(atan2(s,c)*180/M_PI);
+        readyPlayerOne.interpola(tick);
         if(!tetris->Instance().isTetrisOn())    //TRUE: SE MUEVE LA CAMARA
-            view.setCenter(Sprite.getPosition()[0],CAM_H);
+            view.setCenter(readyPlayerOne.getXPosition(),CAM_H);
         tile->Instance().update();
         
         //DRAW
         sfml->Instance().setView(view);
         tile->Instance().render();
+        
+        readyPlayerOne.draw();
 
-        Sprite.draw();
-                
         //RENDER
         
         sfml->Instance().display();

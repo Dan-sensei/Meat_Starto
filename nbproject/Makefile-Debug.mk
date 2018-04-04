@@ -35,10 +35,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Animator.o \
 	${OBJECTDIR}/AssetManager.o \
+	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/Tile.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mj_t.o \
+	${OBJECTDIR}/physicsEngine/contactListener.o \
 	${OBJECTDIR}/physicsEngine/pBody.o \
 	${OBJECTDIR}/physicsEngine/pConverter.o \
 	${OBJECTDIR}/physicsEngine/physicsEngine.o \
@@ -83,10 +86,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/meat_starto: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/meat_starto ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/Animator.o: Animator.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Animator.o Animator.cpp
+
 ${OBJECTDIR}/AssetManager.o: AssetManager.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AssetManager.o AssetManager.cpp
+
+${OBJECTDIR}/Player.o: Player.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
 
 ${OBJECTDIR}/Tile.o: Tile.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -102,6 +115,11 @@ ${OBJECTDIR}/mj_t.o: mj_t.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mj_t.o mj_t.cpp
+
+${OBJECTDIR}/physicsEngine/contactListener.o: physicsEngine/contactListener.cpp
+	${MKDIR} -p ${OBJECTDIR}/physicsEngine
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/contactListener.o physicsEngine/contactListener.cpp
 
 ${OBJECTDIR}/physicsEngine/pBody.o: physicsEngine/pBody.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine

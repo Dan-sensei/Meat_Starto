@@ -50,7 +50,9 @@ public:
             void setScale(float x, float y);            //ESTABLECER LA ESCALA
             void setPosition(float x, float y);         //ESTABLECER LA POSICION
             void setRotation(float a);                  //ESTABLECER UNA ROTACION
-            
+            void rotate(float r);
+            float getRotation();
+            void setTextureRect(sf::IntRect& rect);
             std::array<float,2> getPosition();          //DEVUELVE LA POSICION
         private:
             sf::Sprite sprite;
@@ -75,11 +77,14 @@ public:
     class rTime {
         public:
             rTime();
+            rTime(float sec);
             
             float asSeconds();                      //TIEMPO EN SEGUNDOS
             float asMilliseconds();                 //TIEMPO EN MILISEGUNDOS
             float asMicroseconds();                 //TIEMPO EN MICROSEGUNDOS
+            void incrementTime(renderEngine::rTime t);
             void Zero();                            //TENER A 0 EL TIEMPO
+            sf::Time getTime();
         private:
             sf::Time time;
     };

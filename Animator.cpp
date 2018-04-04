@@ -5,55 +5,131 @@
  */
 
 /* 
- * File:   Animation.cpp
- * Author: dan
+ * File:   Animator.cpp
+ * Author: claudiac
  * 
- * Created on 10 de marzo de 2018, 16:25
+ * Created on 22 de marzo de 2018, 20:23
  */
-
-//Esta clase forma parte del libro "SFML Essentials" para la animación de sprites
 
 #include "Animator.h"
 #include "AssetManager.h"
 
-Animator::Animator(sf::Sprite& s)
-    :sprite(s), currentTime(), currentAnimation(nullptr){}
+#include <iostream>
+#include <list>
+#include <vector>
+#include <string>
+#include <SFML/System/Time.hpp>
+#include <SFML/System/Vector2.hpp>
 
-Animator::Animation& Animator::createAnimation(const std::string& name, const std::string& textureName, const sf::Time& duration, bool loop){
-    
-    animations.push_back(Animation(name, textureName, duration, loop));
-    
-    if(currentAnimation == nullptr)
-        switchAnimation(&animations.back());
-    
-    return animations.back();
+
+
+Animator::Animator(renderEngine::rSprite& sprite) 
+    :m_Sprite(sprite), m_CurrentTime(), m_CurrentAnimation(nullptr){
+
 }
 
-
-void Animator::switchAnimation(Animation* anim){
+Animator::Animation& Animator::CreateAnimation(std::string const& name, std::string const& textureName, renderEngine::rTime const& duration, bool loop)
+{
+   //Nombre para referenciarlo fuera de la clase
+   //loop--> si se repite o reproducirse solo una vez
     
-    if(anim != nullptr)
-        sprite.setTexture(AssetManager::GetTexture(anim->animTexture));
+    //metemos instancia de la animacion en la lista m_Animations
+    m_Animations.push_back(        
+            Animator::Animation(name, textureName,duration,loop));
+    //si no hay otra animacion utiliza la actual
+    if(m_CurrentAnimation == nullptr){
+        SwitchAnimation(&m_Animations.back());
+    }
     
-    currentAnimation = anim;
-    currentTime = sf::Time::Zero;
+    return m_Animations.back();
 }
 
-void Animator::update(const sf::Time& dt){
-    if(currentAnimation == nullptr)
+void Animator::SwitchAnimation(Animator::Animation* animation)
+{
+    //Cambia la textura al sprite
+    if(animation != nullptr)
+    {
+        m_Sprite.setTexture(AssetManager::GetTexture(animation->m_TextureName));
+        /*
+        sf::Texture tex;
+        if (!tex.loadFromFile("resources/player6.png"))
+        {
+        std::cerr << "Error cargando la imagen sprites.png";
+        exit(0);
+        }
+        m_Sprite.setTexture(tex);
+        */
+        
+    }
+    m_CurrentAnimation = animation;
+    m_CurrentTime.Zero(); //Reset time
+}   
+
+
+
+bool Animator::SwitchAnimation(std::string const& name)
+{//Trata de uscar la animacion con el nombre que le pasan
+    auto animation = FindAnimation(name);
+    if(animation !=nullptr)
+    {
+        SwitchAnimation(animation);
+        return true;
+    }
+    return false;
+}
+ 
+
+Animator::Animation* Animator::FindAnimation(std::string const& name)
+{
+    for(auto it = m_Animations.begin(); it != m_Animations.end(); ++it)
+    {
+        if(it-> m_Name == name)
+            return &*it;
+            
+    }
+    
+    return nullptr;
+}
+
+std::string Animator::GetCurrentAnimationName() const
+{
+    if(m_CurrentAnimation != nullptr)
+        return m_CurrentAnimation->m_Name;
+ 
+    //Si no hay ninguna animacion funcionando devuelve string vacio
+    return "";
+}
+
+void Animator::Update(renderEngine::rTime const& dt)
+{
+    //Si no hay animaciones devuelve un return
+    if(m_CurrentAnimation == nullptr)
         return;
-    currentTime += dt;
+    m_CurrentTime.incrementTime(dt);
     
-    float ST = currentTime.asSeconds() / currentAnimation->animDuration.asSeconds();
-    int n = currentAnimation->animFrames.size();
-    int current = (int)(ST*n);
+    //Coje el frame actual de la animacion
+    float scaledTime = (m_CurrentTime.asSeconds() / m_CurrentAnimation->m_Duration.asSeconds());
+    int numFrames = m_CurrentAnimation->m_Frames.size();
+    int currentFrame = static_cast<int>(scaledTime * numFrames);
     
-    if(currentAnimation->animLoop)
-        current = current%n;
-    else if(current >= n)
-        current = n - 1;
+    //Si la animacion está en marcha calcula el frame correcto
+    if(m_CurrentAnimation-> m_Looping)
+        currentFrame %=numFrames;
+    else if(currentFrame >= numFrames)
+        currentFrame = numFrames -1;
     
-    sprite.setTextureRect(currentAnimation->animFrames[current]);
+    //Pone la textura
+    m_Sprite.setTextureRect(m_CurrentAnimation->m_Frames[currentFrame]);
+    
     
 }
+
+renderEngine::rSprite& Animator::GetSprite(){
+    
+    m_Sprite.rotate(m_Sprite.getRotation()+30);
+    
+    return m_Sprite;
+}
+
+
 

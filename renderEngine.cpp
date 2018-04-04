@@ -76,6 +76,9 @@ renderEngine::rSprite::rSprite() {}
 
 void renderEngine::rSprite::setTexture  (rTexture &t)       {   sprite.setTexture(*t.getTexture()); }
 void renderEngine::rSprite::setRotation (float a)           {   sprite.setRotation(a);              }
+void renderEngine::rSprite::rotate      (float r)           {   sprite.rotate(r);                   }
+float renderEngine::rSprite::getRotation()                  {   return sprite.getRotation();        }
+void renderEngine::rSprite::setTextureRect(sf::IntRect& rect){  sprite.setTextureRect(rect);        }
 void renderEngine::rSprite::setOrigin   (float x, float y)  {   sprite.setOrigin(x,y);              }
 void renderEngine::rSprite::setScale    (float x, float y)  {   sprite.setScale(x,y);               }
 void renderEngine::rSprite::setPosition (float x, float y)  {   sprite.setPosition(x,y);            }
@@ -127,12 +130,16 @@ sf::Event::EventType    renderEngine::rEvent::sfType    () {    return event.typ
 
 //============================= TIEMPO =============================//
 renderEngine::rTime::rTime() {}
+renderEngine::rTime::rTime(float sec){
+    time = sf::seconds(sec);
+}
 
 float renderEngine::rTime::asSeconds        ()  {   return time.asSeconds();}
 float renderEngine::rTime::asMilliseconds   ()  {   return time.asMilliseconds();}
 float renderEngine::rTime::asMicroseconds   ()  {   return time.asMicroseconds();}
 void renderEngine::rTime::Zero              ()  {   time = sf::Time::Zero;}
-
+void renderEngine::rTime::incrementTime(renderEngine::rTime t){ time += t.getTime();}
+sf::Time renderEngine::rTime::getTime()         {   return time; }
 
 //============================= CONVEXSHAPE =============================//
 renderEngine::rConvexShape::rConvexShape() {
