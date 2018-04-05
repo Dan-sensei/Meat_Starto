@@ -30,6 +30,7 @@ public:
     void setSpeed(float f);
     float getSpeed();
     float getXPosition();
+    float getYPosition();
     int getLevel();
     void setName(std::string n);
     std::string getName();

@@ -13,14 +13,13 @@
 
 #include <random>
 #include <iostream>
-#include <math.h>
 #include <complex>
 
 #include "Tile.h"
 #include "physicsEngine/physicsEngine.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 
 Tile::Tile() {
 
@@ -78,8 +77,13 @@ Tile::Tile() {
     x_max = 0;
     
     //TETRIS
-    tetris->Instance(); //INICIALIZO EL SINGLETON
+    mj_t *tetris;
+    tetris->Instance();     //INICIALIZO EL SINGLETON
     m_tetris = false;
+    
+    //BOSS
+    boss *javi;
+    javi->Instance();       //INICIALIZO EL BOSS
     
 }
 
@@ -721,9 +725,12 @@ void Tile::render() {
     */
     
     //------------|  TETRIS  |------------//
+    mj_t *tetris;
     tetris->Instance().render();
     
-    
+    //------------|  BOSS  |------------//
+    boss *javi;
+    javi->Instance().render();
     
     
 }
@@ -774,6 +781,7 @@ void Tile::CreaMapa() {
             std::cout << "He creado el minijuego Tetris" << std::endl;
             
             //CREO LA CLASE TETRIS
+            mj_t *tetris;
             tetris->Instance().init(x_max);
             
             m_tetris = true;
@@ -782,14 +790,27 @@ void Tile::CreaMapa() {
         iter++;
     }
     
+    //CREO EL NODO FINAL
+    //SIEMPRE VA A SER CREADO EL ULTIMO, AL IGUAL QUE EL NODO 0
+    boss *javi;
+    javi->Instance().init(x_max);
+    
+    path = "tiles_definitivo/nodos/fin.tmx";
+        std::cout << path << std::endl;
+
+    LeeNodo(path);
+    
 }
 
-void Tile::update() {
+void Tile::update(float x, float y) {
     //SOLO LLAMARA A LOS UPDATE DE LOS MINIJUEGOS
     renderEngine *sfml;
-    int x = sfml->Instance().getViewCenter()[0];
+    mj_t *tetris;
+    boss *javi;
+    int x_m = sfml->Instance().getViewCenter()[0];
     
-    tetris->Instance().update(x);
+    tetris->Instance().update(x_m);
+    javi->Instance().update(x_m,x,y);
     
 }
 

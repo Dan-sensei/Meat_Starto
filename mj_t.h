@@ -59,13 +59,13 @@ private:
     //POSIBLE CAMBIO A pieza_ *v_piezas;
     std::vector<pieza_> v_piezas;               //VECTOR QUE ALMACENA TODAS LAS PIEZAS
     
-    renderEngine::rClock clock; //TIEMPO MAXIMO DEL MINIJUEGO
-    renderEngine::rClock dt;     //DELTA TIME AL CREAR LAS PIEZAS
-    int x_min;                  //POSICION MINIMA DONDE SE EJECUTA EL MINIJUEGO
-    int x_max;                  //POSICION MAXIMA DONDE SE EJECUTA EL MINIJUEGO
-    bool restart;               //TRUE: SE HA REINICIADO clock Y SE HA INICIADO EL MINIJUEGO
-    bool on;                    //TRUE: EL MINIJUEGO ESTA EN MARCHA
-    bool fin;                   //TRUE: SE HA ACABADO EL MINIJUEGO
+    renderEngine::rClock clock;     //TIEMPO MAXIMO DEL MINIJUEGO
+    renderEngine::rClock dt;        //DELTA TIME AL CREAR LAS PIEZAS
+    int x_min;                      //POSICION MINIMA DONDE SE EJECUTA EL MINIJUEGO
+    int x_max;                      //POSICION MAXIMA DONDE SE EJECUTA EL MINIJUEGO
+    bool restart;                   //TRUE: SE HA REINICIADO clock Y SE HA INICIADO EL MINIJUEGO
+    bool on;                        //TRUE: EL MINIJUEGO ESTA EN MARCHA
+    bool fin;                       //TRUE: SE HA ACABADO EL MINIJUEGO
 };
 
 #endif /* MJ_T_H */

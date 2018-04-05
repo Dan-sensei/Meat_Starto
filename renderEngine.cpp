@@ -199,6 +199,16 @@ void renderEngine::rRectangleShape::setTexture  (rTexture &t)       {   rs.setTe
 void renderEngine::rRectangleShape::setPosition (float x, float y)  {   rs.setPosition(x,y);}
 void renderEngine::rRectangleShape::setSize     (float x, float y)  {   rs.setSize(sf::Vector2f(x,y));}
 void renderEngine::rRectangleShape::move        (float x, float y)  {   rs.move(x,y);}
+void renderEngine::rRectangleShape::setOrigin   (float x, float y)  {   rs.setOrigin(x,y);}
+
+std::array<float, 2> renderEngine::rRectangleShape::getSize() {
+    std::array<float,2> ret;
+    
+    ret[0] = rs.getSize().x;
+    ret[1] = rs.getSize().y;
+    
+    return ret;
+}
 
 void renderEngine::rRectangleShape::setFillColor(char c) {
     switch(c){
@@ -206,8 +216,8 @@ void renderEngine::rRectangleShape::setFillColor(char c) {
         case 'r':   rs.setFillColor(sf::Color::Red);            break;
         case 'g':   rs.setFillColor(sf::Color::Green);          break;
         case 'b':   rs.setFillColor(sf::Color::Blue);           break;
-        case 'y':   rs.setFillColor(sf::Color::Yellow);           break;
-        case 'k':   rs.setFillColor(sf::Color::Black);           break;
+        case 'y':   rs.setFillColor(sf::Color::Yellow);         break;
+        case 'k':   rs.setFillColor(sf::Color::Black);          break;
         default:    break;
     }
 }

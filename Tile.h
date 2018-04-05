@@ -22,6 +22,7 @@
 
 #include "renderEngine.h"
 #include "mj_t.h"
+#include "boss.h"
 
 class Tile {
 public:
@@ -33,7 +34,7 @@ public:
     
     void CreaMapa();
     void render();
-    void update();
+    void update(float x, float y);
     
     virtual ~Tile();
     
@@ -85,8 +86,9 @@ private:
     int v[15][15];
     
     //TETRIS
-    mj_t *tetris;
     bool m_tetris;
+    
+    //JEFE FINAL
     
 };
 

@@ -253,3 +253,7 @@ void Player::newState(){
 float Player::getXPosition(){
     return  sprite.getPosition()[0];
 }
+
+float Player::getYPosition() {
+    return  sprite.getPosition()[1];
+}

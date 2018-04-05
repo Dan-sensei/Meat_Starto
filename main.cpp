@@ -22,6 +22,7 @@
 #include "renderEngine.h"
 #include "mj_t.h"
 #include "Player.h"
+#include "boss.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -55,8 +56,7 @@ int main(int argc, char** argv) {
     world->Instance().setGravity(0.f, 100.f);
     
     //player.setFixedRotation(false);
-    //player.setUserData("Player1");
-    
+    //player.setUserData("Player1")
     bool* keys = new bool [256];
     for(int i = 0; i<256; i++) keys[i]=false;
     
@@ -67,7 +67,10 @@ int main(int argc, char** argv) {
     tile->Instance().CreaMapa();
     
     //SINGLETON TETRIS
-    mj_t *tetris;   
+    mj_t *tetris;
+    
+    //SINGLETON BOSS
+    boss *javi;
     
     //VISTA
     renderEngine::rView view(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
@@ -173,9 +176,9 @@ int main(int argc, char** argv) {
         
         //ACTUALIÇAÇAO
         readyPlayerOne.interpola(tick);
-        if(!tetris->Instance().isTetrisOn())    //TRUE: SE MUEVE LA CAMARA
+        if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
             view.setCenter(readyPlayerOne.getXPosition(),CAM_H);
-        tile->Instance().update();
+        tile->Instance().update(readyPlayerOne.getXPosition(),readyPlayerOne.getYPosition());
         
         //DRAW
         sfml->Instance().setView(view);

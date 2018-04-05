@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/AssetManager.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/Tile.o \
+	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mj_t.o \
 	${OBJECTDIR}/physicsEngine/contactListener.o \
@@ -105,6 +106,11 @@ ${OBJECTDIR}/Tile.o: Tile.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tile.o Tile.cpp
+
+${OBJECTDIR}/boss.o: boss.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/boss.o boss.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

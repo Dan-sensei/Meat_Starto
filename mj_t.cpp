@@ -42,7 +42,7 @@ void mj_t::init(int x_) {
     m1.rect.setFillColor('k');
     
     y = a;
-    m1.pb = world->Instance().createBody(a,a*44,x+(a/2),y-DES,'k');
+    m1.pb = world->Instance().createBody(a,a*44,x+(m1.rect.getSize()[0]/2),y-DES+(m1.rect.getSize()[1]/2),'k');
     
     float px = m1.pb.getXPosition();
     float py = m1.pb.getYPosition();
@@ -59,7 +59,7 @@ void mj_t::init(int x_) {
     m2.rect.setFillColor('k');
     
     y = a;
-    m2.pb = world->Instance().createBody(a,a*44,x+(a/2),y-DES,'k');
+    m2.pb = world->Instance().createBody(a,a*44,x+(m2.rect.getSize()[0]/2),y-DES+(m2.rect.getSize()[1]/2),'k');
     
     px = m2.pb.getXPosition();
     py = m2.pb.getYPosition();
@@ -272,6 +272,7 @@ void mj_t::update(int x_) {
                     //std::cout << "REINICIO RELOJ" << std::endl;
                 clock.restart();
                 dt.restart();
+                
                 restart = true;
             }
             else{
@@ -352,7 +353,7 @@ void mj_t::render() {
     m1.rect.draw(); 
     m2.rect.draw(); 
     
-    if(on == true){
+    if(on){
         for(int i = 0 ; i<v_piezas.size() ; i++){
             for(int j = 0 ; j<4 ; j++){
                 v_piezas[i].r[j].setTexture(v_piezas[i].t[j]);
