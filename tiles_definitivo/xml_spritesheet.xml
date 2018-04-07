@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:8adb1e4f4d90ecce4274d6b765b822f9:0e4d333e1f74171ca88c831dc4a3ad43:a992d4541e4b1564acf6bb714dd8489e$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<TextureAtlas imagePath="tilesheet.png" width="210" height="910">
+    <sprite n="dec_1.png" x="0" y="0" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="dec_2.png" x="70" y="0" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="dec_3.png" x="140" y="0" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="dec_4.png" x="0" y="70" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="dec_5.png" x="70" y="70" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="dec_6.png" x="140" y="70" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="dec_7.png" x="0" y="140" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_1.png" x="70" y="140" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_2.png" x="140" y="140" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_3.png" x="0" y="210" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_4.png" x="70" y="210" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_5.png" x="140" y="210" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_6.png" x="0" y="280" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_7.png" x="70" y="280" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_8.png" x="140" y="280" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_9.png" x="0" y="350" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_10.png" x="70" y="350" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_11.png" x="140" y="350" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_12.png" x="0" y="420" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_c_1.png" x="70" y="420" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_c_2.png" x="140" y="420" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_c_3.png" x="0" y="490" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="shadow_c_4.png" x="70" y="490" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice01_01.png" x="140" y="490" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice02_02.png" x="0" y="560" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice03_03_1.png" x="70" y="560" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice03_03_2.png" x="140" y="560" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice03_03_3.png" x="0" y="630" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice03_03_4.png" x="70" y="630" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice03_03_5.png" x="140" y="630" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice03_03_6.png" x="0" y="700" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice04_04.png" x="70" y="700" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice05_05.png" x="140" y="700" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice36_36_1.png" x="0" y="770" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice36_36_2.png" x="70" y="770" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice36_36_3.png" x="140" y="770" w="70" h="70" pX="0.5" pY="0.5"/>
+    <sprite n="slice36_36_4.png" x="0" y="840" w="70" h="70" pX="0.5" pY="0.5"/>
+</TextureAtlas>

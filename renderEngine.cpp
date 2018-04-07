@@ -18,7 +18,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Carga de mapa",sf::Style::Default)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -66,6 +66,11 @@ renderEngine::rTexture::rTexture() {}
 renderEngine::rTexture::rTexture(std::string path) {    text.loadFromFile(path);}
 
 void            renderEngine::rTexture::loadFromFile(std::string path)  {   text.loadFromFile(path);    }
+void renderEngine::rTexture::loadFromImage(renderEngine::rImage im, renderEngine::rIntRect ir) {
+    text.loadFromImage(im.getImage(),ir.getIntRect());
+
+}
+
 int             renderEngine::rTexture::getXSize()                      {   text.getSize().x;           }
 int             renderEngine::rTexture::getYSize()                      {   text.getSize().y;           }
 sf::Texture*    renderEngine::rTexture::getTexture()                    {   return &text;               }
@@ -229,6 +234,38 @@ std::array<float, 2> renderEngine::rRectangleShape::getPosition() {
     
     return ret;
 }
+
+//============================= INTRECT =============================//
+renderEngine::rIntRect::rIntRect() {
+    left = 0;
+    top = 0;
+    widht = 0;
+    height = 0;
+}
+
+renderEngine::rIntRect::rIntRect(int x, int y, int w, int h) : ir(x,y,w,h){
+    left = x;
+    top = y;
+    widht = w;
+    height = h;
+}
+
+sf::IntRect renderEngine::rIntRect::getIntRect() {
+    return ir;
+}
+
+
+//============================= IMAGE =============================//
+renderEngine::rImage::rImage() {}
+
+void renderEngine::rImage::loadFromFIle(std::string path) { im.loadFromFile(path);
+}
+
+sf::Image renderEngine::rImage::getImage() {
+    return im;
+}
+
+
 
 
 

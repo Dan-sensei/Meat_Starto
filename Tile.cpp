@@ -19,7 +19,7 @@
 #include "physicsEngine/physicsEngine.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 30
 
 Tile::Tile() {
 
@@ -59,13 +59,29 @@ Tile::Tile() {
     int n = 37; //NUMERO TOTAL DE TILES
                 //SI SE CAMBIA, CAMBIAR TAMBIEN _tile *tiles[37] EN EL .h;
     
+    //LEO EL TILESHEET Y ALMACENO LOS CUADRADOS DE RECORTE
+    ts.loadFromFIle("tiles_definitivo/tilesheet.png");
+    ts_doc.LoadFile("tiles_definitivo/xml_spritesheet.xml");
+    map = ts_doc.FirstChildElement("TextureAtlas")->FirstChildElement("sprite");
+    
     for(int i=0 ; i<n ; i++){
         std::string path2 = "tiles_definitivo/";
         std::string path3 = tiles[i]->path;
         
         tiles[i]->path = path2.operator +=(path3);
         
-            //std::cout << tiles[i]->id << " -> " << tiles[i]->path << std::endl;
+        int x = atoi(map->Attribute("x"));
+        int y = atoi(map->Attribute("y"));
+        int w = atoi(map->Attribute("w"));
+        int h = atoi(map->Attribute("h"));
+        
+        renderEngine::rIntRect ir_aux(x,y,w,h);
+        tiles[i]->ir = ir_aux;
+        tiles[i]->t.loadFromImage(ts,tiles[i]->ir);
+        
+            //std::cout << tiles[i]->id << " -> " << tiles[i]->path << "      INTRECT-> X: " << tiles[i]->ir.left << ", Y: " << tiles[i]->ir.top << ", W: " << tiles[i]->ir.widht << ", H: " << tiles[i]->ir.height << std::endl;
+
+        map = map->NextSiblingElement("sprite");
     }
     
     //INICIALIZO LA MATRIZ DE ADYACENCIA
@@ -648,12 +664,16 @@ void Tile::CreaCasilla(int id, int x, int y) {
         //std::cout << tiles[id-1]->path << std::endl;
     
     renderEngine::rRectangleShape casilla(ancho,alto);
-    casilla.setTexture(AssetManager::GetTexture(tiles[id-1]->path));
+    //casilla.setTexture(AssetManager::GetTexture(tiles[id-1]->path));
     casilla.setPosition(x,y);
     
     _cas aux;
     aux.id = id;
-    aux.text = AssetManager::GetTexture(tiles[id-1]->path);
+    
+    //aux.text = AssetManager::GetTexture(tiles[id-1]->path);
+    //aux.text.loadFromImage(ts,tiles[id-1]->ir);
+    aux.text = &(tiles[id-1]->t);
+            
     aux.rect = casilla;
         
     vector_casillas.push_back(aux);
@@ -686,12 +706,8 @@ void Tile::render() {
     int y_min = y_2 -(alto*15);
     int y_max = y_2 +(alto*15);
     
-    
-    //sf::RectangleShape *r;
-    //sf::Texture *t;
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
-
     
     for(std::list<std::vector<_cas>>::iterator it=lista_casillas.begin(); it!=lista_casillas.end(); ++it){
         for(std::vector<_cas>::iterator it2=(*it).begin(); it2!=(*it).end(); ++it2){
@@ -701,7 +717,7 @@ void Tile::render() {
                     static_cast<int>((*it2).rect.getPosition()[1]) <= y_max){
                 
             r = &((*it2).rect);
-            t = &((*it2).text);
+            t = (*it2).text;
 
             r->setTexture(*t);
             r->draw();

@@ -57,9 +57,13 @@ private:
     int alto;
     
     //ALMACENA EL PATH DE LA IMAGEN Y SU ID
+    tinyxml2::XMLDocument ts_doc;   //XML DEL TILESHEET
+    renderEngine::rImage ts;        //PNG DEL TILESHEET
     struct _tile{
         int id;
-        std::string path;
+        renderEngine::rIntRect ir;  //CUADRADO DE RECORTE
+        renderEngine::rTexture t;   //TEXTURA
+        std::string path;           //PATH DEL TILE (NO SE USA)
     };
     _tile *tiles[37];
     
@@ -72,11 +76,8 @@ private:
     int x_max;
     struct _cas{
         int id;
-        //sf::RectangleShape rect;
         renderEngine::rRectangleShape rect;
-        
-        //sf::Texture text;
-        renderEngine::rTexture text;
+        renderEngine::rTexture *text;
     };
     std::list<std::vector<_cas>> lista_casillas;
     std::list<std::vector<_cas>> lista_casillas_aux;
@@ -87,9 +88,6 @@ private:
     
     //TETRIS
     bool m_tetris;
-    
-    //JEFE FINAL
-    
 };
 
 #endif /* TILE_H */

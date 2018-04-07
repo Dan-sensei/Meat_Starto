@@ -49,8 +49,6 @@ int main(int argc, char** argv) {
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA WINDOW
     
-    
-    
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
     world->Instance().setGravity(0.f, 100.f);

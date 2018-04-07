@@ -24,13 +24,41 @@ public:
     }
     //</SINGLETON>
     
+    class rIntRect {
+        friend class renderEngine;
+        public:
+            rIntRect();                             //CONSTRUCTOR 1 (NO UTILIZAR)
+            rIntRect(int x, int y, int w, int h);   //CONSTRUCTOR 2
+            
+            int left;
+            int top;
+            int widht;
+            int height;
+        private:
+            sf::IntRect getIntRect();
+            sf::IntRect ir;
+    };
+    
+    class rImage {
+        friend class renderEngine;
+        public:
+            rImage();
+            
+            void loadFromFIle(std::string path);
+            
+        private:
+            sf::Image getImage();
+            sf::Image im;
+    };
+    
     class rTexture {
         friend class renderEngine;
         public:
             rTexture();                             //CONSTRUCTOR SIN ARGUMENTOS
             rTexture(std::string path);             //CONSTRUCTOR CON ARGUMENTOS
             
-            void loadFromFile(std::string path);    //APLICAR UNA IMAGEN A LA TEXTURA
+            void loadFromFile(std::string path);                                        //APLICAR UNA RUTA A LA TEXTURA
+            void loadFromImage(renderEngine::rImage im, renderEngine::rIntRect ir);     //APLICAR UNA IMAGEN A UNA TEXTURA, CON SU CUADRADO DE RECORTE
             int getXSize();
             int getYSize();
             
