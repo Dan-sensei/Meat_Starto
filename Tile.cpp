@@ -19,9 +19,9 @@
 #include "physicsEngine/physicsEngine.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 30
+#define MAP_ITERATION 500
 
-Tile::Tile() {
+ Tile::Tile() {
 
     //CARGA DEL DOCUMENTO
     doc.LoadFile("tiles_definitivo/tiles_fv.tsx");
@@ -88,6 +88,7 @@ Tile::Tile() {
     InitMatrix();
 
     //-----------VARIABLES DE CLASE-----------//
+    pop = false;
     
     //LO UTILIZO AL LEER TODOS LOS NODOS DE LA MATRIZ
     x_max = 0;
@@ -633,30 +634,40 @@ void Tile::LeeNodo(std::string const& node_path) {
     }
     // </editor-fold>
 
+    x_max = x_max_aux+ancho;
+    
     _cas *a_cas = new _cas[vector_casillas.size()];
     int n = 0;
     for(std::vector<_cas>::iterator it=vector_casillas.begin(); it!=vector_casillas.end(); ++it){
         a_cas[n] = (*it);
         n++;
     }
-
+    
+    //PASO DEL VECTOR A UN ARRAY
+    _miArray a_aux;
+    a_aux.size = vector_casillas.size();
+    a_aux.casillas = new _cas[a_aux.size];
+    a_aux.aux_pop = x_max;
+    for(int i=0 ; i<vector_casillas.size() ; i++){
+        a_aux.casillas[i] = vector_casillas[i];
+    }
     
     
     //HA LEIDO UN NODO
-    /*
     if(lista_casillas.size()<6){
-        lista_casillas.push_back(vector_casillas);
+        lista_casillas.push_back(a_aux);
         vector_casillas.clear();
+            //std::cout << "Guardo en lista_casillas" << std::endl;
     }
     else{
-        lista_casillas_aux.push_back(vector_casillas);
+        lista_casillas_aux.push_back(a_aux);
         vector_casillas.clear();
+            //std::cout << "Guardo en lista_casillas_aux" << std::endl;
     }
-    */
-    lista_casillas.push_back(vector_casillas);
+    //lista_casillas.push_back(vector_casillas);
+    //lista_casillas.push_back(a_aux);
     vector_casillas.clear();
     
-    x_max = x_max_aux+ancho;
 }
 
 //CREA LA CASILLA
@@ -686,6 +697,19 @@ void Tile::render() {
     //------------|  CASILLAS DEL MAPA  |------------//
     int x = sfml->Instance().getViewCenter()[0];
     int y = sfml->Instance().getViewCenter()[1];
+    int iterator = 0;
+    
+    //int w = sfml->Instance().getSize()[0];
+    //int h = sfml->Instance().getSize()[1];
+    int w = 1920;
+    int h = 1080;
+    int xa = x-w-ancho;
+    int ya = y-h-ancho;
+    
+    //w = 1366
+    //h = 739
+    renderEngine::rIntRect ir(xa,ya,(w*2)+70,(h*2)+70);
+        //std::cout << "LEFT: " << ir.left << " | TOP: " << ir.top << " | WIDHT: " << ir.widht << " | HEIGHT: " << ir.height << std::endl;
     
     int i=0;
     
@@ -709,12 +733,28 @@ void Tile::render() {
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
     
-    for(std::list<std::vector<_cas>>::iterator it=lista_casillas.begin(); it!=lista_casillas.end(); ++it){
+    for(std::list<_miArray>::iterator it=lista_casillas.begin(); it!=lista_casillas.end(); ++it){
+        for(int i=0 ; i<(*it).size ; i++){
+            //if(ir.contains(static_cast<int>((*it).rect.getPosition()[0]),static_cast<int>((*it2).rect.getPosition()[1]))){
+            if(ir.contains((*it).casillas[i].rect.getPosition()[0],(*it).casillas[i].rect.getPosition()[1])){
+                
+                r = &((*it).casillas[i].rect);
+                t = (*it).casillas[i].text;
+
+                r->setTexture(*t);
+                r->draw();
+            }
+            
+        }
+        
+        if(iterator == 3 && (*it).aux_pop<sfml->Instance().getViewCenter()[0]){
+            pop = true;
+        }
+        iterator++;
+        
+        /*
         for(std::vector<_cas>::iterator it2=(*it).begin(); it2!=(*it).end(); ++it2){
-            if(static_cast<int>((*it2).rect.getPosition()[0]) >= x_min && 
-                    static_cast<int>((*it2).rect.getPosition()[0]) <= x_max &&
-                    static_cast<int>((*it2).rect.getPosition()[1]) >= y_min && 
-                    static_cast<int>((*it2).rect.getPosition()[1]) <= y_max){
+            if(ir.contains(static_cast<int>((*it2).rect.getPosition()[0]),static_cast<int>((*it2).rect.getPosition()[1]))){
                 
             r = &((*it2).rect);
             t = (*it2).text;
@@ -724,7 +764,7 @@ void Tile::render() {
             }
             
         }
-        
+        */
     }
 
     //------------|  ENEMIGOS  |------------//
@@ -819,10 +859,23 @@ void Tile::CreaMapa() {
 }
 
 void Tile::update(float x, float y) {
-    //SOLO LLAMARA A LOS UPDATE DE LOS MINIJUEGOS
     renderEngine *sfml;
     mj_t *tetris;
     boss *javi;
+
+    if(pop && lista_casillas_aux.size()>0){
+            std::cout << "CUANDO HACES POP, NO HAY STOP" << std::endl;
+        _miArray aux;
+        
+        lista_casillas.pop_front();
+        aux = lista_casillas_aux.front();
+        lista_casillas.push_back(aux);
+        lista_casillas_aux.pop_front();
+        
+        pop = false;
+    }
+
+
     int x_m = sfml->Instance().getViewCenter()[0];
     
     tetris->Instance().update(x_m);

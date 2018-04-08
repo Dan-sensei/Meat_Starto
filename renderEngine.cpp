@@ -250,6 +250,10 @@ renderEngine::rIntRect::rIntRect(int x, int y, int w, int h) : ir(x,y,w,h){
     height = h;
 }
 
+bool renderEngine::rIntRect::contains(float x, float y) {
+    return ir.contains(x,y);
+}
+
 sf::IntRect renderEngine::rIntRect::getIntRect() {
     return ir;
 }
@@ -264,6 +268,38 @@ void renderEngine::rImage::loadFromFIle(std::string path) { im.loadFromFile(path
 sf::Image renderEngine::rImage::getImage() {
     return im;
 }
+
+//============================= TEXT =============================//
+renderEngine::rText::rText(){    
+    //font.loadFromFile("assets/fonts/8-bit_pusab.ttf");
+}
+void renderEngine::rText::draw() {
+    renderEngine* sfml;
+    sfml->Instance().getWindow()->draw(txt);
+}
+void renderEngine::rText::setPosition       (float x, float y)      {   txt.setPosition(x,y);}
+void renderEngine::rText::setScale          (float fx, float fy)    {   txt.setScale(fx,fy);}
+void renderEngine::rText::setString         (std::string str)       {   txt.setString(str);}
+void renderEngine::rText::setCharacterSize  (int s)                 {   txt.setCharacterSize(s);}
+void renderEngine::rText::setFont           (rFont &font)           {   txt.setFont(*font.getFont());}
+
+void renderEngine::rText::setFillColor(char c) {
+    switch(c){
+        case 't':   txt.setFillColor(sf::Color::Transparent);    break;
+        case 'r':   txt.setFillColor(sf::Color::Red);            break;
+        case 'g':   txt.setFillColor(sf::Color::Green);          break;
+        case 'b':   txt.setFillColor(sf::Color::Blue);           break;
+        case 'y':   txt.setFillColor(sf::Color::Yellow);         break;
+        case 'k':   txt.setFillColor(sf::Color::Black);          break;
+        default:    break;
+    }
+}
+
+//============================= FONT =============================//
+renderEngine::rFont::rFont() {}
+void renderEngine::rFont::loadFromFile  (std::string str)   {   font.loadFromFile(str);}
+sf::Font* renderEngine::rFont::getFont   ()                 {   return &font;}
+
 
 
 

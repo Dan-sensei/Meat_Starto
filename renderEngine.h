@@ -30,6 +30,7 @@ public:
             rIntRect();                             //CONSTRUCTOR 1 (NO UTILIZAR)
             rIntRect(int x, int y, int w, int h);   //CONSTRUCTOR 2
             
+            bool contains(float x, float y);        //TRUE: INTRECT CONTIENE AL PUNTO P(X,Y)
             int left;
             int top;
             int widht;
@@ -183,6 +184,34 @@ public:
             std::array<float,2> getPosition();              //CONSEGUIR POSICION
         private:
             sf::RectangleShape rs;
+    };
+    
+    class rFont {
+        friend class renderEngine;
+        public:
+            rFont();
+            
+            void loadFromFile(std::string str);
+        private:
+            sf::Font* getFont();
+            sf::Font font;
+    };
+    
+    class rText {
+        public:
+            rText();
+            
+            void draw();
+            void setPosition(float x,float y);
+            void setFillColor(char c);
+            void setScale(float fx, float fy);
+            void setString(std::string str);
+            void setCharacterSize(int s);
+            void setFont(rFont &font);
+            
+        private:
+            sf::Text txt;
+            
     };
     
     //METODOS PUBLICOS

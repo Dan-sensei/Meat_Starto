@@ -87,8 +87,19 @@ int main(int argc, char** argv) {
     float accumulator = 0.0f;
     masterClock.restart();
 
+    //FPS
+    renderEngine::rClock cl_fps;
+    float lastTime = 0;
+    float currentTime;
+    float fps;
     
     while(sfml->Instance().isOpen()){
+        //<FPS>
+        currentTime = cl_fps.restart().asSeconds();
+        fps = 1.f/(currentTime/lastTime);
+        lastTime = currentTime;
+            //cout << "FPS: " << fps*60.f << endl;
+        //</FPS>
         
         renderEngine::rEvent event;
         //0x7fff11e212f0
@@ -183,7 +194,7 @@ int main(int argc, char** argv) {
         tile->Instance().render();
         
         readyPlayerOne.draw();
-
+        
         //RENDER
         
         sfml->Instance().display();

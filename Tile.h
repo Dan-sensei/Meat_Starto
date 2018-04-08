@@ -79,8 +79,15 @@ private:
         renderEngine::rRectangleShape rect;
         renderEngine::rTexture *text;
     };
-    std::list<std::vector<_cas>> lista_casillas;
-    std::list<std::vector<_cas>> lista_casillas_aux;
+    struct _miArray{
+        _cas *casillas;     //PUNTERO A ARRAY DE _cas
+        int size;           //TAMANYO
+        int aux_pop;
+    };
+    //std::list<std::vector<_cas>> lista_casillas;
+    std::list<_miArray> lista_casillas;
+    std::list<_miArray> lista_casillas_aux;
+    bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
     std::vector<_cas> vector_casillas;
     std::vector<renderEngine::rSprite> vector_enemigos;
