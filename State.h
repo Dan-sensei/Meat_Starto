@@ -16,14 +16,13 @@
 
 
 #include <iostream>
-#include <SFML/Graphics.hpp>
+#include "renderEngine.h"
 
-class Motor;
 
 class State {
 public:
     
-    virtual void Update(sf::Event event) = 0;
+    virtual void Update(renderEngine::rEvent event) = 0;
     virtual void Render() = 0;
     virtual void Handle() = 0;
 private:
