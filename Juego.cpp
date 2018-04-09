@@ -103,27 +103,8 @@ void Juego::Handle(){
         lastTime = currentTime;
             //cout << "FPS: " << fps*60.f << endl;
         //</FPS>
-        
         renderEngine::rEvent event;
-        //0x7fff11e212f0
-        while(sfml->Instance().pollEvent(event)){
-            switch(event.sfType()){
-                case renderEngine::rEvent::EventType::KeyPressed :
-                    keys[event.getKeyCode()] = true;
-                    break;
-                
-                case renderEngine::rEvent::EventType::KeyReleased :
-                    keys[event.getKeyCode()] = false;     
-                    break;
-                
-                default:
-                    break;
-            }
-            
-        }
-        //UPDATE
-
-        if(keys[16]) sfml->Instance().close();  //Cerrar
+        Update(event);
         
         // FIXED TIME STEP UPDATE
         dt = masterClock.restart().asSeconds();
@@ -210,7 +191,29 @@ void Juego::Handle(){
     }
 }
 
-void Juego::Update(sf::Event event){
+void Juego::Update(renderEngine::rEvent event){
+    renderEngine *sfml;
+        //0x7fff11e212f0
+        while(sfml->Instance().pollEvent(event)){
+            switch(event.sfType()){
+                case renderEngine::rEvent::EventType::KeyPressed :
+                    keys[event.getKeyCode()] = true;
+                    break;
+                
+                case renderEngine::rEvent::EventType::KeyReleased :
+                    keys[event.getKeyCode()] = false;     
+                    break;
+                
+                default:
+                    break;
+            }
+            
+        }
+
+        if(keys[16] || keys[36]) sfml->Instance().close();  //Cerrar
+    
+        if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());
+    /*
     renderEngine *sfml;
     while (window->pollEvent(event))
      {
@@ -252,6 +255,7 @@ void Juego::Update(sf::Event event){
          }
 
      }  
+     */
 }
 
 Juego::Juego(const Juego& orig) {
