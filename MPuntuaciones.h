@@ -26,8 +26,8 @@ public:
     MPuntuaciones(const MPuntuaciones& orig);
     virtual ~MPuntuaciones();
     
-    void Update(sf::Event event);
-    virtual void Handle(Motor* pMotor);
+    void Update(renderEngine::rEvent event);
+    virtual void Handle();
     void Render();
     
     static MPuntuaciones* Instance();//Singleton
@@ -40,6 +40,7 @@ private:
     sf::Text  titulo;
     Motor* pgame;
     sf::RenderWindow* window;
+   
     static MPuntuaciones* instance;
 
 };

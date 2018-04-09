@@ -23,11 +23,11 @@ MPuntuaciones* MPuntuaciones::Instance(){
 
 MPuntuaciones::MPuntuaciones() {
     
-        window=Motor::Instance()->window;
+    renderEngine *sfml;
     
-    float width =  window->getSize().x;
-    float height = window->getSize().y;
-  
+    float width = sfml->Instance().getSize()[0];
+    float height = sfml->Instance().getSize()[1];
+    
    if (!font.loadFromFile("resources/fuente.ttf"))
     {
             std::cerr << "Error cargando la imagen sprite.png";
@@ -54,23 +54,22 @@ MPuntuaciones::~MPuntuaciones() {
 }
 
 void MPuntuaciones::Render(){
-    
-    window->clear();
-      
-    window->draw(titulo);
-    window->draw(tsalir);
-
-    window->display();
+    renderEngine *sfml;
+    sfml->Instance().clear();
+    sfml->Instance().getWindow()->draw(titulo);
+    sfml->Instance().getWindow()->draw(tsalir);
+    sfml->Instance().getWindow()->display();
     
 }
 
 void MPuntuaciones::Handle(){
-    pgame=pMotor;
+    renderEngine *sfml;
 
-    while (window->isOpen())
+    while (sfml ->Instance().isOpen())
     {
         //Bucle de obtención de eventos
-        sf::Event event;   
+      
+        renderEngine::rEvent event;
  
         Update(event);
         Render();       
@@ -78,39 +77,42 @@ void MPuntuaciones::Handle(){
     }
 }
 
-void MPuntuaciones::Update(sf::Event event){
-       while (window->pollEvent(event))
+void MPuntuaciones::Update(renderEngine::rEvent event){
+    renderEngine *sfml;
+       while (sfml->Instance().pollEvent(event))
         {
             
-            switch(event.type){
+            switch(event.sfType()){
                 
                 //Si se recibe el evento de cerrar la ventana la cierro
                 case sf::Event::Closed:
-                    window->close();
+                    sfml->Instance().close();
                     break;
                     
                 //Se pulsó una tecla, imprimo su codigo
                 case sf::Event::KeyPressed:
                     
                     //Verifico si se pulsa alguna tecla de movimiento
-                    switch(event.key.code) {
+                    switch(event.getKeyCode()) {
                                                    
                         //Tecla Q para salir
                         case sf::Keyboard::Q:
-                            window->close();
+                            sfml->Instance().close();
                         break;
                         
                          case sf::Keyboard::Escape:
-                            pgame->ChangeState(MenuInicio::Instance());    
+                            sfml->Instance().ChangeState(MenuInicio::Instance());
+                            
                             break;
                         
                          case sf::Keyboard::Return:
-                            pgame->ChangeState(MenuInicio::Instance());    
+                            sfml->Instance().ChangeState(MenuInicio::Instance());
+                              
                             break;
              
                         //Cualquier tecla desconocida se imprime por pantalla su código
                         default:
-                            std::cout << event.key.code << std::endl;
+                            std::cout << event.getKeyCode() << std::endl;
                         break;
                               
                     }
