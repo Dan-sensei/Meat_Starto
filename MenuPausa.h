@@ -33,7 +33,7 @@ public:
     void MoveDown();
     
     virtual void Handle();
-    void Update(sf::Event event);
+    void Update(renderEngine::rEvent event);
     void Render();
     
     static MenuPausa* Instance();//Singleton

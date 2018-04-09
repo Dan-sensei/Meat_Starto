@@ -87,6 +87,7 @@ void Juego::Render(){
 }
 
 void Juego::Handle(){
+    //BUCLE DEL JUEGO
     renderEngine *sfml;
     Tile *tile;
     physicsEngine* world;

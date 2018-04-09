@@ -11,40 +11,27 @@
  * Created on 21 de febrero de 2018, 15:28
  */
 
-#include <cstdlib>
 #include <iostream>
-#include <Box2D/Box2D.h>
-#include <math.h>
-
-#include "Tile.h"
-#include "physicsEngine/physicsEngine.h"
-#include "physicsEngine/pBody.h"
+#include "MenuInicio.h"
 #include "renderEngine.h"
-#include "mj_t.h"
-#include "Player.h"
-#include "boss.h"
+#include "State.h"
+#include "MenuPausa.h"
+#include "Juego.h"
 
-#define FRAMERATE 60.f
-#define UPDATE_STEP 15.f
-#define BOX2D_STEP 1.f/FRAMERATE
-
-#define CAM_H 1250
-
-#define force 50.f*FRAMERATE/UPDATE_STEP
-#define speed 12.f
-#define jump 2500
-#define stop_mult 1.2f
-
-#define PLAYER_DIM_X 1.9f
-#define PLAYER_DIM_Y 1.9f
 
 using namespace std;
 
-/*
- * 
- */
+int state=0;
 
 int main(int argc, char** argv) {
+    renderEngine *sfml;
+    sfml->Instance();
+    
+    State* pState =  MenuInicio::Instance();
+    sfml->Instance().ChangeState(pState);  
+}
+
+/*
 
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA WINDOW
@@ -125,7 +112,7 @@ int main(int argc, char** argv) {
         
         //Spiral of death
         if(dt > 0.25f)   dt = 0.25f;
-        
+*/
         /*
         
             FRAMERATE A 60
@@ -150,7 +137,7 @@ int main(int argc, char** argv) {
         
         
         */
-        
+/*
         accumulator += dt;
         while(accumulator >= 1/UPDATE_STEP){
             //std::cout << "UPDATE-- " << accumulator << std::endl;
@@ -204,5 +191,5 @@ int main(int argc, char** argv) {
 
     }
     
-    return 0;
-}
+    return 0; 
+*/

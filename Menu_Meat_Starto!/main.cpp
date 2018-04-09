@@ -27,7 +27,7 @@ int state=0;
 int main()
 {
     //Creamos una ventana 
-   // sf::RenderWindow window(sf::VideoMode(1080, 720), "Menu");
+    //sf::RenderWindow window(sf::VideoMode(1080, 720), "Menu");
     Motor::Instance();
     State* pState =  MenuInicio::Instance();
     Motor::Instance()->ChangeState(pState);  
