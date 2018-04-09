@@ -74,7 +74,7 @@ void MenuPausa::Render(){
         sfml->Instance().getWindow()->draw(menu[i]);
     }
 
-     sfml->Instance().getWindow()->display();
+     sfml->Instance().display();
     
 }
 
