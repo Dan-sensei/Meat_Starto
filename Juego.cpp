@@ -212,7 +212,9 @@ void Juego::Update(){
             
         }
 
-        if(keys[16] || keys[36]) sfml->Instance().close();  //Cerrar
+        if(keys[16]) sfml->Instance().close();  //Cerrar
+        
+        if(keys[36])    sfml->Instance().ChangeState(MenuPausa::Instance());  
     
         if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());
     /*

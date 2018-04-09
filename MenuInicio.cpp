@@ -145,7 +145,7 @@ MenuInicio::~MenuInicio() {
 void MenuInicio::Render(){
     renderEngine *sfml;
     
-    sfml->Instance().clear('w'); 
+    sfml->Instance().clear('k'); 
     
     switch(statemenu){
         case 0:   
