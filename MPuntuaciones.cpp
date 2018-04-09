@@ -55,7 +55,7 @@ MPuntuaciones::~MPuntuaciones() {
 
 void MPuntuaciones::Render(){
     renderEngine *sfml;
-    sfml->Instance().clear();
+    sfml->Instance().clear('w');
     sfml->Instance().getWindow()->draw(titulo);
     sfml->Instance().getWindow()->draw(tsalir);
     sfml->Instance().getWindow()->display();
@@ -68,16 +68,15 @@ void MPuntuaciones::Handle(){
     while (sfml ->Instance().isOpen())
     {
         //Bucle de obtención de eventos
-      
-        renderEngine::rEvent event;
  
-        Update(event);
+        Update();
         Render();       
 
     }
 }
 
-void MPuntuaciones::Update(renderEngine::rEvent event){
+void MPuntuaciones::Update(){
+    renderEngine::rEvent event;
     renderEngine *sfml;
        while (sfml->Instance().pollEvent(event))
         {

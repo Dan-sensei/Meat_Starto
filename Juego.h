@@ -39,7 +39,7 @@ public:
     virtual ~Juego();
     
     void Render();
-    void Update(renderEngine::rEvent event);  
+    void Update();  
     virtual void Handle();
     
     static Juego* Instance();//Singleton

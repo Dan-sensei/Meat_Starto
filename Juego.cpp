@@ -104,8 +104,8 @@ void Juego::Handle(){
         lastTime = currentTime;
             //cout << "FPS: " << fps*60.f << endl;
         //</FPS>
-        renderEngine::rEvent event;
-        Update(event);
+        
+        Update();
         
         // FIXED TIME STEP UPDATE
         dt = masterClock.restart().asSeconds();
@@ -192,7 +192,8 @@ void Juego::Handle(){
     }
 }
 
-void Juego::Update(renderEngine::rEvent event){
+void Juego::Update(){
+    renderEngine::rEvent event;
     renderEngine *sfml;
         //0x7fff11e212f0
         while(sfml->Instance().pollEvent(event)){

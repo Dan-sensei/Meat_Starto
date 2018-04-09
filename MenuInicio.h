@@ -36,7 +36,7 @@ public:
     void MoveUp();
     void MoveDown();
     
-    void Update(renderEngine::rEvent event);
+    void Update();
     virtual void Handle();
     void Render();
     

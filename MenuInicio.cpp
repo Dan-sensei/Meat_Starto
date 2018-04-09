@@ -38,32 +38,32 @@ MenuInicio::MenuInicio() {
     
    titulo.setFont(font);
    titulo.setCharacterSize(20);
-   titulo.setColor(sf::Color::White);
+   titulo.setFillColor(sf::Color::White);
    titulo.setString("Meat Starto!");
    titulo.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS +6)));
   
    
    menu[0].setFont(font);
    menu[0].setCharacterSize(20);
-   menu[0].setColor(sf::Color::Red);
+   menu[0].setFillColor(sf::Color::Red);
    menu[0].setString("Play");
    menu[0].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*1));
    
    menu[1].setFont(font);
    menu[1].setCharacterSize(20);
-   menu[1].setColor(sf::Color::White);
+   menu[1].setFillColor(sf::Color::White);
    menu[1].setString("Options");
    menu[1].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*2));
    
    menu[2].setFont(font);
    menu[2].setCharacterSize(20);
-   menu[2].setColor(sf::Color::White);
+   menu[2].setFillColor(sf::Color::White);
    menu[2].setString("How to play");
    menu[2].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*3));
    
    menu[3].setFont(font);
    menu[3].setCharacterSize(20);
-   menu[3].setColor(sf::Color::White);
+   menu[3].setFillColor(sf::Color::White);
    menu[3].setString("Exit");
    menu[3].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*4));
    
@@ -71,19 +71,19 @@ MenuInicio::MenuInicio() {
    /*MENU DE OPCIONES*/
    titulo2.setFont(font);
    titulo2.setCharacterSize(20);
-   titulo2.setColor(sf::Color::White);
+   titulo2.setFillColor(sf::Color::White);
    titulo2.setString("Options");
    titulo2.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS +5)));
    
    menuop[0].setFont(font);
    menuop[0].setCharacterSize(20);
-   menuop[0].setColor(sf::Color::Red);
+   menuop[0].setFillColor(sf::Color::Red);
    menuop[0].setString("Sound");
    menuop[0].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS2 +1)*1));
    
    menuop[1].setFont(font);
    menuop[1].setCharacterSize(20);
-   menuop[1].setColor(sf::Color::White);
+   menuop[1].setFillColor(sf::Color::White);
    menuop[1].setString("Exit");
    menuop[1].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS2 +1)*2));
    
@@ -91,25 +91,25 @@ MenuInicio::MenuInicio() {
    /*Menu players*/
    titulo3.setFont(font);
    titulo3.setCharacterSize(20);
-   titulo3.setColor(sf::Color::White);
+   titulo3.setFillColor(sf::Color::White);
    titulo3.setString("Players");
    titulo3.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS3 +5)));
    
    menuplayer[0].setFont(font);
    menuplayer[0].setCharacterSize(20);
-   menuplayer[0].setColor(sf::Color::Red);
+   menuplayer[0].setFillColor(sf::Color::Red);
    menuplayer[0].setString("Play" );
    menuplayer[0].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS3 +1)*1));
    
    menuplayer[1].setFont(font);
    menuplayer[1].setCharacterSize(20);
-   menuplayer[1].setColor(sf::Color::White);
+   menuplayer[1].setFillColor(sf::Color::White);
    menuplayer[1].setString("Players "  + std::to_string(numplayers));
    menuplayer[1].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS3 +1)*2));
    
    menuplayer[2].setFont(font);
    menuplayer[2].setCharacterSize(20);
-   menuplayer[2].setColor(sf::Color::White);
+   menuplayer[2].setFillColor(sf::Color::White);
    menuplayer[2].setString("Exit");
    menuplayer[2].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS3 +1)*3));
    
@@ -117,13 +117,13 @@ MenuInicio::MenuInicio() {
    /*How to play*/
    titulo4.setFont(font);
    titulo4.setCharacterSize(20);
-   titulo4.setColor(sf::Color::White);
+   titulo4.setFillColor(sf::Color::White);
    titulo4.setString("How to play");
    titulo4.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS +5)));
    
    menuhow.setFont(font);
    menuhow.setCharacterSize(20);
-   menuhow.setColor(sf::Color::Red);
+   menuhow.setFillColor(sf::Color::Red);
    menuhow.setString("Exit");
    menuhow.setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*4));
    
@@ -149,26 +149,26 @@ void MenuInicio::Render(){
     
     switch(statemenu){
         case 0:   
-            sfml->Instance.getWindow()->draw(titulo);
+            sfml->Instance().getWindow()->draw(titulo);
             for(int i=0; i<MAX_NUMBER_OF_ITEMS;i++){
-                sfml->Instance.getWindow()->draw(menu[i]);
+                sfml->Instance().getWindow()->draw(menu[i]);
             }
             break;
         case 1:   
-            sfml->Instance.getWindow()->draw(titulo2);
+            sfml->Instance().getWindow()->draw(titulo2);
             for(int i=0; i<MAX_NUMBER_OF_ITEMS2;i++){
-                sfml->Instance.getWindow()->draw(menuop[i]);
+                sfml->Instance().getWindow()->draw(menuop[i]);
             }
             break;  
         case 2:
-            sfml->Instance.getWindow()->draw(titulo3);
+            sfml->Instance().getWindow()->draw(titulo3);
             for(int i=0; i<MAX_NUMBER_OF_ITEMS3;i++){
-                sfml->Instance.getWindow()->draw(menuplayer[i]);
+                sfml->Instance().getWindow()->draw(menuplayer[i]);
             }
             break;
         case 3:
             sfml->Instance().getWindow()->draw(titulo4);
-            sfml->Instance.getWindow()->draw(menuhow);
+            sfml->Instance().getWindow()->draw(menuhow);
             break;
             
     }
@@ -181,23 +181,23 @@ void MenuInicio::MoveUp(){
     switch(statemenu){
         case 0:
             if(selectedItemIndex-1>=0){
-                menu[selectedItemIndex].setColor(sf::Color::White);
+                menu[selectedItemIndex].setFillColor(sf::Color::White);
                 selectedItemIndex--;
-                menu[selectedItemIndex].setColor(sf::Color::Red);
+                menu[selectedItemIndex].setFillColor(sf::Color::Red);
             }
             break;
         case 1:
             if(selectedItemIndex2-1>=0){
-                menuop[selectedItemIndex2].setColor(sf::Color::White);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
                 selectedItemIndex2--;
-                menuop[selectedItemIndex2].setColor(sf::Color::Red);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
             }
             break;
         case 2:
             if(selectedItemIndex3-1>=0){
-                menuplayer[selectedItemIndex3].setColor(sf::Color::White);
+                menuplayer[selectedItemIndex3].setFillColor(sf::Color::White);
                 selectedItemIndex3--;
-                menuplayer[selectedItemIndex3].setColor(sf::Color::Red);
+                menuplayer[selectedItemIndex3].setFillColor(sf::Color::Red);
             }
             break;
             
@@ -209,39 +209,40 @@ void MenuInicio::MoveDown(){
     switch(statemenu){
         case 0:
             if(selectedItemIndex+1<MAX_NUMBER_OF_ITEMS){
-                menu[selectedItemIndex].setColor(sf::Color::White);
+                menu[selectedItemIndex].setFillColor(sf::Color::White);
                 selectedItemIndex++;
-                menu[selectedItemIndex].setColor(sf::Color::Red);
+                menu[selectedItemIndex].setFillColor(sf::Color::Red);
             }
             break;
         case 1:
             if(selectedItemIndex2+1<MAX_NUMBER_OF_ITEMS2){
-                menuop[selectedItemIndex2].setColor(sf::Color::White);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
                 selectedItemIndex2++;
-                menuop[selectedItemIndex2].setColor(sf::Color::Red);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
             }
             break;
         case 2:
             if(selectedItemIndex3+1<MAX_NUMBER_OF_ITEMS3){
-                menuplayer[selectedItemIndex3].setColor(sf::Color::White);
+                menuplayer[selectedItemIndex3].setFillColor(sf::Color::White);
                 selectedItemIndex3++;
-                menuplayer[selectedItemIndex3].setColor(sf::Color::Red);
+                menuplayer[selectedItemIndex3].setFillColor(sf::Color::Red);
             }
             break;
     }
 }
 
-void MenuInicio::Update(renderEngine::rEvent event){
+void MenuInicio::Update(){
+    renderEngine::rEvent event;
     renderEngine *sfml;
             
-       while (sfml->Instance.pollEvent(event))
+       while (sfml->Instance().pollEvent(event))
         {
             
             switch(event.sfType()){
                 
                 //Si se recibe el evento de cerrar la ventana la cierro
                 case sf::Event::Closed:
-                    sfml->Instance.close();
+                    sfml->Instance().close();
                     break;
                     
                 //Se pulsó una tecla, imprimo su codigo
@@ -260,7 +261,7 @@ void MenuInicio::Update(renderEngine::rEvent event){
 
                         //Tecla Q para salir
                         case sf::Keyboard::Q:
-                            sfml->Instance.close();
+                            sfml->Instance().close();
                         break;
                         
                         case sf::Keyboard::Return:
@@ -284,7 +285,7 @@ void MenuInicio::Update(renderEngine::rEvent event){
 
                                         case 3:
                                             std::cout<<"Exit pressed"<< std::endl;
-                                            sfml->Instance.close();
+                                            sfml->Instance().close();
                                             break;                                            
 
                                     }
@@ -363,9 +364,8 @@ void MenuInicio::Handle(){
     while (sfml->Instance().isOpen())
     {
         //Bucle de obtención de eventos
-        renderEngine::rEvent event;
  
-        Update(event);
+        Update();
         Render();       
 
     }

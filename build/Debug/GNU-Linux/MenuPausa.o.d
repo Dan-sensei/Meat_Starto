@@ -1,5 +1,5 @@
-build/Debug/GNU-Linux/main.o: main.cpp /usr/include/tinyxml2.h \
- MenuInicio.h State.h renderEngine.h MenuPausa.h Juego.h MPuntuaciones.h \
+build/Debug/GNU-Linux/MenuPausa.o: MenuPausa.cpp /usr/include/tinyxml2.h \
+ MenuPausa.h State.h renderEngine.h MenuInicio.h Juego.h MPuntuaciones.h \
  Tile.h AssetManager.h mj_t.h physicsEngine/physicsEngine.h \
  physicsEngine/pBody.h physicsEngine/pConverter.h physicsEngine/pBody.h \
  boss.h NPCs/NPC.h NPCs/../AssetManager.h NPCs/../renderEngine.h \
@@ -8,13 +8,13 @@ build/Debug/GNU-Linux/main.o: main.cpp /usr/include/tinyxml2.h \
 
 /usr/include/tinyxml2.h:
 
-MenuInicio.h:
+MenuPausa.h:
 
 State.h:
 
 renderEngine.h:
 
-MenuPausa.h:
+MenuInicio.h:
 
 Juego.h:
 

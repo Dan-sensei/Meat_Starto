@@ -94,7 +94,8 @@ void MenuPausa::MoveDown(){
     }
 }
 
-void MenuPausa::Update(renderEngine::rEvent event){
+void MenuPausa::Update(){
+    renderEngine::rEvent event;
     renderEngine *sfml;
     
        while (sfml->Instance().pollEvent(event))
@@ -160,9 +161,8 @@ void MenuPausa::Handle(){
     while (sfml->Instance().isOpen())
     {
         //Bucle de obtención de eventos
-        renderEngine::rEvent event;   
  
-        Update(event);
+        Update();
         Render();       
 
     }

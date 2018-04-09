@@ -26,7 +26,7 @@ public:
     MPuntuaciones(const MPuntuaciones& orig);
     virtual ~MPuntuaciones();
     
-    void Update(renderEngine::rEvent event);
+    void Update();
     virtual void Handle();
     void Render();
     
@@ -38,7 +38,6 @@ private:
     sf::Font font;
     sf::Text tsalir;
     sf::Text  titulo;
-    Motor* pgame;
     sf::RenderWindow* window;
    
     static MPuntuaciones* instance;
