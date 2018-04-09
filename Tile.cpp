@@ -20,7 +20,7 @@
 #include "NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 500
+#define MAP_ITERATION 10
 
  Tile::Tile() {
 

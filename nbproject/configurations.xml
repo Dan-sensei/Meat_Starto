@@ -16,7 +16,7 @@
       <itemPath>mj_t.cpp</itemPath>
       <itemPath>mj_t.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="f3" displayName="NPCs" projectFiles="true" kind="ROOT">
+    <logicalFolder name="f3" displayName="NPCs" projectFiles="true">
       <itemPath>NPCs/NPC.cpp</itemPath>
       <itemPath>NPCs/NPC.h</itemPath>
       <itemPath>NPCs/xPlotato.cpp</itemPath>
@@ -45,6 +45,17 @@
       <itemPath>physicsEngine/contactListener.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>renderEngine.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="f4" displayName="States" projectFiles="true" kind="ROOT">
+      <itemPath>Juego.cpp</itemPath>
+      <itemPath>Juego.h</itemPath>
+      <itemPath>MPuntuaciones.cpp</itemPath>
+      <itemPath>MPuntuaciones.h</itemPath>
+      <itemPath>MenuInicio.cpp</itemPath>
+      <itemPath>MenuInicio.h</itemPath>
+      <itemPath>MenuPausa.cpp</itemPath>
+      <itemPath>MenuPausa.h</itemPath>
+      <itemPath>State.h</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -103,6 +114,22 @@
       </item>
       <item path="AssetManager.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Juego.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Juego.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MPuntuaciones.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MPuntuaciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MenuInicio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MenuInicio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MenuPausa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MenuPausa.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NPCs/NPC.h" ex="false" tool="3" flavor2="0">
@@ -114,6 +141,8 @@
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="State.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -178,6 +207,22 @@
       </item>
       <item path="AssetManager.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Juego.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Juego.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MPuntuaciones.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MPuntuaciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MenuInicio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MenuInicio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MenuPausa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MenuPausa.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NPCs/NPC.h" ex="false" tool="3" flavor2="0">
@@ -189,6 +234,8 @@
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="State.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
       </item>

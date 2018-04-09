@@ -15,6 +15,7 @@
 #define RENDERENGINE_H
 
 #include <SFML/Graphics.hpp>
+#include "State.h"
 class renderEngine {
 public:
     //<SINGLETON>
@@ -224,8 +225,10 @@ public:
     
     void setView(rView v);                          //ESTABLECER UNA VISTA
     bool pollEvent(rEvent &e);                      //PARA CONTROLAR LOS EVENTOS
+    void ChangeState(State* pState);                //CAMBIO DE ESTADO
     
-    
+    //CAMBIARLO!!!
+    sf::RenderWindow* getWindow();                  //DEVUELVE LA VENTANA A LAS CLASES Nested DE renderEngine
 private:
     
     //<SINGLETON>
@@ -234,8 +237,8 @@ private:
     void operator=(renderEngine const& orig);
     //</SINGLETON>
     
-    sf::RenderWindow* getWindow();                  //DEVUELVE LA VENTANA A LAS CLASES Nested DE renderEngine
-
+    
+    State* _state;                                  //ESTADO ACTUAL
     sf::RenderWindow window;
 };
 

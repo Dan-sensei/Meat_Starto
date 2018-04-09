@@ -22,6 +22,8 @@ window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
+    _state = 0;
+    
 }
 
 void                renderEngine::display   ()          {   window.display();}
@@ -31,7 +33,12 @@ void                renderEngine::close     ()          {   window.close();}
 bool                renderEngine::isOpen    ()          {   return window.isOpen();}   //TRUE SI LA VENTANA ESTA ABIERTA
 sf::RenderWindow*   renderEngine::getWindow ()          {   return &window;}   
 bool                renderEngine::pollEvent (rEvent &e) {   return window.pollEvent(*e.getEvent());}
-
+void renderEngine::ChangeState(State* pState) {
+    _state = pState;
+    if(NULL != _state){
+        _state->Handle();
+    }
+}
 void renderEngine::clear(char c) {              //COLOR DEL CLEAR
     switch(c){
         case 'w':   window.clear(sf::Color::White);       break;
