@@ -17,6 +17,7 @@
 
 #include "Tile.h"
 #include "physicsEngine/physicsEngine.h"
+#include "NPCs/xPlotato.h"
 
 #define SCALE 65.f
 #define MAP_ITERATION 500
@@ -609,7 +610,7 @@ void Tile::LeeNodo(std::string const& node_path) {
         int height = 0;
         std::random_device rd;
         std::default_random_engine gen(rd());
-
+        
 
         while (obj) {
             obj->QueryIntAttribute("x", &xCoord);
@@ -619,16 +620,15 @@ void Tile::LeeNodo(std::string const& node_path) {
             obj->QueryAttribute("height", &height);
 
             std::uniform_int_distribution<int> distribution(xCoord, xCoord + width);
-
-            renderEngine::rSprite npc;
-            npc.setTexture(AssetManager::GetTexture("assets/BOSS.jpg"));
-            npc.setOrigin(AssetManager::GetTexture("assets/BOSS.jpg").getXSize() / 2, AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2);
-
+            
             int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
 
-            npc.setPosition(x_max + distribution(gen), y_spawn);
-            vector_enemigos.push_back(npc);
 
+            vector_enemigos.push_back(new xPlotato("assets/kawaii_potato.png", distribution(gen), y_spawn, xCoord, xCoord+width));
+            std::cout << "CREADO ";
+            std::cout << vector_enemigos.size() << std::endl;
+            
+            
             obj = obj->NextSiblingElement("object");
         }
     }
@@ -691,7 +691,7 @@ void Tile::CreaCasilla(int id, int x, int y) {
 
 }
 
-void Tile::render() {
+void Tile::render(float tick_) {
     renderEngine *sfml;
 
     //------------|  CASILLAS DEL MAPA  |------------//
@@ -769,8 +769,9 @@ void Tile::render() {
 
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < vector_enemigos.size(); j++)
-        if(vector_enemigos[j].getPosition()[0] > x_min && vector_enemigos[j].getPosition()[0] < x_max){
-            vector_enemigos[j].draw();
+        if(vector_enemigos[j]->getXPosition() > x_min && vector_enemigos[j]->getXPosition() < x_max){
+            vector_enemigos[j]->interpola(tick_);
+            vector_enemigos[j]->draw();
     }
     
     //DIBUJA LOS BORDES DE LAS COLISIONES. SOLO PARA DE BUGGEO
@@ -795,7 +796,7 @@ void Tile::render() {
 void Tile::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
-        std::cout << path << std::endl;
+    //std::cout << path << std::endl;
     
     LeeNodo(path);
     
@@ -824,7 +825,7 @@ void Tile::CreaMapa() {
             std::string rand = std::to_string(r);
             path = path.operator +=(rand);
             path = path.operator +=(".tmx");
-                std::cout << path << std::endl;
+                //std::cout << path << std::endl;
             
             LeeNodo(path);
 
@@ -852,7 +853,7 @@ void Tile::CreaMapa() {
     javi->Instance().init(x_max);
     
     path = "tiles_definitivo/nodos/fin.tmx";
-        std::cout << path << std::endl;
+        //std::cout << path << std::endl;
 
     LeeNodo(path);
     
@@ -881,6 +882,21 @@ void Tile::update(float x, float y) {
     tetris->Instance().update(x_m);
     javi->Instance().update(x_m,x,y);
     
+}
+
+void Tile::updateNPCs(){
+    for(int i = 0; i < vector_enemigos.size(); i++)
+        vector_enemigos[i]->update();
+}
+
+void Tile::preStateNPCs(){
+    for(int i = 0; i < vector_enemigos.size(); i++)
+        vector_enemigos[i]->preState();
+}
+
+void Tile::newStateNPCs(){
+    for(int i = 0; i < vector_enemigos.size(); i++)
+        vector_enemigos[i]->newState();
 }
 
 

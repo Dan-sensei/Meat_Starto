@@ -16,6 +16,12 @@
       <itemPath>mj_t.cpp</itemPath>
       <itemPath>mj_t.h</itemPath>
     </logicalFolder>
+    <logicalFolder name="f3" displayName="NPCs" projectFiles="true" kind="ROOT">
+      <itemPath>NPCs/NPC.cpp</itemPath>
+      <itemPath>NPCs/NPC.h</itemPath>
+      <itemPath>NPCs/xPlotato.cpp</itemPath>
+      <itemPath>NPCs/xPlotato.h</itemPath>
+    </logicalFolder>
     <logicalFolder name="f1" displayName="physicsEngine" projectFiles="true">
       <itemPath>physicsEngine/pBody.cpp</itemPath>
       <itemPath>physicsEngine/pBody.h</itemPath>
@@ -97,6 +103,14 @@
       </item>
       <item path="AssetManager.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NPCs/NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NPCs/xPlotato.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NPCs/xPlotato.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
@@ -163,6 +177,14 @@
       <item path="AssetManager.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="AssetManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NPCs/NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NPCs/xPlotato.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NPCs/xPlotato.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>

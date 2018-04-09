@@ -39,7 +39,7 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         b2Body* getBody();                                  // Devuelve la variable Body de Box2D
 
     private:
-
+        
         b2Body* body;                                       //Variable b2Body de Box2D
 };
 

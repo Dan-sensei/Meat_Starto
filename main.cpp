@@ -77,8 +77,6 @@ int main(int argc, char** argv) {
     
     sfml->Instance().setView(view);
     
-    
-    
     renderEngine::rClock masterClock;
     renderEngine::rClock animationClock;
     
@@ -153,12 +151,15 @@ int main(int argc, char** argv) {
         
         */
         
-        accumulator+=dt;
+        accumulator += dt;
         while(accumulator >= 1/UPDATE_STEP){
             //std::cout << "UPDATE-- " << accumulator << std::endl;
             
             readyPlayerOne.preState();  
+            tile->Instance().preStateNPCs();
+            
             readyPlayerOne.movement();
+            tile->Instance().updateNPCs();
             
             // BUCLE DE STEPS DE BOX2D
             for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
@@ -171,7 +172,7 @@ int main(int argc, char** argv) {
             
             // ACTUALIZO EL ESTADO ACTUAL
             readyPlayerOne.newState();
-            
+            tile->Instance().newStateNPCs();
         }
         
         // TICK PARA LA INTERPOLAÇAO
@@ -185,13 +186,14 @@ int main(int argc, char** argv) {
         
         //ACTUALIÇAÇAO
         readyPlayerOne.interpola(tick);
+        
         if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
             view.setCenter(readyPlayerOne.getXPosition(),CAM_H);
         tile->Instance().update(readyPlayerOne.getXPosition(),readyPlayerOne.getYPosition());
         
         //DRAW
         sfml->Instance().setView(view);
-        tile->Instance().render();
+        tile->Instance().render(tick);
         
         readyPlayerOne.draw();
         

@@ -23,6 +23,8 @@
 #include "renderEngine.h"
 #include "mj_t.h"
 #include "boss.h"
+#include "NPCs/NPC.h"
+#include "NPCs/xPlotato.h"
 
 class Tile {
 public:
@@ -33,8 +35,11 @@ public:
     }
     
     void CreaMapa();
-    void render();
+    void render(float tick_);
     void update(float x, float y);
+    void updateNPCs();
+    void preStateNPCs();
+    void newStateNPCs();
     
     virtual ~Tile();
     
@@ -90,7 +95,7 @@ private:
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
     std::vector<_cas> vector_casillas;
-    std::vector<renderEngine::rSprite> vector_enemigos;
+    std::vector<NPC*> vector_enemigos;
     int v[15][15];
     
     //TETRIS

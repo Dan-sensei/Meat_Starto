@@ -37,6 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Animator.o \
 	${OBJECTDIR}/AssetManager.o \
+	${OBJECTDIR}/NPCs/NPC.o \
+	${OBJECTDIR}/NPCs/xPlotato.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/Tile.o \
 	${OBJECTDIR}/boss.o \
@@ -82,6 +84,16 @@ ${OBJECTDIR}/AssetManager.o: AssetManager.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AssetManager.o AssetManager.cpp
+
+${OBJECTDIR}/NPCs/NPC.o: NPCs/NPC.cpp
+	${MKDIR} -p ${OBJECTDIR}/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPCs/NPC.o NPCs/NPC.cpp
+
+${OBJECTDIR}/NPCs/xPlotato.o: NPCs/xPlotato.cpp
+	${MKDIR} -p ${OBJECTDIR}/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPCs/xPlotato.o NPCs/xPlotato.cpp
 
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
