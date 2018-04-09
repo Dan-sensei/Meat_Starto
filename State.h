@@ -16,9 +16,8 @@
 
 
 #include <iostream>
-#include <SFML/Graphics.hpp>
-
 #include "renderEngine.h"
+
 
 class State {
 public:

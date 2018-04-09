@@ -36,8 +36,8 @@ public:
     void MoveUp();
     void MoveDown();
     
-    void Update(sf::Event event);
-    virtual void Handle(Motor* pMotor);
+    void Update(renderEngine::rEvent event);
+    virtual void Handle();
     void Render();
     
     
@@ -61,7 +61,6 @@ private:
     sf::Text titulo3;
     sf::Text titulo4;
     sf::Text menuhow;
-    Motor* pgame;
     sf::RenderWindow* window;
     static MenuInicio* instance;
 
