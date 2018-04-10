@@ -38,20 +38,20 @@ MenuPausa::MenuPausa() {
     
    titulo.setFont(font);
    titulo.setCharacterSize(20);
-   titulo.setColor(sf::Color::Black);
+   titulo.setFillColor(sf::Color::Black);
    titulo.setString("Pause");
    titulo.setPosition(sf::Vector2f(2*width/5, height/(NUMBER_OF_ITEMS +6)));
   
    
    menu[0].setFont(font);
    menu[0].setCharacterSize(20);
-   menu[0].setColor(sf::Color::Red);
+   menu[0].setFillColor(sf::Color::Red);
    menu[0].setString("Continue");
    menu[0].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*2));
    
    menu[1].setFont(font);
    menu[1].setCharacterSize(20);
-   menu[1].setColor(sf::Color::White);
+   menu[1].setFillColor(sf::Color::White);
    menu[1].setString("Exit");
    menu[1].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*3));
    
@@ -67,7 +67,7 @@ MenuPausa::~MenuPausa() {
 void MenuPausa::Render(){
     
     renderEngine *sfml;
-    sfml->Instance().clear('y');  
+    sfml->Instance().clear('k');  
     
     sfml->Instance().getWindow()->draw(titulo);
     for(int i=0; i<NUMBER_OF_ITEMS;i++){
@@ -80,17 +80,17 @@ void MenuPausa::Render(){
 
 void MenuPausa::MoveUp(){
     if(selectedItemIndex-1>=0){
-        menu[selectedItemIndex].setColor(sf::Color::White);
+        menu[selectedItemIndex].setFillColor(sf::Color::White);
         selectedItemIndex--;
-        menu[selectedItemIndex].setColor(sf::Color::Red);
+        menu[selectedItemIndex].setFillColor(sf::Color::Red);
     } 
 }
 
 void MenuPausa::MoveDown(){
     if(selectedItemIndex+1<NUMBER_OF_ITEMS){
-        menu[selectedItemIndex].setColor(sf::Color::White);
+        menu[selectedItemIndex].setFillColor(sf::Color::White);
         selectedItemIndex++;
-        menu[selectedItemIndex].setColor(sf::Color::Red);
+        menu[selectedItemIndex].setFillColor(sf::Color::Red);
     }
 }
 
@@ -131,8 +131,8 @@ void MenuPausa::Update(){
 
                             switch(selectedItemIndex){
                                 case 0:
-                                    sfml->Instance().ChangeState(Juego::Instance());
                                     std::cout<<"Continue pressed"<< std::endl;
+                                    sfml->Instance().ChangeState(Juego::Instance());
                                     break;
 
                                 case 1:

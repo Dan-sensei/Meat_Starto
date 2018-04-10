@@ -28,7 +28,7 @@
 #define PLAYER_DIM_X 1.9f
 #define PLAYER_DIM_Y 1.9f
 
-Juego* Juego::instance=NULL;
+Juego* Juego::instance;
 Juego* Juego::Instance(){
       if(instance == NULL)
           instance = new Juego();
@@ -70,6 +70,7 @@ Juego::Juego(){
     
     //JUGADORES
     readyPlayerOne = new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys);
+    
 }
 
 
@@ -116,9 +117,10 @@ void Juego::Update(){
     mj_t            *tetris;
     boss            *javi;
     
+   
     renderEngine::rEvent event;
     
-    //0x7fff11e212f0
+        //0x7fff11e212f0
     while(sfml->Instance().pollEvent(event)){
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::KeyPressed :
@@ -136,11 +138,16 @@ void Juego::Update(){
 
     if(keys[16])    sfml->Instance().close();                                   //Q
 
-    if(keys[36])    sfml->Instance().ChangeState(MenuPausa::Instance());        //ESC
+    if(keys[36]){   
+        keys[36]=false;                                                         //ESC
+        sfml->Instance().ChangeState(MenuPausa::Instance());    
+    }   
 
-    if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());    //P
+    if(keys[15]){   
+        keys[15]=false;
+        sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
+    } 
     
-
     // FIXED TIME STEP UPDATE
     dt = masterClock.restart().asSeconds();
 

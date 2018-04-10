@@ -36,13 +36,13 @@ MPuntuaciones::MPuntuaciones() {
     
    titulo.setFont(font);
    titulo.setCharacterSize(20);
-   titulo.setColor(sf::Color::White);
+   titulo.setFillColor(sf::Color::White);
    titulo.setString("Puntuaciones");
    titulo.setPosition(sf::Vector2f(2*width/5, height/6));
    
    tsalir.setFont(font);
    tsalir.setCharacterSize(20);
-   tsalir.setColor(sf::Color::Red);
+   tsalir.setFillColor(sf::Color::Red);
    tsalir.setString("Exit");
    tsalir.setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*4));
 }
