@@ -75,7 +75,7 @@ Juego::Juego(){
 
 
 void Juego::Render(){
-    
+    /*
     window->clear();
       
     window->draw(titulo);
@@ -83,6 +83,7 @@ void Juego::Render(){
     window->draw(titulo3);
 
     window->display();
+    */
     
 }
 
@@ -102,9 +103,10 @@ void Juego::Handle(){
         currentTime = cl_fps.restart().asSeconds();
         fps = 1.f/(currentTime/lastTime);
         lastTime = currentTime;
-            //cout << "FPS: " << fps*60.f << endl;
+            //std::cout << "FPS: " << fps*60.f << std::endl;
         //</FPS>
         
+        //EVENTOS
         Update();
         
         // FIXED TIME STEP UPDATE
@@ -165,30 +167,24 @@ void Juego::Handle(){
         // TICK PARA LA INTERPOLAÇAO
         double tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
         
-        //std::cout << "RENDER == " << tick << std::endl;
+            //std::cout << "RENDER == " << tick << std::endl;
+        
         sfml->Instance().clear('w');
         
-        
-        readyPlayerOne->update(animationClock.restart());
-        
         //ACTUALIÇAÇAO
+        readyPlayerOne->update(animationClock.restart());
         readyPlayerOne->interpola(tick);
         
         if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
             view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
         tile->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
-        
-        //DRAW
-        sfml->Instance().setView(*view);
-        tile->Instance().render(tick);
-        
-        readyPlayerOne->draw();
+        readyPlayerOne->intersectsPinchos();
         
         //RENDER
-        
+        sfml->Instance().setView(*view);
+        tile->Instance().render(tick);
+        readyPlayerOne->draw();
         sfml->Instance().display();
-
-
     }
 }
 
@@ -200,10 +196,12 @@ void Juego::Update(){
             switch(event.sfType()){
                 case renderEngine::rEvent::EventType::KeyPressed :
                     keys[event.getKeyCode()] = true;
+                    std::cout << event.getKeyCode() << std::endl;
                     break;
                 
                 case renderEngine::rEvent::EventType::KeyReleased :
                     keys[event.getKeyCode()] = false;     
+                    std::cout << event.getKeyCode() << std::endl;
                     break;
                 
                 default:
@@ -212,11 +210,11 @@ void Juego::Update(){
             
         }
 
-        if(keys[16]) sfml->Instance().close();  //Cerrar
+        if(keys[16])    sfml->Instance().close();  //Cerrar
         
-        if(keys[36])    sfml->Instance().ChangeState(MenuPausa::Instance());  
+        if(keys[36])    sfml->Instance().ChangeState(MenuPausa::Instance());  //ESC
     
-        if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());
+        if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());    //P
     /*
     renderEngine *sfml;
     while (window->pollEvent(event))

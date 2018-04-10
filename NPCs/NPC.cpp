@@ -41,7 +41,7 @@ void NPC::newState(){
 }
 
 void NPC::interpola(float tick_){
-    std::cout << tick_ << std::endl;
+    //std::cout << tick_ << std::endl;
     
     // CALCULO LAS POSICIONES INTERPOLADAS DE ACUERDO AL TICK
     float x = previous.x *(1-tick_) + actual.x*tick_;

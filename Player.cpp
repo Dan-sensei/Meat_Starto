@@ -18,6 +18,7 @@
 #include "Animator.h"
 #include "AssetManager.h"
 #include "physicsEngine/physicsEngine.h"
+#include "Tile.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -256,4 +257,18 @@ float Player::getXPosition(){
 
 float Player::getYPosition() {
     return  sprite.getPosition()[1];
+}
+
+void Player::intersectsPinchos() {
+    Tile *tile;
+    
+    for(std::list<std::vector<renderEngine::rRectangleShape>>::iterator it=(*tile->Instance().getPinchos()).begin(); it!=(*tile->Instance().getPinchos()).end(); ++it){
+        for(int i=0 ; i<(*it).size() ; i++){
+            if(sprite.intersects( (*it)[i] )){
+                std::cout << "ZASCA" << std::endl;
+            }
+        }
+    }
+    
+    
 }

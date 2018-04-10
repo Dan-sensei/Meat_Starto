@@ -59,6 +59,8 @@ public:
     void preState();
     void newState();
     
+    void intersectsPinchos();
+    
 private:
     int id;
     int level;

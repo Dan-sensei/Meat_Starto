@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "renderEngine.h"
+#include <iostream>
 
 #define FRAMERATE 60
 
@@ -97,6 +98,9 @@ void renderEngine::rSprite::setPosition (float x, float y)  {   sprite.setPositi
 void renderEngine::rSprite::draw() {
     renderEngine* sfml;
     sfml->Instance().getWindow()->draw(sprite);
+}
+bool renderEngine::rSprite::intersects(renderEngine::rRectangleShape rs) {
+    return sprite.getGlobalBounds().intersects(rs.getRectShape().getGlobalBounds());
 }
 
 std::array<float, 2> renderEngine::rSprite::getPosition() {
@@ -240,6 +244,10 @@ std::array<float, 2> renderEngine::rRectangleShape::getPosition() {
     ret[1] = rs.getPosition().y;
     
     return ret;
+}
+
+sf::RectangleShape renderEngine::rRectangleShape::getRectShape() {
+    return rs;
 }
 
 //============================= INTRECT =============================//

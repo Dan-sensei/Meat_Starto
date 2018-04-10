@@ -69,6 +69,28 @@ public:
             sf::Texture text;
     };
     
+    class rRectangleShape {
+        friend class renderEngine;
+        public:
+            rRectangleShape();
+            rRectangleShape(float x, float y);
+            
+            void draw();                                    //DIBUJAR
+            void move(float x, float y);                    //MOVER
+            
+            void setOrigin(float x, float y);               //ESTABLECER EL PUNTO CENTRAL
+            void setTexture(rTexture &t);                   //ESTABLECER TEXTURA
+            void setPosition(float x, float y);             //ESTABLECER POSICION
+            void setFillColor(char c);                      //ESTABLECER UN COLOR
+            void setSize(float x, float y);                 //ESTABLECER UN TAMANYO
+            
+            std::array<float,2> getSize();                  //DEVUELVE EL TAMANYO
+            std::array<float,2> getPosition();              //CONSEGUIR POSICION
+        private:
+            sf::RectangleShape getRectShape();
+            sf::RectangleShape rs;
+    };
+    
     class rSprite {
         public:
             rSprite();                                  //CONSTRUCTOR
@@ -84,6 +106,7 @@ public:
             float getRotation();
             void setTextureRect(sf::IntRect& rect);
             std::array<float,2> getPosition();          //DEVUELVE LA POSICION
+            bool intersects(renderEngine::rRectangleShape rs);  //COLISION DE SFML PARA LOS PINCHOS
         private:
             sf::Sprite sprite;
     };
@@ -165,26 +188,6 @@ public:
             
         private:
             sf::ConvexShape cs;
-    };
-    
-    class rRectangleShape {
-        public:
-            rRectangleShape();
-            rRectangleShape(float x, float y);
-            
-            void draw();                                    //DIBUJAR
-            void move(float x, float y);                    //MOVER
-            
-            void setOrigin(float x, float y);               //ESTABLECER EL PUNTO CENTRAL
-            void setTexture(rTexture &t);                   //ESTABLECER TEXTURA
-            void setPosition(float x, float y);             //ESTABLECER POSICION
-            void setFillColor(char c);                      //ESTABLECER UN COLOR
-            void setSize(float x, float y);                 //ESTABLECER UN TAMANYO
-            
-            std::array<float,2> getSize();                  //DEVUELVE EL TAMANYO
-            std::array<float,2> getPosition();              //CONSEGUIR POSICION
-        private:
-            sf::RectangleShape rs;
     };
     
     class rFont {

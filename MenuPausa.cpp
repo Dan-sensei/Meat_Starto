@@ -38,7 +38,7 @@ MenuPausa::MenuPausa() {
     
    titulo.setFont(font);
    titulo.setCharacterSize(20);
-   titulo.setColor(sf::Color::White);
+   titulo.setColor(sf::Color::Black);
    titulo.setString("Pause");
    titulo.setPosition(sf::Vector2f(2*width/5, height/(NUMBER_OF_ITEMS +6)));
   
@@ -47,13 +47,13 @@ MenuPausa::MenuPausa() {
    menu[0].setCharacterSize(20);
    menu[0].setColor(sf::Color::Red);
    menu[0].setString("Continue");
-   menu[0].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*1));
+   menu[0].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*2));
    
    menu[1].setFont(font);
    menu[1].setCharacterSize(20);
    menu[1].setColor(sf::Color::White);
    menu[1].setString("Exit");
-   menu[1].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*2));
+   menu[1].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*3));
    
    selectedItemIndex=0;
 }

@@ -20,7 +20,8 @@
 #include "NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 5
+#define TAM_LISTA 6
 
  Tile::Tile() {
 
@@ -654,7 +655,9 @@ void Tile::LeeNodo(std::string const& node_path) {
     
     
     //HA LEIDO UN NODO
-    if(lista_casillas.size()<6){
+    
+    //GUARDO LAS CASILLAS
+    if(lista_casillas.size()<TAM_LISTA){
         lista_casillas.push_back(a_aux);
         vector_casillas.clear();
             //std::cout << "Guardo en lista_casillas" << std::endl;
@@ -664,9 +667,18 @@ void Tile::LeeNodo(std::string const& node_path) {
         vector_casillas.clear();
             //std::cout << "Guardo en lista_casillas_aux" << std::endl;
     }
-    //lista_casillas.push_back(vector_casillas);
-    //lista_casillas.push_back(a_aux);
     vector_casillas.clear();
+    
+    //GUARDO LOS PINCHOS
+    if(l_pinchos.size()<TAM_LISTA){
+        l_pinchos.push_back(vector_pinchos);
+        vector_pinchos.clear();
+    }
+    else{
+        l_pinchos_aux.push_back(vector_pinchos);
+        vector_pinchos.clear();
+    }
+    vector_pinchos.clear();
     
 }
 
@@ -680,6 +692,18 @@ void Tile::CreaCasilla(int id, int x, int y) {
     
     _cas aux;
     aux.id = id;
+    
+    int id2 = id-1;
+    if(id2 == 36 || id2 == 35 || id2 == 34 || id2 == 33){
+        //std::cout << id << std::endl;
+        
+        renderEngine::rRectangleShape rs;
+        rs.setSize(70,70);
+        rs.setPosition(x,y);
+        rs.setFillColor('r');
+        
+        vector_pinchos.push_back(rs);
+    }
     
     //aux.text = AssetManager::GetTexture(tiles[id-1]->path);
     //aux.text.loadFromImage(ts,tiles[id-1]->ir);
@@ -747,24 +771,10 @@ void Tile::render(float tick_) {
             
         }
         
-        if(iterator == 3 && (*it).aux_pop<sfml->Instance().getViewCenter()[0]){
+        if(iterator == TAM_LISTA/2 && (*it).aux_pop<sfml->Instance().getViewCenter()[0]){
             pop = true;
         }
         iterator++;
-        
-        /*
-        for(std::vector<_cas>::iterator it2=(*it).begin(); it2!=(*it).end(); ++it2){
-            if(ir.contains(static_cast<int>((*it2).rect.getPosition()[0]),static_cast<int>((*it2).rect.getPosition()[1]))){
-                
-            r = &((*it2).rect);
-            t = (*it2).text;
-
-            r->setTexture(*t);
-            r->draw();
-            }
-            
-        }
-        */
     }
 
     //------------|  ENEMIGOS  |------------//
@@ -774,10 +784,20 @@ void Tile::render(float tick_) {
             vector_enemigos[j]->draw();
     }
     
-    //DIBUJA LOS BORDES DE LAS COLISIONES. SOLO PARA DE BUGGEO
+    
+    //------------|  COLISIONES (DEBUG)  |------------//
     /*
     for(int i=0 ; i<objetos.size() ; i++){
         window.draw(objetos[i]);
+    }
+    */
+    
+    //------------|  PINCHOS (DEBUG)  |------------//
+    /*
+    for(std::list<std::vector<renderEngine::rRectangleShape>>::iterator it=l_pinchos.begin(); it!=l_pinchos.end(); ++it){
+        for(int i = 0 ; i<(*it).size() ; i++){
+            (*it)[i].draw();
+        }
     }
     */
     
@@ -868,10 +888,16 @@ void Tile::update(float x, float y) {
             std::cout << "CUANDO HACES POP, NO HAY STOP" << std::endl;
         _miArray aux;
         
+        //POP DE CASILLAS
         lista_casillas.pop_front();
         aux = lista_casillas_aux.front();
         lista_casillas.push_back(aux);
         lista_casillas_aux.pop_front();
+        
+        //POP DE PINCHOS
+        l_pinchos.pop_front();
+        l_pinchos.push_back(l_pinchos_aux.front());
+        l_pinchos_aux.pop_front();
         
         pop = false;
     }
@@ -882,6 +908,10 @@ void Tile::update(float x, float y) {
     tetris->Instance().update(x_m);
     javi->Instance().update(x_m,x,y);
     
+}
+
+std::list<std::vector<renderEngine::rRectangleShape>>* Tile::getPinchos() {
+    return &l_pinchos;
 }
 
 void Tile::updateNPCs(){

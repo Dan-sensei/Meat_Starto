@@ -12,11 +12,11 @@
  */
 
 #include <iostream>
-#include "MenuInicio.h"
 #include "renderEngine.h"
+#include "MenuInicio.h"
 #include "State.h"
-#include "MenuPausa.h"
 #include "Juego.h"
+#include "MenuPausa.h"
 
 
 using namespace std;

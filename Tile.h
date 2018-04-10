@@ -41,6 +41,8 @@ public:
     void preStateNPCs();
     void newStateNPCs();
     
+    std::list<std::vector<renderEngine::rRectangleShape>>* getPinchos();
+    
     virtual ~Tile();
     
 private:
@@ -94,7 +96,11 @@ private:
     std::list<_miArray> lista_casillas_aux;
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
-    std::vector<_cas> vector_casillas;
+    std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos;        //TILE ID's: 33,34,35,36
+    std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos_aux;
+    
+    std::vector<renderEngine::rRectangleShape> vector_pinchos;  //VECTOR AUXILIAR
+    std::vector<_cas> vector_casillas;                          //VECTOR AUXILIAR
     std::vector<NPC*> vector_enemigos;
     int v[15][15];
     
