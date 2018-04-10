@@ -39,7 +39,7 @@ Juego* Juego::Instance(){
 
 Juego::Juego(){
     renderEngine* sfml;
-    sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA WINDOW
+    sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
     
     physicsEngine* world;
     world->Instance();  //Creo el Singleton en la primera llamada a Instancia
@@ -50,7 +50,6 @@ Juego::Juego(){
     keys = new bool [256];
     for(int i = 0; i<256; i++) keys[i]=false;
     
-    
     //SINGLETON MUNDO
     Tile *tile;
     tile->Instance();
@@ -59,11 +58,12 @@ Juego::Juego(){
     //VISTA
     view = new renderEngine::rView(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
     view->zoom(2);
-    
     sfml->Instance().setView(*view);
     
+    //INTERPOLACION
     accumulator = 0.0f;
     masterClock.restart();
+    tick = 0.0f;
 
     //FPS
     lastTime = 0;
@@ -75,52 +75,85 @@ Juego::Juego(){
 
 
 void Juego::Render(){
-    /*
-    window->clear();
-      
-    window->draw(titulo);
-    window->draw(titulo2);
-    window->draw(titulo3);
+    renderEngine    *sfml;
+    Tile            *tile;
+    
+    sfml->Instance().clear('w');
+        
+    sfml->Instance().setView(*view);
+    tile->Instance().render(tick);
+    readyPlayerOne->draw();
 
-    window->display();
-    */
+    sfml->Instance().display();
     
 }
 
 void Juego::Handle(){
     //BUCLE DEL JUEGO
     renderEngine *sfml;
-    Tile *tile;
-    physicsEngine* world;
-    mj_t *tetris;
-    boss *javi;
-
-
-    //pgame=pMotor;
 
     while(sfml->Instance().isOpen()){
         //<FPS>
         currentTime = cl_fps.restart().asSeconds();
-        fps = 1.f/(currentTime/lastTime);
+        //fps = 1.f/(currentTime/lastTime);
+        fps = 1.f/currentTime;
         lastTime = currentTime;
-            //std::cout << "FPS: " << fps*60.f << std::endl;
+            std::cout << "FPS: " << fps << std::endl;
         //</FPS>
         
         //EVENTOS
         Update();
         
-        // FIXED TIME STEP UPDATE
-        dt = masterClock.restart().asSeconds();
-        
-        //Spiral of death
-        if(dt > 0.25f)   dt = 0.25f;
-        
-        /*
-        
+        //RENDER
+        Render();
+    }
+}
+
+void Juego::Update(){
+    renderEngine    *sfml;
+    Tile            *tile;
+    physicsEngine   *world;
+    mj_t            *tetris;
+    boss            *javi;
+    
+    renderEngine::rEvent event;
+    
+    //0x7fff11e212f0
+    while(sfml->Instance().pollEvent(event)){
+        switch(event.sfType()){
+            case renderEngine::rEvent::EventType::KeyPressed :
+                keys[event.getKeyCode()] = true;
+                break;
+            case renderEngine::rEvent::EventType::KeyReleased :
+                keys[event.getKeyCode()] = false;     
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    if(keys[16])    sfml->Instance().close();                                   //Q
+
+    if(keys[36])    sfml->Instance().ChangeState(MenuPausa::Instance());        //ESC
+
+    if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());    //P
+    
+
+    // FIXED TIME STEP UPDATE
+    dt = masterClock.restart().asSeconds();
+
+    //Spiral of death
+    if(dt > 0.25f)   dt = 0.25f;
+
+    // <editor-fold defaultstate="collapsed" desc="EXPLICACION DE LA INTERPOLAÇAO">
+    /*
+
             FRAMERATE A 60
                UPDATE A 15 
             STEP BOX2D = FRAMERATE
-         
+
             0    5    10   15   20   25   30   35   40   45   50   55   60
             |----|----|----|----|----|----|----|----|----|----|----|----| 
                 |                                                       Al cabo de un segundo_
@@ -129,92 +162,60 @@ void Juego::Handle(){
                 |                                                       STEP DE BOX2D [ 60 VECES ]
                 x1 UPDATE
                 x4 STEPS DE BOX2D
-         
+
             Por tanto dentro del update ejecutamos un bucle con las actualizaciones del mundo de Box2D con FRAMERATE / UPDATE iteraciones
-         
+
             En la variable dt guardamos el tiempo que ha pasado desde el frame anterior y lo vamos acumulando en la variable accumulator de manera que:
             Si el acumulador es mayor que 0'067 (1/15) entramos al bucle, ejecutamos el UPDATE, y ejecutamos los STEPS necesarios en el mundo de Box2D
             Terminado esto, le restamos a nuestro accumulator 0'067 y como está en un bucle, comprobará de nuevo si puede volver a ejecutar el update
             Esto casi nunca ocurrirá pero, en caso de haya un bajón y se quede atrás, ejecutará tantos updates como sean necesarios
-        
-        
-        */
-        
-        accumulator += dt;
-        while(accumulator >= 1/UPDATE_STEP){
-            //std::cout << "UPDATE-- " << accumulator << std::endl;
-            
-            readyPlayerOne->preState();  
-            tile->Instance().preStateNPCs();
-            
-            readyPlayerOne->movement();
-            tile->Instance().updateNPCs();
-            
-            // BUCLE DE STEPS DE BOX2D
-            for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
-                //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
-                world->Instance().updateWorld(BOX2D_STEP);
-                //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
-            }
-            
-            accumulator -= 1/UPDATE_STEP;
-            
-            // ACTUALIZO EL ESTADO ACTUAL
-            readyPlayerOne->newState();
-            tile->Instance().newStateNPCs();
+
+
+     */
+    // </editor-fold>
+
+    accumulator += dt;
+    while(accumulator >= 1/UPDATE_STEP){
+        //std::cout << "UPDATE-- " << accumulator << std::endl;
+
+        readyPlayerOne->preState();  
+        tile->Instance().preStateNPCs();
+
+        readyPlayerOne->movement();
+        tile->Instance().updateNPCs();
+
+        // BUCLE DE STEPS DE BOX2D
+        for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
+            //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
+            world->Instance().updateWorld(BOX2D_STEP);
+            //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
         }
-        
-        // TICK PARA LA INTERPOLAÇAO
-        double tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
-        
-            //std::cout << "RENDER == " << tick << std::endl;
-        
-        sfml->Instance().clear('w');
-        
-        //ACTUALIÇAÇAO
-        readyPlayerOne->update(animationClock.restart());
-        readyPlayerOne->interpola(tick);
-        
-        if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
-            view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
-        tile->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
-        readyPlayerOne->intersectsPinchos();
-        
-        //RENDER
-        sfml->Instance().setView(*view);
-        tile->Instance().render(tick);
-        readyPlayerOne->draw();
-        sfml->Instance().display();
+
+        accumulator -= 1/UPDATE_STEP;
+
+        // ACTUALIZO EL ESTADO ACTUAL
+        readyPlayerOne->newState();
+        tile->Instance().newStateNPCs();
     }
-}
 
-void Juego::Update(){
-    renderEngine::rEvent event;
-    renderEngine *sfml;
-        //0x7fff11e212f0
-        while(sfml->Instance().pollEvent(event)){
-            switch(event.sfType()){
-                case renderEngine::rEvent::EventType::KeyPressed :
-                    keys[event.getKeyCode()] = true;
-                    std::cout << event.getKeyCode() << std::endl;
-                    break;
-                
-                case renderEngine::rEvent::EventType::KeyReleased :
-                    keys[event.getKeyCode()] = false;     
-                    std::cout << event.getKeyCode() << std::endl;
-                    break;
-                
-                default:
-                    break;
-            }
-            
-        }
+    // TICK PARA LA INTERPOLAÇAO
+    tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
+        //std::cout << "RENDER == " << tick << std::endl;
 
-        if(keys[16])    sfml->Instance().close();  //Cerrar
-        
-        if(keys[36])    sfml->Instance().ChangeState(MenuPausa::Instance());  //ESC
+
+    //ACTUALIÇAÇAO DEL PERSONAJE
+    readyPlayerOne->update(animationClock.restart());
+    readyPlayerOne->interpola(tick);
+    readyPlayerOne->intersectsPinchos();
+
+    //ACTUALIÇAÇAO DE LA CAMARA
+    if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
+        view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
     
-        if(keys[15])    sfml->Instance().ChangeState(MPuntuaciones::Instance());    //P
+    //ACTUALIÇAÇAO DE LOS MINIJUEGOS
+    tile->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
+
+    
     /*
     renderEngine *sfml;
     while (window->pollEvent(event))

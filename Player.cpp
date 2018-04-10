@@ -265,7 +265,7 @@ void Player::intersectsPinchos() {
     for(std::list<std::vector<renderEngine::rRectangleShape>>::iterator it=(*tile->Instance().getPinchos()).begin(); it!=(*tile->Instance().getPinchos()).end(); ++it){
         for(int i=0 ; i<(*it).size() ; i++){
             if(sprite.intersects( (*it)[i] )){
-                std::cout << "ZASCA" << std::endl;
+                //std::cout << "ZASCA" << std::endl;
             }
         }
     }

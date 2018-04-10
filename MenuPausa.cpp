@@ -67,7 +67,7 @@ MenuPausa::~MenuPausa() {
 void MenuPausa::Render(){
     
     renderEngine *sfml;
-    sfml->Instance().clear('w');  
+    sfml->Instance().clear('y');  
     
     sfml->Instance().getWindow()->draw(titulo);
     for(int i=0; i<NUMBER_OF_ITEMS;i++){

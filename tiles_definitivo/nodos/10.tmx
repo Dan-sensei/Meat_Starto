@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="24" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="3">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="24" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="6">
  <tileset firstgid="1" source="../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="24" height="41">
   <data encoding="csv">
@@ -29,7 +29,7 @@
 0,37,26,26,26,0,0,0,0,0,26,26,26,26,36,36,36,5,36,0,0,0,0,0,
 0,37,26,26,26,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,26,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,37,26,26,26,8,1,8,8,8,34,34,8,8,2,8,8,8,8,2,8,0,0,0,
+0,37,26,26,26,34,1,8,8,34,8,8,8,8,2,8,8,8,8,2,8,0,0,0,
 0,0,36,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,34,0,0,
 0,0,0,26,29,26,26,26,26,26,27,26,26,26,26,31,6,26,26,26,26,26,0,0,
 0,0,0,26,26,27,26,26,26,7,26,26,26,26,26,26,26,26,26,29,26,26,0,0,
@@ -53,5 +53,9 @@
   <object id="2" x="840" y="1050">
    <polyline points="0,0 0,70 -70,70 -70,140 -140,140 -140,210 -490,210 -490,840 630,840 630,910 700,910 700,1050 -630,1050 -630,840 -700,840 -700,0 0,0"/>
   </object>
+ </objectgroup>
+ <objectgroup name="spawn">
+  <object id="4" x="630" y="1400" width="280" height="70"/>
+  <object id="5" x="840" y="1820" width="560" height="70"/>
  </objectgroup>
 </map>

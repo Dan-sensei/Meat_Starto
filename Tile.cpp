@@ -20,7 +20,7 @@
 #include "NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 5
+#define MAP_ITERATION 10
 #define TAM_LISTA 6
 
  Tile::Tile() {
@@ -615,6 +615,7 @@ void Tile::LeeNodo(std::string const& node_path) {
 
         while (obj) {
             obj->QueryIntAttribute("x", &xCoord);
+            xCoord += x_max;
             obj->QueryIntAttribute("width", &width);
 
             obj->QueryIntAttribute("y", &yCoord);
@@ -816,7 +817,7 @@ void Tile::render(float tick_) {
 void Tile::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
-    //std::cout << path << std::endl;
+        std::cout << path << std::endl;
     
     LeeNodo(path);
     
@@ -845,7 +846,7 @@ void Tile::CreaMapa() {
             std::string rand = std::to_string(r);
             path = path.operator +=(rand);
             path = path.operator +=(".tmx");
-                //std::cout << path << std::endl;
+                std::cout << path << std::endl;
             
             LeeNodo(path);
 
@@ -873,7 +874,7 @@ void Tile::CreaMapa() {
     javi->Instance().init(x_max);
     
     path = "tiles_definitivo/nodos/fin.tmx";
-        //std::cout << path << std::endl;
+        std::cout << path << std::endl;
 
     LeeNodo(path);
     

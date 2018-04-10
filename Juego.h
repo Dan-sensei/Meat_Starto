@@ -54,6 +54,7 @@ private:
     
     double dt;
     float accumulator;
+    double tick; //PARA LA INTERPOLACION
     
     renderEngine::rView *view;
     
