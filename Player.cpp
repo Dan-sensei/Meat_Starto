@@ -18,7 +18,7 @@
 #include "Animator.h"
 #include "AssetManager.h"
 #include "physicsEngine/physicsEngine.h"
-#include "Tile.h"
+#include "Mapa/Mapa.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -260,7 +260,7 @@ float Player::getYPosition() {
 }
 
 void Player::intersectsPinchos() {
-    Tile *tile;
+    Mapa *tile;
     
     for(std::list<std::vector<renderEngine::rRectangleShape>>::iterator it=(*tile->Instance().getPinchos()).begin(); it!=(*tile->Instance().getPinchos()).end(); ++it){
         for(int i=0 ; i<(*it).size() ; i++){

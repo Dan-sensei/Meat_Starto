@@ -5,32 +5,31 @@
  */
 
 /* 
- * File:   Tile.h
+ * File:   Mapa.h
  * Author: pablomanez
  *
  * Created on 23 de febrero de 2018, 15:42
  */
 
-#ifndef TILE_H
-#define TILE_H
+#ifndef MAPA_H
+#define MAPA_H
 
 #include <tinyxml2.h>
 #include <vector>
 #include <list>
 #include <Box2D/Box2D.h>
-#include "AssetManager.h"
 
-#include "renderEngine.h"
-#include "mj_t.h"
-#include "boss.h"
-#include "NPCs/NPC.h"
-#include "NPCs/xPlotato.h"
+#include "../mj_t.h"
+#include "../boss.h"
+#include "Nodo/Nodo.h"
+#include "Nodo/NPCs/NPC.h"
+#include "Nodo/NPCs/xPlotato.h"
 
-class Tile {
+class Mapa {
 public:
     //----------------SINGLETON
-    static Tile& Instance(){
-        static Tile instance;
+    static Mapa& Instance(){
+        static Mapa instance;
         return instance;
     }
     
@@ -43,12 +42,12 @@ public:
     
     std::list<std::vector<renderEngine::rRectangleShape>>* getPinchos();
     
-    virtual ~Tile();
+    virtual ~Mapa();
     
 private:
-    Tile();
-    Tile(const Tile& orig);
-    void operator=(Tile const& orig);
+    Mapa();
+    Mapa(const Mapa& orig);
+    void operator=(Mapa const& orig);
     
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
@@ -56,21 +55,21 @@ private:
     void InitMatrix();
     
     //----------------ATRIBUTOS
-    //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS TILES
+    //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS
     tinyxml2::XMLDocument doc;
     
-    //ALTO Y ANCHO DE CADA TILE
+    //ALTO Y ANCHO DE CADA MAPA
     int ancho;
     int alto;
     
     //ALMACENA EL PATH DE LA IMAGEN Y SU ID
-    tinyxml2::XMLDocument ts_doc;   //XML DEL TILESHEET
-    renderEngine::rImage ts;        //PNG DEL TILESHEET
+    tinyxml2::XMLDocument ts_doc;   //XML DEL MAPASHEET
+    renderEngine::rImage ts;        //PNG DEL MAPASHEET
     struct _tile{
         int id;
         renderEngine::rIntRect ir;  //CUADRADO DE RECORTE
         renderEngine::rTexture t;   //TEXTURA
-        std::string path;           //PATH DEL TILE (NO SE USA)
+        std::string path;           //PATH DEL MAPA (NO SE USA)
     };
     _tile *tiles[37];
     
@@ -92,11 +91,17 @@ private:
         int aux_pop;
     };
     //std::list<std::vector<_cas>> lista_casillas;
+    
+    std::list<Nodo> hex_list;
+    std::list<Nodo> complete_list;
+    
+    std::vector<renderEngine::rIntRect> spriteSheetRects;
+    
     std::list<_miArray> lista_casillas;
     std::list<_miArray> lista_casillas_aux;
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
-    std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos;        //TILE ID's: 33,34,35,36
+    std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos;        //MAPA ID's: 33,34,35,36
     std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos_aux;
     
     std::vector<renderEngine::rRectangleShape> vector_pinchos;  //VECTOR AUXILIAR
@@ -108,5 +113,5 @@ private:
     bool m_tetris;
 };
 
-#endif /* TILE_H */
+#endif /* MAPA_H */
 

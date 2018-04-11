@@ -11,8 +11,6 @@
 #include <iostream>
 #include <assert.h>
 
-
-
 AssetManager::AssetManager(){}
 
 renderEngine::rTexture& AssetManager::GetTexture(const std::string& filename){

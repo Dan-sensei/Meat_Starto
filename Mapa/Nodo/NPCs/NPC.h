@@ -14,10 +14,7 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "../AssetManager.h"
-#include "../renderEngine.h"
-#include "../physicsEngine/physicsEngine.h"
-#include "../physicsEngine/pBody.h"
+
 #include "math.h"
 
 class NPC {

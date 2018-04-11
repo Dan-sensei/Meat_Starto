@@ -5,7 +5,7 @@
  */
 
 /* 
- * File:   Tile.cpp
+ * File:   Mapa.cpp
  * Author: pablomanez
  * 
  * Created on 23 de febrero de 2018, 15:42
@@ -15,15 +15,14 @@
 #include <iostream>
 #include <complex>
 
-#include "Tile.h"
-#include "physicsEngine/physicsEngine.h"
-#include "NPCs/xPlotato.h"
+#include "Mapa.h"
+#include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
 #define MAP_ITERATION 10
 #define TAM_LISTA 6
 
- Tile::Tile() {
+ Mapa::Mapa() {
 
     //CARGA DEL DOCUMENTO
     doc.LoadFile("tiles_definitivo/tiles_fv.tsx");
@@ -78,6 +77,9 @@
         int h = atoi(map->Attribute("h"));
         
         renderEngine::rIntRect ir_aux(x,y,w,h);
+        
+        spriteSheetRects.push_back(ir_aux);
+        
         tiles[i]->ir = ir_aux;
         tiles[i]->t.loadFromImage(ts,tiles[i]->ir);
         
@@ -107,7 +109,7 @@
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
-void Tile::InitMatrix() {
+void Mapa::InitMatrix() {
     //////////////////////////////
     // SI SE MODIFICA, ENTONCES //
     // CAMBIAR TAMBIEN EL .h !! //
@@ -430,35 +432,40 @@ void Tile::InitMatrix() {
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
-void Tile::LeeNodo(std::string const& node_path) {
+void Mapa::LeeNodo(std::string const& node_path) {
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
-    
-    //std::cout << "Leo el nodo: " << node_path << std::endl;
 
     int map_width;
     int map_height;
 
     //ABRO EL ARCHIVO
-    //char const* node = node_path.c_str();
     tinyxml2::XMLDocument map_doc;
     map_doc.LoadFile(node_path.c_str());
 
-    //CONSIGO EL ANCHO Y EL ALTO DEL NODO (MAPA)
+    //CONSIGO EL ANCHO Y EL ALTO DEL NODO (Número de casillas del mapa)
     tinyxml2::XMLElement *map;
     map = map_doc.FirstChildElement("map");
-    map_width = atoi(map->Attribute("width"));
-    map_height = atoi(map->Attribute("height"));
-    //std::cout << map_width << std::endl;
+    map->QueryIntAttribute("width", &map_width);
+    map->QueryIntAttribute("height", &map_height);
+
+    Nodo* aux_;
+    if(hex_list.size() <TAM_LISTA){
+        hex_list.push_back(Nodo("tiles_definitivo/tilesheet.png"));
+        aux_ = &hex_list.back();
+    }
+    else{
+        complete_list.push_back(Nodo("tiles_definitivo/tilesheet.png"));
+        aux_ = &hex_list.back();
+    }
+    aux_->setRectVector(spriteSheetRects);
 
     //CONSIGO EL TEXTO
-    
     std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
-    //std::cout << v_mapa << std::endl;
-
     std::string partes;
     std::string p_aux;
     int x_max_aux = x_max;
-
+    int contador = 0;
+    std::cout << "NODO ";
     for (int i = 0; i < map_height; i++) {
         //std::cout << "_____|" << "i: " << i << "|_____" << std::endl;
 
@@ -484,6 +491,8 @@ void Tile::LeeNodo(std::string const& node_path) {
             //std::cout << "j: " << j << " ->     " << partes << std::endl;
 
             if (stoi(partes) != 0) {
+                contador++;
+                aux_->addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
                 CreaCasilla(stoi(partes), x_max + (ancho * j), alto * i);
             }
 
@@ -495,6 +504,8 @@ void Tile::LeeNodo(std::string const& node_path) {
 
         partes = v_mapa.erase(0, 1);
     }
+    
+    std::cout << contador << std::endl;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="LEO LOS OBJETOS(colisiones)">
@@ -627,8 +638,6 @@ void Tile::LeeNodo(std::string const& node_path) {
 
 
             vector_enemigos.push_back(new xPlotato("assets/kawaii_potato.png", distribution(gen), y_spawn, xCoord, xCoord+width));
-            std::cout << "CREADO ";
-            std::cout << vector_enemigos.size() << std::endl;
             
             
             obj = obj->NextSiblingElement("object");
@@ -650,15 +659,19 @@ void Tile::LeeNodo(std::string const& node_path) {
     a_aux.size = vector_casillas.size();
     a_aux.casillas = new _cas[a_aux.size];
     a_aux.aux_pop = x_max;
+    
+    aux_->setPop(x_max);
+    
     for(int i=0 ; i<vector_casillas.size() ; i++){
         a_aux.casillas[i] = vector_casillas[i];
     }
     
     
     //HA LEIDO UN NODO
-    
+
     //GUARDO LAS CASILLAS
     if(lista_casillas.size()<TAM_LISTA){
+
         lista_casillas.push_back(a_aux);
         vector_casillas.clear();
             //std::cout << "Guardo en lista_casillas" << std::endl;
@@ -684,7 +697,7 @@ void Tile::LeeNodo(std::string const& node_path) {
 }
 
 //CREA LA CASILLA
-void Tile::CreaCasilla(int id, int x, int y) {
+void Mapa::CreaCasilla(int id, int x, int y) {
         //std::cout << tiles[id-1]->path << std::endl;
     
     renderEngine::rRectangleShape casilla(ancho,alto);
@@ -709,14 +722,14 @@ void Tile::CreaCasilla(int id, int x, int y) {
     //aux.text = AssetManager::GetTexture(tiles[id-1]->path);
     //aux.text.loadFromImage(ts,tiles[id-1]->ir);
     aux.text = &(tiles[id-1]->t);
-            
+    
     aux.rect = casilla;
         
     vector_casillas.push_back(aux);
 
 }
 
-void Tile::render(float tick_) {
+void Mapa::render(float tick_) {
     renderEngine *sfml;
 
     //------------|  CASILLAS DEL MAPA  |------------//
@@ -748,7 +761,6 @@ void Tile::render(float tick_) {
     i = y/alto+1;
     y_2 = i*alto;
 
-    
     int x_min = x_2 -(ancho*26);
     int x_max = x_2 +(ancho*24);
     
@@ -758,6 +770,18 @@ void Tile::render(float tick_) {
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
     
+
+    for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
+       
+        (*it).draw(ir);
+        
+        if(iterator == TAM_LISTA/2 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
+            pop = true;
+        }
+        iterator++;
+    }
+   
+    /*
     for(std::list<_miArray>::iterator it=lista_casillas.begin(); it!=lista_casillas.end(); ++it){
         for(int i=0 ; i<(*it).size ; i++){
             //if(ir.contains(static_cast<int>((*it).rect.getPosition()[0]),static_cast<int>((*it2).rect.getPosition()[1]))){
@@ -772,11 +796,12 @@ void Tile::render(float tick_) {
             
         }
         
-        if(iterator == TAM_LISTA/2 && (*it).aux_pop<sfml->Instance().getViewCenter()[0]){
+        if(iterator == TAM_LISTA/2 && (*it).aux_pop < sfml->Instance().getViewCenter()[0]){
             pop = true;
         }
         iterator++;
     }
+    */
 
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < vector_enemigos.size(); j++)
@@ -814,10 +839,10 @@ void Tile::render(float tick_) {
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
-void Tile::CreaMapa() {
+void Mapa::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
-        std::cout << path << std::endl;
+        //std::cout << path << std::endl;
     
     LeeNodo(path);
     
@@ -846,7 +871,7 @@ void Tile::CreaMapa() {
             std::string rand = std::to_string(r);
             path = path.operator +=(rand);
             path = path.operator +=(".tmx");
-                std::cout << path << std::endl;
+                //std::cout << path << std::endl;
             
             LeeNodo(path);
 
@@ -874,17 +899,31 @@ void Tile::CreaMapa() {
     javi->Instance().init(x_max);
     
     path = "tiles_definitivo/nodos/fin.tmx";
-        std::cout << path << std::endl;
+        //std::cout << path << std::endl;
 
     LeeNodo(path);
     
 }
 
-void Tile::update(float x, float y) {
+void Mapa::update(float x, float y) {
     renderEngine *sfml;
     mj_t *tetris;
     boss *javi;
+    
+    if(pop && complete_list.size()>0){
 
+        hex_list.pop_front();
+        hex_list.push_back(complete_list.front());
+        complete_list.pop_front();
+        //POP DE PINCHOS
+        l_pinchos.pop_front();
+        l_pinchos.push_back(l_pinchos_aux.front());
+        l_pinchos_aux.pop_front();
+        
+        pop = false;
+    }
+    
+    /*
     if(pop && lista_casillas_aux.size()>0){
             std::cout << "CUANDO HACES POP, NO HAY STOP" << std::endl;
         _miArray aux;
@@ -902,38 +941,37 @@ void Tile::update(float x, float y) {
         
         pop = false;
     }
-
+     */
 
     int x_m = sfml->Instance().getViewCenter()[0];
     
     tetris->Instance().update(x_m);
     javi->Instance().update(x_m,x,y);
-    
 }
 
-std::list<std::vector<renderEngine::rRectangleShape>>* Tile::getPinchos() {
+std::list<std::vector<renderEngine::rRectangleShape>>* Mapa::getPinchos() {
     return &l_pinchos;
 }
 
-void Tile::updateNPCs(){
+void Mapa::updateNPCs(){
     for(int i = 0; i < vector_enemigos.size(); i++)
         vector_enemigos[i]->update();
 }
 
-void Tile::preStateNPCs(){
+void Mapa::preStateNPCs(){
     for(int i = 0; i < vector_enemigos.size(); i++)
         vector_enemigos[i]->preState();
 }
 
-void Tile::newStateNPCs(){
+void Mapa::newStateNPCs(){
     for(int i = 0; i < vector_enemigos.size(); i++)
         vector_enemigos[i]->newState();
 }
 
 
-Tile::Tile(const Tile& orig) {
+Mapa::Mapa(const Mapa& orig) {
 }
 
-Tile::~Tile() {
+Mapa::~Mapa() {
 }
 

@@ -120,8 +120,6 @@ void Animator::Update(renderEngine::rTime const& dt)
     
     //Pone la textura
     m_Sprite.setTextureRect(m_CurrentAnimation->m_Frames[currentFrame]);
-    
-    
 }
 
 renderEngine::rSprite& Animator::GetSprite(){

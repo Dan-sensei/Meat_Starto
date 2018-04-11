@@ -1,8 +1,7 @@
-build/Debug/GNU-Linux/boss.o: boss.cpp /usr/include/tinyxml2.h \
+build/Debug/GNU-Linux/Animator.o: Animator.cpp /usr/include/tinyxml2.h \
  renderEngine.h State.h physicsEngine/physicsEngine.h \
  physicsEngine/pBody.h physicsEngine/pConverter.h physicsEngine/pBody.h \
- AssetManager.h boss.h renderEngine.h physicsEngine/pBody.h \
- physicsEngine/physicsEngine.h
+ AssetManager.h Animator.h renderEngine.h AssetManager.h
 
 /usr/include/tinyxml2.h:
 
@@ -20,10 +19,8 @@ physicsEngine/pBody.h:
 
 AssetManager.h:
 
-boss.h:
+Animator.h:
 
 renderEngine.h:
 
-physicsEngine/pBody.h:
-
-physicsEngine/physicsEngine.h:
+AssetManager.h:

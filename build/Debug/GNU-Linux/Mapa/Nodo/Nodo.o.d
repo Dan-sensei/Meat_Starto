@@ -1,8 +1,8 @@
-build/Debug/GNU-Linux/renderEngine.o: renderEngine.cpp \
+build/Debug/GNU-Linux/Mapa/Nodo/Nodo.o: Mapa/Nodo/Nodo.cpp \
  /usr/include/tinyxml2.h renderEngine.h State.h \
  physicsEngine/physicsEngine.h physicsEngine/pBody.h \
  physicsEngine/pConverter.h physicsEngine/pBody.h AssetManager.h \
- renderEngine.h
+ Mapa/Nodo/Nodo.h Mapa/Nodo/Ground.h Mapa/Nodo/NPCs/NPC.h
 
 /usr/include/tinyxml2.h:
 
@@ -20,4 +20,8 @@ physicsEngine/pBody.h:
 
 AssetManager.h:
 
-renderEngine.h:
+Mapa/Nodo/Nodo.h:
+
+Mapa/Nodo/Ground.h:
+
+Mapa/Nodo/NPCs/NPC.h:

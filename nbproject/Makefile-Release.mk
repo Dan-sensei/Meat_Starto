@@ -39,12 +39,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/AssetManager.o \
 	${OBJECTDIR}/Juego.o \
 	${OBJECTDIR}/MPuntuaciones.o \
+	${OBJECTDIR}/Mapa/Mapa.o \
+	${OBJECTDIR}/Mapa/Nodo/Ground.o \
+	${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o \
+	${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o \
+	${OBJECTDIR}/Mapa/Nodo/Nodo.o \
 	${OBJECTDIR}/MenuInicio.o \
 	${OBJECTDIR}/MenuPausa.o \
-	${OBJECTDIR}/NPCs/NPC.o \
-	${OBJECTDIR}/NPCs/xPlotato.o \
 	${OBJECTDIR}/Player.o \
-	${OBJECTDIR}/Tile.o \
 	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mj_t.o \
@@ -99,6 +101,31 @@ ${OBJECTDIR}/MPuntuaciones.o: MPuntuaciones.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MPuntuaciones.o MPuntuaciones.cpp
 
+${OBJECTDIR}/Mapa/Mapa.o: Mapa/Mapa.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Mapa.o Mapa/Mapa.cpp
+
+${OBJECTDIR}/Mapa/Nodo/Ground.o: Mapa/Nodo/Ground.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Ground.o Mapa/Nodo/Ground.cpp
+
+${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o: Mapa/Nodo/NPCs/NPC.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o Mapa/Nodo/NPCs/NPC.cpp
+
+${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o: Mapa/Nodo/NPCs/xPlotato.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o Mapa/Nodo/NPCs/xPlotato.cpp
+
+${OBJECTDIR}/Mapa/Nodo/Nodo.o: Mapa/Nodo/Nodo.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Nodo.o Mapa/Nodo/Nodo.cpp
+
 ${OBJECTDIR}/MenuInicio.o: MenuInicio.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -109,25 +136,10 @@ ${OBJECTDIR}/MenuPausa.o: MenuPausa.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuPausa.o MenuPausa.cpp
 
-${OBJECTDIR}/NPCs/NPC.o: NPCs/NPC.cpp
-	${MKDIR} -p ${OBJECTDIR}/NPCs
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPCs/NPC.o NPCs/NPC.cpp
-
-${OBJECTDIR}/NPCs/xPlotato.o: NPCs/xPlotato.cpp
-	${MKDIR} -p ${OBJECTDIR}/NPCs
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPCs/xPlotato.o NPCs/xPlotato.cpp
-
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
-
-${OBJECTDIR}/Tile.o: Tile.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tile.o Tile.cpp
 
 ${OBJECTDIR}/boss.o: boss.cpp
 	${MKDIR} -p ${OBJECTDIR}

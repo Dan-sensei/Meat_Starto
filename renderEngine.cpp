@@ -91,7 +91,7 @@ void renderEngine::rSprite::setTexture  (rTexture &t)       {   sprite.setTextur
 void renderEngine::rSprite::setRotation (float a)           {   sprite.setRotation(a);              }
 void renderEngine::rSprite::rotate      (float r)           {   sprite.rotate(r);                   }
 float renderEngine::rSprite::getRotation()                  {   return sprite.getRotation();        }
-void renderEngine::rSprite::setTextureRect(sf::IntRect& rect){  sprite.setTextureRect(rect);        }
+void renderEngine::rSprite::setTextureRect(renderEngine::rIntRect rect){  sprite.setTextureRect(sf::IntRect(rect.left, rect.top, rect.widht, rect.height));        }
 void renderEngine::rSprite::setOrigin   (float x, float y)  {   sprite.setOrigin(x,y);              }
 void renderEngine::rSprite::setScale    (float x, float y)  {   sprite.setScale(x,y);               }
 void renderEngine::rSprite::setPosition (float x, float y)  {   sprite.setPosition(x,y);            }

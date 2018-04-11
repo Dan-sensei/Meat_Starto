@@ -16,6 +16,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "State.h"
+
 class renderEngine {
 public:
     //<SINGLETON>
@@ -104,7 +105,7 @@ public:
             void setRotation(float a);                  //ESTABLECER UNA ROTACION
             void rotate(float r);
             float getRotation();
-            void setTextureRect(sf::IntRect& rect);
+            void setTextureRect(renderEngine::rIntRect rect);
             std::array<float,2> getPosition();          //DEVUELVE LA POSICION
             bool intersects(renderEngine::rRectangleShape rs);  //COLISION DE SFML PARA LOS PINCHOS
         private:

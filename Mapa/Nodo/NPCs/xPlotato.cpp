@@ -16,7 +16,7 @@
 #define velocity 2.f
 
 xPlotato::xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e) {
-    std::cout << "Creando xPlotato" << std::endl;
+    //std::cout << "Creando xPlotato" << std::endl;
     int width = AssetManager::GetTexture(name_).getXSize();
     int height = AssetManager::GetTexture(name_).getYSize();
     
@@ -36,9 +36,6 @@ xPlotato::xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e) {
     previous.x = actual.x = body.getXPosition();
     previous.y = actual.y = body.getYPosition();
     previous.r = actual.r = body.getRotation();
-    
-    std::cout << "Begin "<< x_begin << std::endl;
-    std::cout << "End "<< x_end << std::endl;
 }
 
 xPlotato::xPlotato(const xPlotato& orig) {

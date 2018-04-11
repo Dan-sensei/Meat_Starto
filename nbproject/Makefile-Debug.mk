@@ -39,12 +39,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/AssetManager.o \
 	${OBJECTDIR}/Juego.o \
 	${OBJECTDIR}/MPuntuaciones.o \
+	${OBJECTDIR}/Mapa/Mapa.o \
+	${OBJECTDIR}/Mapa/Nodo/Ground.o \
+	${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o \
+	${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o \
+	${OBJECTDIR}/Mapa/Nodo/Nodo.o \
 	${OBJECTDIR}/MenuInicio.o \
 	${OBJECTDIR}/MenuPausa.o \
-	${OBJECTDIR}/NPCs/NPC.o \
-	${OBJECTDIR}/NPCs/xPlotato.o \
 	${OBJECTDIR}/Player.o \
-	${OBJECTDIR}/Tile.o \
 	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mj_t.o \
@@ -96,92 +98,102 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/meat_starto: ${OBJECTFILES}
 ${OBJECTDIR}/Animator.o: Animator.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Animator.o Animator.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Animator.o Animator.cpp
 
 ${OBJECTDIR}/AssetManager.o: AssetManager.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AssetManager.o AssetManager.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AssetManager.o AssetManager.cpp
 
 ${OBJECTDIR}/Juego.o: Juego.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Juego.o Juego.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Juego.o Juego.cpp
 
 ${OBJECTDIR}/MPuntuaciones.o: MPuntuaciones.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MPuntuaciones.o MPuntuaciones.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MPuntuaciones.o MPuntuaciones.cpp
+
+${OBJECTDIR}/Mapa/Mapa.o: Mapa/Mapa.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Mapa.o Mapa/Mapa.cpp
+
+${OBJECTDIR}/Mapa/Nodo/Ground.o: Mapa/Nodo/Ground.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Ground.o Mapa/Nodo/Ground.cpp
+
+${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o: Mapa/Nodo/NPCs/NPC.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o Mapa/Nodo/NPCs/NPC.cpp
+
+${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o: Mapa/Nodo/NPCs/xPlotato.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o Mapa/Nodo/NPCs/xPlotato.cpp
+
+${OBJECTDIR}/Mapa/Nodo/Nodo.o: Mapa/Nodo/Nodo.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Nodo.o Mapa/Nodo/Nodo.cpp
 
 ${OBJECTDIR}/MenuInicio.o: MenuInicio.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuInicio.o MenuInicio.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuInicio.o MenuInicio.cpp
 
 ${OBJECTDIR}/MenuPausa.o: MenuPausa.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuPausa.o MenuPausa.cpp
-
-${OBJECTDIR}/NPCs/NPC.o: NPCs/NPC.cpp
-	${MKDIR} -p ${OBJECTDIR}/NPCs
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPCs/NPC.o NPCs/NPC.cpp
-
-${OBJECTDIR}/NPCs/xPlotato.o: NPCs/xPlotato.cpp
-	${MKDIR} -p ${OBJECTDIR}/NPCs
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPCs/xPlotato.o NPCs/xPlotato.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuPausa.o MenuPausa.cpp
 
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
-
-${OBJECTDIR}/Tile.o: Tile.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tile.o Tile.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
 
 ${OBJECTDIR}/boss.o: boss.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/boss.o boss.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/boss.o boss.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/mj_t.o: mj_t.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mj_t.o mj_t.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mj_t.o mj_t.cpp
 
 ${OBJECTDIR}/physicsEngine/contactListener.o: physicsEngine/contactListener.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/contactListener.o physicsEngine/contactListener.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/contactListener.o physicsEngine/contactListener.cpp
 
 ${OBJECTDIR}/physicsEngine/pBody.o: physicsEngine/pBody.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/pBody.o physicsEngine/pBody.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/pBody.o physicsEngine/pBody.cpp
 
 ${OBJECTDIR}/physicsEngine/pConverter.o: physicsEngine/pConverter.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/pConverter.o physicsEngine/pConverter.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/pConverter.o physicsEngine/pConverter.cpp
 
 ${OBJECTDIR}/physicsEngine/physicsEngine.o: physicsEngine/physicsEngine.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/physicsEngine.o physicsEngine/physicsEngine.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/physicsEngine.o physicsEngine/physicsEngine.cpp
 
 ${OBJECTDIR}/renderEngine.o: renderEngine.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -include /usr/include/tinyxml2.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine.o renderEngine.cpp
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine.o renderEngine.cpp
 
 # Subprojects
 .build-subprojects:
@@ -189,7 +201,7 @@ ${OBJECTDIR}/renderEngine.o: renderEngine.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-system.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libBox2D.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-network.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-window.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtinyxml2.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-audio.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-graphics.so
+	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-audio.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-graphics.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-network.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-system.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-window.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libBox2D.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtinyxml2.so
 	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/meat_starto
 
 # Subprojects

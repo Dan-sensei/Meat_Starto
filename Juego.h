@@ -19,15 +19,16 @@
 #include <Box2D/Box2D.h>
 #include <math.h>
 
+#include <renderEngine.h>
+#include <physicsEngine/physicsEngine.h>
+#include <physicsEngine/pBody.h>
+
 #include "State.h" 
-#include "renderEngine.h"
 #include "MenuPausa.h"
 #include "MenuInicio.h"
 #include "MPuntuaciones.h"
 
-#include "Tile.h"
-#include "physicsEngine/physicsEngine.h"
-#include "physicsEngine/pBody.h"
+#include "Mapa/Mapa.h"
 #include "mj_t.h"
 #include "Player.h"
 #include "boss.h"
@@ -63,7 +64,6 @@ private:
     float lastTime;
     float currentTime;
     float fps;
-    
     
     sf::Font font;
     sf::Text  titulo;

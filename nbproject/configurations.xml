@@ -7,20 +7,29 @@
       <itemPath>Animator.h</itemPath>
       <itemPath>AssetManager.h</itemPath>
       <itemPath>Player.h</itemPath>
-      <itemPath>Tile.h</itemPath>
       <itemPath>boss.h</itemPath>
       <itemPath>physicsEngine/contactListener.h</itemPath>
       <itemPath>renderEngine.h</itemPath>
     </logicalFolder>
+    <logicalFolder name="f5" displayName="Mapa" projectFiles="true">
+      <logicalFolder name="f1" displayName="Nodo" projectFiles="true">
+        <logicalFolder name="f3" displayName="NPCs" projectFiles="true">
+          <itemPath>Mapa/Nodo/NPCs/NPC.cpp</itemPath>
+          <itemPath>Mapa/Nodo/NPCs/NPC.h</itemPath>
+          <itemPath>Mapa/Nodo/NPCs/xPlotato.cpp</itemPath>
+          <itemPath>Mapa/Nodo/NPCs/xPlotato.h</itemPath>
+        </logicalFolder>
+        <itemPath>Mapa/Nodo/Ground.cpp</itemPath>
+        <itemPath>Mapa/Nodo/Ground.h</itemPath>
+        <itemPath>Mapa/Nodo/Nodo.cpp</itemPath>
+        <itemPath>Mapa/Nodo/Nodo.h</itemPath>
+      </logicalFolder>
+      <itemPath>Mapa/Mapa.cpp</itemPath>
+      <itemPath>Mapa/Mapa.h</itemPath>
+    </logicalFolder>
     <logicalFolder name="f2" displayName="minijuegoTetris" projectFiles="true">
       <itemPath>mj_t.cpp</itemPath>
       <itemPath>mj_t.h</itemPath>
-    </logicalFolder>
-    <logicalFolder name="f3" displayName="NPCs" projectFiles="true">
-      <itemPath>NPCs/NPC.cpp</itemPath>
-      <itemPath>NPCs/NPC.h</itemPath>
-      <itemPath>NPCs/xPlotato.cpp</itemPath>
-      <itemPath>NPCs/xPlotato.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f1" displayName="physicsEngine" projectFiles="true">
       <itemPath>physicsEngine/pBody.cpp</itemPath>
@@ -40,13 +49,12 @@
       <itemPath>Animator.cpp</itemPath>
       <itemPath>AssetManager.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
-      <itemPath>Tile.cpp</itemPath>
       <itemPath>boss.cpp</itemPath>
       <itemPath>physicsEngine/contactListener.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>renderEngine.cpp</itemPath>
     </logicalFolder>
-    <logicalFolder name="f4" displayName="States" projectFiles="true" kind="ROOT">
+    <logicalFolder name="f4" displayName="States" projectFiles="true">
       <itemPath>Juego.cpp</itemPath>
       <itemPath>Juego.h</itemPath>
       <itemPath>MPuntuaciones.cpp</itemPath>
@@ -86,9 +94,14 @@
           <incDir>
             <pElem>/usr/include/SFML</pElem>
             <pElem>/usr/include/Box2D</pElem>
+            <pElem>.</pElem>
           </incDir>
           <incFile>
             <pElem>/usr/include/tinyxml2.h</pElem>
+            <pElem>renderEngine.h</pElem>
+            <pElem>physicsEngine/physicsEngine.h</pElem>
+            <pElem>physicsEngine/pBody.h</pElem>
+            <pElem>AssetManager.h</pElem>
           </incFile>
         </ccTool>
         <linkerTool>
@@ -122,6 +135,26 @@
       </item>
       <item path="MPuntuaciones.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Mapa/Mapa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Mapa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Ground.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Ground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/xPlotato.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/xPlotato.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Nodo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Nodo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="MenuInicio.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="MenuInicio.h" ex="false" tool="3" flavor2="0">
@@ -130,23 +163,11 @@
       </item>
       <item path="MenuPausa.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="NPCs/NPC.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="NPCs/xPlotato.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="NPCs/xPlotato.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="State.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tile.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="boss.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -215,6 +236,26 @@
       </item>
       <item path="MPuntuaciones.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Mapa/Mapa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Mapa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Ground.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Ground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/xPlotato.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/NPCs/xPlotato.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Nodo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Nodo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="MenuInicio.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="MenuInicio.h" ex="false" tool="3" flavor2="0">
@@ -223,23 +264,11 @@
       </item>
       <item path="MenuPausa.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="NPCs/NPC.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="NPCs/xPlotato.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="NPCs/xPlotato.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="State.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tile.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="boss.cpp" ex="false" tool="1" flavor2="0">
       </item>

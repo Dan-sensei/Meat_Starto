@@ -51,7 +51,7 @@ Juego::Juego(){
     for(int i = 0; i<256; i++) keys[i]=false;
     
     //SINGLETON MUNDO
-    Tile *tile;
+    Mapa *tile;
     tile->Instance();
     tile->Instance().CreaMapa();
     
@@ -77,7 +77,7 @@ Juego::Juego(){
 
 void Juego::Render(){
     renderEngine    *sfml;
-    Tile            *tile;
+    Mapa            *tile;
     
     sfml->Instance().clear('w');
         
@@ -112,7 +112,7 @@ void Juego::Handle(){
 
 void Juego::Update(){
     renderEngine    *sfml;
-    Tile            *tile;
+    Mapa            *tile;
     physicsEngine   *world;
     mj_t            *tetris;
     boss            *javi;
@@ -209,12 +209,10 @@ void Juego::Update(){
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
         //std::cout << "RENDER == " << tick << std::endl;
 
-
     //ACTUALIÇAÇAO DEL PERSONAJE
     readyPlayerOne->update(animationClock.restart());
     readyPlayerOne->interpola(tick);
     readyPlayerOne->intersectsPinchos();
-
     //ACTUALIÇAÇAO DE LA CAMARA
     if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
         view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
@@ -222,7 +220,6 @@ void Juego::Update(){
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
     tile->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
 
-    
     /*
     renderEngine *sfml;
     while (window->pollEvent(event))
@@ -266,6 +263,7 @@ void Juego::Update(){
 
      }  
      */
+    std::cout << "End Update" << std::endl;
 }
 
 Juego::Juego(const Juego& orig) {
