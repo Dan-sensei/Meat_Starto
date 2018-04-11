@@ -63,6 +63,15 @@ private:
     sf::Text menuhow;
     sf::RenderWindow* window;
     static MenuInicio* instance;
+    
+    float width;
+    float height;
+    
+    float posx;
+    float posy;
+    
+    bool primero;
+
 
 
 };

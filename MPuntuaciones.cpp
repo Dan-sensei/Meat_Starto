@@ -25,8 +25,12 @@ MPuntuaciones::MPuntuaciones() {
     
     renderEngine *sfml;
     
-    float width = sfml->Instance().getSize()[0];
-    float height = sfml->Instance().getSize()[1];
+    width =  sfml->Instance().getViewSize()[0];
+    height = sfml->Instance().getViewSize()[1];
+    
+    posx = sfml->Instance().getViewCenter()[0];
+    posy = sfml->Instance().getViewCenter()[1];
+    
     
    if (!font.loadFromFile("resources/fuente.ttf"))
     {
@@ -35,16 +39,17 @@ MPuntuaciones::MPuntuaciones() {
     }
     
    titulo.setFont(font);
-   titulo.setCharacterSize(20);
+   titulo.setCharacterSize(44);
    titulo.setFillColor(sf::Color::White);
    titulo.setString("Puntuaciones");
-   titulo.setPosition(sf::Vector2f(2*width/5, height/6));
+   titulo.setPosition(posx-width/30, posy-height/3);   
    
    tsalir.setFont(font);
-   tsalir.setCharacterSize(20);
+   tsalir.setCharacterSize(36);
    tsalir.setFillColor(sf::Color::Red);
    tsalir.setString("Exit");
-   tsalir.setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*4));
+   tsalir.setPosition(posx-width/3, posy+height/5);
+
 }
 
 MPuntuaciones::MPuntuaciones(const MPuntuaciones& orig) {
@@ -55,7 +60,7 @@ MPuntuaciones::~MPuntuaciones() {
 
 void MPuntuaciones::Render(){
     renderEngine *sfml;
-    sfml->Instance().clear('w');
+    sfml->Instance().clear('b');
     sfml->Instance().getWindow()->draw(titulo);
     sfml->Instance().getWindow()->draw(tsalir);
     sfml->Instance().getWindow()->display();
@@ -64,6 +69,16 @@ void MPuntuaciones::Render(){
 
 void MPuntuaciones::Handle(){
     renderEngine *sfml;
+    
+    width =  sfml->Instance().getViewSize()[0];
+    height = sfml->Instance().getViewSize()[1];
+    
+    posx = sfml->Instance().getViewCenter()[0];
+    posy = sfml->Instance().getViewCenter()[1];
+    
+    titulo.setPosition(posx-width/15, posy-height/3);   
+    tsalir.setPosition(posx-width/3, posy+height/5);
+
 
     while (sfml ->Instance().isOpen())
     {

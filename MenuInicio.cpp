@@ -25,8 +25,11 @@ MenuInicio::MenuInicio() {
 
     renderEngine *sfml;
     
-    float width =  sfml->Instance().getSize()[0];
-    float height = sfml->Instance().getSize()[1];
+    width =  sfml->Instance().getViewSize()[0];
+    height = sfml->Instance().getViewSize()[1];
+    
+    posx = sfml->Instance().getViewCenter()[0];
+    posy = sfml->Instance().getViewCenter()[1];
   
     numplayers=1;
   
@@ -40,32 +43,32 @@ MenuInicio::MenuInicio() {
    titulo.setCharacterSize(20);
    titulo.setFillColor(sf::Color::White);
    titulo.setString("Meat Starto!");
-   titulo.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS +6)));
+   titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
   
    
    menu[0].setFont(font);
    menu[0].setCharacterSize(20);
    menu[0].setFillColor(sf::Color::Red);
    menu[0].setString("Play");
-   menu[0].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*1));
+   menu[0].setPosition(posx-width/3, posy-height/5);
    
    menu[1].setFont(font);
    menu[1].setCharacterSize(20);
    menu[1].setFillColor(sf::Color::White);
    menu[1].setString("Options");
-   menu[1].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*2));
+   menu[1].setPosition(posx-width/3, posy-height/10);
    
    menu[2].setFont(font);
    menu[2].setCharacterSize(20);
    menu[2].setFillColor(sf::Color::White);
    menu[2].setString("How to play");
-   menu[2].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*3));
+   menu[2].setPosition(posx-width/3, posy+height/10);
    
    menu[3].setFont(font);
    menu[3].setCharacterSize(20);
    menu[3].setFillColor(sf::Color::White);
    menu[3].setString("Exit");
-   menu[3].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*4));
+   menu[3].setPosition(posx-width/3, posy+height/5);
    
    
    /*MENU DE OPCIONES*/
@@ -73,19 +76,19 @@ MenuInicio::MenuInicio() {
    titulo2.setCharacterSize(20);
    titulo2.setFillColor(sf::Color::White);
    titulo2.setString("Options");
-   titulo2.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS +5)));
+   titulo2.setPosition(posx-width/30, posy-height/3);
    
    menuop[0].setFont(font);
    menuop[0].setCharacterSize(20);
    menuop[0].setFillColor(sf::Color::Red);
    menuop[0].setString("Sound");
-   menuop[0].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS2 +1)*1));
+   menuop[0].setPosition(posx-width/3, posy-height/6);
    
    menuop[1].setFont(font);
    menuop[1].setCharacterSize(20);
    menuop[1].setFillColor(sf::Color::White);
    menuop[1].setString("Exit");
-   menuop[1].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS2 +1)*2));
+   menuop[1].setPosition(posx-width/3, posy+height/10);
    
    
    /*Menu players*/
@@ -93,25 +96,25 @@ MenuInicio::MenuInicio() {
    titulo3.setCharacterSize(20);
    titulo3.setFillColor(sf::Color::White);
    titulo3.setString("Players");
-   titulo3.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS3 +5)));
+   titulo3.setPosition(posx-width/30, posy-height/3);
    
    menuplayer[0].setFont(font);
    menuplayer[0].setCharacterSize(20);
    menuplayer[0].setFillColor(sf::Color::Red);
    menuplayer[0].setString("Play" );
-   menuplayer[0].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS3 +1)*1));
+   menuplayer[0].setPosition(posx-width/3, posy-height/6);
    
    menuplayer[1].setFont(font);
    menuplayer[1].setCharacterSize(20);
    menuplayer[1].setFillColor(sf::Color::White);
    menuplayer[1].setString("Players "  + std::to_string(numplayers));
-   menuplayer[1].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS3 +1)*2));
+   menuplayer[1].setPosition(posx-width/3, posy+height/10);
    
    menuplayer[2].setFont(font);
    menuplayer[2].setCharacterSize(20);
    menuplayer[2].setFillColor(sf::Color::White);
    menuplayer[2].setString("Exit");
-   menuplayer[2].setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS3 +1)*3));
+   menuplayer[2].setPosition(posx-width/3, posy+height/8);
    
    
    /*How to play*/
@@ -119,13 +122,13 @@ MenuInicio::MenuInicio() {
    titulo4.setCharacterSize(20);
    titulo4.setFillColor(sf::Color::White);
    titulo4.setString("How to play");
-   titulo4.setPosition(sf::Vector2f(2*width/5, height/(MAX_NUMBER_OF_ITEMS +5)));
+   titulo4.setPosition(posx-width/30, posy-height/3);
    
    menuhow.setFont(font);
    menuhow.setCharacterSize(20);
    menuhow.setFillColor(sf::Color::Red);
    menuhow.setString("Exit");
-   menuhow.setPosition(sf::Vector2f(150, height/(MAX_NUMBER_OF_ITEMS +1)*4));
+   menuhow.setPosition(posx-width/3, posy-height/6);
    
    
    
@@ -134,6 +137,7 @@ MenuInicio::MenuInicio() {
    selectedItemIndex3=0;
    selectedItemIndex4=3;
    statemenu=0;
+   primero=true;
 }
 
 MenuInicio::MenuInicio(const MenuInicio& orig) {
@@ -360,11 +364,72 @@ void MenuInicio::Update(){
 
 void MenuInicio::Handle(){
     renderEngine *sfml;
+    statemenu=0;
+    
+    if(primero==false){
+           titulo.setCharacterSize(44);
+            menu[0].setCharacterSize(36);
+            menu[1].setCharacterSize(36);
+            menu[2].setCharacterSize(36);
+            menu[3].setCharacterSize(36);
+
+
+            /*MENU DE OPCIONES*/
+            titulo2.setCharacterSize(44);
+            menuop[0].setCharacterSize(36);
+            menuop[1].setCharacterSize(36);
+
+
+            /*Menu players*/
+            titulo3.setCharacterSize(44);
+            menuplayer[0].setCharacterSize(36);
+            menuplayer[1].setCharacterSize(36);
+            menuplayer[2].setCharacterSize(36);
+
+
+            /*How to play*/
+            titulo4.setCharacterSize(44);
+            menuhow.setCharacterSize(36);
+            
+    }
+    
+    
+    
+    width =  sfml->Instance().getViewSize()[0];
+    height = sfml->Instance().getViewSize()[1];
+    
+    posx = sfml->Instance().getViewCenter()[0];
+    posy = sfml->Instance().getViewCenter()[1];
+    
+   titulo.setPosition(sf::Vector2f(posx-width/20, posy-height/3));    
+   menu[0].setPosition(posx-width/3, posy-height/5);
+   menu[1].setPosition(posx-width/3, posy-height/15);
+   menu[2].setPosition(posx-width/3, posy+height/15);
+   menu[3].setPosition(posx-width/3, posy+height/5);
+   
+   
+   /*MENU DE OPCIONES*/
+   titulo2.setPosition(posx-width/30, posy-height/3);
+   menuop[0].setPosition(posx-width/3, posy);
+   menuop[1].setPosition(posx-width/3, posy+height/5);
+   
+   
+   /*Menu players*/
+   titulo3.setPosition(posx-width/30, posy-height/3);
+   menuplayer[0].setPosition(posx-width/3, posy-height/5);
+   menuplayer[1].setPosition(posx-width/3, posy);
+   menuplayer[2].setPosition(posx-width/3, posy+height/5);
+   
+   
+   /*How to play*/
+   titulo4.setPosition(posx-width/30, posy-height/3);
+   menuhow.setPosition(posx-width/3, posy-height/6);
+   
+    primero=false;
     
     while (sfml->Instance().isOpen())
     {
         //Bucle de obtención de eventos
- 
         Update();
         Render();       
 

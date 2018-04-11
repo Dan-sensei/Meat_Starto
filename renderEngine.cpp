@@ -66,6 +66,15 @@ std::array<float, 2> renderEngine::getViewCenter() {
     return v;
 }
 
+std::array<float, 2> renderEngine::getViewSize() {
+    std::array<float,2> v;
+    
+    v[0] = window.getView().getSize().x;
+    v[1] = window.getView().getSize().y;
+    
+    return v;
+}
+
 
 renderEngine::renderEngine(const renderEngine& orig) {}
 

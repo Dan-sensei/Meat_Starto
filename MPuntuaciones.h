@@ -41,6 +41,13 @@ private:
     sf::RenderWindow* window;
    
     static MPuntuaciones* instance;
+    
+    float width;
+    float height;
+    
+    float posx;
+    float posy;
+
 
 };
 

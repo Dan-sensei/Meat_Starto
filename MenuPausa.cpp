@@ -27,8 +27,12 @@ MenuPausa::MenuPausa() {
     
     renderEngine *sfml;
     
-    float width =  sfml->Instance().getSize()[0];
-    float height = sfml->Instance().getSize()[1];
+    width =  sfml->Instance().getViewSize()[0];
+    height = sfml->Instance().getViewSize()[1];
+    
+    posx = sfml->Instance().getViewCenter()[0];
+    posy = sfml->Instance().getViewCenter()[1];
+
   
    if (!font.loadFromFile("resources/fuente.ttf"))
     {
@@ -37,23 +41,23 @@ MenuPausa::MenuPausa() {
     }
     
    titulo.setFont(font);
-   titulo.setCharacterSize(20);
-   titulo.setFillColor(sf::Color::Black);
+   titulo.setCharacterSize(44);
+   titulo.setFillColor(sf::Color::White);
    titulo.setString("Pause");
-   titulo.setPosition(sf::Vector2f(2*width/5, height/(NUMBER_OF_ITEMS +6)));
+   titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
   
    
    menu[0].setFont(font);
-   menu[0].setCharacterSize(20);
+   menu[0].setCharacterSize(36);
    menu[0].setFillColor(sf::Color::Red);
    menu[0].setString("Continue");
-   menu[0].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*2));
+   menu[0].setPosition(posx-width/3, posy-height/6);
    
    menu[1].setFont(font);
-   menu[1].setCharacterSize(20);
+   menu[1].setCharacterSize(36);
    menu[1].setFillColor(sf::Color::White);
    menu[1].setString("Exit");
-   menu[1].setPosition(sf::Vector2f(150, height/(NUMBER_OF_ITEMS +1)*3));
+   menu[1].setPosition(posx-width/3, posy+height/10);
    
    selectedItemIndex=0;
 }
@@ -97,6 +101,7 @@ void MenuPausa::MoveDown(){
 void MenuPausa::Update(){
     renderEngine::rEvent event;
     renderEngine *sfml;
+    
     
        while (sfml->Instance().pollEvent(event))
         {
@@ -158,6 +163,16 @@ void MenuPausa::Update(){
 void MenuPausa::Handle(){
     renderEngine *sfml;
 
+    width =  sfml->Instance().getViewSize()[0];
+    height = sfml->Instance().getViewSize()[1];
+    
+    posx = sfml->Instance().getViewCenter()[0];
+    posy = sfml->Instance().getViewCenter()[1];
+    
+    titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
+    menu[0].setPosition(posx-width/3, posy-height/6);
+    menu[1].setPosition(posx-width/3, posy+height/10);
+    
     while (sfml->Instance().isOpen())
     {
         //Bucle de obtención de eventos

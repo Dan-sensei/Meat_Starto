@@ -44,6 +44,12 @@ private:
     sf::Text menu[NUMBER_OF_ITEMS];
     sf::Text  titulo;
     static MenuPausa* instance;
+    
+    float width;
+    float height;
+    
+    float posx;
+    float posy;
 
 };
 
