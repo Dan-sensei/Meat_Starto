@@ -100,19 +100,69 @@ void boss::update(int x_m, float x_, float y_) {
                 //std::cout << "CREO BALA" << std::endl;
             crearProyectil(x_,y_);
             dt_boss.restart();
+            
+            //GENERO EL NUMERO ALEATORIO
+            std::random_device rd;
+            std::default_random_engine gen(rd());
+            std::uniform_int_distribution<int> distribution(0,50);
+            
+            if(distribution(gen)>48){
+                std::cout << "Javi used fan of bullets" << std::endl;
+                
+                crearAbanicoProyectiles();
+            }
+            
         }
         
         //MOVIMIENTO DE LOS PROYECTILES
         for(int i=0 ; i<javi.proy.size() ; i++){
-            float vx = javi.proy[i].v_x;
-            float vy = javi.proy[i].v_y;
+            float vx = javi.proy[i]->v_x;
+            float vy = javi.proy[i]->v_y;
 
-            javi.proy[i].r.move(vx,vy);
+            javi.proy[i]->r.move(vx,vy);
+            
+            //MILAGROSAMENTE FUNCIONA
+            if( javi.proy[i]->r.getPosition()[1]>2100    || javi.proy[i]->r.getPosition()[1]<0 || 
+                javi.proy[i]->r.getPosition()[0]>x_max   || javi.proy[i]->r.getPosition()[0]<x_min){
+                    //std::cout << "Soy un proyectil y me destruyo" << std::endl;
+                
+                delete javi.proy[i];
+                javi.proy[i] = NULL;
+                
+                javi.proy.erase(javi.proy.begin()+i);
+                javi.proy.shrink_to_fit();
+            }
         }
 
     }
     else{
         on = false;
+    }
+}
+
+void boss::crearAbanicoProyectiles(){
+    float ang = 0.125;
+    for(float i=0 ; i<4 ; i+=ang){
+        int factor = 15;    //FACTOR VELOCIDAD
+        int w = 25;
+        int h = 25;
+
+        float s_x = sin(M_PI/180*(90*i));
+        float s_y = cos(M_PI/180*(90*i));
+
+            //std::cout << "X-> sin(" << 90*i << ") : " << s_x << std::endl; //X
+            //std::cout << "Y-> cos(" << 90*i << ") : " << s_y << std::endl; //Y
+            //std::cout << std::endl;
+
+        proyectil *p_aux = new proyectil;
+        p_aux->v_x = s_x*factor;
+        p_aux->v_y = s_y*factor;
+
+        p_aux->r.setSize(w,h);
+        p_aux->r.setPosition(javi.r.getPosition()[0],javi.r.getPosition()[1]);
+        p_aux->r.setFillColor('b');
+
+        javi.proy.push_back(p_aux);
     }
 }
 
@@ -128,21 +178,20 @@ void boss::crearProyectil(float x_, float y_) {
     float x = javi.r.getPosition()[0];
     float y = javi.r.getPosition()[1];
     
-    proyectil aux;
-    aux.r.setSize(w,h);
-    aux.r.setPosition(x+(a/2),y+(a/2));
-    aux.r.setFillColor('k');
+    proyectil *aux = new proyectil;
+    aux->r.setSize(w,h);
+    aux->r.setPosition(x+(a/2),y+(a/2));
+    aux->r.setFillColor('k');
     
     //AQUI SE DEBERIAN DE CONSEGUIR LAS POSICIONES DE LOS PERSONAJES
     //HE TENIDO QUE PASARLAS A TRAVES DE 3 FUNCIONES
         //std::cout << "X: " << x_ << std::endl;
         //std::cout << "Y: " << y_ << std::endl;
-    aux.v_x = (x_ - x)/factor;
-    aux.v_y = (y_ - y)/factor;
+    aux->v_x = (x_ - x)/factor;
+    aux->v_y = (y_ - y)/factor;
         //std::cout << "V (" << aux.v_x << "," << aux.v_y << ")" << std::endl;
     
     javi.proy.push_back(aux);
-    
 }
 
 void boss::render() {
@@ -152,7 +201,7 @@ void boss::render() {
             puerta[i].r.draw();
         }
         for(int i=0 ; i<javi.proy.size() ; i++){
-            javi.proy[i].r.draw();
+            javi.proy[i]->r.draw();
         }
         javi.r.draw();
     }

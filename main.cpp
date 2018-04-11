@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
     renderEngine *sfml;
     sfml->Instance();
     
+    //AL LLAMAR AL ESTADO EMPIEZA EL BUCLE
     State* pState =  MenuInicio::Instance();
     sfml->Instance().ChangeState(pState);  
 }

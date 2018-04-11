@@ -19,7 +19,7 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 6
 
  Mapa::Mapa() {
@@ -58,7 +58,8 @@
         int w = atoi(map->Attribute("w"));
         int h = atoi(map->Attribute("h"));
         
-        renderEngine::rIntRect ir_aux(x,y,w,h);
+        // Este y+1 es igual de mierda a lo que Using namespace std; es al std::
+        renderEngine::rIntRect ir_aux(x,y+1,w,h);
         
         spriteSheetRects.push_back(ir_aux);
         
@@ -717,14 +718,12 @@ void Mapa::render(float tick_) {
     }
    
 
-
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < vector_enemigos.size(); j++)
         if(vector_enemigos[j]->getXPosition() > x_min && vector_enemigos[j]->getXPosition() < x_max){
             vector_enemigos[j]->interpola(tick_);
             vector_enemigos[j]->draw();
     }
-    
     
     //------------|  COLISIONES (DEBUG)  |------------//
     /*

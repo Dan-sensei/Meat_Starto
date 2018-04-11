@@ -65,7 +65,6 @@ private:
     sf::Text  titulo;
     sf::Text  titulo2;
     sf::Text  titulo3;
-    sf::RenderWindow* window;
     static Juego* instance;
 
 };

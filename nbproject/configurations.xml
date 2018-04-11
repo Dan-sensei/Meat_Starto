@@ -7,11 +7,16 @@
       <itemPath>Animator.h</itemPath>
       <itemPath>AssetManager.h</itemPath>
       <itemPath>Player.h</itemPath>
-      <itemPath>boss.h</itemPath>
       <itemPath>physicsEngine/contactListener.h</itemPath>
       <itemPath>renderEngine.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f5" displayName="Mapa" projectFiles="true">
+      <logicalFolder name="f2" displayName="Minijuegos" projectFiles="true">
+        <itemPath>boss.cpp</itemPath>
+        <itemPath>boss.h</itemPath>
+        <itemPath>mj_t.cpp</itemPath>
+        <itemPath>mj_t.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f1" displayName="Nodo" projectFiles="true">
         <logicalFolder name="f3" displayName="NPCs" projectFiles="true">
           <itemPath>Mapa/Nodo/NPCs/NPC.cpp</itemPath>
@@ -26,10 +31,6 @@
       </logicalFolder>
       <itemPath>Mapa/Mapa.cpp</itemPath>
       <itemPath>Mapa/Mapa.h</itemPath>
-    </logicalFolder>
-    <logicalFolder name="f2" displayName="minijuegoTetris" projectFiles="true">
-      <itemPath>mj_t.cpp</itemPath>
-      <itemPath>mj_t.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f1" displayName="physicsEngine" projectFiles="true">
       <itemPath>physicsEngine/pBody.cpp</itemPath>
@@ -49,7 +50,6 @@
       <itemPath>Animator.cpp</itemPath>
       <itemPath>AssetManager.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
-      <itemPath>boss.cpp</itemPath>
       <itemPath>physicsEngine/contactListener.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>renderEngine.cpp</itemPath>

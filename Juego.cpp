@@ -57,6 +57,7 @@ Juego::Juego(){
     
     //VISTA
     view = new renderEngine::rView(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
+    //ZUMO
     view->zoom(2);
     sfml->Instance().setView(*view);
     
@@ -99,7 +100,7 @@ void Juego::Handle(){
         //fps = 1.f/(currentTime/lastTime);
         fps = 1.f/currentTime;
         lastTime = currentTime;
-            std::cout << "FPS: " << fps << std::endl;
+            //std::cout << "FPS: " << fps << std::endl;
         //</FPS>
         
         //EVENTOS
@@ -125,7 +126,7 @@ void Juego::Update(){
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
-    std::cout << "Tecla " << event.getKeyCode() << std::endl;
+    //std::cout << "Tecla " << event.getKeyCode() << std::endl;
                 break;
             case renderEngine::rEvent::EventType::KeyReleased :
                 keys[event.getKeyCode()] = false;     

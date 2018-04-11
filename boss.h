@@ -17,6 +17,8 @@
 #include "renderEngine.h"
 #include "physicsEngine/pBody.h"
 #include "physicsEngine/physicsEngine.h"
+#include <random>
+#include <math.h>
 
 
 class boss {
@@ -41,6 +43,7 @@ private:
     //</SINGLETON>
     
     //METODOS
+    void crearAbanicoProyectiles();
     void crearProyectil(float x_, float y_);
     
     //ATRIBUTOS
@@ -56,7 +59,12 @@ private:
     struct jefe{
         renderEngine::rRectangleShape r;    //EL BOSS FINAL
         bool move;                          //TRUE: DERECHA
-        std::vector<proyectil> proy;             //VECTOR DE PROYECTILES
+        std::vector<proyectil*> proy;             //VECTOR DE PROYECTILES
+        
+        //LOS VALORES DE x_f E y_f CAMBIAN
+        int x_f;            //X DE POSICION FINAL
+        int y_f;            //Y DE POSICION FINAL
+        bool llegada;       //TRUE: HA LLEGADO A LA POSICION FINAL Y BUSCA UNA NUEVA
     };
     
     t_muro puerta[12];

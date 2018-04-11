@@ -7,14 +7,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/physicsEngine/contactListener.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/main.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Nodo.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/physicsEngine/contactListener.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/main.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Mapa/Mapa.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/boss.h</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/boss.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Juego.cpp</file>
         </group>
     </open-files>
 </project-private>
