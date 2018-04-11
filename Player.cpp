@@ -95,6 +95,9 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     previous.x = actual.x = body.getXPosition();
     previous.y = actual.y = body.getYPosition();
     previous.r = actual.r = body.getRotation();
+    
+    sprite.setPosition(actual.x, actual.y);
+    
 }
 
 Player::~Player() {

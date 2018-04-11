@@ -39,21 +39,6 @@
     
     //WHILE
     tinyxml2::XMLElement *m_aux;
-    int k = 0;
-    while(map){
-        tiles[k] = new _tile;
-        tiles[k]->id = atoi(map->Attribute("id"))+1;
-        
-            //std::cout << map->Attribute("id") << " -> ";
-        
-        m_aux = map->FirstChildElement("image");
-        
-        tiles[k]->path = m_aux->Attribute("source");
-            //std::cout << m_aux->Attribute("source") << std::endl;
-        
-        map = map->NextSiblingElement("tile");
-        k++;
-    }
     
     //ANYADO EL PATH DE LA CARPETA
     
@@ -66,10 +51,7 @@
     map = ts_doc.FirstChildElement("TextureAtlas")->FirstChildElement("sprite");
     
     for(int i=0 ; i<n ; i++){
-        std::string path2 = "tiles_definitivo/";
-        std::string path3 = tiles[i]->path;
-        
-        tiles[i]->path = path2.operator +=(path3);
+
         
         int x = atoi(map->Attribute("x"));
         int y = atoi(map->Attribute("y"));
@@ -80,9 +62,8 @@
         
         spriteSheetRects.push_back(ir_aux);
         
-        tiles[i]->ir = ir_aux;
-        tiles[i]->t.loadFromImage(ts,tiles[i]->ir);
-        
+
+      
             //std::cout << tiles[i]->id << " -> " << tiles[i]->path << "      INTRECT-> X: " << tiles[i]->ir.left << ", Y: " << tiles[i]->ir.top << ", W: " << tiles[i]->ir.widht << ", H: " << tiles[i]->ir.height << std::endl;
 
         map = map->NextSiblingElement("sprite");
@@ -647,41 +628,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
 
     x_max = x_max_aux+ancho;
     
-    _cas *a_cas = new _cas[vector_casillas.size()];
-    int n = 0;
-    for(std::vector<_cas>::iterator it=vector_casillas.begin(); it!=vector_casillas.end(); ++it){
-        a_cas[n] = (*it);
-        n++;
-    }
-    
-    //PASO DEL VECTOR A UN ARRAY
-    _miArray a_aux;
-    a_aux.size = vector_casillas.size();
-    a_aux.casillas = new _cas[a_aux.size];
-    a_aux.aux_pop = x_max;
-    
     aux_->setPop(x_max);
-    
-    for(int i=0 ; i<vector_casillas.size() ; i++){
-        a_aux.casillas[i] = vector_casillas[i];
-    }
-    
-    
-    //HA LEIDO UN NODO
-
-    //GUARDO LAS CASILLAS
-    if(lista_casillas.size()<TAM_LISTA){
-
-        lista_casillas.push_back(a_aux);
-        vector_casillas.clear();
-            //std::cout << "Guardo en lista_casillas" << std::endl;
-    }
-    else{
-        lista_casillas_aux.push_back(a_aux);
-        vector_casillas.clear();
-            //std::cout << "Guardo en lista_casillas_aux" << std::endl;
-    }
-    vector_casillas.clear();
     
     //GUARDO LOS PINCHOS
     if(l_pinchos.size()<TAM_LISTA){
@@ -704,9 +651,6 @@ void Mapa::CreaCasilla(int id, int x, int y) {
     //casilla.setTexture(AssetManager::GetTexture(tiles[id-1]->path));
     casilla.setPosition(x,y);
     
-    _cas aux;
-    aux.id = id;
-    
     int id2 = id-1;
     if(id2 == 36 || id2 == 35 || id2 == 34 || id2 == 33){
         //std::cout << id << std::endl;
@@ -718,15 +662,6 @@ void Mapa::CreaCasilla(int id, int x, int y) {
         
         vector_pinchos.push_back(rs);
     }
-    
-    //aux.text = AssetManager::GetTexture(tiles[id-1]->path);
-    //aux.text.loadFromImage(ts,tiles[id-1]->ir);
-    aux.text = &(tiles[id-1]->t);
-    
-    aux.rect = casilla;
-        
-    vector_casillas.push_back(aux);
-
 }
 
 void Mapa::render(float tick_) {
@@ -781,27 +716,7 @@ void Mapa::render(float tick_) {
         iterator++;
     }
    
-    /*
-    for(std::list<_miArray>::iterator it=lista_casillas.begin(); it!=lista_casillas.end(); ++it){
-        for(int i=0 ; i<(*it).size ; i++){
-            //if(ir.contains(static_cast<int>((*it).rect.getPosition()[0]),static_cast<int>((*it2).rect.getPosition()[1]))){
-            if(ir.contains((*it).casillas[i].rect.getPosition()[0],(*it).casillas[i].rect.getPosition()[1])){
-                
-                r = &((*it).casillas[i].rect);
-                t = (*it).casillas[i].text;
 
-                r->setTexture(*t);
-                r->draw();
-            }
-            
-        }
-        
-        if(iterator == TAM_LISTA/2 && (*it).aux_pop < sfml->Instance().getViewCenter()[0]){
-            pop = true;
-        }
-        iterator++;
-    }
-    */
 
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < vector_enemigos.size(); j++)
@@ -923,25 +838,6 @@ void Mapa::update(float x, float y) {
         pop = false;
     }
     
-    /*
-    if(pop && lista_casillas_aux.size()>0){
-            std::cout << "CUANDO HACES POP, NO HAY STOP" << std::endl;
-        _miArray aux;
-        
-        //POP DE CASILLAS
-        lista_casillas.pop_front();
-        aux = lista_casillas_aux.front();
-        lista_casillas.push_back(aux);
-        lista_casillas_aux.pop_front();
-        
-        //POP DE PINCHOS
-        l_pinchos.pop_front();
-        l_pinchos.push_back(l_pinchos_aux.front());
-        l_pinchos_aux.pop_front();
-        
-        pop = false;
-    }
-     */
 
     int x_m = sfml->Instance().getViewCenter()[0];
     

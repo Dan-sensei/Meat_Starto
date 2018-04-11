@@ -65,13 +65,7 @@ private:
     //ALMACENA EL PATH DE LA IMAGEN Y SU ID
     tinyxml2::XMLDocument ts_doc;   //XML DEL MAPASHEET
     renderEngine::rImage ts;        //PNG DEL MAPASHEET
-    struct _tile{
-        int id;
-        renderEngine::rIntRect ir;  //CUADRADO DE RECORTE
-        renderEngine::rTexture t;   //TEXTURA
-        std::string path;           //PATH DEL MAPA (NO SE USA)
-    };
-    _tile *tiles[37];
+
     
     //OBJETOS (colisiones del mapa)
     std::vector<renderEngine::rConvexShape> objetos;
@@ -80,16 +74,7 @@ private:
     
     //PARA CONSTRUIR EL MAPA
     int x_max;
-    struct _cas{
-        int id;
-        renderEngine::rRectangleShape rect;
-        renderEngine::rTexture *text;
-    };
-    struct _miArray{
-        _cas *casillas;     //PUNTERO A ARRAY DE _cas
-        int size;           //TAMANYO
-        int aux_pop;
-    };
+
     //std::list<std::vector<_cas>> lista_casillas;
     
     std::list<Nodo> hex_list;
@@ -97,15 +82,13 @@ private:
     
     std::vector<renderEngine::rIntRect> spriteSheetRects;
     
-    std::list<_miArray> lista_casillas;
-    std::list<_miArray> lista_casillas_aux;
+
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
     std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos;        //MAPA ID's: 33,34,35,36
     std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos_aux;
     
     std::vector<renderEngine::rRectangleShape> vector_pinchos;  //VECTOR AUXILIAR
-    std::vector<_cas> vector_casillas;                          //VECTOR AUXILIAR
     std::vector<NPC*> vector_enemigos;
     int v[15][15];
     

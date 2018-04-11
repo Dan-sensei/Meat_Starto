@@ -125,9 +125,20 @@ void Juego::Update(){
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
+    std::cout << "Tecla " << event.getKeyCode() << std::endl;
                 break;
             case renderEngine::rEvent::EventType::KeyReleased :
                 keys[event.getKeyCode()] = false;     
+                switch(event.getKeyCode()) {
+                    //JUGADOR 1
+                    case 0:
+                        readyPlayerOne->moveLeft_b();
+                    break;
+
+                    case 16:
+                        readyPlayerOne->moveRigth_b();
+                    break;
+                }
                 break;
 
             default:
@@ -135,7 +146,6 @@ void Juego::Update(){
         }
 
     }
-
     if(keys[16])    sfml->Instance().close();                                   //Q
 
     if(keys[36]){   
@@ -263,7 +273,6 @@ void Juego::Update(){
 
      }  
      */
-    std::cout << "End Update" << std::endl;
 }
 
 Juego::Juego(const Juego& orig) {

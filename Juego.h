@@ -19,10 +19,6 @@
 #include <Box2D/Box2D.h>
 #include <math.h>
 
-#include <renderEngine.h>
-#include <physicsEngine/physicsEngine.h>
-#include <physicsEngine/pBody.h>
-
 #include "State.h" 
 #include "MenuPausa.h"
 #include "MenuInicio.h"
