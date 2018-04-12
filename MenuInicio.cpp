@@ -338,14 +338,14 @@ void MenuInicio::Update(){
                        
                             break;
                          case sf::Keyboard::Right:
-                            if(statemenu==2 && numplayers<4 && menuplayer[1].getColor()==sf::Color::Red){
+                            if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::Red){
                                 numplayers++;
                                 menuplayer[1].setString("Players "  + std::to_string(numplayers));
                             }
                             break;
                             
                         case sf::Keyboard::Left:
-                            if(statemenu==2 && numplayers>1 && menuplayer[1].getColor()==sf::Color::Red){
+                            if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::Red){
                                 numplayers--;
                                 menuplayer[1].setString("Players "  + std::to_string(numplayers));
                             }

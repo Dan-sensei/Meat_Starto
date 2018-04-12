@@ -78,12 +78,17 @@ public:
             
             void draw();                                    //DIBUJAR
             void move(float x, float y);                    //MOVER
+            void rotate(float a);                           //ROTAR
             
             void setOrigin(float x, float y);               //ESTABLECER EL PUNTO CENTRAL
             void setTexture(rTexture &t);                   //ESTABLECER TEXTURA
             void setPosition(float x, float y);             //ESTABLECER POSICION
             void setFillColor(char c);                      //ESTABLECER UN COLOR
             void setSize(float x, float y);                 //ESTABLECER UN TAMANYO
+            void setRotation(float a);                      //ESTABLECER UNA ROTACION
+            
+            void setOutlineColor(char c);
+            void setOutlineThickness(float f);
             
             std::array<float,2> getSize();                  //DEVUELVE EL TAMANYO
             std::array<float,2> getPosition();              //CONSEGUIR POSICION

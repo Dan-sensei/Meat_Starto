@@ -45,6 +45,10 @@ private:
     //METODOS
     void crearAbanicoProyectiles();
     void crearProyectil(float x_, float y_);
+    void crearProyectilTele();
+    void updateJavi();
+    
+    //float getVX_BP(); //DEVUELVE LA COMPONENTE X DEL VECTOR VELOCIDAD DEL 
     
     //ATRIBUTOS
     struct t_muro{ //TILES MURO
@@ -56,26 +60,45 @@ private:
         float v_x;  //COMPONENTE X DEL VECTOR DE MOVIMIENTO
         float v_y;  //COMPONENTE Y DEL VECTOR DE MOVIMIENTO
     };
+    struct proyectilT: proyectil{
+        float a;            //AMPLITUD
+        float a_1;          //AMPLITUD AUXILIAR 1
+        float a_2;          //AMPLITUD AUXILIAR 2
+        
+        float x_ini;        //X INICIAL
+        float x_fin;        //X FINAL
+        float y_ini;        //Y INICIAL
+        float y_fin;        //Y FINAL
+        
+        float angle;
+        
+        
+    };
     struct jefe{
-        renderEngine::rRectangleShape r;    //EL BOSS FINAL
-        bool move;                          //TRUE: DERECHA
-        std::vector<proyectil*> proy;             //VECTOR DE PROYECTILES
+        renderEngine::rRectangleShape r;            //EL BOSS FINAL
+        std::vector<proyectil*> proy;               //VECTOR DE PROYECTILES
+        std::vector<proyectilT*> proyT;             //VECTOR DE PROYECTILES T
         
         //LOS VALORES DE x_f E y_f CAMBIAN
+        float x_v;          //X DEL VECTOR VELOCIDAD
+        float y_v;          //Y DEL VECTOR VELOCIDAD
         int x_f;            //X DE POSICION FINAL
         int y_f;            //Y DE POSICION FINAL
         bool llegada;       //TRUE: HA LLEGADO A LA POSICION FINAL Y BUSCA UNA NUEVA
+        renderEngine::rIntRect *ir;
     };
-    
+    renderEngine::rRectangleShape r_aux;    //DEBUG
+    renderEngine::rRectangleShape ir_aux;   //DEBUG
     t_muro puerta[12];
     jefe javi;
     
     renderEngine::rClock clock_boss;        //DETERMINA LAS ACCIONES DEL BOSS
+    renderEngine::rClock dt_fan;            //ABANICO
     renderEngine::rClock dt_boss;           //DELTA TIME 1
     int x_max;                              //X MAXIMA DONDE ACABA EL BOSS
     int x_min;                              //X MINIMA DONDE EMPIEZA EL BOSS
-    bool on;            //TRUE: BOSS EN MARCHA
-    bool restart;       //TRUE: BOSS INICIADO
+    bool on;                                //TRUE: BOSS EN MARCHA
+    bool restart;                           //TRUE: BOSS INICIADO
     
     
     

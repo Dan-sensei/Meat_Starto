@@ -225,6 +225,8 @@ void renderEngine::rRectangleShape::setPosition (float x, float y)  {   rs.setPo
 void renderEngine::rRectangleShape::setSize     (float x, float y)  {   rs.setSize(sf::Vector2f(x,y));}
 void renderEngine::rRectangleShape::move        (float x, float y)  {   rs.move(x,y);}
 void renderEngine::rRectangleShape::setOrigin   (float x, float y)  {   rs.setOrigin(x,y);}
+void renderEngine::rRectangleShape::setRotation (float a)           {   rs.setRotation(a);}
+void renderEngine::rRectangleShape::rotate      (float a)           {   rs.rotate(a);}
 
 std::array<float, 2> renderEngine::rRectangleShape::getSize() {
     std::array<float,2> ret;
@@ -246,6 +248,20 @@ void renderEngine::rRectangleShape::setFillColor(char c) {
         default:    break;
     }
 }
+
+void renderEngine::rRectangleShape::setOutlineColor(char c) {
+    switch(c){
+        case 't':   rs.setOutlineColor(sf::Color::Transparent);    break;
+        case 'r':   rs.setOutlineColor(sf::Color::Red);            break;
+        case 'g':   rs.setOutlineColor(sf::Color::Green);          break;
+        case 'b':   rs.setOutlineColor(sf::Color::Blue);           break;
+        case 'y':   rs.setOutlineColor(sf::Color::Yellow);         break;
+        case 'k':   rs.setOutlineColor(sf::Color::Black);          break;
+        default:    break;
+    }
+}
+
+void renderEngine::rRectangleShape::setOutlineThickness(float f) {rs.setOutlineThickness(f);}
 
 std::array<float, 2> renderEngine::rRectangleShape::getPosition() {
     std::array<float, 2> ret;

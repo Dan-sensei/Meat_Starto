@@ -105,9 +105,11 @@ void Juego::Handle(){
         
         //EVENTOS
         Update();
+            //std::cout << "EVENTOS" << std::endl;
         
         //RENDER
         Render();
+            //std::cout << "RENDER" << std::endl;
     }
 }
 

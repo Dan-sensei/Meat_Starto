@@ -706,7 +706,6 @@ void Mapa::render(float tick_) {
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
     
-
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
        
         (*it).draw(ir);
