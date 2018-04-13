@@ -19,11 +19,11 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 10
 #define TAM_LISTA 6
 
  Mapa::Mapa() {
-
+    renderEngine::rClock optimo_clock;
     //CARGA DEL DOCUMENTO
     doc.LoadFile("tiles_definitivo/tiles_fv.tsx");
     
@@ -88,6 +88,7 @@
     boss *javi;
     javi->Instance();       //INICIALIZO EL BOSS
     
+    std::cout << "TIEMPO DE CARGA DEL MAPA " << optimo_clock.getElapsedTime().asSeconds() << std::endl;
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -615,8 +616,9 @@ void Mapa::LeeNodo(std::string const& node_path) {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="POWER UPS/DOWNS">
-    //POWER UP/DOWN
-    if (map->FirstChildElement("objectgroup")->NextSibling()) {
+
+    //POWER UP/DOWN 
+    if (map->FirstChildElement("objectgroup")->NextSibling() && map->FirstChildElement("objectgroup")->NextSibling()->NextSibling()) {
 
         obj = map->FirstChildElement("objectgroup")->NextSibling()->NextSibling()->FirstChildElement("object");
 
