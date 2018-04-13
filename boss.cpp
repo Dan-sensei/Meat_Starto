@@ -205,8 +205,10 @@ void boss::update(int x_m, float x_, float y_) {
 
 void boss::updateJavi() {
     //SI LLEGADA ES TRUE, ENTONCES ENCUENTRA OTRA POSICION DENTRO DE UN RANGO
+    std::cout << javi.llegada << std::endl;
     float factor = 100;
-    float factor_v;
+    float factor_v = 1;
+    
     
     if(javi.llegada){
         std::random_device rd;
@@ -231,7 +233,6 @@ void boss::updateJavi() {
             javi.ir = new renderEngine::rIntRect(javi.r.getPosition()[0],javi.r.getPosition()[1],javi.x_v * factor,javi.y_v * factor);
         }
             
-        
         javi.llegada = false;
         
         //DEBUG
@@ -244,10 +245,12 @@ void boss::updateJavi() {
     }
     
     javi.r.move(javi.x_v*factor_v,javi.y_v*factor_v);
+        //std::cout << "V(" << javi.x_v*factor_v << "," << javi.y_v*factor_v << ")" << std::endl;
     
     if(!javi.ir->contains(javi.r.getPosition()[0],javi.r.getPosition()[1])){
         javi.llegada = true;
     }
+
 }
 
 void boss::crearProyectilTele() {

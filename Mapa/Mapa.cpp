@@ -627,6 +627,55 @@ void Mapa::LeeNodo(std::string const& node_path) {
     }
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="POWER UPS/DOWNS">
+    //POWER UP/DOWN
+    if (map->FirstChildElement("objectgroup")->NextSibling()) {
+
+        obj = map->FirstChildElement("objectgroup")->NextSibling()->NextSibling()->FirstChildElement("object");
+
+        int x = 0;
+        int y = 0;
+        int w = 0;
+        int h = 0;
+
+        while (obj) {
+            obj->QueryIntAttribute("x", &x);
+            obj->QueryIntAttribute("y", &y);
+            obj->QueryIntAttribute("width", &w);
+            obj->QueryIntAttribute("height", &h);
+
+
+            std::random_device rd;
+            std::default_random_engine gen(rd());
+            std::uniform_int_distribution<int> dx(0, (w / 70)-1);
+            std::uniform_real_distribution<float> dp(0, 1);
+
+            int xpos = dx(gen);
+
+            renderEngine::rRectangleShape raux;
+            if (dp(gen) < 0.5) {
+                //CREO UN POWER UP
+                raux.setFillColor('g');
+                raux.setSize(20, 20);
+                raux.setOrigin(10, 10);
+                raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
+            } else {
+                //CREO UN POWER DOWN
+                raux.setFillColor('r');
+                raux.setSize(20, 20);
+                raux.setOrigin(10, 10);
+                raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
+            }
+
+                //std::cout << "X: " << x << "| Y: " << y << "| W: " << w << "| H: " << h << std::endl;
+                //std::cout << xpos << std::endl;
+
+            power.push_back(raux);
+            obj = obj->NextSiblingElement("object");
+        }
+    }
+    // </editor-fold>
+
     x_max = x_max_aux+ancho;
     
     aux_->setPop(x_max);
@@ -739,6 +788,11 @@ void Mapa::render(float tick_) {
         }
     }
     */
+    
+    //------------|  TETRIS  |------------//
+    for(int i=0 ; i<power.size() ; i++){
+        power[i].draw();
+    }
     
     //------------|  TETRIS  |------------//
     mj_t *tetris;
