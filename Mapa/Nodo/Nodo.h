@@ -29,11 +29,17 @@ public:
     
     void addTile(int id, int x, int y);
     void addGround(std::vector<std::array<float, 2>> coords);
+    void addNPC(int x_, int y_, int x_min, int x_max);
+    
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);
     int getPop();
     
-    void draw(renderEngine::rIntRect limit);
+    void update();
+    void preState();
+    void newState();
+    
+    void draw(float tick_, renderEngine::rIntRect limit, int min, int max);
     
     int getSize();
     
@@ -45,8 +51,12 @@ private:
     std::vector<renderEngine::rIntRect> tileRect;
     std::vector<int> tileId;
     
-    NPC* npcs;
-    std::vector<Ground> ground;
+    std::vector<NPC*> npcs;
+    
+    physicsEngine::type* t;
+    
+    std::vector<pBody> ground;
+    std::vector<renderEngine::rRectangleShape> pinchos;
     int aux_pop;
     
 };

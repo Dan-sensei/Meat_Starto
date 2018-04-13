@@ -89,17 +89,17 @@ pBody physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, typ
     
     b2ChainShape chain;
     chain.CreateChain(vs, vertex_.size());
-    
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
     
     result.setBody(world.CreateBody(&bodyDef));
     result.setUserData(data);
-    
+
     b2FixtureDef fixtureDef;
     //fixtureDef.density = 1.f;
     fixtureDef.shape = &chain;
     
     result.getBody()->CreateFixture(&fixtureDef);
-    
+
+    return result;
 }

@@ -606,7 +606,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
             int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
 
 
-            vector_enemigos.push_back(new xPlotato("assets/kawaii_potato.png", distribution(gen), y_spawn, xCoord, xCoord+width));
+            actual.addNPC(distribution(gen), y_spawn, xCoord, xCoord+width);
             
             
             obj = obj->NextSiblingElement("object");
@@ -694,15 +694,17 @@ void Mapa::render(float tick_) {
     int x_min = x_2 -(ancho*26);
     int x_max = x_2 +(ancho*24);
     
+    /*
     int y_min = y_2 -(alto*15);
     int y_max = y_2 +(alto*15);
+    */
     
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
     
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
        
-        (*it).draw(ir);
+        (*it).draw(tick_, ir, x_min, x_max);
         
         if(iterator == TAM_LISTA/2 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
             pop = true;
@@ -711,12 +713,7 @@ void Mapa::render(float tick_) {
     }
    
 
-    //------------|  ENEMIGOS  |------------//
-    for(int j = 0; j < vector_enemigos.size(); j++)
-        if(vector_enemigos[j]->getXPosition() > x_min && vector_enemigos[j]->getXPosition() < x_max){
-            vector_enemigos[j]->interpola(tick_);
-            vector_enemigos[j]->draw();
-    }
+
     
     //------------|  COLISIONES (DEBUG)  |------------//
     /*
@@ -841,19 +838,22 @@ std::list<std::vector<renderEngine::rRectangleShape>>* Mapa::getPinchos() {
     return &l_pinchos;
 }
 
-void Mapa::updateNPCs(){
-    for(int i = 0; i < vector_enemigos.size(); i++)
-        vector_enemigos[i]->update();
+void Mapa::update(){
+    for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
+        (*it).update();   
+    }
 }
 
-void Mapa::preStateNPCs(){
-    for(int i = 0; i < vector_enemigos.size(); i++)
-        vector_enemigos[i]->preState();
+void Mapa::preState(){
+    for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
+        (*it).preState();   
+    }
 }
 
-void Mapa::newStateNPCs(){
-    for(int i = 0; i < vector_enemigos.size(); i++)
-        vector_enemigos[i]->newState();
+void Mapa::newState(){
+    for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
+        (*it).newState();   
+    }
 }
 
 

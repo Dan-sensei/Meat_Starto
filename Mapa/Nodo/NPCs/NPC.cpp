@@ -17,6 +17,7 @@ NPC::NPC() {
 }
 
 NPC::NPC(const NPC& orig) {
+    std::cout << "CONSTRUTOR COPIA NPC" << std::endl;
 }
 
 NPC::~NPC() {

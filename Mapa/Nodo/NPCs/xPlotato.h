@@ -19,7 +19,7 @@
 
 class xPlotato : public NPC {
 public:
-    xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e);
+    xPlotato(int x_, int y_, int x_b, int x_e);
     xPlotato(const xPlotato& orig);
     virtual ~xPlotato();
     

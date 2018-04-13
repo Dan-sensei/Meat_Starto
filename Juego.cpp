@@ -51,9 +51,9 @@ Juego::Juego(){
     for(int i = 0; i<256; i++) keys[i]=false;
     
     //SINGLETON MUNDO
-    Mapa *tile;
-    tile->Instance();
-    tile->Instance().CreaMapa();
+    Mapa *mapa;
+    mapa->Instance();
+    mapa->Instance().CreaMapa();
     
     //VISTA
     view = new renderEngine::rView(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
@@ -78,12 +78,12 @@ Juego::Juego(){
 
 void Juego::Render(){
     renderEngine    *sfml;
-    Mapa            *tile;
+    Mapa            *mapa;
     
     sfml->Instance().clear('w');
         
     sfml->Instance().setView(*view);
-    tile->Instance().render(tick);
+    mapa->Instance().render(tick);
     readyPlayerOne->draw();
 
     sfml->Instance().display();
@@ -115,7 +115,7 @@ void Juego::Handle(){
 
 void Juego::Update(){
     renderEngine    *sfml;
-    Mapa            *tile;
+    Mapa            *mapa;
     physicsEngine   *world;
     mj_t            *tetris;
     boss            *javi;
@@ -199,10 +199,10 @@ void Juego::Update(){
         //std::cout << "UPDATE-- " << accumulator << std::endl;
 
         readyPlayerOne->preState();  
-        tile->Instance().preStateNPCs();
+        mapa->Instance().preState();
 
         readyPlayerOne->movement();
-        tile->Instance().updateNPCs();
+        mapa->Instance().update();
 
         // BUCLE DE STEPS DE BOX2D
         for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
@@ -215,7 +215,7 @@ void Juego::Update(){
 
         // ACTUALIZO EL ESTADO ACTUAL
         readyPlayerOne->newState();
-        tile->Instance().newStateNPCs();
+        mapa->Instance().newState();
     }
 
     // TICK PARA LA INTERPOLAÇAO
@@ -231,7 +231,7 @@ void Juego::Update(){
         view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
     
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
-    tile->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
+    mapa->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
 
     /*
     renderEngine *sfml;

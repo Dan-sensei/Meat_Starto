@@ -15,12 +15,15 @@
 
 #define velocity 2.f
 
-xPlotato::xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e) {
+xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     //std::cout << "Creando xPlotato" << std::endl;
-    int width = AssetManager::GetTexture(name_).getXSize();
-    int height = AssetManager::GetTexture(name_).getYSize();
+
+    std::string sprite_name = "assets/kawaii_potato.png";
     
-    sprite.setTexture(AssetManager::GetTexture(name_));
+    int width = AssetManager::GetTexture(sprite_name).getXSize();
+    int height = AssetManager::GetTexture(sprite_name).getYSize();
+
+    sprite.setTexture(AssetManager::GetTexture(sprite_name));
     sprite.setOrigin(width / 2, height / 2);
     sprite.setPosition(x_, y_);
     
@@ -38,13 +41,26 @@ xPlotato::xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e) {
     
     target = x_begin;
     
+    hp = 1;
+    
     previous.x = actual.x = body.getXPosition();
     previous.y = actual.y = body.getYPosition();
     previous.r = actual.r = body.getRotation();
+    
 }
 
 xPlotato::xPlotato(const xPlotato& orig) {
+    std::cout << "COPIA" << std::endl;
+    t = orig.t;
+    x_begin = orig.x_begin;
+    x_end = orig.x_end;
+    target = orig.target;
     
+    hp = orig.hp;
+    sprite = orig.sprite;
+    body = orig.body;
+    previous = orig.previous;
+    actual = orig.actual;
 }
 
 xPlotato::~xPlotato() {

@@ -36,9 +36,9 @@ public:
     void CreaMapa();
     void render(float tick_);
     void update(float x, float y);
-    void updateNPCs();
-    void preStateNPCs();
-    void newStateNPCs();
+    void update();
+    void preState();
+    void newState();
     
     std::list<std::vector<renderEngine::rRectangleShape>>* getPinchos();
     
@@ -88,7 +88,6 @@ private:
     std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos_aux;
     
     std::vector<renderEngine::rRectangleShape> vector_pinchos;  //VECTOR AUXILIAR
-    std::vector<NPC*> vector_enemigos;
     int v[15][15];
     
     //TETRIS
