@@ -70,6 +70,7 @@ private:
     //OBJETOS (colisiones del mapa)
     std::vector<renderEngine::rConvexShape> objetos;
     std::vector<std::array<float, 2>> spawn;
+    std::vector<renderEngine::rRectangleShape> power;   //POWER UPS/DOWNS
     
     //PARA CONSTRUIR EL MAPA
     int x_max;
