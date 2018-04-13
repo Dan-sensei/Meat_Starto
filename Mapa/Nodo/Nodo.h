@@ -17,8 +17,8 @@
 #include <array>
 #include <vector>
 
-#include "Ground.h"
 #include "NPCs/NPC.h"
+#include "Ground.h"
 
 class Nodo {
 public:
@@ -28,6 +28,7 @@ public:
     virtual ~Nodo();
     
     void addTile(int id, int x, int y);
+    void addGround(std::vector<std::array<float, 2>> coords);
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);
     int getPop();
@@ -45,10 +46,9 @@ private:
     std::vector<int> tileId;
     
     NPC* npcs;
-    Ground ground;
+    std::vector<Ground> ground;
     int aux_pop;
     
-    int counter;
 };
 
 #endif /* NODO_H */

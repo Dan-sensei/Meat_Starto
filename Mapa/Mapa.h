@@ -69,7 +69,6 @@ private:
     
     //OBJETOS (colisiones del mapa)
     std::vector<renderEngine::rConvexShape> objetos;
-    std::vector<std::vector<std::array<float, 2>>> colision;
     std::vector<std::array<float, 2>> spawn;
     std::vector<renderEngine::rRectangleShape> power;   //POWER UPS/DOWNS
     

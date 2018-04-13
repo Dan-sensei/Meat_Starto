@@ -13,10 +13,18 @@
 
 #include "Ground.h"
 
-Ground::Ground() {
+Ground::Ground(std::vector<std::array<float,2> > coords) {
+    physicsEngine* world;
+    
+    t = new physicsEngine::type;
+    t->id = 1;
+    t->data = this;
+    body = world->Instance().createGround(coords, t);
+    
 }
 
 Ground::Ground(const Ground& orig) {
+    body = orig.body;
 }
 
 Ground::~Ground() {

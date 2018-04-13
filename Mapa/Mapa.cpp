@@ -430,16 +430,10 @@ void Mapa::LeeNodo(std::string const& node_path) {
     map->QueryIntAttribute("width", &map_width);
     map->QueryIntAttribute("height", &map_height);
 
-    Nodo* aux_;
-    if(hex_list.size() <TAM_LISTA){
-        hex_list.push_back(Nodo("tiles_definitivo/tilesheet.png"));
-        aux_ = &hex_list.back();
-    }
-    else{
-        complete_list.push_back(Nodo("tiles_definitivo/tilesheet.png"));
-        aux_ = &hex_list.back();
-    }
-    aux_->setRectVector(spriteSheetRects);
+    
+    Nodo actual("tiles_definitivo/tilesheet.png");
+    actual.setRectVector(spriteSheetRects);
+   
 
     //CONSIGO EL TEXTO
     std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
@@ -474,7 +468,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
 
             if (stoi(partes) != 0) {
                 contador++;
-                aux_->addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
+                actual.addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
                 CreaCasilla(stoi(partes), x_max + (ancho * j), alto * i);
             }
 
@@ -560,7 +554,6 @@ void Mapa::LeeNodo(std::string const& node_path) {
                 break;
             }
         }
-        //std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
 
         cs->setPointCount(vec.size());
         for (int i = 0; i < vec.size(); i++) {
@@ -573,14 +566,8 @@ void Mapa::LeeNodo(std::string const& node_path) {
         cs->setOutlineThickness(5);
         //</DEBUG>
         
-        colision.push_back(vec);    //GUARDO LOS PARES DE VERTICES
         
-        /* SUPERCOMENTARIO++ */
-        physicsEngine* world;
-        
-        world->Instance().createGround(vec, vec.size());
-        
-        
+        actual.addGround(vec);        
         
         objetos.push_back(*cs);     //GUARDO LOS ConvexShapes PARA DEBUG
         //BORRAR cs -> !IMPORTANTE
@@ -678,7 +665,14 @@ void Mapa::LeeNodo(std::string const& node_path) {
 
     x_max = x_max_aux+ancho;
     
-    aux_->setPop(x_max);
+    actual.setPop(x_max);
+    
+    if(hex_list.size() < TAM_LISTA){
+        hex_list.push_back(actual);
+    }
+    else{
+        complete_list.push_back(actual);
+    }
     
     //GUARDO LOS PINCHOS
     if(l_pinchos.size()<TAM_LISTA){

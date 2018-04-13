@@ -43,7 +43,7 @@ void mj_t::init(int x_) {
     
     y = a;
     m1.pb = world->Instance().createBody(a,a*44,x+(m1.rect.getSize()[0]/2),y-DES+(m1.rect.getSize()[1]/2),'k');
-    
+    m1.pb.setUserData((void*)"Pared");
     float px = m1.pb.getXPosition();
     float py = m1.pb.getYPosition();
     m1.rect.setPosition(x,py);
