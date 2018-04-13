@@ -17,12 +17,14 @@
 
 class Ground {
 public:
-    Ground();
+    Ground(std::vector<std::array<float,2> > coords);
     Ground(const Ground& orig);
     virtual ~Ground();
     
+    physicsEngine::type* t;
+    
 private:
-    pBody* body;
+    pBody body;
 };
 
 #endif /* GROUND_H */

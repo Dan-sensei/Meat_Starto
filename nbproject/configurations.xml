@@ -7,7 +7,6 @@
       <itemPath>Animator.h</itemPath>
       <itemPath>AssetManager.h</itemPath>
       <itemPath>Player.h</itemPath>
-      <itemPath>physicsEngine/contactListener.h</itemPath>
       <itemPath>renderEngine.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f5" displayName="Mapa" projectFiles="true">
@@ -33,6 +32,8 @@
       <itemPath>Mapa/Mapa.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f1" displayName="physicsEngine" projectFiles="true">
+      <itemPath>physicsEngine/contactListener.cpp</itemPath>
+      <itemPath>physicsEngine/contactListener.h</itemPath>
       <itemPath>physicsEngine/pBody.cpp</itemPath>
       <itemPath>physicsEngine/pBody.h</itemPath>
       <itemPath>physicsEngine/pConverter.cpp</itemPath>
@@ -50,7 +51,6 @@
       <itemPath>Animator.cpp</itemPath>
       <itemPath>AssetManager.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
-      <itemPath>physicsEngine/contactListener.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>renderEngine.cpp</itemPath>
     </logicalFolder>

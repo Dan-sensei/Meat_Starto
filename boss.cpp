@@ -96,6 +96,7 @@ void boss::update(int x_m, float x_, float y_) {
                 x = puerta[i].r.getPosition()[0]+(w/2);
                 y = puerta[i].r.getPosition()[1]+(h/2);
                 puerta[i].b = world->Instance().createBody(w,h,x,y,'k');
+                puerta[i].b.setUserData((void*)"Muro");
             }
             
             clock_boss.restart();   //REINICIO LOS RELOJES

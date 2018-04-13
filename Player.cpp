@@ -35,7 +35,13 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     keys = keys_;
     body = world->Instance().createBody(width_, height_, x_, y_, type_);
-    body.setUserData(this);
+    
+    t = new physicsEngine::type;
+    t->id = 2;
+    t->data = this;
+    body.setUserData(t);
+    onAir = 0;
+
     
     sprite.setScale(1.6f, 1.6f);
     sprite.setOrigin(30, 30);
@@ -205,9 +211,7 @@ void Player::movement(){
     // ===========================================================================
 
     // TECLA W / ESPACIO  ========================================================
-    if(keys[57] || keys[22]){                                                   //
-        keys[57] = false;                                                       //
-        keys[22] = false;                                                       //  SALTO
+    if((keys[57] || keys[22]) && !isOnAir()){                                   //
         body.applyForceToCenter(0, -jump);                                      //
         moveUp();
     }                                                                           //
@@ -274,4 +278,12 @@ void Player::intersectsPinchos() {
     }
     
     
+}
+
+
+bool Player::isOnAir(){
+    return (onAir == 0) ? true : false;
+}
+void Player::setAir(int i){
+    onAir += i;
 }

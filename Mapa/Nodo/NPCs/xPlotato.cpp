@@ -26,7 +26,12 @@ xPlotato::xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e) {
     
     physicsEngine* world;
     body = world->Instance().createBody(width, height, x_, y_, 'D');
+    t = new physicsEngine::type;
+    t->id = 3;
+    t->data = this;
+    body.setUserData(t);
     
+
     //Zona en la que se puede mover teniendo en cuenta el ancho del sprite
     x_begin = x_b + width/2;
     x_end = x_e - width/2;
@@ -39,6 +44,7 @@ xPlotato::xPlotato(std::string const& name_, int x_, int y_, int x_b, int x_e) {
 }
 
 xPlotato::xPlotato(const xPlotato& orig) {
+    
 }
 
 xPlotato::~xPlotato() {

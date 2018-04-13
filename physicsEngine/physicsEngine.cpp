@@ -12,6 +12,7 @@
  */
 
 #include "physicsEngine.h"
+#include "Mapa/Nodo/Nodo.h"
 
 /*
 physicsEngine* physicsEngine::pInstance = nullptr;
@@ -23,7 +24,9 @@ physicsEngine* physicsEngine::Instance(){
 }
 */
 
-physicsEngine::physicsEngine():world(b2Vec2(0.f, 40.f)) {}
+physicsEngine::physicsEngine():world(b2Vec2(0.f, 40.f)) {
+    world.SetContactListener(&listener);
+}
 
 void physicsEngine::setGravity(float gx_, float gy_){
     b2Vec2 gravity(gx_, gy_);
@@ -59,6 +62,7 @@ pBody physicsEngine::createBody(float width_, float height_, float px_, float py
     
     bodyDef.fixedRotation = true;                                       // Determina si la rotación del cuerpo es fija
     result.setBody(world.CreateBody(&bodyDef));                         // Creamos el cuerpo usando el world
+    result.getBody()->SetUserData((void*)"undefined");
     
     b2FixtureDef fixtureDef;                                            // Creamos las características físicas del cuerpo con un b2FixtureDef
     fixtureDef.density = 1.f;
@@ -75,24 +79,27 @@ pBody physicsEngine::createBody(float width_, float height_, float px_, float py
 void physicsEngine::updateWorld(float tick_){ world.Step(tick_, 8.f, 3.f); }
 
 
-void physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, int n_){
+pBody physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, type* data){
 
-    b2Vec2 vs[n_];
-    for(int i=0; i< n_; i++)
+    pBody result;
+    
+    b2Vec2 vs[vertex_.size()];
+    for(int i=0; i< vertex_.size(); i++)
         vs[i].Set(pConverter::pixelToWorld(vertex_[i][0]), pConverter::pixelToWorld(vertex_[i][1]));
     
     b2ChainShape chain;
-    chain.CreateChain(vs, n_);
+    chain.CreateChain(vs, vertex_.size());
     
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
     
-    b2Body* body = world.CreateBody(&bodyDef);
-       
+    result.setBody(world.CreateBody(&bodyDef));
+    result.setUserData(data);
+    
     b2FixtureDef fixtureDef;
     //fixtureDef.density = 1.f;
     fixtureDef.shape = &chain;
     
-    body->CreateFixture(&fixtureDef);
+    result.getBody()->CreateFixture(&fixtureDef);
     
 }

@@ -26,6 +26,7 @@ public:
     void update();
     
 private:
+    physicsEngine::type* t;
     int x_begin;
     int x_end;
     int target;

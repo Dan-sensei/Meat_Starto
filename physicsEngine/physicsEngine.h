@@ -20,6 +20,7 @@
 #include "pBody.h"
 #include "pConverter.h"
 #include "math.h"
+#include "contactListener.h"
 
 
 class physicsEngine {
@@ -31,12 +32,17 @@ public:
     }
     //============================
     
-    
+    struct type{
+        int id;
+        void* data;
+    };
+
     pBody createBody(float width_, float height_, float px_, float py_, char type_);        // Crea y devuelve un pBody pasándole, ancho, alto, posicionX, posicionY, tipo ('S'tatic, 'D'ynamic, 'K'inematic)
-    void createGround(std::vector<std::array<float, 2>> vertex_, int n_);                   // Crea el suelo del mapa, pasándole un vector de coordenadas, que serán los vértices que lo forman, y el número de vértices totales
+    pBody createGround(std::vector<std::array<float, 2>> vertex_, type* data);                          // Crea el suelo del mapa, pasándole un vector de coordenadas, que serán los vértices que lo forman, y el número de vértices totales
     void setGravity(float gx_, float gy_);                                                  // Ajusta la gravedad del mundo
     void updateWorld(float tick_);                                                          // Actualiza el mundo
-
+    
+    
 private:
     
     //============ SINGLETON ============
@@ -45,6 +51,7 @@ private:
     void operator=(physicsEngine const& orig);    // <----------------'
     //===================================
     
+    contactListener listener;
     b2World world;                              // Variable b2World de Box2D
     
 };

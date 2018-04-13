@@ -13,7 +13,13 @@
 
 #include "pBody.h"
 
-pBody::pBody() {}
+pBody::pBody() {
+}
+
+pBody::pBody(const pBody& orig) {
+    body = orig.body;
+    body->SetUserData(orig.body->GetUserData());
+}
 
 void pBody::setLinealVelocicity(float vx_, float vy_){
     b2Vec2 velocity(vx_, vy_);
@@ -40,4 +46,9 @@ void    pBody::setFixedRotation(bool flag_) { body->SetFixedRotation(flag_); }
 
 void    pBody::applyLinearImpulse(float ix_, float iy_) { body->ApplyLinearImpulse(b2Vec2(ix_, iy_), body->GetWorldCenter(), true); }
 
-void    pBody::setUserData(void* data){ body->SetUserData(data); }
+void    pBody::setUserData(void* data){ 
+    // std::cout<< "Data " <<  static_cast<std::string*>(data) << std::endl;
+   
+    body->SetUserData(data); 
+
+}

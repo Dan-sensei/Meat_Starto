@@ -59,7 +59,12 @@ public:
     void preState();
     void newState();
     
+    physicsEngine::type* t;
+    
     void intersectsPinchos();
+    int onAir;
+    void setAir(int i);
+    bool isOnAir();
     
 private:
     int id;
