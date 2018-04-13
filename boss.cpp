@@ -78,12 +78,13 @@ void boss::init(int x_) {
 void boss::update(int x_m, float x_, float y_) {
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
     physicsEngine *world;
-    
     if(x_m> (x_min+(70*20)) && x_m < x_max){
+        std::cout << " | ----------- Boss ON" << std::endl;
         //COMIENZA LA BATALLA FINAL
         on = true;
         
         if(!restart){
+            std::cout << " | ----------- Restart" << std::endl;
             //AQUI SOLO ENTRA UNA VEZ
             //CREO LAS COLISIONES DE LA PUERTA 
             for(int i=0 ; i<12 ; i++){
@@ -108,8 +109,10 @@ void boss::update(int x_m, float x_, float y_) {
         //HACER UNA ESPECIE DE ANIMACION
         
         //UPDATE DE JAVI
+        std::cout << " | ----------- Update de Javi" << std::endl;
         updateJavi();
         
+        std::cout << " | ----------- Fases del Boss" << std::endl;
         if(clock_boss.getElapsedTime().asSeconds()<20 && clock_boss.getElapsedTime().asSeconds()>=0){
             if(dt_boss.getElapsedTime().asSeconds() > 0.2){
                     //std::cout << "CREO BALA" << std::endl;
@@ -144,7 +147,8 @@ void boss::update(int x_m, float x_, float y_) {
                 dt_boss.restart();
             }
         }
-    
+            
+        std::cout << " | ----------- Habilidades especiales" << std::endl;
         if(dt_fan.getElapsedTime().asSeconds()>0.1){
             //GENERO EL NUMERO ALEATORIO
             std::random_device rd;
@@ -156,7 +160,8 @@ void boss::update(int x_m, float x_, float y_) {
             
             dt_fan.restart();
         }
-        
+
+        std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
         //MOVIMIENTO DE LOS PROYECTILES
         for(int i=0 ; i<javi.proy.size() ; i++){
             float vx = javi.proy[i]->v_x;
@@ -178,6 +183,7 @@ void boss::update(int x_m, float x_, float y_) {
         }
         
         //MOVIMIENTO DE LOS PROYECTILES TELEDIRIGIDOS
+        /*
         for(int i=0 ; i<javi.proyT.size() ; i++){
             javi.proyT[i]->r.move(0,5);
 
@@ -196,6 +202,7 @@ void boss::update(int x_m, float x_, float y_) {
                 if(i+1==javi.proyT.size())   javi.proyT.shrink_to_fit();
             }
         }
+        */
 
 
     }
@@ -206,7 +213,7 @@ void boss::update(int x_m, float x_, float y_) {
 
 void boss::updateJavi() {
     //SI LLEGADA ES TRUE, ENTONCES ENCUENTRA OTRA POSICION DENTRO DE UN RANGO
-    std::cout << javi.llegada << std::endl;
+        //std::cout << javi.llegada << std::endl;
     float factor = 100;
     float factor_v = 1;
     
@@ -218,7 +225,7 @@ void boss::updateJavi() {
         std::uniform_int_distribution<int> dy(70*7,70*15);
         std::uniform_real_distribution<float> dv(1,3);
         
-        factor_v = dv(gen);
+        //factor_v = dv(gen);
         javi.x_f = dx(gen);
         javi.y_f = dy(gen);
         
@@ -342,9 +349,9 @@ void boss::render() {
     if(on){
         //<DEBUG>
         /*
-        */
         r_aux.draw();
         ir_aux.draw();
+        */
         //</DEBUG>
         
         for(int i=0 ; i<12 ; i++){
