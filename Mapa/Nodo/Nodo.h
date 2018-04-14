@@ -29,7 +29,8 @@ public:
     
     void addTile(int id, int x, int y);
     void addGround(std::vector<std::array<float, 2>> coords);
-    void addNPC(int x_, int y_, int x_min, int x_max);
+    void addxPlotato(int x_, int y_, int x_min, int x_max);
+    void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);

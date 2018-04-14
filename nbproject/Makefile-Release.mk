@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Mapa/Mapa.o \
 	${OBJECTDIR}/Mapa/Nodo/Ground.o \
 	${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o \
+	${OBJECTDIR}/Mapa/Nodo/NPCs/Skull.o \
 	${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o \
 	${OBJECTDIR}/Mapa/Nodo/Nodo.o \
 	${OBJECTDIR}/MenuInicio.o \
@@ -50,6 +51,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mj_t.o \
+	${OBJECTDIR}/particleSystem.o \
 	${OBJECTDIR}/physicsEngine/contactListener.o \
 	${OBJECTDIR}/physicsEngine/pBody.o \
 	${OBJECTDIR}/physicsEngine/pConverter.o \
@@ -116,6 +118,11 @@ ${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o: Mapa/Nodo/NPCs/NPC.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o Mapa/Nodo/NPCs/NPC.cpp
 
+${OBJECTDIR}/Mapa/Nodo/NPCs/Skull.o: Mapa/Nodo/NPCs/Skull.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/NPCs/Skull.o Mapa/Nodo/NPCs/Skull.cpp
+
 ${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o: Mapa/Nodo/NPCs/xPlotato.cpp
 	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs
 	${RM} "$@.d"
@@ -155,6 +162,11 @@ ${OBJECTDIR}/mj_t.o: mj_t.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mj_t.o mj_t.cpp
+
+${OBJECTDIR}/particleSystem.o: particleSystem.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/particleSystem.o particleSystem.cpp
 
 ${OBJECTDIR}/physicsEngine/contactListener.o: physicsEngine/contactListener.cpp
 	${MKDIR} -p ${OBJECTDIR}/physicsEngine

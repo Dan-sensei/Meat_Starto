@@ -13,6 +13,7 @@
 
 #include "Nodo.h"
 #include "NPCs/xPlotato.h"
+#include "NPCs/Skull.h"
 
 
 Nodo::Nodo(std::string sheet) {    
@@ -75,8 +76,12 @@ void Nodo::addGround(std::vector<std::array<float,2> > coords){
     ground.push_back(world->Instance().createGround(coords, t));
 }
 
-void Nodo::addNPC(int x_, int y_, int x_min, int x_max) {
+void Nodo::addxPlotato(int x_, int y_, int x_min, int x_max) {
     npcs.push_back(new xPlotato(x_, y_, x_min, x_max));
+}
+
+void Nodo::addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max){
+    npcs.push_back(new Skull(x_, y_, x_min, x_max, y_min, y_max));
 }
 
 

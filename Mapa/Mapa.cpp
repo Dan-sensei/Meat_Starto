@@ -19,7 +19,7 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 10
 #define TAM_LISTA 6
 
  Mapa::Mapa() {
@@ -86,6 +86,14 @@
     //BOSS
     boss *javi;
     javi->Instance();       //INICIALIZO EL BOSS
+    
+
+    //MAPA DE PUNTEROS A FUNCION
+    mapa_funciones.insert(std::make_pair("colision", &Mapa::leeColisiones));
+    mapa_funciones.insert(std::make_pair("spawn", &Mapa::leexPlotatos));
+    mapa_funciones.insert(std::make_pair("skull", &Mapa::leeSkulls));
+    mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
+    
     
     std::cout << "TIEMPO DE CARGA DEL MAPA " << optimo_clock.getElapsedTime().asSeconds() << std::endl;
 }
@@ -443,8 +451,6 @@ void Mapa::LeeNodo(std::string const& node_path) {
     int contador = 0;
 
     for (int i = 0; i < map_height; i++) {
-        //std::cout << "_____|" << "i: " << i << "|_____" << std::endl;
-
         for (int j = 0; j < map_width; j++) {
 
             //ELIMINO EL SALTO DE LINEA DE CADA FILA
@@ -453,18 +459,13 @@ void Mapa::LeeNodo(std::string const& node_path) {
             //CONSIGO EL NUMERO
             partes = v_mapa.substr(0, 1);
             v_mapa.erase(0, 1);
-            //std::cout << "partes:   " << partes << std::endl;
-
             p_aux = v_mapa.substr(0, 1);
-            //std::cout << "p_aux:    " << p_aux << std::endl;
 
             while (p_aux != "," && p_aux != "") {
                 partes = partes.operator+=(v_mapa.substr(0, 1));
                 v_mapa.erase(0, 1);
                 p_aux = v_mapa.substr(0, 1);
             }
-
-            //std::cout << "j: " << j << " ->     " << partes << std::endl;
 
             if (stoi(partes) != 0) {
                 contador++;
@@ -475,29 +476,61 @@ void Mapa::LeeNodo(std::string const& node_path) {
             if (x_max_aux < x_max + (ancho * j)) {
                 x_max_aux = x_max + (ancho * j);
             }
-
         }
 
         partes = v_mapa.erase(0, 1);
     }
     
-    // </editor-fold>
+    // </editor-fold> 
+    
+    tinyxml2::XMLElement *obj;
+    obj = map->FirstChildElement("objectgroup");
+    
+    while(obj){
+        
+        //Puntero a funcion
+        pFunc funcion = mapa_funciones[obj->Attribute("name")];   
+        
+        if(funcion != nullptr) (this->*funcion)(obj, actual);
+       
+        obj = obj->NextSiblingElement("objectgroup");
+    }
 
-    // <editor-fold defaultstate="collapsed" desc="LEO LOS OBJETOS(colisiones)">
+    x_max = x_max_aux+ancho;
+    
+    actual.setPop(x_max);
+    
+    if(hex_list.size() < TAM_LISTA){
+        hex_list.push_back(actual);
+    }
+    else{
+        complete_list.push_back(actual);
+    }
+    
+    //GUARDO LOS PINCHOS
+    if(l_pinchos.size()<TAM_LISTA){
+        l_pinchos.push_back(vector_pinchos);
+        vector_pinchos.clear();
+    }
+    else{
+        l_pinchos_aux.push_back(vector_pinchos);
+        vector_pinchos.clear();
+    }
+    vector_pinchos.clear();
+    
+}
 
+void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
     //CONSIGO LOS OBJETOS (COLISIONES)
     //NO COMPRUEBO SI NO TIENE COLISION, YA QUE SE SUPONE QUE TODOS LOS NODOS VAN A TENER COLISION, SI O SI
-    tinyxml2::XMLElement *obj, *poly;
+    tinyxml2::XMLElement *poly;
     int x, x2;
     int y, y2;
     std::string vertex, v_aux, v_aux2;
-
     std::vector<std::array<float, 2>> vec;
-    //sf::ConvexShape *cs;
     renderEngine::rConvexShape *cs;
 
-    obj = map->FirstChildElement("objectgroup")->FirstChildElement("object");
-        //std::cout << obj->Attribute("x") << std::endl;
+    obj = obj->FirstChildElement("object");
 
     while (obj) {
         x = atoi(obj->Attribute("x")); //COORDENADA X ABSOLUTA
@@ -519,10 +552,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
             for (int i = 0; i < 2; i++) {
                 v_aux = vertex.substr(0, 1);
                 vertex.erase(0, 1);
-                //std::cout << "partes:   " << v_aux << std::endl;
-
                 v_aux2 = vertex.substr(0, 1);
-                //std::cout << "p_aux:    " << p_aux << std::endl;
 
                 while (v_aux2 != "," && v_aux2 != " " && v_aux2 != "") {
                     v_aux = v_aux.operator+=(vertex.substr(0, 1));
@@ -531,23 +561,16 @@ void Mapa::LeeNodo(std::string const& node_path) {
                 }
                 vertex.erase(0, 1);
 
-
-                if (i == 0) {
+                if (i == 0) 
                     x2 = x + x_max + stoi(v_aux);
-                    //std::cout << "x2:" << x2 << std::endl;
-                } else {
+                else 
                     y2 = y + stoi(v_aux);
-                    //std::cout << "y2:" << y2 << std::endl;
-                    //std::cout << "vertices:" << vertex << std::endl;
-                    //std::cout << "|=========================|" << std::endl;
-                }
+                
             }
 
             //ALMACENO EL VERTICE
-            //cs->setPoint(n,sf::Vector2f(x2,y2));
             std::array<float, 2> coords = {(float)x2, (float)y2};
             vec.push_back(coords);
-
             
             if (vertex == "") {
                 break;
@@ -575,116 +598,116 @@ void Mapa::LeeNodo(std::string const& node_path) {
         vec.clear();
 
         obj = obj->NextSiblingElement("object");
-        //std::cout << obj->Attribute("x") << std::endl;
     }
-    // </editor-fold>
+}
 
-    // <editor-fold defaultstate="collapsed" desc="ENEMIGOS">
-    if (map->FirstChildElement("objectgroup")->NextSibling()) {
+void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
 
-        obj = map->FirstChildElement("objectgroup")->NextSibling()->FirstChildElement("object");
+    obj = obj->FirstChildElement("object");
 
-        int xCoord = 0;
-        int yCoord = 0;
-        int width = 0;
-        int height = 0;
+    int xCoord = 0;
+    int yCoord = 0;
+    int width = 0;
+    int height = 0;
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+
+    while (obj) {
+        obj->QueryIntAttribute("x", &xCoord);
+        xCoord += x_max;
+        obj->QueryIntAttribute("width", &width);
+
+        obj->QueryIntAttribute("y", &yCoord);
+        obj->QueryAttribute("height", &height);
+
+        std::uniform_int_distribution<int> distribution(xCoord, xCoord + width);
+
+        int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
+
+        actual.addxPlotato(distribution(gen), y_spawn, xCoord, xCoord+width);
+
+        obj = obj->NextSiblingElement("object");
+    }
+}
+
+void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual){
+    
+    //POWER UP/DOWN 
+    obj = obj->FirstChildElement("object");
+
+    int x = 0;
+    int y = 0;
+    int w = 0;
+    int h = 0;
+
+    while (obj) {
+        obj->QueryIntAttribute("x", &x);
+        obj->QueryIntAttribute("y", &y);
+        obj->QueryIntAttribute("width", &w);
+        obj->QueryIntAttribute("height", &h);
+
+
         std::random_device rd;
         std::default_random_engine gen(rd());
+        std::uniform_int_distribution<int> dx(0, (w / 70)-1);
+        std::uniform_real_distribution<float> dp(0, 1);
+
+        int xpos = dx(gen);
+
+        renderEngine::rRectangleShape raux;
+        if (dp(gen) < 0.5) {
+            //CREO UN POWER UP
+            raux.setFillColor('g');
+            raux.setSize(20, 20);
+            raux.setOrigin(10, 10);
+            raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
+        } else {
+            //CREO UN POWER DOWN
+            raux.setFillColor('r');
+            raux.setSize(20, 20);
+            raux.setOrigin(10, 10);
+            raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
+        }
+        power.push_back(raux);
+        obj = obj->NextSiblingElement("object");
+    }
+}
+
+void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
+    
+    obj = obj->FirstChildElement("object");
+
+    int xCoord = 0;
+    int yCoord = 0;
+    int width = 0;
+    int height = 0;
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+
+    tinyxml2::XMLElement* number;
+    int n = 1;
+    
+    while (obj) {
         
+        //Número de enemigos en esta área
+        number = obj->FirstChildElement("properties");
+        if(number) number->FirstChildElement("property")->QueryAttribute("value", &n);
+        
+        obj->QueryIntAttribute("x", &xCoord);
+        xCoord += x_max;
+        obj->QueryIntAttribute("width", &width);
 
-        while (obj) {
-            obj->QueryIntAttribute("x", &xCoord);
-            xCoord += x_max;
-            obj->QueryIntAttribute("width", &width);
+        obj->QueryIntAttribute("y", &yCoord);
+        obj->QueryAttribute("height", &height);
 
-            obj->QueryIntAttribute("y", &yCoord);
-            obj->QueryAttribute("height", &height);
+        std::uniform_int_distribution<int> distributionX(xCoord, xCoord + width);
+        std::uniform_int_distribution<int> distributionY(yCoord, yCoord + height);
+        
+        for (int i = 0; i < n; i++)
+            actual.addSkull(distributionX(gen), distributionY(gen), xCoord, xCoord+width, yCoord, yCoord+height);
 
-            std::uniform_int_distribution<int> distribution(xCoord, xCoord + width);
-            
-            int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
-
-
-            actual.addNPC(distribution(gen), y_spawn, xCoord, xCoord+width);
-            
-            
-            obj = obj->NextSiblingElement("object");
-        }
+        obj = obj->NextSiblingElement("object");
     }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="POWER UPS/DOWNS">
-
-    //POWER UP/DOWN 
-    if (map->FirstChildElement("objectgroup")->NextSibling() && map->FirstChildElement("objectgroup")->NextSibling()->NextSibling()) {
-
-        obj = map->FirstChildElement("objectgroup")->NextSibling()->NextSibling()->FirstChildElement("object");
-
-        int x = 0;
-        int y = 0;
-        int w = 0;
-        int h = 0;
-
-        while (obj) {
-            obj->QueryIntAttribute("x", &x);
-            obj->QueryIntAttribute("y", &y);
-            obj->QueryIntAttribute("width", &w);
-            obj->QueryIntAttribute("height", &h);
-
-
-            std::random_device rd;
-            std::default_random_engine gen(rd());
-            std::uniform_int_distribution<int> dx(0, (w / 70)-1);
-            std::uniform_real_distribution<float> dp(0, 1);
-
-            int xpos = dx(gen);
-
-            renderEngine::rRectangleShape raux;
-            if (dp(gen) < 0.5) {
-                //CREO UN POWER UP
-                raux.setFillColor('g');
-                raux.setSize(20, 20);
-                raux.setOrigin(10, 10);
-                raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
-            } else {
-                //CREO UN POWER DOWN
-                raux.setFillColor('r');
-                raux.setSize(20, 20);
-                raux.setOrigin(10, 10);
-                raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
-            }
-
-                //std::cout << "X: " << x << "| Y: " << y << "| W: " << w << "| H: " << h << std::endl;
-                //std::cout << xpos << std::endl;
-
-            power.push_back(raux);
-            obj = obj->NextSiblingElement("object");
-        }
-    }
-    // </editor-fold>
-
-    x_max = x_max_aux+ancho;
-    
-    actual.setPop(x_max);
-    
-    if(hex_list.size() < TAM_LISTA){
-        hex_list.push_back(actual);
-    }
-    else{
-        complete_list.push_back(actual);
-    }
-    
-    //GUARDO LOS PINCHOS
-    if(l_pinchos.size()<TAM_LISTA){
-        l_pinchos.push_back(vector_pinchos);
-        vector_pinchos.clear();
-    }
-    else{
-        l_pinchos_aux.push_back(vector_pinchos);
-        vector_pinchos.clear();
-    }
-    vector_pinchos.clear();
-    
 }
 
 //CREA LA CASILLA

@@ -50,7 +50,6 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
 }
 
 xPlotato::xPlotato(const xPlotato& orig) {
-    std::cout << "COPIA" << std::endl;
     t = orig.t;
     x_begin = orig.x_begin;
     x_end = orig.x_end;
@@ -67,7 +66,7 @@ xPlotato::~xPlotato() {
 }
 
 void xPlotato::update(){
-
+    
     if(body.getXPosition() > target){
         body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
         sprite.setScale(-1, 1);

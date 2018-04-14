@@ -35,11 +35,12 @@ void contactListener::BeginContact(b2Contact* contact){
     //   GROUND = 1
     //   PLAYER = 2
     // XPLOTATO = 3
+    //    SKULL = 4
     
     //std::cout << "BodyA conact: " << typeA->id << std::endl;
     //std::cout << "BodyB conact: " << typeB->id << std::endl << std::endl;
     
-    if(typeA->id == 1 && typeB->id == 2){
+    if(typeA->id == 1 && typeB->id == 2 ){
         Player* p = static_cast<Player*>(typeB->data);
         p->setAir(1);
     }
@@ -47,6 +48,16 @@ void contactListener::BeginContact(b2Contact* contact){
         Player* p = static_cast<Player*>(typeA->data);
         p->setAir(1);
     }
+    
+    if(typeA->id == 4 && typeB->id == 2 ){
+        Player* p = static_cast<Player*>(typeB->data);
+        p->setAir(1);
+    }
+    else if(typeB->id == 4 && typeA->id == 2){
+        Player* p = static_cast<Player*>(typeA->data);
+        p->setAir(1);
+    }
+    
 
 }
 
@@ -67,6 +78,15 @@ void contactListener::EndContact(b2Contact* contact){
         p->setAir(-1);
     }
     else if(typeB->id == 1 && typeA->id == 2){
+        Player* p = static_cast<Player*>(typeA->data);
+        p->setAir(-1);
+    }
+    
+    if(typeA->id == 4 && typeB->id == 2){
+        Player* p = static_cast<Player*>(typeB->data);
+        p->setAir(-1);
+    }
+    else if(typeB->id == 4 && typeA->id == 2){
         Player* p = static_cast<Player*>(typeA->data);
         p->setAir(-1);
     }
