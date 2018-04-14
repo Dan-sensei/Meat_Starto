@@ -35,7 +35,7 @@ public:
     
     void CreaMapa();
     void render(float tick_);
-    void update(float x, float y);
+    void updateMini();
     void update();
     void preState();
     void newState();

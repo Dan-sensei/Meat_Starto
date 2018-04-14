@@ -31,7 +31,7 @@ public:
     //</SINGLETON>
     
     void init(int x_);
-    void update(int x_m, float x_, float y_);
+    void update();
     void render();
     bool isBossOn();
 

@@ -886,8 +886,7 @@ void Mapa::CreaMapa() {
     
 }
 
-void Mapa::update(float x, float y) {
-    renderEngine *sfml;
+void Mapa::updateMini() {
     mj_t *tetris;
     boss *javi;
     
@@ -904,11 +903,8 @@ void Mapa::update(float x, float y) {
         pop = false;
     }
     
-
-    int x_m = sfml->Instance().getViewCenter()[0];
-    
-    tetris->Instance().update(x_m);
-    javi->Instance().update(x_m,x,y);
+    tetris->Instance().update();
+    javi->Instance().update();
 }
 
 std::list<std::vector<renderEngine::rRectangleShape>>* Mapa::getPinchos() {

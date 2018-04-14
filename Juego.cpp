@@ -102,7 +102,7 @@ void Juego::Handle(){
         //fps = 1.f/(currentTime/lastTime);
         fps = 1.f/currentTime;
         lastTime = currentTime;
-            //std::cout << "FPS: " << fps << std::endl;
+            std::cout << "FPS: " << fps << std::endl;
         //</FPS>
         
         //EVENTOS
@@ -241,7 +241,7 @@ void Juego::Update(){
         view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
     
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
-    mapa->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
+    mapa->Instance().updateMini();
 
     /*
     renderEngine *sfml;
@@ -286,6 +286,15 @@ void Juego::Update(){
 
      }  
      */
+}
+
+std::array<float, 2> Juego::getPlayerPosition() {
+    std::array<float,2> ret;
+    
+    ret[0] = readyPlayerOne->getXPosition();
+    ret[1] = readyPlayerOne->getYPosition();
+    
+    return ret;
 }
 
 Juego::Juego(const Juego& orig) {
