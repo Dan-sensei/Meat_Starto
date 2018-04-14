@@ -42,6 +42,8 @@ public:
     void setGravity(float gx_, float gy_);                                                  // Ajusta la gravedad del mundo
     void updateWorld(float tick_);                                                          // Actualiza el mundo
     
+    float genFloatRandom(float min, float max);
+    int genIntRandom(int min, int max);
     
 private:
     

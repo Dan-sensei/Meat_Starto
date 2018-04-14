@@ -19,7 +19,7 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 6
 
  Mapa::Mapa() {
@@ -609,9 +609,7 @@ void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
     int yCoord = 0;
     int width = 0;
     int height = 0;
-    std::random_device rd;
-    std::default_random_engine gen(rd());
-
+    
     while (obj) {
         obj->QueryIntAttribute("x", &xCoord);
         xCoord += x_max;
@@ -620,11 +618,9 @@ void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
         obj->QueryIntAttribute("y", &yCoord);
         obj->QueryAttribute("height", &height);
 
-        std::uniform_int_distribution<int> distribution(xCoord, xCoord + width);
-
         int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
 
-        actual.addxPlotato(distribution(gen), y_spawn, xCoord, xCoord+width);
+        actual.addxPlotato(physicsEngine::Instance().genIntRandom(xCoord, xCoord+width), y_spawn, xCoord, xCoord+width);
 
         obj = obj->NextSiblingElement("object");
     }
@@ -646,16 +642,12 @@ void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual){
         obj->QueryIntAttribute("width", &w);
         obj->QueryIntAttribute("height", &h);
 
-
-        std::random_device rd;
-        std::default_random_engine gen(rd());
-        std::uniform_int_distribution<int> dx(0, (w / 70)-1);
-        std::uniform_real_distribution<float> dp(0, 1);
-
-        int xpos = dx(gen);
-
+        
+        int     xpos = physicsEngine::Instance().genIntRandom(0, (w / 70) - 1);
+        float random = physicsEngine::Instance().genFloatRandom(0, 1);
+        
         renderEngine::rRectangleShape raux;
-        if (dp(gen) < 0.5) {
+        if (random < 0.5) {
             //CREO UN POWER UP
             raux.setFillColor('g');
             raux.setSize(20, 20);
@@ -681,8 +673,7 @@ void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
     int yCoord = 0;
     int width = 0;
     int height = 0;
-    std::random_device rd;
-    std::default_random_engine gen(rd());
+
 
     tinyxml2::XMLElement* number;
     int n = 1;
@@ -700,11 +691,11 @@ void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
         obj->QueryIntAttribute("y", &yCoord);
         obj->QueryAttribute("height", &height);
 
-        std::uniform_int_distribution<int> distributionX(xCoord, xCoord + width);
-        std::uniform_int_distribution<int> distributionY(yCoord, yCoord + height);
+        float randomX = physicsEngine::Instance().genIntRandom(xCoord, xCoord + width);
+        float randomY = physicsEngine::Instance().genIntRandom(yCoord, yCoord + height);
         
         for (int i = 0; i < n; i++)
-            actual.addSkull(distributionX(gen), distributionY(gen), xCoord, xCoord+width, yCoord, yCoord+height);
+            actual.addSkull(randomX, randomY, xCoord, xCoord+width, yCoord, yCoord+height);
 
         obj = obj->NextSiblingElement("object");
     }
@@ -837,11 +828,7 @@ void Mapa::CreaMapa() {
         bool num = false;
         while(!num){
             //GENERO EL NUMERO ALEATORIO
-            std::random_device rd;
-            std::default_random_engine gen(rd());
-            std::uniform_int_distribution<int> distribution(0,n-1);
-
-            r = distribution(gen);
+            r = physicsEngine::Instance().genIntRandom(0, n-1);
             
             if(v[nodo][r]==1){
                 num = true;

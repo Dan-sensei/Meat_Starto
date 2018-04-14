@@ -28,7 +28,7 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     sprite.setPosition(x_, y_);
     
     physicsEngine* world;
-    body = world->Instance().createBody(width, height, x_, y_, 'D');
+    body = world->Instance().createBody(width, height, x_, y_, 'K');
     t = new physicsEngine::type;
     t->id = 3;
     t->data = this;
