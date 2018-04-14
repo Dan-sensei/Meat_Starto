@@ -79,12 +79,12 @@ void boss::update(int x_m, float x_, float y_) {
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
     physicsEngine *world;
     if(x_m> (x_min+(70*20)) && x_m < x_max){
-        std::cout << " | ----------- Boss ON" << std::endl;
+       //std::cout << " | ----------- Boss ON" << std::endl;
         //COMIENZA LA BATALLA FINAL
         on = true;
         
         if(!restart){
-            std::cout << " | ----------- Restart" << std::endl;
+            //std::cout << " | ----------- Restart" << std::endl;
             //AQUI SOLO ENTRA UNA VEZ
             //CREO LAS COLISIONES DE LA PUERTA 
             for(int i=0 ; i<12 ; i++){
@@ -97,9 +97,13 @@ void boss::update(int x_m, float x_, float y_) {
                 x = puerta[i].r.getPosition()[0]+(w/2);
                 y = puerta[i].r.getPosition()[1]+(h/2);
                 puerta[i].b = world->Instance().createBody(w,h,x,y,'k');
-                puerta[i].b.setUserData((void*)"Muro");
+                
+                t = new physicsEngine::type;
+                t->id = 1;
+                t->data = this;
+                puerta[i].b.setUserData(t);
             }
-            
+
             clock_boss.restart();   //REINICIO LOS RELOJES
             dt_boss.restart();
             dt_fan.restart();
@@ -109,10 +113,10 @@ void boss::update(int x_m, float x_, float y_) {
         //HACER UNA ESPECIE DE ANIMACION
         
         //UPDATE DE JAVI
-        std::cout << " | ----------- Update de Javi" << std::endl;
+        //std::cout << " | ----------- Update de Javi" << std::endl;
         updateJavi();
         
-        std::cout << " | ----------- Fases del Boss" << std::endl;
+        //std::cout << " | ----------- Fases del Boss" << std::endl;
         if(clock_boss.getElapsedTime().asSeconds()<20 && clock_boss.getElapsedTime().asSeconds()>=0){
             if(dt_boss.getElapsedTime().asSeconds() > 0.2){
                     //std::cout << "CREO BALA" << std::endl;
@@ -148,7 +152,7 @@ void boss::update(int x_m, float x_, float y_) {
             }
         }
             
-        std::cout << " | ----------- Habilidades especiales" << std::endl;
+        //std::cout << " | ----------- Habilidades especiales" << std::endl;
         if(dt_fan.getElapsedTime().asSeconds()>0.1){
             //GENERO EL NUMERO ALEATORIO
             std::random_device rd;
@@ -161,7 +165,7 @@ void boss::update(int x_m, float x_, float y_) {
             dt_fan.restart();
         }
 
-        std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
+        //std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
         //MOVIMIENTO DE LOS PROYECTILES
         for(int i=0 ; i<javi.proy.size() ; i++){
             float vx = javi.proy[i]->v_x;

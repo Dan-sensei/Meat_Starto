@@ -28,6 +28,8 @@
 #define PLAYER_DIM_X 1.9f
 #define PLAYER_DIM_Y 1.9f
 
+#define target_zoom 2
+
 Juego* Juego::instance;
 Juego* Juego::Instance(){
       if(instance == NULL)
@@ -58,7 +60,7 @@ Juego::Juego(){
     //VISTA
     view = new renderEngine::rView(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
     //ZUMO
-    view->zoom(2);
+    view->zoom(target_zoom);
     sfml->Instance().setView(*view);
     
     //INTERPOLACION
@@ -221,7 +223,15 @@ void Juego::Update(){
     // TICK PARA LA INTERPOLAÇAO
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
         //std::cout << "RENDER == " << tick << std::endl;
+    
+    float window_width = static_cast<float>(sfml->Instance().getSize()[0]);
+    float window_height = static_cast<float>(sfml->Instance().getSize()[1]);  
+    float zoom = (1006*target_zoom)/window_height;
 
+    view->setSize(window_width, window_height);
+    view->zoom(zoom);
+    sfml->Instance().setView(*view);
+    
     //ACTUALIÇAÇAO DEL PERSONAJE
     readyPlayerOne->update(animationClock.restart());
     readyPlayerOne->interpola(tick);

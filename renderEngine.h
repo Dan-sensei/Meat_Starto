@@ -127,6 +127,7 @@ public:
             void setCenter(float x, float y);           //CENTRO DE LA VISTA
             std::array<float,2> getCenter();            //CENTRO DE LA VISTA
             void move(float x, float y);                //MOVER LA VISTA  
+            void setSize(float x, float y);
             
         private:
             sf::View getView();             //CONSIGUE LA VISTA. USO PRIVADO

@@ -59,11 +59,10 @@
         int h = atoi(map->Attribute("h"));
         
         // Este y+1 es igual de mierda a lo que Using namespace std; es al std::
-        renderEngine::rIntRect ir_aux(x,y+1,w,h);
+        renderEngine::rIntRect ir_aux(x,y,w,h);
         
         spriteSheetRects.push_back(ir_aux);
-        
-
+ 
       
             //std::cout << tiles[i]->id << " -> " << tiles[i]->path << "      INTRECT-> X: " << tiles[i]->ir.left << ", Y: " << tiles[i]->ir.top << ", W: " << tiles[i]->ir.widht << ", H: " << tiles[i]->ir.height << std::endl;
 
@@ -442,7 +441,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
     std::string p_aux;
     int x_max_aux = x_max;
     int contador = 0;
-    std::cout << "NODO ";
+
     for (int i = 0; i < map_height; i++) {
         //std::cout << "_____|" << "i: " << i << "|_____" << std::endl;
 
@@ -482,7 +481,6 @@ void Mapa::LeeNodo(std::string const& node_path) {
         partes = v_mapa.erase(0, 1);
     }
     
-    std::cout << contador << std::endl;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="LEO LOS OBJETOS(colisiones)">

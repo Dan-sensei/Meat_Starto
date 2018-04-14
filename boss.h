@@ -100,7 +100,7 @@ private:
     bool on;                                //TRUE: BOSS EN MARCHA
     bool restart;                           //TRUE: BOSS INICIADO
     
-    
+    physicsEngine::type* t;
     
 };
 

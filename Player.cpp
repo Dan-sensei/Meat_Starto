@@ -43,8 +43,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     onAir = 0;
 
     
-    sprite.setScale(1.6f, 1.6f);
     sprite.setOrigin(30, 30);
+    sprite.setScale(1.6f, 1.6f);
     switch(id){
     //Asigna la textura con su color dependiendo del id del jugador
         case 0:
@@ -282,7 +282,7 @@ void Player::intersectsPinchos() {
 
 
 bool Player::isOnAir(){
-    return (onAir == 0) ? true : false;
+    return (onAir <= 0) ? true : false;
 }
 void Player::setAir(int i){
     onAir += i;

@@ -127,7 +127,7 @@ view(sf::FloatRect(pos_x,pos_y,size_x,size_y)){}
 void renderEngine::rView::zoom      (float z)           {   view.zoom(z);           }
 void renderEngine::rView::setCenter (float x, float y)  {   view.setCenter(x,y);    }
 void renderEngine::rView::move(float x, float y)        {   view.move(x,y);         }
-
+void renderEngine::rView::setSize(float x, float y)     {   view.setSize(x, y);     }
 
 sf::View                renderEngine::rView::getView    () {    return view;}
 std::array<float, 2>    renderEngine::rView::getCenter  () {
