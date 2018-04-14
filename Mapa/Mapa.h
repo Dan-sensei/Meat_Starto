@@ -36,7 +36,7 @@ public:
     void CreaMapa();
     void leeRandom();
     void render(float tick_);
-    void update(float x, float y);
+    void updateMini();
     void update();
     void preState();
     void newState();

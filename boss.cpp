@@ -12,6 +12,7 @@
  */
 
 #include "boss.h"
+#include "Juego.h"
 
 #define DES 2000
 
@@ -75,7 +76,13 @@ void boss::init(int x_) {
     ir_aux.setOutlineThickness(5);
 }
 
-void boss::update(int x_m, float x_, float y_) {
+void boss::update() {
+    renderEngine *sfml;
+    
+    float x_m = sfml->Instance().getViewCenter()[0];
+    float x_ = Juego::Instance()->getPlayerPosition()[0];
+    float y_ = Juego::Instance()->getPlayerPosition()[1];
+    
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
     physicsEngine *world;
     if(x_m> (x_min+(70*20)) && x_m < x_max){

@@ -254,7 +254,11 @@ void mj_t::crearPieza() {
     delete p;
 }
 
-void mj_t::update(int x_) {
+void mj_t::update() {
+    renderEngine *sfml;
+    
+    int x_ = sfml->Instance().getViewCenter()[0];
+    
     if(!fin){
         if(x_ > x_min && x_ < x_max){
             //ACTUALIZO EL MINIJUEGO

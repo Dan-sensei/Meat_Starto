@@ -29,7 +29,7 @@ public:
     
     void init(int x_);
     
-    void update(int x_);
+    void update();
     void render();
     bool isTetrisOn();
     

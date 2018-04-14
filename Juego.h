@@ -42,7 +42,7 @@ public:
     
     static Juego* Instance();//Singleton
 
-    
+    std::array<float,2> getPlayerPosition(); //DEBERIA DE DEVOLVER TODAS LAS POSICIONES DE TODOS LOS PERSONAJES
 private:
     bool* keys;
     Player * readyPlayerOne;

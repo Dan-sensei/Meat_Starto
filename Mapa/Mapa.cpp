@@ -823,7 +823,7 @@ void Mapa::CreaMapa() {
             //GENERO EL NUMERO ALEATORIO
             r = physicsEngine::Instance().genIntRandom(0, n-1);
             //std::cout << r << std::endl;
-            if(r!=6 || (r != 6 && !m_tetris))
+            if(r!=6 || (r == 6 && !m_tetris))
                 if(v[nodo][r]==1){
                     num = true;
                 }
@@ -891,7 +891,7 @@ void Mapa::leeRandom(){
             //GENERO EL NUMERO ALEATORIO
             r = physicsEngine::Instance().genIntRandom(0, n-1);
             
-            if(r!=6 || (r != 6 && !m_tetris))
+            if(r!=6 || (r == 6 && !m_tetris))
                 if(v[nodo][r]==1){
                     num = true;
                 }
@@ -920,8 +920,7 @@ void Mapa::leeRandom(){
     
 }
 
-void Mapa::update(float x, float y) {
-    renderEngine *sfml;
+void Mapa::updateMini() {
     mj_t *tetris;
     boss *javi;
     
@@ -947,11 +946,8 @@ void Mapa::update(float x, float y) {
         pop = false;
     }
     
-
-    int x_m = sfml->Instance().getViewCenter()[0];
-    
-    tetris->Instance().update(x_m);
-    javi->Instance().update(x_m,x,y);
+    tetris->Instance().update();
+    javi->Instance().update();
 }
 
 std::list<std::vector<renderEngine::rRectangleShape>>* Mapa::getPinchos() {
