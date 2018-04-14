@@ -36,7 +36,7 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
     t->data = this;
     body.setUserData(t);
     
-    //Zona en la que se puede mover teniendo en cuenta el ancho del sprite
+    //Zona en la que se puede mover teniendo en cuenta el ancho y alto del sprite
     x_min = x_b + width/2;
     x_max = x_e - width/2;
     
@@ -44,8 +44,8 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
     y_max = y_e - height/2;
     
     // Genero la primera coordenada aleatoria a la que se dirigirá el buen Skull
-    targetX = genRandom(x_min, x_max);
-    targetY = genRandom(y_min, y_max);
+    targetX = physicsEngine::Instance().genIntRandom(x_min, x_max);
+    targetY = physicsEngine::Instance().genIntRandom(y_min, y_max);
     
     // Calculo la velocidad para los ejes
     recalcula();
@@ -86,8 +86,8 @@ void Skull::update(){
     if(vector < 15){        // Si la distancia al punto es menor de 15 (margen de error)
    
         // Genero un nuevo punto de destino aleatoriamente
-        targetX = genRandom(x_min, x_max);      
-        targetY = genRandom(y_min, y_max);
+        targetX = physicsEngine::Instance().genIntRandom(x_min, x_max);      
+        targetY = physicsEngine::Instance().genIntRandom(y_min, y_max);
         
         // Ajusto el sprite teniendo en cuenta el eje X
         if(body.getXPosition() > targetX)
@@ -97,18 +97,9 @@ void Skull::update(){
         
         //Y recalculo la velocidad en los ejes
         recalcula();
-    }
-    
+    }   
 }
 
-float Skull::genRandom(float min, float max){
-    std::random_device rd;
-    std::default_random_engine gen(rd());
-
-    std::uniform_int_distribution<int> distribution(min, max);
-    
-    return distribution(gen);
-}
 
 void Skull::recalcula(){
     

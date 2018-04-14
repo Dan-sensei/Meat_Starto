@@ -155,11 +155,8 @@ void boss::update(int x_m, float x_, float y_) {
         //std::cout << " | ----------- Habilidades especiales" << std::endl;
         if(dt_fan.getElapsedTime().asSeconds()>0.1){
             //GENERO EL NUMERO ALEATORIO
-            std::random_device rd;
-            std::default_random_engine gen(rd());
-            std::uniform_int_distribution<int> distribution(0,100);
-
-            if(distribution(gen)>97)    crearAbanicoProyectiles();
+            int rand = physicsEngine::Instance().genIntRandom(0, 100);
+            if(rand>97)    crearAbanicoProyectiles();
             //if(distribution(gen)>40)    crearProyectilTele();
             
             dt_fan.restart();
@@ -223,15 +220,11 @@ void boss::updateJavi() {
     
     
     if(javi.llegada){
-        std::random_device rd;
-        std::default_random_engine gen(rd());
-        std::uniform_int_distribution<int> dx(x_min+(70*3),x_min+(70*34));
-        std::uniform_int_distribution<int> dy(70*7,70*15);
-        std::uniform_real_distribution<float> dv(1,3);
+        //std::uniform_real_distribution<float> dv(1,3);
         
         //factor_v = dv(gen);
-        javi.x_f = dx(gen);
-        javi.y_f = dy(gen);
+        javi.x_f = physicsEngine::Instance().genIntRandom(x_min+(70*3),x_min+(70*34));
+        javi.y_f = physicsEngine::Instance().genIntRandom(70*7, 70*15);
         
         javi.x_v = (float) (javi.x_f-javi.r.getPosition()[0])/factor;
         javi.y_v = (float) (javi.y_f-javi.r.getPosition()[1])/factor;

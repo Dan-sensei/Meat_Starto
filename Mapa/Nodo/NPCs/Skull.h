@@ -28,7 +28,6 @@ public:
     
 private:
     void recalcula();
-    float genRandom(float min, float max);
     
     physicsEngine::type* t;
     int x_min;;

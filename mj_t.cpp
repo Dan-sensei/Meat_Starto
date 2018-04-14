@@ -82,18 +82,12 @@ void mj_t::crearPieza() {
     
 
     //GENERO EL NUMERO ALEATORIO
-    std::random_device rd;
-    std::default_random_engine gen(rd());
-    std::uniform_int_distribution<int> dx(0,24);
-    std::uniform_int_distribution<int> dp(0,6);
-    std::uniform_int_distribution<int> dtex(0,6);
     //std::uniform_real_distribution<float> dv(4,8);
-    std::uniform_real_distribution<float> dv(8,10);
     
     //RANDOM
-    int rx = dx(gen);
-    int np = dp(gen);
-    float rv = dv(gen);
+    int rx = physicsEngine::Instance().genIntRandom(0, 24);
+    int np = physicsEngine::Instance().genIntRandom(0, 6);
+    float rv = physicsEngine::Instance().genFloatRandom(8, 10);
     int nt;
     
     //COORD
@@ -108,7 +102,7 @@ void mj_t::crearPieza() {
     p->vel = rv;
     
     for(int i=0 ; i<4 ; i++){
-        nt = dtex(gen);
+        nt = physicsEngine::Instance().genIntRandom(0, 6);
         p->r[i].setFillColor('r');
         p->r[i].setSize(a,a);
         switch(nt){

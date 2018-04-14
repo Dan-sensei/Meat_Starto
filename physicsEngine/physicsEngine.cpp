@@ -11,6 +11,8 @@
  * Created on 16 de marzo de 2018, 10:00
  */
 
+#include <random>
+
 #include "physicsEngine.h"
 #include "Mapa/Nodo/Nodo.h"
 
@@ -102,4 +104,22 @@ pBody physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, typ
     result.getBody()->CreateFixture(&fixtureDef);
 
     return result;
+}
+
+float physicsEngine::genFloatRandom(float min, float max){
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+
+    std::uniform_real_distribution<float> distribution(min, max);
+    
+    return distribution(gen);
+}
+
+int physicsEngine::genIntRandom(int min, int max){
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+
+    std::uniform_int_distribution<int> distribution(min, max);
+    
+    return distribution(gen);
 }
