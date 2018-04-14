@@ -19,8 +19,8 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
-#define TAM_LISTA 6
+#define MAP_ITERATION 10000
+#define TAM_LISTA 8
 
  Mapa::Mapa() {
     renderEngine::rClock optimo_clock;
@@ -94,6 +94,8 @@
     mapa_funciones.insert(std::make_pair("skull", &Mapa::leeSkulls));
     mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
     
+    longitud = 0;
+    end = false;
     
     std::cout << "TIEMPO DE CARGA DEL MAPA " << optimo_clock.getElapsedTime().asSeconds() << std::endl;
 }
@@ -417,14 +419,12 @@ void Mapa::InitMatrix() {
     v[x][14] = 1; 
     // </editor-fold>
 
-    
-    
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
 void Mapa::LeeNodo(std::string const& node_path) {
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
-
+    
     int map_width;
     int map_height;
 
@@ -438,17 +438,17 @@ void Mapa::LeeNodo(std::string const& node_path) {
     map->QueryIntAttribute("width", &map_width);
     map->QueryIntAttribute("height", &map_height);
 
+    std::cout << "Creando nodo" << std::endl;
+    hex_list.emplace_back("tiles_definitivo/tilesheet.png");
     
-    Nodo actual("tiles_definitivo/tilesheet.png");
-    actual.setRectVector(spriteSheetRects);
-   
-
+    hex_list.back().setRectVector(spriteSheetRects);
+    
     //CONSIGO EL TEXTO
     std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
     std::string partes;
     std::string p_aux;
     int x_max_aux = x_max;
-    int contador = 0;
+
 
     for (int i = 0; i < map_height; i++) {
         for (int j = 0; j < map_width; j++) {
@@ -468,14 +468,12 @@ void Mapa::LeeNodo(std::string const& node_path) {
             }
 
             if (stoi(partes) != 0) {
-                contador++;
-                actual.addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
+                hex_list.back().addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
                 CreaCasilla(stoi(partes), x_max + (ancho * j), alto * i);
             }
+            
+            x_max_aux = (x_max_aux < x_max + ancho*j) ? (x_max + ancho*j) : x_max_aux;
 
-            if (x_max_aux < x_max + (ancho * j)) {
-                x_max_aux = x_max + (ancho * j);
-            }
         }
 
         partes = v_mapa.erase(0, 1);
@@ -491,21 +489,17 @@ void Mapa::LeeNodo(std::string const& node_path) {
         //Puntero a funcion
         pFunc funcion = mapa_funciones[obj->Attribute("name")];   
         
-        if(funcion != nullptr) (this->*funcion)(obj, actual);
+        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back());
        
         obj = obj->NextSiblingElement("objectgroup");
     }
 
     x_max = x_max_aux+ancho;
     
-    actual.setPop(x_max);
+    hex_list.back().setPop(x_max);
     
-    if(hex_list.size() < TAM_LISTA){
-        hex_list.push_back(actual);
-    }
-    else{
-        complete_list.push_back(actual);
-    }
+    std::cout << "CREADO" << std::endl;
+    /*
     
     //GUARDO LOS PINCHOS
     if(l_pinchos.size()<TAM_LISTA){
@@ -517,7 +511,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
         vector_pinchos.clear();
     }
     vector_pinchos.clear();
-    
+     */
 }
 
 void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
@@ -619,8 +613,9 @@ void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
         obj->QueryAttribute("height", &height);
 
         int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
+        int x_rand = physicsEngine::Instance().genIntRandom(xCoord, xCoord+width);
 
-        actual.addxPlotato(physicsEngine::Instance().genIntRandom(xCoord, xCoord+width), y_spawn, xCoord, xCoord+width);
+        actual.addxPlotato(x_rand, y_spawn, xCoord, xCoord+width);
 
         obj = obj->NextSiblingElement("object");
     }
@@ -754,8 +749,8 @@ void Mapa::render(float tick_) {
     i = y/alto+1;
     y_2 = i*alto;
 
-    int x_min = x_2 -(ancho*26);
-    int x_max = x_2 +(ancho*24);
+    int x_min_ = x_2 -(ancho*26);
+    int x_max_ = x_2 +(ancho*24);
     
     /*
     int y_min = y_2 -(alto*15);
@@ -767,17 +762,14 @@ void Mapa::render(float tick_) {
     
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
        
-        (*it).draw(tick_, ir, x_min, x_max);
+        (*it).draw(tick_, ir, x_min_, x_max_);
         
-        if(iterator == TAM_LISTA/2 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
+        if(iterator == TAM_LISTA/2-1 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
             pop = true;
         }
         iterator++;
     }
-   
 
-
-    
     //------------|  COLISIONES (DEBUG)  |------------//
     /*
     for(int i=0 ; i<objetos.size() ; i++){
@@ -800,7 +792,8 @@ void Mapa::render(float tick_) {
     }
     
     //------------|  TETRIS  |------------//
-    mj_t *tetris;
+    mj_t *tetris;            //std::cout << path << std::endl;
+
     tetris->Instance().render();
     
     //------------|  BOSS  |------------//
@@ -817,34 +810,100 @@ void Mapa::CreaMapa() {
         //std::cout << path << std::endl;
     
     LeeNodo(path);
-    
+    longitud++;
     //EMPIEZA A LEER LA MATRIZ
     int n = 15;     //DIMENSION DE LA MATRIZ DE ADYACENCIA
     int nodo = 0;   //NODOS ADYACENTES A 0
     int iter = 0;   //CUENTA EL NUMERO DE ITERACIONES
     int r;          //EL NUMERO RANDOM
-    while(iter != MAP_ITERATION){
+    
+    for(; iter<std::min(TAM_LISTA, MAP_ITERATION)-2; iter++) {
+        bool num = false;
+        while(!num){
+            //GENERO EL NUMERO ALEATORIO
+            r = physicsEngine::Instance().genIntRandom(0, n-1);
+            //std::cout << r << std::endl;
+            if(r!=6 || (r != 6 && !m_tetris))
+                if(v[nodo][r]==1){
+                    num = true;
+                }
+        }
+
+        std::string path = "tiles_definitivo/nodos/";
+        std::string rand = std::to_string(r);
+        path = path.operator +=(rand);
+        path = path.operator +=(".tmx");
+            //std::cout << path << std::endl;
         
+        LeeNodo(path);
+        longitud++;
+        nodo = r;
+        
+        std::cout << "Vector size " << hex_list.size() << std::endl;
+        
+        //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
+        if(r == 6 && !m_tetris){
+            std::cout << "He creado el minijuego Tetris" << std::endl;
+            
+            //CREO LA CLASE TETRIS
+            mj_t *tetris;
+            tetris->Instance().init(x_max);
+            
+            m_tetris = true;
+        }
+    }
+    
+    if(MAP_ITERATION < TAM_LISTA){
+        boss *javi;
+        javi->Instance().init(x_max);
+
+        path = "tiles_definitivo/nodos/fin.tmx";
+            //std::cout << path << std::endl;
+
+        LeeNodo(path);
+        end = true;
+    }
+        
+    
+    //CREO EL NODO FINAL
+    //SIEMPRE VA A SER CREADO EL ULTIMO, AL IGUAL QUE EL NODO 0
+    
+}
+
+void Mapa::leeRandom(){
+    std::string path = "tiles_definitivo/nodos/";
+    if(longitud == MAP_ITERATION-1){
+        boss *javi;
+        javi->Instance().init(x_max);
+
+        path = "tiles_definitivo/nodos/fin.tmx";
+            //std::cout << path << std::endl;
+
+        LeeNodo(path);
+        end = true;
+    }
+    else{
+        int n = 15;
+        int nodo = physicsEngine::Instance().genIntRandom(0, n-1);
+        int r;
         bool num = false;
         while(!num){
             //GENERO EL NUMERO ALEATORIO
             r = physicsEngine::Instance().genIntRandom(0, n-1);
             
-            if(v[nodo][r]==1){
-                num = true;
-            }
+            if(r!=6 || (r != 6 && !m_tetris))
+                if(v[nodo][r]==1){
+                    num = true;
+                }
         }
-        if(r != 6 || (r == 6 && !m_tetris)){
-            std::string path = "tiles_definitivo/nodos/";
-            std::string rand = std::to_string(r);
-            path = path.operator +=(rand);
-            path = path.operator +=(".tmx");
-                //std::cout << path << std::endl;
-            
-            LeeNodo(path);
 
-            nodo = r;
-        }
+        std::string path = "tiles_definitivo/nodos/";
+        std::string rand = std::to_string(r);
+        path = path.operator +=(rand);
+        path = path.operator +=(".tmx");
+
+        LeeNodo(path);
+        longitud++;
         //std::cout << "Vector size " << vector_casillas.size() << std::endl;
         
         //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
@@ -857,19 +916,7 @@ void Mapa::CreaMapa() {
             
             m_tetris = true;
         }
-        
-        iter++;
     }
-    
-    //CREO EL NODO FINAL
-    //SIEMPRE VA A SER CREADO EL ULTIMO, AL IGUAL QUE EL NODO 0
-    boss *javi;
-    javi->Instance().init(x_max);
-    
-    path = "tiles_definitivo/nodos/fin.tmx";
-        //std::cout << path << std::endl;
-
-    LeeNodo(path);
     
 }
 
@@ -878,15 +925,24 @@ void Mapa::update(float x, float y) {
     mj_t *tetris;
     boss *javi;
     
-    if(pop && complete_list.size()>0){
-
+    if(pop){
+        std::cout << "Borrando..." << std::endl;
+        //hex_list.front()->~Nodo();
+        //std::cout << "HEX " << hex_list.size() << " | COMPLETE " << complete_list.size() << std::endl;
         hex_list.pop_front();
-        hex_list.push_back(complete_list.front());
-        complete_list.pop_front();
+        if(longitud < MAP_ITERATION)
+            leeRandom();
+        else if(!end)
+            leeRandom();
+        //hex_list.emplace_back(std::move(complete_list.front()));
+        //complete_list.pop_front();
+        //std::cout << "HEX " << hex_list.size() << " | COMPLETE " << complete_list.size() << std::endl;
         //POP DE PINCHOS
+        /*
         l_pinchos.pop_front();
         l_pinchos.push_back(l_pinchos_aux.front());
         l_pinchos_aux.pop_front();
+         */
         
         pop = false;
     }

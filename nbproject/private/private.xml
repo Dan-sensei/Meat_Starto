@@ -8,17 +8,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/main.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/Flyers.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Juego.h</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Nodo.h</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/particleSystem.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Juego.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Nodo.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/Flyers.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Juego.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/particleSystem.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/Skull.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/main.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/NPC.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/NPC.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.h</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/xPlotato.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/xPlotato.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/particleSystem.h</file>
         </group>
     </open-files>
 </project-private>

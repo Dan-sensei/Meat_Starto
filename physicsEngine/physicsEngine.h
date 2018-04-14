@@ -41,6 +41,8 @@ public:
     pBody createGround(std::vector<std::array<float, 2>> vertex_, type* data);                          // Crea el suelo del mapa, pasándole un vector de coordenadas, que serán los vértices que lo forman, y el número de vértices totales
     void setGravity(float gx_, float gy_);                                                  // Ajusta la gravedad del mundo
     void updateWorld(float tick_);                                                          // Actualiza el mundo
+    void detroyBody(pBody body);
+    int getBodyListSize();
     
     float genFloatRandom(float min, float max);
     int genIntRandom(int min, int max);

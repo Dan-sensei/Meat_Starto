@@ -106,6 +106,24 @@ pBody physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, typ
     return result;
 }
 
+void physicsEngine::detroyBody(pBody body){
+    world.DestroyBody(body.getBody());
+}
+
+int physicsEngine::getBodyListSize(){
+    int c;
+    
+    c = 0;
+    
+    b2Body* b = world.GetBodyList();
+    while(b){
+        b = b->GetNext();
+        c++;
+    }
+    
+    return c;
+}
+
 float physicsEngine::genFloatRandom(float min, float max){
     std::random_device rd;
     std::default_random_engine gen(rd());

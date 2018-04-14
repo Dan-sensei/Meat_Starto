@@ -21,6 +21,9 @@ NPC::NPC(const NPC& orig) {
 }
 
 NPC::~NPC() {
+    std::cout << "Destruyendo NPC..." << std::endl;
+    physicsEngine* world;
+    world->Instance().detroyBody(body);
 }
 
 void NPC::update(){

@@ -21,7 +21,7 @@ class Skull : public NPC{
 public:
     Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e);
     Skull(const Skull& orig);
-    virtual ~Skull();
+    ~Skull();
     
     void update();
     

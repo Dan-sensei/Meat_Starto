@@ -77,21 +77,6 @@ Juego::Juego(){
 }
 
 
-
-void Juego::Render(){
-    renderEngine    *sfml;
-    Mapa            *mapa;
-    
-    sfml->Instance().clear('w');
-        
-    sfml->Instance().setView(*view);
-    mapa->Instance().render(tick);
-    readyPlayerOne->draw();
-
-    sfml->Instance().display();
-    
-}
-
 void Juego::Handle(){
     //BUCLE DEL JUEGO
     renderEngine *sfml;
@@ -106,6 +91,9 @@ void Juego::Handle(){
         //</FPS>
         
         //EVENTOS
+        HandleEvents();
+        
+        //UPDATE
         Update();
             //std::cout << "EVENTOS" << std::endl;
         
@@ -115,22 +103,16 @@ void Juego::Handle(){
     }
 }
 
-void Juego::Update(){
+void Juego::HandleEvents(){
     renderEngine    *sfml;
-    Mapa            *mapa;
-    physicsEngine   *world;
-    mj_t            *tetris;
-    boss            *javi;
     
-   
     renderEngine::rEvent event;
-    
         //0x7fff11e212f0
     while(sfml->Instance().pollEvent(event)){
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
-    //std::cout << "Tecla " << event.getKeyCode() << std::endl;
+                //std::cout << "Tecla " << event.getKeyCode() << std::endl;
                 break;
             case renderEngine::rEvent::EventType::KeyReleased :
                 keys[event.getKeyCode()] = false;     
@@ -162,6 +144,12 @@ void Juego::Update(){
         keys[15]=false;
         sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
     } 
+}
+
+void Juego::Update(){
+    renderEngine    *sfml;
+    Mapa            *mapa;
+    physicsEngine   *world;
     
     // FIXED TIME STEP UPDATE
     dt = masterClock.restart().asSeconds();
@@ -199,10 +187,20 @@ void Juego::Update(){
     accumulator += dt;
     while(accumulator >= 1/UPDATE_STEP){
         //std::cout << "UPDATE-- " << accumulator << std::endl;
+        
+        float window_width = static_cast<float>(sfml->Instance().getSize()[0]);
+        float window_height = static_cast<float>(sfml->Instance().getSize()[1]);  
+        float zoom = (1006*target_zoom)/window_height;
 
+        view->setSize(window_width, window_height);
+        view->zoom(zoom);
+        sfml->Instance().setView(*view);
+        
+        // SOBRESCRIBO LOS ESTADOS ANTERIORES
         readyPlayerOne->preState();  
         mapa->Instance().preState();
 
+        // LÓGICA DE LOS NPC Y JUGADORES
         readyPlayerOne->movement();
         mapa->Instance().update();
 
@@ -219,18 +217,21 @@ void Juego::Update(){
         readyPlayerOne->newState();
         mapa->Instance().newState();
     }
+    physicsEngine* wold;
+    //std::cout << "LISTA: " << world->Instance().getBodyListSize() << std::endl;
+}
 
+void Juego::Render(){
+    //std::cout << "RENDER == " << tick << std::endl;
+    renderEngine    *sfml;
+    Mapa            *mapa;
+    mj_t            *tetris;
+    boss            *javi;
+    
+    sfml->Instance().clear('w');
+        
     // TICK PARA LA INTERPOLAÇAO
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
-        //std::cout << "RENDER == " << tick << std::endl;
-    
-    float window_width = static_cast<float>(sfml->Instance().getSize()[0]);
-    float window_height = static_cast<float>(sfml->Instance().getSize()[1]);  
-    float zoom = (1006*target_zoom)/window_height;
-
-    view->setSize(window_width, window_height);
-    view->zoom(zoom);
-    sfml->Instance().setView(*view);
     
     //ACTUALIÇAÇAO DEL PERSONAJE
     readyPlayerOne->update(animationClock.restart());
@@ -242,50 +243,13 @@ void Juego::Update(){
     
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
     mapa->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
+    
+    sfml->Instance().setView(*view);
+    mapa->Instance().render(tick);
+    readyPlayerOne->draw();
 
-    /*
-    renderEngine *sfml;
-    while (window->pollEvent(event))
-     {
-
-         switch(event.type){
-
-             //Si se recibe el evento de cerrar la ventana la cierro
-             case sf::Event::Closed:
-                 window->close();
-                 break;
-
-             //Se pulsó una tecla, imprimo su codigo
-             case sf::Event::KeyPressed:
-
-                 //Verifico si se pulsa alguna tecla de movimiento
-                 switch(event.key.code) {
-
-                     //Tecla Q para salir
-                     case sf::Keyboard::Q:
-                         window->close();
-                     break;
-
-                      case sf::Keyboard::Escape:
-                         sfml->Instance().ChangeState(MenuPausa::Instance());    
-                         break;
-
-                     case sf::Keyboard::P:
-                          sfml->Instance().ChangeState(MPuntuaciones::Instance());    
-                          break;
-
-
-                     //Cualquier tecla desconocida se imprime por pantalla su código
-                     default:
-                         std::cout << event.key.code << std::endl;
-                     break;
-
-                 }
-
-         }
-
-     }  
-     */
+    sfml->Instance().display();
+    
 }
 
 Juego::Juego(const Juego& orig) {

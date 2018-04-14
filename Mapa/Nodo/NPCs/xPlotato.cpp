@@ -41,15 +41,6 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     
     target = x_begin;
     
-    if(body.getXPosition() > target){
-        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-        sprite.setScale(-1, 1);
-    }
-    else if(body.getXPosition() < target){
-        body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-        sprite.setScale(1, 1);
-    }
-    
     hp = 1;
     
     previous.x = actual.x = body.getXPosition();
@@ -72,23 +63,27 @@ xPlotato::xPlotato(const xPlotato& orig) {
 }
 
 xPlotato::~xPlotato() {
+    std::cout << "Destruyendo xPlotato..." << std::endl;
+    delete t;
+    t = nullptr;
 }
 
-void xPlotato::update(){ 
+void xPlotato::update(){
     
-    if(abs(body.getXPosition() - target) < 5 ){
-        
-        target = (target == x_begin) ? x_end : x_begin;
-        
-        if(body.getXPosition() > target){
-            body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            sprite.setScale(-1, 1);
-        }
-        else if(body.getXPosition() < target){
-            body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-            sprite.setScale(1, 1);
-        }
-        
+    if(abs(body.getLinearXVelocity()) < 1){
+        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+        sprite.setScale(-1, 1);
     }
     
+    if(target == x_begin && body.getXPosition() <= target ){
+        target = x_end;
+        body.setLinealVelocicity(velocity, body.getLinearYVelocity());
+        sprite.setScale(1, 1);
+        
+    }
+    else if(target == x_end && body.getXPosition() >= target){
+        target = x_begin;
+        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+        sprite.setScale(-1, 1);
+    }
 }

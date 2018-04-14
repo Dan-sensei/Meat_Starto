@@ -34,6 +34,7 @@ public:
     }
     
     void CreaMapa();
+    void leeRandom();
     void render(float tick_);
     void update(float x, float y);
     void update();
@@ -48,8 +49,6 @@ private:
     Mapa();
     Mapa(const Mapa& orig);
     void operator=(Mapa const& orig);
-    
-    
     
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
@@ -90,10 +89,10 @@ private:
     //std::list<std::vector<_cas>> lista_casillas;
     
     std::list<Nodo> hex_list;
-    std::list<Nodo> complete_list;
     
     std::vector<renderEngine::rIntRect> spriteSheetRects;
-    
+    int longitud;
+    bool end;
 
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     

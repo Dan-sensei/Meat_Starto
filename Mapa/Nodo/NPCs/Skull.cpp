@@ -47,9 +47,6 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
     targetX = physicsEngine::Instance().genIntRandom(x_min, x_max);
     targetY = physicsEngine::Instance().genIntRandom(y_min, y_max);
     
-    // Calculo la velocidad para los ejes
-    recalcula();
-    
     hp = 1;
     
     previous.x = actual.x = body.getXPosition();
@@ -75,15 +72,22 @@ Skull::Skull(const Skull& orig) {
 }
 
 Skull::~Skull() {
+    std::cout << "Destruyendo Skull..." << std::endl;
+    delete t;
+    t = nullptr;
 }
 
 void Skull::update(){
+    
+    if(abs(body.getLinearXVelocity()) < 1){
+        recalcula();
+    }
     
     float x_distance = targetX - body.getXPosition();                       // Distancia a la coordenada objetivo en X
     float y_distance = targetY - body.getYPosition();                       // Distancia a la coordenada objetivo en Y
     float vector = sqrt((x_distance*x_distance)+(y_distance*y_distance));   // Distancia en línea recta
     
-    if(vector < 15){        // Si la distancia al punto es menor de 15 (margen de error)
+    if(vector < 20){        // Si la distancia al punto es menor de 15 (margen de error)
    
         // Genero un nuevo punto de destino aleatoriamente
         targetX = physicsEngine::Instance().genIntRandom(x_min, x_max);      

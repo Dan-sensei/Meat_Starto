@@ -35,6 +35,7 @@ public:
     Juego(const Juego& orig);
     virtual ~Juego();
     
+    void HandleEvents();
     void Render();
     void Update();  
     virtual void Handle();
