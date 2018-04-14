@@ -24,9 +24,11 @@ public:
     virtual ~Skull();
     
     void update();
-    float genRandom(float min, float max);
+    
     
 private:
+    void recalcula();
+    float genRandom(float min, float max);
     
     physicsEngine::type* t;
     int x_min;;

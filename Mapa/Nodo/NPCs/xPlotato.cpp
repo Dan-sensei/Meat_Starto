@@ -41,6 +41,15 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     
     target = x_begin;
     
+    if(body.getXPosition() > target){
+        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+        sprite.setScale(-1, 1);
+    }
+    else if(body.getXPosition() < target){
+        body.setLinealVelocicity(velocity, body.getLinearYVelocity());
+        sprite.setScale(1, 1);
+    }
+    
     hp = 1;
     
     previous.x = actual.x = body.getXPosition();
@@ -65,18 +74,21 @@ xPlotato::xPlotato(const xPlotato& orig) {
 xPlotato::~xPlotato() {
 }
 
-void xPlotato::update(){
+void xPlotato::update(){ 
     
-    if(body.getXPosition() > target){
-        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-        sprite.setScale(-1, 1);
-    }
-    else if(body.getXPosition() < target){
-        body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-        sprite.setScale(1, 1);
-    }
-    
-    if(abs(body.getXPosition() - target) < 5 )
+    if(abs(body.getXPosition() - target) < 5 ){
+        
         target = (target == x_begin) ? x_end : x_begin;
+        
+        if(body.getXPosition() > target){
+            body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+            sprite.setScale(-1, 1);
+        }
+        else if(body.getXPosition() < target){
+            body.setLinealVelocicity(velocity, body.getLinearYVelocity());
+            sprite.setScale(1, 1);
+        }
+        
+    }
     
 }

@@ -43,8 +43,12 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
     y_min = y_b + height/2;
     y_max = y_e - height/2;
     
+    // Genero la primera coordenada aleatoria a la que se dirigirá el buen Skull
     targetX = genRandom(x_min, x_max);
     targetY = genRandom(y_min, y_max);
+    
+    // Calculo la velocidad para los ejes
+    recalcula();
     
     hp = 1;
     
@@ -54,6 +58,7 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
 }
 
 Skull::Skull(const Skull& orig) {
+    // Constructor copia molón
     t = orig.t;
     x_min = orig.x_min;
     x_max = orig.x_max;
@@ -74,28 +79,24 @@ Skull::~Skull() {
 
 void Skull::update(){
     
-    float x_distance = targetX - body.getXPosition();
-    float y_distance = targetY - body.getYPosition();
-    float vector = sqrt((x_distance*x_distance)+(y_distance*y_distance));
+    float x_distance = targetX - body.getXPosition();                       // Distancia a la coordenada objetivo en X
+    float y_distance = targetY - body.getYPosition();                       // Distancia a la coordenada objetivo en Y
+    float vector = sqrt((x_distance*x_distance)+(y_distance*y_distance));   // Distancia en línea recta
     
-    if(vector > 15){
-       
-        float angle = atan2(y_distance, x_distance);
-        float x_velocity = cos(angle)*velocity;
-        float y_velocity = sin(angle)*velocity;
+    if(vector < 15){        // Si la distancia al punto es menor de 15 (margen de error)
+   
+        // Genero un nuevo punto de destino aleatoriamente
+        targetX = genRandom(x_min, x_max);      
+        targetY = genRandom(y_min, y_max);
         
-        body.setLinealVelocicity(x_velocity, y_velocity);
-        
+        // Ajusto el sprite teniendo en cuenta el eje X
         if(body.getXPosition() > targetX)
             sprite.setScale(1, 1);
-        
         else if(body.getXPosition() < targetX)
             sprite.setScale(-1, 1);
- 
-    }
-    else{        
-        targetX = genRandom(x_min, x_max);
-        targetY = genRandom(y_min, y_max);
+        
+        //Y recalculo la velocidad en los ejes
+        recalcula();
     }
     
 }
@@ -107,4 +108,16 @@ float Skull::genRandom(float min, float max){
     std::uniform_int_distribution<int> distribution(min, max);
     
     return distribution(gen);
+}
+
+void Skull::recalcula(){
+    
+    float x_distance = targetX - body.getXPosition();   // Distancia en X
+    float y_distance = targetY - body.getYPosition();   // Distancia en Y
+    
+    float angle = atan2(y_distance, x_distance);        // Ángulo dado un vector (en radianes, devolverá un número entre 0 y 1)
+    float x_velocity = cos(angle)*velocity;             // Lo multiplico por la velocidad para X
+    float y_velocity = sin(angle)*velocity;             // Lo multiplico por la velocidad para Y
+    
+    body.setLinealVelocicity(x_velocity, y_velocity);   // Le asigno la velocidad al cuerpo
 }
