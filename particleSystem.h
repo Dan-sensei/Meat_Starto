@@ -14,8 +14,6 @@
 #ifndef PARTICLESYSTEM_H
 #define PARTICLESYSTEM_H
 
-#include "renderEngine.h"
-
 
 class particleSystem {
 public:

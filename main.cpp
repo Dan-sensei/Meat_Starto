@@ -13,10 +13,10 @@
 
 #include <iostream>
 
-#include <renderEngine.h>
 #include "MenuInicio.h"
 #include "State.h"
 #include "Juego.h"
+
 
 #include "MenuPausa.h"
 
@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     //AL LLAMAR AL ESTADO EMPIEZA EL BUCLE
     State* pState =  MenuInicio::Instance();
     //State* pState =  Juego::Instance();
-    sfml->Instance().ChangeState(pState);  
+    sfml->Instance().ChangeState(pState);
 }
 
 /*

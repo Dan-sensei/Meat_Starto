@@ -14,8 +14,8 @@
 #ifndef ASSETMANAGER_H
 #define ASSETMANAGER_H
 
-#include "renderEngine.h"
 #include <map>
+#include "renderEngine/rSoundBuffer.h"
 
 class AssetManager{
     public:
@@ -27,7 +27,7 @@ class AssetManager{
         //============================
         
         static renderEngine::rTexture& GetTexture(std::string const& filename);
-        //static sf::SoundBuffer& GetSoundBuffer(std::string const& filename);
+        static rSoundBuffer& GetSoundBuffer(std::string const& filename);
         //static sf::Font& GetFont(std::string const& filename);
         
     private:
@@ -38,7 +38,7 @@ class AssetManager{
         //===================================
         
         std::map<std::string, renderEngine::rTexture> m_Textures;
-        //std::map<std::string, sf::SoundBuffer> m_SoundBuffers;
+        std::map<std::string, rSoundBuffer> m_SoundBuffers;
         //std::map<std::string, sf::Font> m_Fonts;
 };
 

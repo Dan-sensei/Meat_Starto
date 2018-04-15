@@ -18,7 +18,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "State.h" 
-#include "renderEngine.h"
 #include "MenuPausa.h"
 #include "Juego.h"
 

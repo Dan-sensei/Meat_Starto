@@ -19,11 +19,12 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10000
+#define MAP_ITERATION 10
 #define TAM_LISTA 8
 
  Mapa::Mapa() {
-    renderEngine::rClock optimo_clock;
+    std::cout << "Creando mapa..." << std::endl;
+    
     //CARGA DEL DOCUMENTO
     doc.LoadFile("tiles_definitivo/tiles_fv.tsx");
     
@@ -51,7 +52,6 @@
     map = ts_doc.FirstChildElement("TextureAtlas")->FirstChildElement("sprite");
     
     for(int i=0 ; i<n ; i++){
-
         
         int x = atoi(map->Attribute("x"));
         int y = atoi(map->Attribute("y"));
@@ -63,7 +63,6 @@
         
         spriteSheetRects.push_back(ir_aux);
  
-      
             //std::cout << tiles[i]->id << " -> " << tiles[i]->path << "      INTRECT-> X: " << tiles[i]->ir.left << ", Y: " << tiles[i]->ir.top << ", W: " << tiles[i]->ir.widht << ", H: " << tiles[i]->ir.height << std::endl;
 
         map = map->NextSiblingElement("sprite");
@@ -71,6 +70,22 @@
     
     //INICIALIZO LA MATRIZ DE ADYACENCIA
     InitMatrix();
+    
+    std::cout << "MATRIZ DE ADYACENCIA" << std::endl;
+    for(int i = 0; i < 15; i++){
+        if(i<10)
+        std::cout << "Nodo  " << i << " => ";
+        else
+        std::cout << "Nodo " << i << " => ";
+        for(int j = 0; j < matriz_v2[i].size(); j++){
+            if(matriz_v2[i][j] <10)
+                std::cout << " " << matriz_v2[i][j] << ",  ";
+            else
+                std::cout << matriz_v2[i][j] << ",  ";
+                
+        }
+        std::cout << std::endl;
+    }
 
     //-----------VARIABLES DE CLASE-----------//
     pop = false;
@@ -97,7 +112,6 @@
     longitud = 0;
     end = false;
     
-    std::cout << "TIEMPO DE CARGA DEL MAPA " << optimo_clock.getElapsedTime().asSeconds() << std::endl;
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -109,320 +123,41 @@ void Mapa::InitMatrix() {
     
     //  v es n x n
     //  n = 15
-    int x;
-    
-    //NODO 0
-    x = 0;
-    // <editor-fold defaultstate="collapsed" desc="NODO 0">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 1;
-    v[x][3] = 1;
-    v[x][4] = 0;
-    v[x][5] = 0;
-    v[x][6] = 0;
-    v[x][7] = 1;
-    v[x][8] = 0;
-    v[x][9] = 0;
-    v[x][10] = 0;
-    v[x][11] = 0;
-    v[x][12] = 0;
-    v[x][13] = 0;
-    v[x][14] = 0; 
-    // </editor-fold>
 
-    //NODO 1
-    x = 1;
-    // <editor-fold defaultstate="collapsed" desc="NODO 1">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 1;
-    v[x][3] = 1;
-    v[x][4] = 1;
-    v[x][5] = 1;
-    v[x][6] = 1;
-    v[x][7] = 1;
-    v[x][8] = 0;
-    v[x][9] = 0;
-    v[x][10] = 1;
-    v[x][11] = 0;
-    v[x][12] = 0;
-    v[x][13] = 0;
-    v[x][14] = 1; 
-    // </editor-fold>
-    
-    //NODO 2
-    x = 2;
-    // <editor-fold defaultstate="collapsed" desc="NODO 2">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 0;
-    v[x][3] = 1;
-    v[x][4] = 1;
-    v[x][5] = 1;
-    v[x][6] = 1;
-    v[x][7] = 1;
-    v[x][8] = 0;
-    v[x][9] = 0;
-    v[x][10] = 1;
-    v[x][11] = 0;
-    v[x][12] = 0;
-    v[x][13] = 0;
-    v[x][14] = 0; 
-    // </editor-fold>
-    
-    //NODO 3
-    x = 3;
-    // <editor-fold defaultstate="collapsed" desc="NODO 3">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 1;
-    v[x][3] = 0;
-    v[x][4] = 1;
-    v[x][5] = 1;
-    v[x][6] = 1;
-    v[x][7] = 0;
-    v[x][8] = 0;
-    v[x][9] = 0;
-    v[x][10] = 0;
-    v[x][11] = 0;
-    v[x][12] = 0;
-    v[x][13] = 0;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 4
-    x = 4;
-    // <editor-fold defaultstate="collapsed" desc="NODO 4">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 1;
-    v[x][3] = 1;
-    v[x][4] = 1;
-    v[x][5] = 0;
-    v[x][6] = 1;
-    v[x][7] = 1;
-    v[x][8] = 0;
-    v[x][9] = 0;
-    v[x][10] = 1;
-    v[x][11] = 1;
-    v[x][12] = 0;
-    v[x][13] = 1;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 5
-    x = 5;
-    // <editor-fold defaultstate="collapsed" desc="NODO 5">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 0;
-    v[x][3] = 1;
-    v[x][4] = 0;
-    v[x][5] = 0;
-    v[x][6] = 1;
-    v[x][7] = 1;
-    v[x][8] = 1;
-    v[x][9] = 0;
-    v[x][10] = 0;
-    v[x][11] = 1;
-    v[x][12] = 0;
-    v[x][13] = 1;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 6 (MINIJUEGO TETRIS)
-    x = 6;
-    // <editor-fold defaultstate="collapsed" desc="NODO 6">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 1;
-    v[x][3] = 1;
-    v[x][4] = 1;
-    v[x][5] = 1;
-    v[x][6] = 0;
-    v[x][7] = 1;
-    v[x][8] = 1;
-    v[x][9] = 0;
-    v[x][10] = 0;
-    v[x][11] = 1;
-    v[x][12] = 0;
-    v[x][13] = 1;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 7
-    x = 7;
-    // <editor-fold defaultstate="collapsed" desc="NODO 7">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 0;
-    v[x][3] = 0;
-    v[x][4] = 1;
-    v[x][5] = 0;
-    v[x][6] = 1;
-
-    v[x][7] = 0;
-    v[x][8] = 1;
-    v[x][9] = 1;
-    v[x][10] = 0;
-    v[x][11] = 0;
-    v[x][12] = 1;
-    v[x][13] = 0;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 8
-    x = 8;
-    // <editor-fold defaultstate="collapsed" desc="NODO 8">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 0;
-    v[x][3] = 0;
-    v[x][4] = 1;
-    v[x][5] = 0;
-    v[x][6] = 0;
-
-    v[x][7] = 0;
-    v[x][8] = 1;
-    v[x][9] = 1;
-    v[x][10] = 0;
-    v[x][11] = 0;
-    v[x][12] = 1;
-    v[x][13] = 0;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 9
-    x = 9;
-    // <editor-fold defaultstate="collapsed" desc="NODO 9">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 0;
-    v[x][3] = 1;
-    v[x][4] = 0;
-    v[x][5] = 1;
-    v[x][6] = 0;
-
-    v[x][7] = 1;
-    v[x][8] = 1;
-    v[x][9] = 0;
-    v[x][10] = 1;
-    v[x][11] = 0;
-    v[x][12] = 1;
-    v[x][13] = 1;
-    v[x][14] = 1; 
-    // </editor-fold>
-
-    //NODO 10
-    x = 10;
-    // <editor-fold defaultstate="collapsed" desc="NODO 10">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 0;
-    v[x][3] = 0;
-    v[x][4] = 0;
-    v[x][5] = 0;
-    v[x][6] = 0;
-
-    v[x][7] = 0;
-    v[x][8] = 0;
-    v[x][9] = 1;
-    v[x][10] = 0;
-    v[x][11] = 1;
-    v[x][12] = 1;
-    v[x][13] = 0;
-    v[x][14] = 0; 
-    // </editor-fold>
-
-    //NODO 11
-    x = 11;
-    // <editor-fold defaultstate="collapsed" desc="NODO 11">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 1;
-    v[x][3] = 1;
-    v[x][4] = 0;
-    v[x][5] = 1;
-    v[x][6] = 0;
-
-    v[x][7] = 0;
-    v[x][8] = 1;
-    v[x][9] = 1;
-    v[x][10] = 1;
-    v[x][11] = 0;
-    v[x][12] = 1;
-    v[x][13] = 1;
-    v[x][14] = 1; 
-    // </editor-fold>
+    int aux[15][15] = {
         
-    //NODO 12
-    x = 12;
-    // <editor-fold defaultstate="collapsed" desc="NODO 12">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 0;
-    v[x][3] = 0;
-    v[x][4] = 0;
-    v[x][5] = 0;
-    v[x][6] = 0;
+    /* ================================ NODOS ==============================  */
+    /*        0   1   2   3   4   5   6   7   8   9   10  11  12  13  14      */
+    /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|       */
+    /*  0 */  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  
+    /*  1 */  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  1,  
+    /*  2 */  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  
+    /*  3 */  0,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  
+    /*  4 */  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  0,  1,  0,  
+    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  1,  0,  
+    /*  6 */  0,  1,  1,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  
+    /*  7 */  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  
+    /*  8 */  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  
+    /*  9 */  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  1,  1,  1,  
+    /* 10 */  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  
+    /* 11 */  0,  1,  1,  1,  0,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  
+    /* 12 */  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,  
+    /* 13 */  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  
+    /* 14 */  0,  1,  0,  0,  0,  1,  1,  0,  1,  0,  1,  0,  1,  1,  1  
+            
+    };
 
-    v[x][7] = 1;
-    v[x][8] = 1;
-    v[x][9] = 1;
-    v[x][10] = 0;
-    v[x][11] = 1;
-    v[x][12] = 0;
-    v[x][13] = 1;
-    v[x][14] = 0; 
-    // </editor-fold>
-        
-    //NODO 13
-    x = 13;
-    // <editor-fold defaultstate="collapsed" desc="NODO 13">
-    v[x][0] = 0;
-    v[x][1] = 0;
-    v[x][2] = 0;
-    v[x][3] = 1;
-    v[x][4] = 1;
-    v[x][5] = 0;
-    v[x][6] = 0;
+    for(int i = 0; i < 15; i++)
+        for(int j = 0; j < 15; j++)
+            if(aux[i][j] == 1)
+                matriz_v2[i].push_back(j);
 
-    v[x][7] = 0;
-    v[x][8] = 1;
-    v[x][9] = 0;
-    v[x][10] = 0;
-    v[x][11] = 1;
-    v[x][12] = 1;
-    v[x][13] = 0;
-    v[x][14] = 1; 
-    // </editor-fold>
-        
-    //NODO 14
-    x = 14;
-    // <editor-fold defaultstate="collapsed" desc="NODO 14">
-    v[x][0] = 0;
-    v[x][1] = 1;
-    v[x][2] = 0;
-    v[x][3] = 0;
-    v[x][4] = 0;
-    v[x][5] = 1;
-    v[x][6] = 1;
-
-    v[x][7] = 0;
-    v[x][8] = 1;
-    v[x][9] = 0;
-    v[x][10] = 1;
-    v[x][11] = 0;
-    v[x][12] = 1;
-    v[x][13] = 1;
-    v[x][14] = 1; 
-    // </editor-fold>
 
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
 void Mapa::LeeNodo(std::string const& node_path) {
+    renderEngine::rClock optimo_clock;
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
     
     int map_width;
@@ -438,7 +173,6 @@ void Mapa::LeeNodo(std::string const& node_path) {
     map->QueryIntAttribute("width", &map_width);
     map->QueryIntAttribute("height", &map_height);
 
-    std::cout << "Creando nodo" << std::endl;
     hex_list.emplace_back("tiles_definitivo/tilesheet.png");
     
     hex_list.back().setRectVector(spriteSheetRects);
@@ -469,7 +203,6 @@ void Mapa::LeeNodo(std::string const& node_path) {
 
             if (stoi(partes) != 0) {
                 hex_list.back().addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
-                CreaCasilla(stoi(partes), x_max + (ancho * j), alto * i);
             }
             
             x_max_aux = (x_max_aux < x_max + ancho*j) ? (x_max + ancho*j) : x_max_aux;
@@ -498,20 +231,8 @@ void Mapa::LeeNodo(std::string const& node_path) {
     
     hex_list.back().setPop(x_max);
     
-    std::cout << "CREADO" << std::endl;
-    /*
+    std::cout << "Nodo creado en " << optimo_clock.getElapsedTime().asSeconds() << "s!" << std::endl;
     
-    //GUARDO LOS PINCHOS
-    if(l_pinchos.size()<TAM_LISTA){
-        l_pinchos.push_back(vector_pinchos);
-        vector_pinchos.clear();
-    }
-    else{
-        l_pinchos_aux.push_back(vector_pinchos);
-        vector_pinchos.clear();
-    }
-    vector_pinchos.clear();
-     */
 }
 
 void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
@@ -537,8 +258,6 @@ void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
         //============================================//
 
         poly = obj->FirstChildElement("polyline"); //OBJETO POLYLINE
-        //std::cout << poly->Attribute("points") << std::endl;
-
         vertex = poly->Attribute("points"); //STRING CON LAS COORDENADAS
 
         //CONSIGO EL NUMERO
@@ -588,6 +307,7 @@ void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
         objetos.push_back(*cs);     //GUARDO LOS ConvexShapes PARA DEBUG
         //BORRAR cs -> !IMPORTANTE
         delete cs;
+        cs = nullptr;
         //VACIAR vec -> !IMPORTANTE
         vec.clear();
 
@@ -636,26 +356,10 @@ void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual){
         obj->QueryIntAttribute("y", &y);
         obj->QueryIntAttribute("width", &w);
         obj->QueryIntAttribute("height", &h);
-
         
-        int     xpos = physicsEngine::Instance().genIntRandom(0, (w / 70) - 1);
-        float random = physicsEngine::Instance().genFloatRandom(0, 1);
+        int   random = physicsEngine::Instance().genIntRandom(0, 3);
         
-        renderEngine::rRectangleShape raux;
-        if (random < 0.5) {
-            //CREO UN POWER UP
-            raux.setFillColor('g');
-            raux.setSize(20, 20);
-            raux.setOrigin(10, 10);
-            raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
-        } else {
-            //CREO UN POWER DOWN
-            raux.setFillColor('r');
-            raux.setSize(20, 20);
-            raux.setOrigin(10, 10);
-            raux.setPosition(x_max + x + (xpos * 70) + 35, y + 35);
-        }
-        power.push_back(raux);
+        actual.addPower(random, x_max + x, x + x_max + w, y + 35);
         obj = obj->NextSiblingElement("object");
     }
 }
@@ -693,27 +397,6 @@ void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
             actual.addSkull(randomX, randomY, xCoord, xCoord+width, yCoord, yCoord+height);
 
         obj = obj->NextSiblingElement("object");
-    }
-}
-
-//CREA LA CASILLA
-void Mapa::CreaCasilla(int id, int x, int y) {
-        //std::cout << tiles[id-1]->path << std::endl;
-    
-    renderEngine::rRectangleShape casilla(ancho,alto);
-    //casilla.setTexture(AssetManager::GetTexture(tiles[id-1]->path));
-    casilla.setPosition(x,y);
-    
-    int id2 = id-1;
-    if(id2 == 36 || id2 == 35 || id2 == 34 || id2 == 33){
-        //std::cout << id << std::endl;
-        
-        renderEngine::rRectangleShape rs;
-        rs.setSize(70,70);
-        rs.setPosition(x,y);
-        rs.setFillColor('r');
-        
-        vector_pinchos.push_back(rs);
     }
 }
 
@@ -810,113 +493,56 @@ void Mapa::CreaMapa() {
         //std::cout << path << std::endl;
     
     LeeNodo(path);
-    longitud++;
+    
     //EMPIEZA A LEER LA MATRIZ
-    int n = 15;     //DIMENSION DE LA MATRIZ DE ADYACENCIA
-    int nodo = 0;   //NODOS ADYACENTES A 0
     int iter = 0;   //CUENTA EL NUMERO DE ITERACIONES
-    int r;          //EL NUMERO RANDOM
     
-    for(; iter<std::min(TAM_LISTA, MAP_ITERATION)-2; iter++) {
-        bool num = false;
-        while(!num){
-            //GENERO EL NUMERO ALEATORIO
-            r = physicsEngine::Instance().genIntRandom(0, n-1);
-            //std::cout << r << std::endl;
-            if(r!=6 || (r == 6 && !m_tetris))
-                if(v[nodo][r]==1){
-                    num = true;
-                }
-        }
-
-        std::string path = "tiles_definitivo/nodos/";
-        std::string rand = std::to_string(r);
-        path = path.operator +=(rand);
-        path = path.operator +=(".tmx");
-            //std::cout << path << std::endl;
-        
-        LeeNodo(path);
-        longitud++;
-        nodo = r;
-        
-        std::cout << "Vector size " << hex_list.size() << std::endl;
-        
-        //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
-        if(r == 6 && !m_tetris){
-            std::cout << "He creado el minijuego Tetris" << std::endl;
-            
-            //CREO LA CLASE TETRIS
-            mj_t *tetris;
-            tetris->Instance().init(x_max);
-            
-            m_tetris = true;
-        }
+    for(; iter<std::min(TAM_LISTA, MAP_ITERATION); iter++) {
+        leeRandom();
     }
-    
-    if(MAP_ITERATION < TAM_LISTA){
-        boss *javi;
-        javi->Instance().init(x_max);
-
-        path = "tiles_definitivo/nodos/fin.tmx";
-            //std::cout << path << std::endl;
-
-        LeeNodo(path);
-        end = true;
-    }
-        
-    
-    //CREO EL NODO FINAL
-    //SIEMPRE VA A SER CREADO EL ULTIMO, AL IGUAL QUE EL NODO 0
     
 }
 
 void Mapa::leeRandom(){
+    //GENERO EL NUMERO ALEATORIO
+    int r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
+    
+    int target = matriz_v2[nodo_actual][r];
+    
     std::string path = "tiles_definitivo/nodos/";
-    if(longitud == MAP_ITERATION-1){
-        boss *javi;
-        javi->Instance().init(x_max);
+    std::string rand = std::to_string(target);
+    path = path.operator +=(rand);
+    path = path.operator +=(".tmx");
 
-        path = "tiles_definitivo/nodos/fin.tmx";
-            //std::cout << path << std::endl;
+    //std::cout << "Nodo actual " << nodo_actual << " | Next " << target << std::endl;
 
-        LeeNodo(path);
-        end = true;
-    }
-    else{
-        int n = 15;
-        int nodo = physicsEngine::Instance().genIntRandom(0, n-1);
-        int r;
-        bool num = false;
-        while(!num){
-            //GENERO EL NUMERO ALEATORIO
-            r = physicsEngine::Instance().genIntRandom(0, n-1);
-            
-            if(r!=6 || (r == 6 && !m_tetris))
-                if(v[nodo][r]==1){
-                    num = true;
+    LeeNodo(path);
+    longitud++;
+
+    if(target == 6 && !m_tetris) {
+        
+        //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
+        std::cout << "He creado el minijuego Tetris" << std::endl;
+
+        //Borro el nodo Tetris de todos los vectores
+        bool flag;
+        for(int i = 0; i < 15; i++){
+            flag = false;
+            for(int j = 0; j < matriz_v2[i].size() && !flag; j++)
+                if(matriz_v2[i][j] == 6){
+                    matriz_v2[i].erase(matriz_v2[i].begin()+j);
+                    flag = true;
                 }
         }
 
-        std::string path = "tiles_definitivo/nodos/";
-        std::string rand = std::to_string(r);
-        path = path.operator +=(rand);
-        path = path.operator +=(".tmx");
+        //CREO LA CLASE TETRIS
+        mj_t *tetris;
+        tetris->Instance().init(x_max);
 
-        LeeNodo(path);
-        longitud++;
-        //std::cout << "Vector size " << vector_casillas.size() << std::endl;
-        
-        //DETECTA QUE YA SE HA DIBUJADO EL MINIJUEGO
-        if(r == 6 && !m_tetris){
-            std::cout << "He creado el minijuego Tetris" << std::endl;
-            
-            //CREO LA CLASE TETRIS
-            mj_t *tetris;
-            tetris->Instance().init(x_max);
-            
-            m_tetris = true;
-        }
+        m_tetris = true;
     }
+
+    nodo_actual = target;
     
 }
 
@@ -931,8 +557,7 @@ void Mapa::updateMini() {
         hex_list.pop_front();
         if(longitud < MAP_ITERATION)
             leeRandom();
-        else if(!end)
-            leeRandom();
+        
         //hex_list.emplace_back(std::move(complete_list.front()));
         //complete_list.pop_front();
         //std::cout << "HEX " << hex_list.size() << " | COMPLETE " << complete_list.size() << std::endl;
@@ -945,13 +570,20 @@ void Mapa::updateMini() {
         
         pop = false;
     }
+    if(longitud >= MAP_ITERATION && !end){
+        std::string path = "tiles_definitivo/nodos/";
+        boss *javi;
+        javi->Instance().init(x_max);
+
+        path = "tiles_definitivo/nodos/fin.tmx";
+            //std::cout << path << std::endl;
+
+        LeeNodo(path);
+        end = true;
+    }
     
     tetris->Instance().update();
     javi->Instance().update();
-}
-
-std::list<std::vector<renderEngine::rRectangleShape>>* Mapa::getPinchos() {
-    return &l_pinchos;
 }
 
 void Mapa::update(){

@@ -14,10 +14,6 @@
 #ifndef MJ_T_H
 #define MJ_T_H
 
-#include "renderEngine.h"
-#include "physicsEngine/physicsEngine.h"
-#include "physicsEngine/pBody.h"
-
 class mj_t {
 public:
     //<SINGLETON>

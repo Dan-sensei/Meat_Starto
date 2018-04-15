@@ -41,8 +41,6 @@ public:
     void preState();
     void newState();
     
-    std::list<std::vector<renderEngine::rRectangleShape>>* getPinchos();
-    
     virtual ~Mapa();
     
 private:
@@ -52,7 +50,6 @@ private:
     
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
-    void CreaCasilla(int id, int x, int y);
     void InitMatrix();
     
     
@@ -80,27 +77,20 @@ private:
     
     //OBJETOS (colisiones del mapa)
     std::vector<renderEngine::rConvexShape> objetos;
-    std::vector<std::array<float, 2>> spawn;
     std::vector<renderEngine::rRectangleShape> power;   //POWER UPS/DOWNS
     
     //PARA CONSTRUIR EL MAPA
     int x_max;
-
-    //std::list<std::vector<_cas>> lista_casillas;
     
     std::list<Nodo> hex_list;
-    
     std::vector<renderEngine::rIntRect> spriteSheetRects;
     int longitud;
     bool end;
 
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
-    std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos;        //MAPA ID's: 33,34,35,36
-    std::list<std::vector<renderEngine::rRectangleShape>> l_pinchos_aux;
-    
-    std::vector<renderEngine::rRectangleShape> vector_pinchos;  //VECTOR AUXILIAR
-    int v[15][15];
+    std::vector<int> matriz_v2[15];     // Guarda sólo los nodos a los que está conectada cada posición del array
+    int nodo_actual;
     
     //TETRIS
     bool m_tetris;

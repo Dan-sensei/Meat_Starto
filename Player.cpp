@@ -16,8 +16,6 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "Animator.h"
-#include "AssetManager.h"
-#include "physicsEngine/physicsEngine.h"
 #include "Mapa/Mapa.h"
 
 #define FRAMERATE 60.f
@@ -107,6 +105,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
 }
 
 Player::~Player() {
+    delete t;
+    t = nullptr;
 }
 
 void Player::setId(int i){
@@ -266,19 +266,7 @@ float Player::getYPosition() {
     return  sprite.getPosition()[1];
 }
 
-void Player::intersectsPinchos() {
-    Mapa *tile;
-    
-    for(std::list<std::vector<renderEngine::rRectangleShape>>::iterator it=(*tile->Instance().getPinchos()).begin(); it!=(*tile->Instance().getPinchos()).end(); ++it){
-        for(int i=0 ; i<(*it).size() ; i++){
-            if(sprite.intersects( (*it)[i] )){
-                //std::cout << "ZASCA" << std::endl;
-            }
-        }
-    }
-    
-    
-}
+
 
 
 bool Player::isOnAir(){
@@ -287,3 +275,20 @@ bool Player::isOnAir(){
 void Player::setAir(int i){
     onAir += i;
 }
+
+void Player::powerUpInmortalidad() {
+
+}
+
+void Player::powerUpSpeed() {
+
+}
+
+void Player::powerDownJump() {
+
+}
+
+void Player::powerDownFreeze() {
+
+}
+

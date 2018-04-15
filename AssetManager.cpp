@@ -27,10 +27,10 @@ renderEngine::rTexture& AssetManager::GetTexture(const std::string& filename){
     }
 }
 
-/*
-sf::SoundBuffer& AssetManager::GetSoundBuffer(const std::string& filename){
+
+rSoundBuffer& AssetManager::GetSoundBuffer(const std::string& filename){
     
-    auto& sBufferMap = sInstance->m_SoundBuffers;
+    auto& sBufferMap = Instance().m_SoundBuffers;
     auto pairFound = sBufferMap.find(filename);
     
     if(pairFound != sBufferMap.end()){
@@ -42,7 +42,7 @@ sf::SoundBuffer& AssetManager::GetSoundBuffer(const std::string& filename){
         return sBuffer;
     }
 }
-
+/*
 sf::Font& AssetManager::GetFont(const std::string& filename){
     
     auto& fontMap = sInstance->m_Fonts;

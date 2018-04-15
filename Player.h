@@ -16,9 +16,6 @@
 #include <iostream>
 #include <string>
 #include "Animator.h"
-#include "AssetManager.h"
-#include "renderEngine.h"
-#include "physicsEngine/pBody.h"
 
 class Player {
 public:
@@ -61,10 +58,14 @@ public:
     
     physicsEngine::type* t;
     
-    void intersectsPinchos();
     int onAir;
     void setAir(int i);
     bool isOnAir();
+    
+    void powerUpInmortalidad();
+    void powerUpSpeed();
+    void powerDownJump();
+    void powerDownFreeze();
     
 private:
     int id;
@@ -76,6 +77,7 @@ private:
     Animator animator;
     
     bool* keys;
+    
     
     pBody body;
 };

@@ -28,24 +28,33 @@
 #include "mj_t.h"
 #include "Player.h"
 #include "boss.h"
+#include "renderEngine/rMusic.h"
 
 class Juego: public State{
 public:
-    Juego();
-    Juego(const Juego& orig);
-    virtual ~Juego();
+    
+    static Juego& Instance(){
+        static Juego instance;
+        return instance;
+    }
+    ~Juego();
     
     void HandleEvents();
     void Render();
     void Update();  
     virtual void Handle();
     
-    static Juego* Instance();//Singleton
+    std::vector<Player*>* getPlayers();
 
     std::array<float,2> getPlayerPosition(); //DEBERIA DE DEVOLVER TODAS LAS POSICIONES DE TODOS LOS PERSONAJES
 private:
+    
+    Juego();
+    Juego(const Juego& orig);
+    void operator=(Juego const& orig);
+    
     bool* keys;
-    Player * readyPlayerOne;
+    std::vector<Player*> readyPlayer;
     
     renderEngine::rClock masterClock;
     renderEngine::rClock animationClock;
@@ -67,6 +76,8 @@ private:
     sf::Text  titulo2;
     sf::Text  titulo3;
     static Juego* instance;
+    
+    rMusic THE_ARID_FLATS;
 
 };
 

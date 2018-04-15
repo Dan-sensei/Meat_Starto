@@ -56,7 +56,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/physicsEngine/pBody.o \
 	${OBJECTDIR}/physicsEngine/pConverter.o \
 	${OBJECTDIR}/physicsEngine/physicsEngine.o \
-	${OBJECTDIR}/renderEngine.o
+	${OBJECTDIR}/renderEngine/rMusic.o \
+	${OBJECTDIR}/renderEngine/rSoundBuffer.o \
+	${OBJECTDIR}/renderEngine/renderEngine.o
 
 
 # C Compiler Flags
@@ -188,10 +190,20 @@ ${OBJECTDIR}/physicsEngine/physicsEngine.o: physicsEngine/physicsEngine.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/physicsEngine/physicsEngine.o physicsEngine/physicsEngine.cpp
 
-${OBJECTDIR}/renderEngine.o: renderEngine.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/renderEngine/rMusic.o: renderEngine/rMusic.cpp
+	${MKDIR} -p ${OBJECTDIR}/renderEngine
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine.o renderEngine.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine/rMusic.o renderEngine/rMusic.cpp
+
+${OBJECTDIR}/renderEngine/rSoundBuffer.o: renderEngine/rSoundBuffer.cpp
+	${MKDIR} -p ${OBJECTDIR}/renderEngine
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine/rSoundBuffer.o renderEngine/rSoundBuffer.cpp
+
+${OBJECTDIR}/renderEngine/renderEngine.o: renderEngine/renderEngine.cpp
+	${MKDIR} -p ${OBJECTDIR}/renderEngine
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine/renderEngine.o renderEngine/renderEngine.cpp
 
 # Subprojects
 .build-subprojects:

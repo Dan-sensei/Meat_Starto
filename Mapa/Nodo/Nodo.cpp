@@ -14,10 +14,18 @@
 #include "Nodo.h"
 #include "NPCs/xPlotato.h"
 #include "NPCs/Skull.h"
+#include "Juego.h"
 
 
 Nodo::Nodo(std::string sheet) {    
     tile.setTexture(AssetManager::GetTexture(sheet));
+    
+    array_funciones[0] = &Player::powerUpInmortalidad;
+    array_funciones[1] = &Player::powerUpSpeed;
+    array_funciones[2] = &Player::powerDownJump;
+    array_funciones[3] = &Player::powerDownFreeze;
+    
+    
 }
 
 Nodo::Nodo(const Nodo& orig) {
@@ -35,6 +43,9 @@ Nodo::Nodo(const Nodo& orig) {
     
     for(int i = 0; i < orig.npcs.size(); i++)
         npcs.push_back(orig.npcs[i]);
+    
+    for(int i = 0; i < orig.pinchos.size(); i++)
+        pinchos.push_back(orig.pinchos[i]);
     
     aux_pop = orig.aux_pop;
     tile = orig.tile;
@@ -69,6 +80,13 @@ int Nodo::getSize(){
 void Nodo::addTile(int id, int x, int y){
     tileId.push_back(id);
     tilePosition.push_back(std::array<int, 2>{x, y});
+    
+    if(id == 36 || id == 35 || id == 34 || id == 33){
+        pinchos.emplace_back();
+        pinchos.back().setSize(70,70);
+        pinchos.back().setPosition(x,y);
+        pinchos.back().setFillColor('r');
+    }
 }
 
 void Nodo::addGround(std::vector<std::array<float,2> > coords){
@@ -89,7 +107,28 @@ void Nodo::addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max){
     npcs.push_back(new Skull(x_, y_, x_min, x_max, y_min, y_max));
 }
 
-
+void Nodo::addPower(int id, int xMin, int xMax, int y_) {
+    power p;
+    p.id = id;
+    
+    std::string sprite[4];
+    sprite[0] = "assets/powerUp.png";
+    sprite[1] = "assets/powerUp.png";
+    sprite[2] = "assets/powerDown.png";
+    sprite[3] = "assets/powerDown.png";
+    
+    std::string target = sprite[id];
+    
+    int sizeY = AssetManager::GetTexture(target).getYSize();
+    int sizeX = AssetManager::GetTexture(target).getXSize();
+    int newX = physicsEngine::Instance().genIntRandom(xMin+sizeX+10, xMax-sizeX-10);
+    
+    p.sprite.setTexture(AssetManager::GetTexture(target));
+    p.sprite.setOrigin(sizeY, sizeX);
+    p.sprite.setPosition(newX, y_);
+    powers.push_back(p);
+   
+}
 
 void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 
@@ -107,12 +146,45 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
+    /*
+    for(int i = 0; i < pinchos.size(); i++){
+        pinchos[i].draw();
+    }
+    */
     
+    for(int i = 0; i < powers.size(); i++)
+        powers[i].sprite.draw();
 }
 
 void Nodo::update(){
+    bool flag = false;
     for(int i = 0; i < npcs.size(); i++){
         npcs[i]->update();
+    }
+    
+    std::vector<Player*>* players = Juego::Instance().getPlayers();
+    
+    for(int i = 0; i < players->size(); i++){
+        
+        Player* ready = (*players)[i];
+        
+       
+        for(int j = 0; j < pinchos.size() && !flag; j++){
+            if(ready->getSprite().intersects(pinchos[j])){
+
+                flag = true;
+            }
+        }
+        
+        
+        
+        for(int j = 0; j < powers.size(); j++){
+            if(ready->getSprite().intersects(powers[j].sprite)){
+                 flag = true;
+            }
+        }
+        
+        
     }
 }
 

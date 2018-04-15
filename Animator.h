@@ -19,7 +19,6 @@
 #include <list>
 #include <vector>
 #include <string>
-#include "renderEngine.h"
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
 

@@ -14,9 +14,6 @@
 #ifndef BOSS_H
 #define BOSS_H
 
-#include "renderEngine.h"
-#include "physicsEngine/pBody.h"
-#include "physicsEngine/physicsEngine.h"
 #include <random>
 #include <math.h>
 

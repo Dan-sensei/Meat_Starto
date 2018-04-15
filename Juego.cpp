@@ -30,15 +30,6 @@
 
 #define target_zoom 2
 
-Juego* Juego::instance;
-Juego* Juego::Instance(){
-      if(instance == NULL)
-          instance = new Juego();
-
-    return instance;
-}
-
-
 Juego::Juego(){
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
@@ -72,22 +63,26 @@ Juego::Juego(){
     lastTime = 0;
     
     //JUGADORES
-    readyPlayerOne = new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys);
+    readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
     
+    // MUSICA
+    THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
+    THE_ARID_FLATS.setLoop(true);
+    THE_ARID_FLATS.play();
 }
 
 
 void Juego::Handle(){
     //BUCLE DEL JUEGO
     renderEngine *sfml;
-
+    
     while(sfml->Instance().isOpen()){
         //<FPS>
         currentTime = cl_fps.restart().asSeconds();
         //fps = 1.f/(currentTime/lastTime);
         fps = 1.f/currentTime;
         lastTime = currentTime;
-            std::cout << "FPS: " << fps << std::endl;
+        //std::cout << "FPS: " << fps << std::endl;
         //</FPS>
         
         //EVENTOS
@@ -101,6 +96,7 @@ void Juego::Handle(){
         Render();
             //std::cout << "RENDER" << std::endl;
     }
+    THE_ARID_FLATS.stop();
 }
 
 void Juego::HandleEvents(){
@@ -119,11 +115,11 @@ void Juego::HandleEvents(){
                 switch(event.getKeyCode()) {
                     //JUGADOR 1
                     case 0:
-                        readyPlayerOne->moveLeft_b();
+                        readyPlayer[0]->moveLeft_b();
                     break;
 
                     case 16:
-                        readyPlayerOne->moveRigth_b();
+                        readyPlayer[0]->moveRigth_b();
                     break;
                 }
                 break;
@@ -197,11 +193,11 @@ void Juego::Update(){
         sfml->Instance().setView(*view);
         
         // SOBRESCRIBO LOS ESTADOS ANTERIORES
-        readyPlayerOne->preState();  
+        readyPlayer[0]->preState();  
         mapa->Instance().preState();
 
         // LÓGICA DE LOS NPC Y JUGADORES
-        readyPlayerOne->movement();
+        readyPlayer[0]->movement();
         mapa->Instance().update();
 
         // BUCLE DE STEPS DE BOX2D
@@ -214,7 +210,7 @@ void Juego::Update(){
         accumulator -= 1/UPDATE_STEP;
 
         // ACTUALIZO EL ESTADO ACTUAL
-        readyPlayerOne->newState();
+        readyPlayer[0]->newState();
         mapa->Instance().newState();
     }
     physicsEngine* wold;
@@ -234,21 +230,20 @@ void Juego::Render(){
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
     
     //ACTUALIÇAÇAO DEL PERSONAJE
-    readyPlayerOne->update(animationClock.restart());
-    readyPlayerOne->interpola(tick);
-    readyPlayerOne->intersectsPinchos();
+    readyPlayer[0]->update(animationClock.restart());
+    readyPlayer[0]->interpola(tick);
     //ACTUALIÇAÇAO DE LA CAMARA
     if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
-        view->setCenter(readyPlayerOne->getXPosition(),CAM_H);
+        view->setCenter(readyPlayer[0]->getXPosition(),CAM_H);
     
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
 
-    mapa->Instance().update(readyPlayerOne->getXPosition(),readyPlayerOne->getYPosition());
+    mapa->Instance().updateMini();
     
     sfml->Instance().setView(*view);
     mapa->Instance().render(tick);
     mapa->Instance().updateMini();
-    readyPlayerOne->draw();
+    readyPlayer[0]->draw();
 
     sfml->Instance().display();
     
@@ -257,14 +252,19 @@ void Juego::Render(){
 std::array<float, 2> Juego::getPlayerPosition() {
     std::array<float,2> ret;
     
-    ret[0] = readyPlayerOne->getXPosition();
-    ret[1] = readyPlayerOne->getYPosition();
+    ret[0] = readyPlayer[0]->getXPosition();
+    ret[1] = readyPlayer[0]->getYPosition();
     
     return ret;
 }
 
-Juego::Juego(const Juego& orig) {
+Juego::~Juego() {
+    
+    delete[] keys;
+    keys = nullptr;
+    std::cout << "Destroying game==================================" << std::endl;
 }
 
-Juego::~Juego() {
+std::vector<Player*>* Juego::getPlayers() {
+    return &readyPlayer;
 }

@@ -44,6 +44,7 @@ public:
     void detroyBody(pBody body);
     int getBodyListSize();
     
+    //Genera un número aleatorio entre min y max (ambos incluídos)
     float genFloatRandom(float min, float max);
     int genIntRandom(int min, int max);
     

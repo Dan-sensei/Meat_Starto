@@ -13,14 +13,17 @@
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/particleSystem.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Nodo.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Juego.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/particleSystem.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine/rMusic.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine/renderEngine.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/renderEngine/renderEngine.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/Skull.cpp</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Player.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/MenuInicio.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/main.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/NPC.h</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/NPC.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.h</file>
+            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Player.cpp</file>
             <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/xPlotato.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/NPCs/xPlotato.h</file>
         </group>
     </open-files>
 </project-private>
