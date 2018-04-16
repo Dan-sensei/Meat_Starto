@@ -133,6 +133,8 @@ void renderEngine::rView::zoom      (float z)           {   view.zoom(z);       
 void renderEngine::rView::setCenter (float x, float y)  {   view.setCenter(x,y);    }
 void renderEngine::rView::move(float x, float y)        {   view.move(x,y);         }
 void renderEngine::rView::setSize(float x, float y)     {   view.setSize(x, y);     }
+void renderEngine::rSprite::setColor(int r, int g, int b)   {   sprite.setColor(sf::Color(r, g, b));}
+void renderEngine::rSprite::setColor(int r, int g, int b, int alpha)   {   sprite.setColor(sf::Color(r, g, b, alpha));}
 
 sf::View                renderEngine::rView::getView    () {    return view;}
 std::array<float, 2>    renderEngine::rView::getCenter  () {

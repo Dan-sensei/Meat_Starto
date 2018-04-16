@@ -115,6 +115,9 @@ public:
             std::array<float,2> getPosition();          //DEVUELVE LA POSICION
             bool intersects(renderEngine::rRectangleShape rs);  //COLISION DE SFML PARA LOS PINCHOS
             sf::Sprite getSprite();
+            void setColor(int r, int g, int b);
+            void setColor(int r, int g, int b, int alpha);
+            
         private:
             sf::Sprite sprite;
     };
