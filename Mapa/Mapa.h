@@ -14,10 +14,10 @@
 #ifndef MAPA_H
 #define MAPA_H
 
-#include <tinyxml2.h>
+
 #include <vector>
 #include <list>
-#include <Box2D/Box2D.h>
+
 
 #include "../mj_t.h"
 #include "../boss.h"

@@ -1,6 +1,2 @@
-/Animaciones/Player/build/
-/Animaciones/Player/dist/
-build
 build/*
-nbproject
 nbproject/*

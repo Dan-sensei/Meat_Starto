@@ -17,20 +17,21 @@
 #include <list>
 #include "Particle.h"
 
-
-
 class particleSystem {
 public:
-    particleSystem(int x, int y);
+    particleSystem(int x, int y, int type_);
     particleSystem(const particleSystem& orig);
     virtual ~particleSystem();
     
+    void setParticleDirection(float x, float y);
     void setMaxParticleAmout(int n);
     
     void setParticleSpeed(float f);
     void setParticleSpeedRandomBetween(float min, float max);
     
     void setParticleRotation(float degree);
+    void setParticleRotationRandomBetween(float min, float max);
+    
     void setParticleAngularVelocity(float speed);
     void setParticleAngularVelocityRandomBetween(float min, float max);
     
@@ -41,14 +42,21 @@ public:
     void setParticleLifeTimeRandomBetween(float min, float max);
     
     void setSprite(std::string const& filename);
+    void setSpriteSize(float x, float y);
     
     void setGenerationTimer(float s);
     
     void setLoop(bool loop_);
     void setLifeTime(float time);
     
+    void setCircle(float radius_);
+    void setRectangle(float sideX , float sideY);
+    
+    void setPosition(float x, float y);
+    float getYPosition();
+    
     void interpola(float tick_);
-    void draw();
+    void draw(float tick_);
     
     void preState();
     void newState();
@@ -59,24 +67,31 @@ private:
     
     renderEngine::rClock lifeTimeClock;
     renderEngine::rClock timerClock;
-    int n_particles;
+    
+    //Variables del sistema en sí
+    int max_particles;
+    float lifeTime;
+    float xPos, yPos;
+    float xVelocity, yVelocity;
+    float radius;
+    float xSide, ySide;
+    float rotation;
+    float delayBetweenParticlesGeneration;
+    float targetX, targetY;
+    
+    //Variables de las partículas del sistema
+    float particle_min_velocity, particle_max_velocity;
+    float particle_min_angular_velocity, particle_max_angular_velocity;
+    float particle_min_lifeTime, particle_max_lifeTime;
+    float particle_min_rotation, particle_max_rotation;
     
     float accumulator;
-    float timer;
-    
-    float min_velocity;
-    float max_velocity;
-    
-    float min_angular_velocity;
-    float max_angular_velocity;
-    
-    int xPos;
-    int yPos;
-    
+ 
     bool loop;
     
+    int type;
     
-    
+    renderEngine::rRectangleShape box;
     renderEngine::rSprite sprite;
     
     std::list<Particle> lista_particular;

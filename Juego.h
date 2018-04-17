@@ -29,6 +29,7 @@
 #include "Player.h"
 #include "boss.h"
 #include "renderEngine/rMusic.h"
+#include "particleSystem.h"
 
 class Juego: public State{
 public:
@@ -78,7 +79,7 @@ private:
     static Juego* instance;
     
     rMusic THE_ARID_FLATS;
-
+    particleSystem rain;
 };
 
 #endif /* Juego_H */

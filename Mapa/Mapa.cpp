@@ -19,7 +19,7 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 8
 
  Mapa::Mapa() {
@@ -588,7 +588,8 @@ void Mapa::updateMini() {
 
 void Mapa::update(){
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
-        (*it).update();   
+        (*it).preState();
+        (*it).update();
     }
 }
 

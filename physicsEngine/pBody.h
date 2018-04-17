@@ -25,7 +25,7 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         pBody(const pBody& orig);
 
         void setLinealVelocicity(float vx_, float vy_);      // Ajusta la velocidad lineal del cuerpo
-        void applyForceToCenter(float vx_, float vy_);        // Añade una fuerza al centro del cuerpo
+        void applyForceToCenter(float vx_, float vy_);       // Añade una fuerza al centro del cuerpo
         void applyLinearImpulse(float ix_, float iy_);
         void setFixedRotation(bool flag_);                  // Determina si la rotación es fija
         float getLinearXVelocity();                         // Obtiene la velocidad lineal en el eje X
@@ -40,7 +40,7 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         b2Body* getBody();                                  // Devuelve la variable Body de Box2D
 
     private:
-        
+
         b2Body* body;                                       //Variable b2Body de Box2D
 };
 

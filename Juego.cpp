@@ -30,7 +30,8 @@
 
 #define target_zoom 2
 
-Juego::Juego(){
+Juego::Juego()
+:rain(1500, 500, 1) {
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
     
@@ -69,6 +70,18 @@ Juego::Juego(){
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
     THE_ARID_FLATS.play();
+
+    rain.setParticleSpeed(500);
+    rain.setMaxParticleAmout(500);
+    rain.setGenerationTimer(4);
+    rain.setParticleLifeTime(1);
+    rain.setParticleDirection(0, 1);
+    rain.setRectangle(4000, 100);
+    //rain.setParticleAngularVelocityRandomBetween(1, 5);
+    //rain.setParticleRotationRandomBetween(-180, 180);
+    rain.setSprite("assets/rain_drop.png");
+    rain.setSpriteSize(0.002, 0.2);
+     
 }
 
 
@@ -192,13 +205,12 @@ void Juego::Update(){
         view->zoom(zoom);
         sfml->Instance().setView(*view);
         
-        // SOBRESCRIBO LOS ESTADOS ANTERIORES
-        readyPlayer[0]->preState();  
-        mapa->Instance().preState();
+        rain.setPosition(view->getCenter()[0], rain.getYPosition());
 
         // LÓGICA DE LOS NPC Y JUGADORES
         readyPlayer[0]->movement();
         mapa->Instance().update();
+        rain.update();
 
         // BUCLE DE STEPS DE BOX2D
         for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
@@ -212,6 +224,7 @@ void Juego::Update(){
         // ACTUALIZO EL ESTADO ACTUAL
         readyPlayer[0]->newState();
         mapa->Instance().newState();
+        rain.newState();
     }
     physicsEngine* wold;
     //std::cout << "LISTA: " << world->Instance().getBodyListSize() << std::endl;
@@ -232,6 +245,8 @@ void Juego::Render(){
     //ACTUALIÇAÇAO DEL PERSONAJE
     readyPlayer[0]->update(animationClock.restart());
     readyPlayer[0]->interpola(tick);
+
+    
     //ACTUALIÇAÇAO DE LA CAMARA
     if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
         view->setCenter(readyPlayer[0]->getXPosition(),CAM_H);
@@ -241,6 +256,7 @@ void Juego::Render(){
     mapa->Instance().updateMini();
     
     sfml->Instance().setView(*view);
+    rain.draw(tick);
     mapa->Instance().render(tick);
     mapa->Instance().updateMini();
     readyPlayer[0]->draw();

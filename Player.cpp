@@ -190,6 +190,7 @@ void Player::moveDown(){
 
 //MOVIMIENTO
 void Player::movement(){
+    preState();
     // TECLA A  ==================================================================
     if( keys[0])  {                                                             //
         if(body.getLinearXVelocity() > -speed)                                  //

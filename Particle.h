@@ -14,13 +14,10 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include "renderEngine/renderEngine.h"
-
-
 
 class Particle {
 public:
-    Particle(float x, float y, float vx, float vy, float rot, float vrot, renderEngine::rSprite &s, float life);
+    Particle(float x, float y, float vx, float vy, float rot, float vrot, renderEngine::rSprite& s, float life);
     Particle(const Particle& orig);
     virtual ~Particle();
     
@@ -57,7 +54,7 @@ private:
     state actual;
 
     //float opacity_time;
-    renderEngine::rSprite pSprite;
+    renderEngine::rSprite* pSprite;
 };
 
 #endif /* PARTICLE_H */
