@@ -104,6 +104,7 @@ Juego::Juego() :rain(1500, 500, 1) {
     rain.setSprite("assets/rain_drop.png");
     rain.setSpriteSize(0.002, 0.2);
      
+    hud= new Hud(readyPlayer);
 }
 
 
@@ -140,6 +141,7 @@ void Juego::HandleEvents(){
     renderEngine::rEvent event;
         //0x7fff11e212f0
     while(sfml->Instance().pollEvent(event)){
+        
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
@@ -292,6 +294,7 @@ void Juego::Update(){
     Mapa            *mapa;
     physicsEngine   *world;
     
+    
     // FIXED TIME STEP UPDATE
     dt = masterClock.restart().asSeconds();
 
@@ -411,6 +414,8 @@ void Juego::Render(){
         readyPlayer[i]->draw();
     }
     
+    
+    hud->render();
 
     sfml->Instance().display();
     
