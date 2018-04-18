@@ -39,6 +39,8 @@ public:
     void moveLeft();
     void moveLeft_b();
     void moveUp();
+    void moveUp_r();
+    void moveUp_l();
     void moveDown();
     
     void movement();

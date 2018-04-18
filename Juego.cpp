@@ -30,8 +30,8 @@
 
 #define target_zoom 2
 
-Juego::Juego()
-:rain(1500, 500, 1) {
+Juego::Juego(){
+//:rain(1500, 500, 1) { //DESCOMENTAR
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
     
@@ -63,14 +63,37 @@ Juego::Juego()
     //FPS
     lastTime = 0;
     
+    
     //JUGADORES
-    readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
+    switch(MenuInicio::Instance()->numplayers){
+        case 1:
+            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
+        break;
+        case 2:
+            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
+            readyPlayer.push_back(new Player(1, "Jugador 2", 60.f, 60.f, 1260, 1200, 'D', keys));
+        break;
+        case 3:
+            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
+            readyPlayer.push_back(new Player(1, "Jugador 2", 60.f, 60.f, 1260, 1200, 'D', keys));
+            readyPlayer.push_back(new Player(2, "Jugador 3", 60.f, 60.f, 1260, 1200, 'D', keys));
+        break;
+        case 4:
+            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
+            readyPlayer.push_back(new Player(1, "Jugador 2", 60.f, 60.f, 1260, 1200, 'D', keys));
+            readyPlayer.push_back(new Player(2, "Jugador 3", 60.f, 60.f, 1260, 1200, 'D', keys));
+            readyPlayer.push_back(new Player(3, "Jugador 4", 60.f, 60.f, 1260, 1200, 'D', keys));
+        break;
+        default:
+            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
+        break;
+    }
     
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
     THE_ARID_FLATS.play();
-
+/*DESCOMENTAR
     rain.setParticleSpeed(500);
     rain.setMaxParticleAmout(500);
     rain.setGenerationTimer(4);
@@ -81,7 +104,7 @@ Juego::Juego()
     //rain.setParticleRotationRandomBetween(-180, 180);
     rain.setSprite("assets/rain_drop.png");
     rain.setSpriteSize(0.002, 0.2);
-     
+  */   
 }
 
 
@@ -122,6 +145,7 @@ void Juego::HandleEvents(){
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
                 //std::cout << "Tecla " << event.getKeyCode() << std::endl;
+                
                 break;
             case renderEngine::rEvent::EventType::KeyReleased :
                 keys[event.getKeyCode()] = false;     
@@ -131,9 +155,34 @@ void Juego::HandleEvents(){
                         readyPlayer[0]->moveLeft_b();
                     break;
 
-                    case 16:
+                    case 3:
                         readyPlayer[0]->moveRigth_b();
+                    break;  
+                    //JUGADOR 2
+                    case 73:
+                        readyPlayer[1]->moveLeft_b();
                     break;
+
+                    case 72:
+                        readyPlayer[1]->moveRigth_b();
+                    break;
+                    //JUGADOR 3
+                    case 10:
+                        readyPlayer[2]->moveLeft_b();
+                    break;
+
+                    case -1:
+                        readyPlayer[2]->moveRigth_b();
+                    break;
+                    //JUGADOR 4
+                    case 21:
+                        readyPlayer[3]->moveLeft_b();
+                    break;
+
+                    case 13:
+                        readyPlayer[3]->moveRigth_b();
+                    break;
+                   
                 }
                 break;
 
@@ -142,6 +191,90 @@ void Juego::HandleEvents(){
         }
 
     }
+    //JUGADOR 1
+    if(keys[22]){
+        if(readyPlayer[0]->isOnAir()==false){
+            //Hay salto
+            if(keys[0])         readyPlayer[0]->moveUp_l(); 
+            else{ 
+                if(keys[3])     readyPlayer[0]->moveUp_r();
+                else            readyPlayer[0]->moveUp();
+            }
+        }        
+        
+    }else{
+        //no hay salto
+        if(keys[0])             readyPlayer[0]->moveLeft(); 
+        if(keys[3])             readyPlayer[0]->moveRigth();
+        
+    }
+    //JUGADOR 2                                
+    if(keys[73]){ // arriba
+        if(readyPlayer[1]->isOnAir()==false){
+            //Hay salto
+            if(keys[71])         readyPlayer[1]->moveUp_l(); 
+            else{ 
+                if(keys[72])     readyPlayer[1]->moveUp_r();
+                else             readyPlayer[1]->moveUp();
+            }
+        }        
+        
+    }else{
+        //no hay salto
+        if(keys[71])             readyPlayer[1]->moveLeft(); 
+        if(keys[72])             readyPlayer[1]->moveRigth();
+        
+    }
+    //JUGADOR 3                                
+    if(keys[14]){ // arriba
+        if(readyPlayer[2]->isOnAir()==false){
+            //Hay salto
+            if(keys[10])         readyPlayer[2]->moveUp_l(); 
+            else{ 
+                if(keys[-1])     readyPlayer[2]->moveUp_r();
+                else             readyPlayer[2]->moveUp();
+            }
+        }        
+        
+    }else{
+        //no hay salto
+        if(keys[10])             readyPlayer[2]->moveLeft(); 
+        if(keys[-1])             readyPlayer[2]->moveRigth();
+        
+    }
+    //JUGADOR 4                                
+    if(keys[6]){ // arriba
+        if(readyPlayer[3]->isOnAir()==false){
+            //Hay salto
+            if(keys[21])         readyPlayer[3]->moveUp_l(); 
+            else{ 
+                if(keys[13])     readyPlayer[3]->moveUp_r();
+                else             readyPlayer[3]->moveUp();
+            }
+        }        
+        
+    }else{
+        //no hay salto
+        if(keys[21])             readyPlayer[3]->moveLeft(); 
+        if(keys[13])             readyPlayer[3]->moveRigth();
+        
+    }
+    
+    /*
+    if(keys[22] && !keys[0] && !keys[3])    readyPlayer[0]->moveUp();                                   //W
+    
+    if(keys[22] && keys[0]){
+                        readyPlayer[0]->moveUp_l();
+    }else{
+        if(keys[0])     readyPlayer[0]->moveLeft();  
+    }
+    
+    if(keys[22] && keys[3]){
+                        readyPlayer[0]->moveUp_r();
+    }else{
+        if(keys[3])     readyPlayer[0]->moveRigth();
+    }
+    */
     if(keys[16])    sfml->Instance().close();                                   //Q
 
     if(keys[36]){   
@@ -205,12 +338,15 @@ void Juego::Update(){
         view->zoom(zoom);
         sfml->Instance().setView(*view);
         
-        rain.setPosition(view->getCenter()[0], rain.getYPosition());
+//DESCOMENTAR        rain.setPosition(view->getCenter()[0], rain.getYPosition());
 
         // LÓGICA DE LOS NPC Y JUGADORES
-        readyPlayer[0]->movement();
+        for(int i=0; i< readyPlayer.size(); i++){
+            readyPlayer[i]->movement();
+        }
+        
         mapa->Instance().update();
-        rain.update();
+//DESCOMENTAR        rain.update();
 
         // BUCLE DE STEPS DE BOX2D
         for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
@@ -222,9 +358,11 @@ void Juego::Update(){
         accumulator -= 1/UPDATE_STEP;
 
         // ACTUALIZO EL ESTADO ACTUAL
-        readyPlayer[0]->newState();
+        for(int i=0; i< readyPlayer.size(); i++){
+            readyPlayer[i]->newState();
+        }        
         mapa->Instance().newState();
-        rain.newState();
+//DESCOMENTAR        rain.newState();
     }
     physicsEngine* wold;
     //std::cout << "LISTA: " << world->Instance().getBodyListSize() << std::endl;
@@ -243,23 +381,37 @@ void Juego::Render(){
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
     
     //ACTUALIÇAÇAO DEL PERSONAJE
-    readyPlayer[0]->update(animationClock.restart());
-    readyPlayer[0]->interpola(tick);
+    for(int i=0; i< readyPlayer.size(); i++){
+        readyPlayer[i]->update(animationClock.restart());
+        readyPlayer[i]->interpola(tick);
+    }
+    
 
     
     //ACTUALIÇAÇAO DE LA CAMARA
-    if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn())    //TRUE: SE MUEVE LA CAMARA
-        view->setCenter(readyPlayer[0]->getXPosition(),CAM_H);
+    if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
+        int n=0;
+        for(int i=0; i< readyPlayer.size(); i++){
+            if(readyPlayer[i]->getXPosition() > readyPlayer[n]->getXPosition()){
+                n=i;
+            }
+        }
+        
+        view->setCenter(readyPlayer[n]->getXPosition(),CAM_H);
+    }
     
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
 
     mapa->Instance().updateMini();
     
     sfml->Instance().setView(*view);
-    rain.draw(tick);
+//DESCOMENTAR    rain.draw(tick);
     mapa->Instance().render(tick);
     mapa->Instance().updateMini();
-    readyPlayer[0]->draw();
+    for(int i=0; i< readyPlayer.size(); i++){
+        readyPlayer[i]->draw();
+    }
+    
 
     sfml->Instance().display();
     

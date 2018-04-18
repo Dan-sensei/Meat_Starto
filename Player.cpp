@@ -82,13 +82,31 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     Animator::Animation* a_base_l = &animator.CreateAnimation("a_base_l",texture, renderEngine::rTime(0.2), false);
     a_base_l->AddFrames(sf::Vector2i(180,0), spriteSize , 2);
     
+    /*
     //Salto izquierda
-    Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l",texture, renderEngine::rTime(2), false);
+    Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l",texture, renderEngine::rTime(0.5), false);
     a_jump_l->AddFrames(sf::Vector2i(0,60), spriteSize ,9);          
     
     //Salto derecha
-    Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r",texture, renderEngine::rTime(2), false);
+    Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r",texture, renderEngine::rTime(0.5), false);
     a_jump_r->AddFrames(sf::Vector2i(0,180), spriteSize ,9);   
+    
+    //Para colision
+    Animator::Animation*  a_fall_l = &animator.CreateAnimation("a_fall_l",texture, renderEngine::rTime(0.5), false);
+    a_fall_l->AddFrames(sf::Vector2i(0,120), spriteSize ,3);
+    Animator::Animation*  a_fall_r = &animator.CreateAnimation("a_fall_r",texture, renderEngine::rTime(0.5), false);
+    a_fall_r->AddFrames(sf::Vector2i(180,120), spriteSize ,3);
+    */
+    //Prueba de salto
+    //Salto izquierda
+    Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l",texture, renderEngine::rTime(0.7), false);
+    a_jump_l->AddFrames(sf::Vector2i(0,60), spriteSize ,9);  
+    a_jump_l->AddFrames(sf::Vector2i(0,120), spriteSize ,3);
+    
+    //Salto derecha
+    Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r",texture, renderEngine::rTime(0.7), false);
+    a_jump_r->AddFrames(sf::Vector2i(0,180), spriteSize ,9); 
+    a_jump_r->AddFrames(sf::Vector2i(180,120), spriteSize ,3);  
     
     //Para colision
     Animator::Animation*  a_fall_l = &animator.CreateAnimation("a_fall_l",texture, renderEngine::rTime(0.5), false);
@@ -146,45 +164,117 @@ void Player::moveRigth(){
     if(animator.GetCurrentAnimationName() != "a_rigth"){
         animator.SwitchAnimation("a_rigth");
     }
+     //if( keys[3]) {                                                             //
+        if(body.getLinearXVelocity() < speed)                                   //
+            body.applyForceToCenter(force, 0);                                  //
+        else                                                                    //  DERECHA
+            body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
+        
+    //}                                                                           //
+
 }
 
 void Player::moveRigth_b(){
     if(animator.GetCurrentAnimationName() != "a_base_r"){
         animator.SwitchAnimation("a_base_r");
     }
+    //Provisional
+    body.applyForceToCenter(0, 0);                                                                      //
+    body.setLinealVelocicity(0, body.getLinearYVelocity());
+
+       
 }
 
 void Player::moveLeft(){
     if(animator.GetCurrentAnimationName() != "a_left"){
         animator.SwitchAnimation("a_left");
     }
+    //if( keys[0])  {                                                             //
+        if(body.getLinearXVelocity() > -speed)                                  //
+            body.applyForceToCenter(-force, 0);                                 //
+        else                                                                    //  IZQUIERDA
+            body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
+        
+    //}                                                                           //
+
 }
 
 void Player::moveLeft_b(){
     if(animator.GetCurrentAnimationName() != "a_base_l"){
         animator.SwitchAnimation("a_base_l");
     }
+    //Provisional
+    body.applyForceToCenter(0, 0);                                                                      //
+    body.setLinealVelocicity(0, body.getLinearYVelocity());
 }
 
 void Player::moveUp(){
-    if(animator.GetCurrentAnimationName() == "a_base_r"){
-                                
-    }                     
-    if(animator.GetCurrentAnimationName() == "a_left"){
-        animator.SwitchAnimation("a_jump_l");
-    }
-    if(animator.GetCurrentAnimationName() == "a_rigth"){
+    if(!isOnAir()){
+        body.applyForceToCenter(0, -jump);
+    }          
+        
+        if(animator.GetCurrentAnimationName() == "a_left"){
+            animator.SwitchAnimation("a_jump_l");
+        }
+        if(animator.GetCurrentAnimationName() == "a_rigth"){
+            animator.SwitchAnimation("a_jump_r");
+        }
+
+}
+void Player::moveUp_r(){
+    if(animator.GetCurrentAnimationName() != "a_jump_r"){
         animator.SwitchAnimation("a_jump_r");
+        
+        if(!isOnAir()){
+            body.applyForceToCenter(0, -jump);
+        } 
     }
+     //if( keys[3]) {                                                         //
+        if(body.getLinearXVelocity() < speed)                                   //
+            body.applyForceToCenter(force, 0);                                  //
+        else                                                                    //  DERECHA
+            body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
+        
+    //}
+    
+            
+        
+  
+}
+void Player::moveUp_l(){
+    if(animator.GetCurrentAnimationName() != "a_jump_l"){
+        animator.SwitchAnimation("a_jump_l");
+        if(!isOnAir()){
+            body.applyForceToCenter(0, -jump);
+        } 
+    }
+    //if( keys[0])  {                                                             //
+        if(body.getLinearXVelocity() > -speed)                                  //
+            body.applyForceToCenter(-force, 0);                                 //
+        else                                                                    //  IZQUIERDA
+            body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
+        
+    //}                                                                           // 
+    
+ 
+
 }
 
 void Player::moveDown(){
-    if(animator.GetCurrentAnimationName() == "a_jump_l" || animator.GetCurrentAnimationName() == "a_base_l" || animator.GetCurrentAnimationName() == "a_left" ){
+    /*if(animator.GetCurrentAnimationName() == "a_jump_l" || animator.GetCurrentAnimationName() == "a_base_l" || animator.GetCurrentAnimationName() == "a_left" ){
         animator.SwitchAnimation("a_fall_l");
     }
     if(animator.GetCurrentAnimationName() == "a_jump_r" || animator.GetCurrentAnimationName() == "a_base_r" || animator.GetCurrentAnimationName() == "a_rigth"){
         animator.SwitchAnimation("a_fall_r");
-    }                       
+    } */
+    if(animator.GetCurrentAnimationName() == "a_jump_l"){
+        animator.SwitchAnimation("a_left");
+    }
+    if(animator.GetCurrentAnimationName() == "a_jump_r"){
+        animator.SwitchAnimation("a_rigth");
+    }
+    
+
 }
 
 
@@ -192,30 +282,31 @@ void Player::moveDown(){
 void Player::movement(){
     preState();
     // TECLA A  ==================================================================
-    if( keys[0])  {                                                             //
+    /*if( keys[0])  {                                                             //
         if(body.getLinearXVelocity() > -speed)                                  //
             body.applyForceToCenter(-force, 0);                                 //
         else                                                                    //  IZQUIERDA
             body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
-        moveLeft();
+        
     }                                                                           //
     // ===========================================================================
 
     // TECLA D  ==================================================================
-    else if( keys[3]) {                                                         //
+    if( keys[3]) {                                                         //
         if(body.getLinearXVelocity() < speed)                                   //
             body.applyForceToCenter(force, 0);                                  //
         else                                                                    //  DERECHA
             body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
-        moveRigth();
+        //moveRigth();
     }                                                                           //
     // ===========================================================================
-
+ 
     // TECLA W / ESPACIO  ========================================================
     if((keys[57] || keys[22]) && !isOnAir()){                                   //
         body.applyForceToCenter(0, -jump);                                      //
-        moveUp();
-    }                                                                           //
+        //moveUp();
+    }   
+     *                                                                      //
     // ===========================================================================
 
     //STOP CON DESLIZAMIENTO  ================================================================================
@@ -224,13 +315,13 @@ void Player::movement(){
     }                                                                                                       //
     else if(!keys[3] && body.getLinearXVelocity() > 2)                                                      //
         body.applyForceToCenter(-force*stop_mult, 0);                                                       //
-                                                                                                            // FRENADO
+                                                                                                              // FRENADO
     if(!keys[0] && !keys[3] && body.getLinearXVelocity() >= -2 && body.getLinearXVelocity() <= 2){          //
         body.applyForceToCenter(0, 0);                                                                      //
         body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
     }                                                                                                       //
     //  ======================================================================================================
-    
+   */ 
 }
 
 void Player::interpola(float tick_){

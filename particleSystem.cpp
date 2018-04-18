@@ -10,7 +10,7 @@
  * 
  * Created on 14 de abril de 2018, 9:51
  */
-
+/*
 #include <complex>
 
 #include "particleSystem.h"
@@ -266,3 +266,4 @@ float particleSystem::getYPosition() {
     return yPos;
 }
 
+*/
