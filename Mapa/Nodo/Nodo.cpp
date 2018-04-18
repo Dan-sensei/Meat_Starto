@@ -81,6 +81,13 @@ void Nodo::addTile(int id, int x, int y){
     tileId.push_back(id);
     tilePosition.push_back(std::array<int, 2>{x, y});
     
+    renderEngine::rSprite sprite;
+    sprite.setTexture(AssetManager::GetTexture("tiles_definitivo/tilesheet.png"));
+    sprite.setTextureRect(tileRect[id]);
+    sprite.setPosition(x,y);
+    
+    v_esprait.push_back(sprite);
+    
     if(id == 36 || id == 35 || id == 34 || id == 33){
         pinchos.emplace_back();
         pinchos.back().setSize(70,70);
@@ -133,11 +140,16 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
 void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 
     for(int i = 0; i < tileId.size(); i++){
+        if(limit.contains(v_esprait[i].getPosition()[0],v_esprait[i].getPosition()[1])){
+            v_esprait[i].draw();
+        }
+            /*
         if(limit.contains(tilePosition[i][0], tilePosition[i][1])){
             tile.setPosition(tilePosition[i][0], tilePosition[i][1]);
             tile.setTextureRect(tileRect[tileId[i]]);
             tile.draw();
         }
+             */
     }   
     
     //------------|  ENEMIGOS  |------------//

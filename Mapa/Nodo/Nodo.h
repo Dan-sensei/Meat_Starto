@@ -60,7 +60,7 @@ private:
     std::vector<NPC*> npcs;
     std::vector<pBody> ground;
     std::vector<renderEngine::rRectangleShape> pinchos;
-    
+    std::vector<renderEngine::rSprite> v_esprait;
     
     typedef void (Player::*pFunc)(void);
     pFunc array_funciones[4];
