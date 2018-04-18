@@ -80,8 +80,8 @@ void boss::update() {
     renderEngine *sfml;
     
     float x_m = sfml->Instance().getViewCenter()[0];
-    float x_ = Juego::Instance()->getPlayerPosition()[0];
-    float y_ = Juego::Instance()->getPlayerPosition()[1];
+    float x_ = Juego::Instance().getPlayerPosition()[0];
+    float y_ = Juego::Instance().getPlayerPosition()[1];
     
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
     physicsEngine *world;

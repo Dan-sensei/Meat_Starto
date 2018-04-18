@@ -314,7 +314,7 @@ void MenuInicio::Update(){
                                         case 0:
                                             //cambiar estado a Motor
                                             statemenu=2;
-                                           sfml->Instance().ChangeState(Juego::Instance());
+                                            sfml->Instance().ChangeState(&Juego::Instance());
                                             std::cout<<"Play pressed"<< std::endl;
                                             break;
                                             

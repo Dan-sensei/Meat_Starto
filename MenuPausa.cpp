@@ -137,7 +137,7 @@ void MenuPausa::Update(){
                             switch(selectedItemIndex){
                                 case 0:
                                     std::cout<<"Continue pressed"<< std::endl;
-                                    sfml->Instance().ChangeState(Juego::Instance());
+                                    sfml->Instance().ChangeState(&Juego::Instance());
                                     break;
 
                                 case 1:
