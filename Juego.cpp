@@ -30,8 +30,7 @@
 
 #define target_zoom 2
 
-Juego::Juego(){
-//:rain(1500, 500, 1) { //DESCOMENTAR
+Juego::Juego() :rain(1500, 500, 1) { 
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
     
@@ -93,7 +92,7 @@ Juego::Juego(){
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
     THE_ARID_FLATS.play();
-/*DESCOMENTAR
+
     rain.setParticleSpeed(500);
     rain.setMaxParticleAmout(500);
     rain.setGenerationTimer(4);
@@ -104,7 +103,7 @@ Juego::Juego(){
     //rain.setParticleRotationRandomBetween(-180, 180);
     rain.setSprite("assets/rain_drop.png");
     rain.setSpriteSize(0.002, 0.2);
-  */   
+     
 }
 
 
@@ -338,7 +337,7 @@ void Juego::Update(){
         view->zoom(zoom);
         sfml->Instance().setView(*view);
         
-//DESCOMENTAR        rain.setPosition(view->getCenter()[0], rain.getYPosition());
+        rain.setPosition(view->getCenter()[0], rain.getYPosition());
 
         // LÓGICA DE LOS NPC Y JUGADORES
         for(int i=0; i< readyPlayer.size(); i++){
@@ -346,7 +345,7 @@ void Juego::Update(){
         }
         
         mapa->Instance().update();
-//DESCOMENTAR        rain.update();
+        rain.update();
 
         // BUCLE DE STEPS DE BOX2D
         for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
@@ -362,7 +361,7 @@ void Juego::Update(){
             readyPlayer[i]->newState();
         }        
         mapa->Instance().newState();
-//DESCOMENTAR        rain.newState();
+        rain.newState();
     }
     physicsEngine* wold;
     //std::cout << "LISTA: " << world->Instance().getBodyListSize() << std::endl;
@@ -405,7 +404,7 @@ void Juego::Render(){
     mapa->Instance().updateMini();
     
     sfml->Instance().setView(*view);
-//DESCOMENTAR    rain.draw(tick);
+    rain.draw(tick);
     mapa->Instance().render(tick);
     mapa->Instance().updateMini();
     for(int i=0; i< readyPlayer.size(); i++){

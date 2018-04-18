@@ -79,7 +79,7 @@ private:
     static Juego* instance;
     
     rMusic THE_ARID_FLATS;
-    //particleSystem rain; //DESCOMENTAR
+    particleSystem rain; 
 };
 
 #endif /* Juego_H */
