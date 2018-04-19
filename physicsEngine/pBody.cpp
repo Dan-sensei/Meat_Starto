@@ -52,3 +52,8 @@ void    pBody::setUserData(void* data){
     body->SetUserData(data); 
 
 }
+
+void pBody::setPosition(float x, float y) {
+    body->SetTransform(b2Vec2(pConverter::pixelToWorld(x), pConverter::pixelToWorld(y)), body->GetAngle());
+    body->SetLinearVelocity(b2Vec2(0,0));
+}

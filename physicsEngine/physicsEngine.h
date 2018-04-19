@@ -23,6 +23,7 @@
 #include "contactListener.h"
 
 
+    
 class physicsEngine {
 public:
     //======== SINGLETON =========
@@ -48,6 +49,7 @@ public:
     float genFloatRandom(float min, float max);
     int genIntRandom(int min, int max);
     
+    
 private:
     
     //============ SINGLETON ============
@@ -60,5 +62,7 @@ private:
     b2World world;                              // Variable b2World de Box2D
     
 };
+
+
 
 #endif /* PHYSICSENGINE_H */

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="23" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="8">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="23" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="12">
  <tileset firstgid="1" source="../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="23" height="41">
   <data encoding="csv">
@@ -46,6 +46,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup name="checkpoint">
+  <object id="8" x="280" y="1610" width="70" height="210"/>
+  <object id="9" x="630" y="1470" width="70" height="280"/>
+  <object id="10" x="980" y="1400" width="70" height="280"/>
+  <object id="11" x="1330" y="1260" width="70" height="280"/>
+ </objectgroup>
  <objectgroup name="colision">
   <object id="1" x="1400" y="1540">
    <polyline points="0,0 -210,0 -210,70 -280,70 -280,140 -490,140 -490,210 -980,210 -980,280 -1120,280 -1120,420 -1190,420 -1190,630 0,630 0,560 70,560 70,140 0,140 0,0"/>

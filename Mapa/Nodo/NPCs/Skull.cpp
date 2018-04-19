@@ -72,7 +72,7 @@ Skull::Skull(const Skull& orig) {
 }
 
 Skull::~Skull() {
-    std::cout << "Destruyendo Skull..." << std::endl;
+    //std::cout << "Destruyendo Skull..." << std::endl;
     delete t;
     t = nullptr;
 }

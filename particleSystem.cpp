@@ -86,7 +86,7 @@ void particleSystem::preState() {
 
 void particleSystem::update() {
     box.setPosition(xPos, yPos);
-    std::cout << "PARTICULAS " << lista_particular.size() << std::endl;
+    //std::cout << "PARTICULAS " << lista_particular.size() << std::endl;
     float px, py, vx, vy, r, vr, life;
     float aux_v;
     float aux_target_x, aux_target_y;

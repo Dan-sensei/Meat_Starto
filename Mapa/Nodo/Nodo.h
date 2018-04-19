@@ -22,6 +22,15 @@
 #include "../../Player.h"
 
 class Nodo {
+private:
+    struct checkPoint{
+        renderEngine::rRectangleShape shape;
+        bool active;
+    };
+    struct power{
+        int id = 0;
+        renderEngine::rSprite sprite;
+    };
 public:
 
     Nodo(std::string sheet);
@@ -33,10 +42,13 @@ public:
     void addxPlotato(int x_, int y_, int x_min, int x_max);
     void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     void addPower(int id, int xMin, int xMax, int y_);
+    void addCheckPoint(int x, int y, int width, int height);
     
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);
     int getPop();
+    void setPreviousCheckPoint(Nodo::checkPoint prev);
+    Nodo::checkPoint getLastCheckPoint();
     
     void update();
     void preState();
@@ -44,31 +56,27 @@ public:
     
     void draw(float tick_, renderEngine::rIntRect limit, int min, int max);
     
-    int getSize();
-    
 private:
     
     renderEngine::rSprite tile;
     
     physicsEngine::type* t;
     
-    // Objetos que contiene el nodo
-    std::vector<std::array<int, 2>> tilePosition;
     std::vector<renderEngine::rIntRect> tileRect;
-    std::vector<int> tileId;
     
+    // Objetos que contiene el nodo
     std::vector<NPC*> npcs;
     std::vector<pBody> ground;
     std::vector<renderEngine::rRectangleShape> pinchos;
     std::vector<renderEngine::rSprite> v_esprait;
+    float maxXCheckPoint;
+    std::list<checkPoint> checkpoints;
     
     typedef void (Player::*pFunc)(void);
     pFunc array_funciones[4];
     
-    struct power{
-        int id = 0;
-        renderEngine::rSprite sprite;
-    };
+    
+    
     std::vector<power> powers;
     
     int aux_pop;

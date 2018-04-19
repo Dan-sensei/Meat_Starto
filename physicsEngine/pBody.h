@@ -30,11 +30,13 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         void setFixedRotation(bool flag_);                  // Determina si la rotación es fija
         float getLinearXVelocity();                         // Obtiene la velocidad lineal en el eje X
         float getLinearYVelocity();                         // Obtiene la velocidad lienal en el eje Y
-
+        
         float getXPosition();                               // Posición en el eje X
         float getYPosition();                               // Posición en el eje Y
         float getRotation();                                // Rotación
-
+        
+        void setPosition(float x, float y);
+        
         void setUserData(void* data);
         void setBody(b2Body* body_);                        // Da valor a la variable Body de Box2D (usado en createBody(...))
         b2Body* getBody();                                  // Devuelve la variable Body de Box2D

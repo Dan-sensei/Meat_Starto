@@ -15,7 +15,7 @@
 
 #define tick 0.0666666666667f
 
-Particle::Particle(float x, float y, float vx, float vy, float rot, float vrot, renderEngine::rSprite &s, float life) {
+Particle::Particle(float x, float y, float vx, float vy, float rot, float vrot, renderEngine::rSprite s, float life) {
     xPosition = x;
     yPosition = y;
     
@@ -25,7 +25,7 @@ Particle::Particle(float x, float y, float vx, float vy, float rot, float vrot, 
     rotation = rot;
     vRotation = vrot;
     
-    pSprite = &s;
+    pSprite = s;
     
     lifeTime = life;
         
@@ -79,7 +79,7 @@ renderEngine::rTime Particle::getTimeAlive() {
 }
 
 void Particle::draw() {
-    pSprite->draw();
+    pSprite.draw();
 }
 
 void Particle::interpola(float tick_) {
@@ -90,7 +90,7 @@ void Particle::interpola(float tick_) {
     float s = sin(previous.r * M_PI/180) * (1-tick_) + sin(actual.r * M_PI/180)*tick_;
     float c = cos(previous.r * M_PI/180) * (1-tick_) + cos(actual.r * M_PI/180)*tick_;
     
-    pSprite->setPosition(x, y);
-    pSprite->setRotation(atan2(s,c)*180/M_PI);
+    pSprite.setPosition(x, y);
+    pSprite.setRotation(atan2(s,c)*180/M_PI);
 }
 

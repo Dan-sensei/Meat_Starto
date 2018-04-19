@@ -41,8 +41,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     onAir = 0;
 
     
-    sprite.setOrigin(30, 30);
-    sprite.setScale(1.6f, 1.6f);
+    sprite.setOrigin(30, 39);
+    sprite.setScale(1.4f, 1.5f);
     switch(id){
     //Asigna la textura con su color dependiendo del id del jugador
         case 0:
@@ -136,14 +136,7 @@ int Player::getId(){
 int Player::getLevel(){
     return level;
 }
-/*
-void Player::setSpeed(float f){
-    speed=f;
-}
-float Player::getSpeed(){
-    return speed;
-}
-*/
+
 void Player::setName(std::string n){
     name=n;
 }
@@ -322,6 +315,7 @@ void Player::movement(){
     }                                                                                                       //
     //  ======================================================================================================
    */ 
+    
 }
 
 void Player::interpola(float tick_){
@@ -359,8 +353,6 @@ float Player::getYPosition() {
 }
 
 
-
-
 bool Player::isOnAir(){
     return (onAir <= 0) ? true : false;
 }
@@ -384,3 +376,6 @@ void Player::powerDownFreeze() {
 
 }
 
+void Player::setPosition(float x, float y) {
+    body.setPosition(x, y);
+}

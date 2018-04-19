@@ -13,7 +13,6 @@
 
 #include "Juego.h"
 
-
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
 #define BOX2D_STEP 1.f/FRAMERATE
@@ -64,29 +63,12 @@ Juego::Juego() :rain(1500, 500, 1) {
     
     
     //JUGADORES
-    switch(MenuInicio::Instance()->numplayers){
-        case 1:
-            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
-        break;
-        case 2:
-            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
-            readyPlayer.push_back(new Player(1, "Jugador 2", 60.f, 60.f, 1260, 1200, 'D', keys));
-        break;
-        case 3:
-            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
-            readyPlayer.push_back(new Player(1, "Jugador 2", 60.f, 60.f, 1260, 1200, 'D', keys));
-            readyPlayer.push_back(new Player(2, "Jugador 3", 60.f, 60.f, 1260, 1200, 'D', keys));
-        break;
-        case 4:
-            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
-            readyPlayer.push_back(new Player(1, "Jugador 2", 60.f, 60.f, 1260, 1200, 'D', keys));
-            readyPlayer.push_back(new Player(2, "Jugador 3", 60.f, 60.f, 1260, 1200, 'D', keys));
-            readyPlayer.push_back(new Player(3, "Jugador 4", 60.f, 60.f, 1260, 1200, 'D', keys));
-        break;
-        default:
-            readyPlayer.push_back(new Player(0, "Jugador 1", 60.f, 60.f, 1260, 1200, 'D', keys));
-        break;
-    }
+    for(int i = 0; i < MenuInicio::Instance()->numplayers; ++i)
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1260, 1400, 'D', keys));
+    
+    // En caso de que no se haya añadido ninguno
+    if(readyPlayer.size() == 0)
+        readyPlayer.push_back(new Player(0, "Jugador 0", 60.f, 60.f, 1260, 1400, 'D', keys));
     
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
@@ -199,7 +181,7 @@ void Juego::HandleEvents(){
                 if(keys[3])     readyPlayer[0]->moveUp_r();
                 else            readyPlayer[0]->moveUp();
             }
-        }        
+        }
         
     }else{
         //no hay salto
@@ -331,7 +313,7 @@ void Juego::Update(){
         
         float window_width = static_cast<float>(sfml->Instance().getSize()[0]);
         float window_height = static_cast<float>(sfml->Instance().getSize()[1]);  
-        float zoom = (1006*target_zoom)/window_height;
+        float zoom = (1005*target_zoom)/window_height;
 
         view->setSize(window_width, window_height);
         view->zoom(zoom);
@@ -363,8 +345,6 @@ void Juego::Update(){
         mapa->Instance().newState();
         rain.newState();
     }
-    physicsEngine* wold;
-    //std::cout << "LISTA: " << world->Instance().getBodyListSize() << std::endl;
 }
 
 void Juego::Render(){
@@ -385,7 +365,6 @@ void Juego::Render(){
         readyPlayer[i]->interpola(tick);
     }
     
-
     
     //ACTUALIÇAÇAO DE LA CAMARA
     if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
@@ -395,10 +374,10 @@ void Juego::Render(){
                 n=i;
             }
         }
-        
+        std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;
         view->setCenter(readyPlayer[n]->getXPosition(),CAM_H);
     }
-    
+
     //ACTUALIÇAÇAO DE LOS MINIJUEGOS
 
     mapa->Instance().updateMini();
