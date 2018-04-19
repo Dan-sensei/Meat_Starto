@@ -37,25 +37,35 @@ void contactListener::BeginContact(b2Contact* contact){
     // XPLOTATO = 3
     //    SKULL = 4
     
-    //std::cout << "BodyA conact: " << typeA->id << std::endl;
-    //std::cout << "BodyB conact: " << typeB->id << std::endl << std::endl;
+    b2WorldManifold worldManifold;
+    contact->GetWorldManifold(&worldManifold);
     
+    // SUELO CON JUGADOR
     if(typeA->id == 1 && typeB->id == 2 ){
-        Player* p = static_cast<Player*>(typeB->data);
-        p->setAir(1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(1); 
+        }
     }
     else if(typeB->id == 1 && typeA->id == 2){
-        Player* p = static_cast<Player*>(typeA->data);
-        p->setAir(1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeA->data);
+            p->setAir(1);    
+        }
     }
     
+    // SKULL CON JUGADOR
     if(typeA->id == 4 && typeB->id == 2 ){
-        Player* p = static_cast<Player*>(typeB->data);
-        p->setAir(1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(1); 
+        }
     }
     else if(typeB->id == 4 && typeA->id == 2){
-        Player* p = static_cast<Player*>(typeA->data);
-        p->setAir(1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(1); 
+        }
     }
     
 
@@ -72,23 +82,33 @@ void contactListener::EndContact(b2Contact* contact){
     physicsEngine::type* typeA = static_cast<physicsEngine::type*>(a);
     physicsEngine::type* typeB = static_cast<physicsEngine::type*>(b);
     
-
+    b2WorldManifold worldManifold;
+    contact->GetWorldManifold(&worldManifold);
+    
     if(typeA->id == 1 && typeB->id == 2){
-        Player* p = static_cast<Player*>(typeB->data);
-        p->setAir(-1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(-1);
+        }
     }
     else if(typeB->id == 1 && typeA->id == 2){
-        Player* p = static_cast<Player*>(typeA->data);
-        p->setAir(-1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeA->data);
+            p->setAir(-1);
+        }
     }
     
     if(typeA->id == 4 && typeB->id == 2){
-        Player* p = static_cast<Player*>(typeB->data);
-        p->setAir(-1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(-1);
+        }
     }
     else if(typeB->id == 4 && typeA->id == 2){
-        Player* p = static_cast<Player*>(typeA->data);
-        p->setAir(-1);
+        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(-1);
+        }
     }
     
 }

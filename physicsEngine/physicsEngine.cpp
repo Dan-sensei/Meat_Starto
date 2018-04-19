@@ -16,15 +16,6 @@
 #include "physicsEngine.h"
 #include "Mapa/Nodo/Nodo.h"
 
-/*
-physicsEngine* physicsEngine::pInstance = nullptr;
-physicsEngine* physicsEngine::Instance(){
-    if(!pInstance)
-        pInstance = new physicsEngine;
-    
-    return pInstance;
-}
-*/
 
 physicsEngine::physicsEngine():world(b2Vec2(0.f, 40.f)) {
     world.SetContactListener(&listener);

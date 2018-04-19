@@ -19,8 +19,8 @@
 #include "Nodo/NPCs/xPlotato.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
-#define TAM_LISTA 8
+#define MAP_ITERATION 10
+#define TAM_LISTA 7
 
  Mapa::Mapa() {
     std::cout << "Creando mapa..." << std::endl;
@@ -108,6 +108,7 @@
     mapa_funciones.insert(std::make_pair("spawn", &Mapa::leexPlotatos));
     mapa_funciones.insert(std::make_pair("skull", &Mapa::leeSkulls));
     mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
+    mapa_funciones.insert(std::make_pair("checkpoint", &Mapa::leeCheckPoints));
     
     longitud = 0;
     end = false;
@@ -231,7 +232,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
     
     hex_list.back().setPop(x_max);
     
-    std::cout << "Nodo creado en " << optimo_clock.getElapsedTime().asSeconds() << "s!" << std::endl;
+    std::cout << "Nodo creado en " << optimo_clock.getElapsedTime().asSeconds() << " segundos!" << std::endl;
     
 }
 
@@ -399,6 +400,38 @@ void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
         obj = obj->NextSiblingElement("object");
     }
 }
+
+void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
+    
+    obj = obj->FirstChildElement("object");
+
+    int xCoord = 0;
+    int yCoord = 0;
+    int width = 0;
+    int height = 0;
+    
+    if(hex_list.size() > 1){
+        std::list<Nodo>::iterator pre = hex_list.end();
+        --pre;
+        --pre;
+        actual.setPreviousCheckPoint((*pre).getLastCheckPoint());
+    }
+
+    while (obj) {
+        obj->QueryIntAttribute("x", &xCoord);
+        xCoord += x_max;
+        obj->QueryIntAttribute("width", &width);
+
+        obj->QueryIntAttribute("y", &yCoord);
+        obj->QueryAttribute("height", &height);
+        
+        actual.addCheckPoint(xCoord, yCoord, width, height);
+
+        obj = obj->NextSiblingElement("object");
+    }
+    
+}
+
 
 void Mapa::render(float tick_) {
     renderEngine *sfml;

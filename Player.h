@@ -24,8 +24,6 @@ public:
     virtual ~Player();
     void setId(int i);
     int getId();
-    void setSpeed(float f);
-    float getSpeed();
     float getXPosition();
     float getYPosition();
     int getLevel();
@@ -68,6 +66,8 @@ public:
     void powerUpSpeed();
     void powerDownJump();
     void powerDownFreeze();
+    
+    void setPosition(float x, float y);
     
 private:
     int id;

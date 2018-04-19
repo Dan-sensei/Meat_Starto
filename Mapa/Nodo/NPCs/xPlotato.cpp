@@ -63,7 +63,7 @@ xPlotato::xPlotato(const xPlotato& orig) {
 }
 
 xPlotato::~xPlotato() {
-    std::cout << "Destruyendo xPlotato..." << std::endl;
+    //std::cout << "Destruyendo xPlotato..." << std::endl;
     delete t;
     t = nullptr;
 }

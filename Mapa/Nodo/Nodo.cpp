@@ -11,6 +11,8 @@
  * Created on 11 de abril de 2018, 3:33
  */
 
+#include <complex>
+
 #include "Nodo.h"
 #include "NPCs/xPlotato.h"
 #include "NPCs/Skull.h"
@@ -25,15 +27,20 @@ Nodo::Nodo(std::string sheet) {
     array_funciones[2] = &Player::powerDownJump;
     array_funciones[3] = &Player::powerDownFreeze;
     
-    
+    checkPoint checkpoint;
+    checkpoint.active = false;
+    checkpoint.shape.setSize(70, 280);
+    checkpoint.shape.setPosition(1260, 1500);
+    checkpoint.shape.setOutlineThickness(2);
+    checkpoint.shape.setOutlineColor('r');
+    checkpoint.shape.setFillColor('t');
+    maxXCheckPoint = 0;
 }
 
 Nodo::Nodo(const Nodo& orig) {
 
-    for(int i = 0; i < orig.tilePosition.size(); i++){
-        tilePosition.push_back(orig.tilePosition[i]);
-        tileId.push_back(orig.tileId[i]);
-    }
+    for(int i = 0; i < orig.v_esprait.size(); i++)
+        v_esprait.push_back(orig.v_esprait[i]);
     
     for(int i= 0; i < orig.tileRect.size(); i++)
         tileRect.push_back(orig.tileRect[i]);
@@ -47,8 +54,13 @@ Nodo::Nodo(const Nodo& orig) {
     for(int i = 0; i < orig.pinchos.size(); i++)
         pinchos.push_back(orig.pinchos[i]);
     
+    for(std::list<checkPoint>::const_iterator it = orig.checkpoints.begin(); it != orig.checkpoints.end(); ++it)
+        checkpoints.push_back(*it);
+    
     aux_pop = orig.aux_pop;
     tile = orig.tile;
+    
+    maxXCheckPoint = orig.maxXCheckPoint;
 }
 
 Nodo::~Nodo() {
@@ -72,27 +84,42 @@ void Nodo::setRectVector(std::vector<renderEngine::rIntRect> rect_){
     tileRect = rect_;
 }
 
-int Nodo::getSize(){
-    return tileId.size();
-}
-
 
 void Nodo::addTile(int id, int x, int y){
-    tileId.push_back(id);
-    tilePosition.push_back(std::array<int, 2>{x, y});
-    
+
     renderEngine::rSprite sprite;
     sprite.setTexture(AssetManager::GetTexture("tiles_definitivo/tilesheet.png"));
     sprite.setTextureRect(tileRect[id]);
     sprite.setPosition(x,y);
     
     v_esprait.push_back(sprite);
-    
+    int size = 65;
+    int error = (70-size)/2;
     if(id == 36 || id == 35 || id == 34 || id == 33){
         pinchos.emplace_back();
-        pinchos.back().setSize(70,70);
-        pinchos.back().setPosition(x,y);
-        pinchos.back().setFillColor('r');
+        if(id == 33){
+            pinchos.back().setFillColor('r');
+            pinchos.back().setSize(size, size/2);
+            pinchos.back().setPosition(x+error,y+size/2);
+            
+        }
+        else if(id==34){
+            pinchos.back().setFillColor('g');
+            pinchos.back().setSize(size/2, size);
+            pinchos.back().setPosition(x,y+error);
+            
+        }
+        else if(id==35){
+            pinchos.back().setFillColor('b');
+            pinchos.back().setSize(size, size/2);
+            pinchos.back().setPosition(x+error,y);
+            
+        }
+        else if(id==36){
+            pinchos.back().setFillColor('y');
+            pinchos.back().setSize(size/2, size);
+            pinchos.back().setPosition(x+size/2,y+error);
+        }
     }
 }
 
@@ -113,6 +140,23 @@ void Nodo::addxPlotato(int x_, int y_, int x_min, int x_max) {
 void Nodo::addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max){
     npcs.push_back(new Skull(x_, y_, x_min, x_max, y_min, y_max));
 }
+
+void Nodo::addCheckPoint(int x, int y, int width, int height) {
+    
+    checkPoint checkpoint;
+    checkpoint.active = false;
+    checkpoint.shape.setSize(width, height);
+    checkpoint.shape.setPosition(x, y);
+    checkpoint.shape.setOutlineThickness(2);
+    checkpoint.shape.setOutlineColor('r');
+    checkpoint.shape.setFillColor('t');
+    
+    checkpoints.push_back(checkpoint);
+    
+    
+}
+
+
 
 void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     power p;
@@ -139,17 +183,10 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
 
 void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 
-    for(int i = 0; i < tileId.size(); i++){
+    for(int i = 0; i < v_esprait.size(); i++){
         if(limit.contains(v_esprait[i].getPosition()[0],v_esprait[i].getPosition()[1])){
             v_esprait[i].draw();
         }
-            /*
-        if(limit.contains(tilePosition[i][0], tilePosition[i][1])){
-            tile.setPosition(tilePosition[i][0], tilePosition[i][1]);
-            tile.setTextureRect(tileRect[tileId[i]]);
-            tile.draw();
-        }
-             */
     }   
     
     //------------|  ENEMIGOS  |------------//
@@ -158,11 +195,14 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
-    /*
+    
     for(int i = 0; i < pinchos.size(); i++){
         pinchos[i].draw();
     }
-    */
+    
+    
+    for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it)
+        (*it).shape.draw();
     
     for(int i = 0; i < powers.size(); i++)
         powers[i].sprite.draw();
@@ -180,16 +220,61 @@ void Nodo::update(){
         
         Player* ready = (*players)[i];
         
-       
+        std::list<checkPoint>::iterator it = checkpoints.begin();
+        while(it != checkpoints.end()){
+            if(ready->getXPosition() > (*it).shape.getPosition()[0]){
+                (*it).active = true;
+                (*it).shape.setOutlineColor('g');
+                maxXCheckPoint = (*it).shape.getPosition()[0];
+            }
+         
+            ++it;
+        }
+        
+        it = checkpoints.begin();
+        while(it != checkpoints.end()){
+            if((*it).shape.getPosition()[0] < maxXCheckPoint)
+                checkpoints.erase(it++);
+            else
+                ++it;
+        }
+        
+        
+        //Colision con pinchos
         for(int j = 0; j < pinchos.size() && !flag; j++){
             if(ready->getSprite().intersects(pinchos[j])){
-
+                float minX = checkpoints.front().shape.getPosition()[0];
+                float minY = checkpoints.front().shape.getPosition()[1];
+                
+                float distX = minX - ready->getXPosition();
+                float distY = minY - ready->getYPosition();
+                float distance = sqrt(distX*distX + distY*distY);
+                float aux_d;
+                
+                it = checkpoints.begin();
+                while(it != checkpoints.end()){
+                    if((*it).active){
+                        distX = (*it).shape.getPosition()[0] - ready->getXPosition();
+                        distY = (*it).shape.getPosition()[1] - ready->getYPosition();
+                        aux_d = sqrt(distX*distX + distY*distY);
+                        if (aux_d < distance){
+                            distance = aux_d;
+                            minX = (*it).shape.getPosition()[0];
+                            minY = (*it).shape.getPosition()[1];
+                        }
+                    }
+                    ++it;
+                }
+                
+                std::cout << "MUEVETE A " << minX << ", " << minY << std::endl;
+                ready->setPosition(minX+35, minY+35);
                 flag = true;
             }
         }
         
+       
         
-        
+        //Colision con powerups
         for(int j = 0; j < powers.size(); j++){
             if(ready->getSprite().intersects(powers[j].sprite)){
                  flag = true;
@@ -210,4 +295,27 @@ void Nodo::newState(){
     for(int i = 0; i < npcs.size(); i++){
         npcs[i]->newState();
     }
+}
+
+Nodo::checkPoint Nodo::getLastCheckPoint() {
+    checkPoint last;
+    if(checkpoints.size() > 0){
+        last = checkpoints.back();
+
+        for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it){
+            if((*it).shape.getPosition()[0] > last.shape.getPosition()[0]){
+                last = (*it);
+            }
+            else if((*it).shape.getPosition()[0] == last.shape.getPosition()[0]){
+                if((*it).shape.getPosition()[1] < last.shape.getPosition()[0])
+                    last = (*it);
+            }
+        }
+    }
+
+    return last;
+}
+
+void Nodo::setPreviousCheckPoint(checkPoint prev) {
+    checkpoints.push_back(prev);
 }

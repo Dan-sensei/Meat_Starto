@@ -23,6 +23,7 @@
 #include "MenuPausa.h"
 #include "MenuInicio.h"
 #include "MPuntuaciones.h"
+#include "Hud.h"
 
 #include "Mapa/Mapa.h"
 #include "mj_t.h"
@@ -80,6 +81,7 @@ private:
     
     rMusic THE_ARID_FLATS;
     particleSystem rain; 
+    Hud *hud;
 };
 
 #endif /* Juego_H */
