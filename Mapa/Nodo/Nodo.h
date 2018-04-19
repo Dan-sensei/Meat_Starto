@@ -44,6 +44,9 @@ public:
     void addPower(int id, int xMin, int xMax, int y_);
     void addCheckPoint(int x, int y, int width, int height);
     
+    //Eventos
+    void checkColisionsPinchos(Player* ready);
+    
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);
     int getPop();

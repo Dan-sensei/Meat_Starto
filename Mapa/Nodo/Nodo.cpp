@@ -220,59 +220,8 @@ void Nodo::update(){
         
         Player* ready = (*players)[i];
         
-        std::list<checkPoint>::iterator it = checkpoints.begin();
-        while(it != checkpoints.end()){
-            if(ready->getXPosition() > (*it).shape.getPosition()[0]){
-                (*it).active = true;
-                (*it).shape.setOutlineColor('g');
-                maxXCheckPoint = (*it).shape.getPosition()[0];
-            }
-         
-            ++it;
-        }
-        
-        it = checkpoints.begin();
-        while(it != checkpoints.end()){
-            if((*it).shape.getPosition()[0] < maxXCheckPoint)
-                checkpoints.erase(it++);
-            else
-                ++it;
-        }
-        
-        
-        //Colision con pinchos
-        for(int j = 0; j < pinchos.size() && !flag; j++){
-            if(ready->getSprite().intersects(pinchos[j])){
-                float minX = checkpoints.front().shape.getPosition()[0];
-                float minY = checkpoints.front().shape.getPosition()[1];
-                
-                float distX = minX - ready->getXPosition();
-                float distY = minY - ready->getYPosition();
-                float distance = sqrt(distX*distX + distY*distY);
-                float aux_d;
-                
-                it = checkpoints.begin();
-                while(it != checkpoints.end()){
-                    if((*it).active){
-                        distX = (*it).shape.getPosition()[0] - ready->getXPosition();
-                        distY = (*it).shape.getPosition()[1] - ready->getYPosition();
-                        aux_d = sqrt(distX*distX + distY*distY);
-                        if (aux_d < distance){
-                            distance = aux_d;
-                            minX = (*it).shape.getPosition()[0];
-                            minY = (*it).shape.getPosition()[1];
-                        }
-                    }
-                    ++it;
-                }
-                
-                std::cout << "MUEVETE A " << minX << ", " << minY << std::endl;
-                ready->setPosition(minX+35, minY+35);
-                flag = true;
-            }
-        }
-        
-       
+        // EVENTOS
+        //checkColisionsPinchos(ready);
         
         //Colision con powerups
         for(int j = 0; j < powers.size(); j++){
@@ -284,6 +233,61 @@ void Nodo::update(){
         
     }
 }
+
+void Nodo::checkColisionsPinchos(Player* ready) {
+    std::list<checkPoint>::iterator it = checkpoints.begin();
+    while(it != checkpoints.end()){
+        if(ready->getXPosition() > (*it).shape.getPosition()[0]){
+            (*it).active = true;
+            (*it).shape.setOutlineColor('g');
+            maxXCheckPoint = (*it).shape.getPosition()[0];
+        }
+
+        ++it;
+    }
+
+    it = checkpoints.begin();
+    while(it != checkpoints.end()){
+        if((*it).shape.getPosition()[0] < maxXCheckPoint)
+            checkpoints.erase(it++);
+        else
+            ++it;
+    }
+
+    bool flag = false;
+    //Colision con pinchos
+    for(int j = 0; j < pinchos.size() && !flag; j++){
+        if(ready->getSprite().intersects(pinchos[j])){
+            float minX = checkpoints.front().shape.getPosition()[0];
+            float minY = checkpoints.front().shape.getPosition()[1];
+
+            float distX = minX - ready->getXPosition();
+            float distY = minY - ready->getYPosition();
+            float distance = sqrt(distX*distX + distY*distY);
+            float aux_d;
+
+            it = checkpoints.begin();
+            while(it != checkpoints.end()){
+                if((*it).active){
+                    distX = (*it).shape.getPosition()[0] - ready->getXPosition();
+                    distY = (*it).shape.getPosition()[1] - ready->getYPosition();
+                    aux_d = sqrt(distX*distX + distY*distY);
+                    if (aux_d < distance){
+                        distance = aux_d;
+                        minX = (*it).shape.getPosition()[0];
+                        minY = (*it).shape.getPosition()[1];
+                    }
+                }
+                ++it;
+            }
+
+            std::cout << "MUEVETE A " << minX << ", " << minY << std::endl;
+            ready->setPosition(minX+35, minY+35);
+            flag = true;
+        }
+    }
+}
+
 
 void Nodo::preState(){
     for(int i = 0; i < npcs.size(); i++){
