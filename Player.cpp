@@ -39,6 +39,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     t->data = this;
     body.setUserData(t);
     onAir = 0;
+    level=1;
 
     
     sprite.setOrigin(30, 39);
