@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Mapa/Nodo/Nodo.o \
 	${OBJECTDIR}/MenuInicio.o \
 	${OBJECTDIR}/MenuPausa.o \
+	${OBJECTDIR}/Particle.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
@@ -159,6 +160,11 @@ ${OBJECTDIR}/MenuPausa.o: MenuPausa.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine/renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuPausa.o MenuPausa.cpp
 
+${OBJECTDIR}/Particle.o: Particle.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine/renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Particle.o Particle.cpp
+
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -225,7 +231,7 @@ ${OBJECTDIR}/renderEngine/renderEngine.o: renderEngine/renderEngine.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-audio.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-graphics.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-network.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-system.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-window.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libBox2D.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtinyxml2.so
+	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-system.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libBox2D.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-network.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-window.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtinyxml2.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-audio.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libsfml-graphics.so
 	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/meat_starto
 
 # Subprojects

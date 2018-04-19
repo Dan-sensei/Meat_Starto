@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Mapa/Nodo/Nodo.o \
 	${OBJECTDIR}/MenuInicio.o \
 	${OBJECTDIR}/MenuPausa.o \
+	${OBJECTDIR}/Particle.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
@@ -144,6 +145,11 @@ ${OBJECTDIR}/MenuPausa.o: MenuPausa.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuPausa.o MenuPausa.cpp
+
+${OBJECTDIR}/Particle.o: Particle.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Particle.o Particle.cpp
 
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
