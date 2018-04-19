@@ -51,7 +51,7 @@ private:
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
     void InitMatrix();
-    
+    void updateFondo();
     
     typedef void (Mapa::*pFunc)(tinyxml2::XMLElement *, Nodo &);
     std::map<std::string, pFunc> mapa_funciones;
@@ -94,6 +94,12 @@ private:
     
     //TETRIS
     bool m_tetris;
+    
+    //FONDOS
+    float x_view;
+    renderEngine::rTexture text_fondo;
+    renderEngine::rRectangleShape f1;
+    renderEngine::rRectangleShape f2;
 };
 
 #endif /* MAPA_H */

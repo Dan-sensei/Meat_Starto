@@ -73,7 +73,7 @@ Juego::Juego() :rain(1500, 500, 1) {
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
-    THE_ARID_FLATS.play();
+    //THE_ARID_FLATS.play();
 
     rain.setParticleSpeed(500);
     rain.setMaxParticleAmout(500);
@@ -377,17 +377,21 @@ void Juego::Render(){
                 n=i;
             }
         }
-        std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;
-        view->setCenter(readyPlayer[n]->getXPosition(),CAM_H);
+        //std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;
+        
+        //COMENTAR EL IF SI SE QUIERE QUE LA CAMARA VAYA HACIA ATRAS
+        if(readyPlayer[n]->getXPosition()>view->getCenter()[0])
+            view->setCenter(readyPlayer[n]->getXPosition(),CAM_H);
+        
+        //std::cout << "CAMARA > X: " << sfml->Instance().getViewCenter()[0] << " | Y: " << sfml->Instance().getViewCenter()[1] << std::endl;
     }
 
-    //ACTUALIÇAÇAO DE LOS MINIJUEGOS
-
-    mapa->Instance().updateMini();
-    
     sfml->Instance().setView(*view);
-    rain.draw(tick);
+
+    //ACTUALIÇAÇAO DEL MAPA
+    mapa->Instance().updateMini();
     mapa->Instance().render(tick);
+    rain.draw(tick);
     mapa->Instance().updateMini();
     for(int i=0; i< readyPlayer.size(); i++){
         readyPlayer[i]->draw();

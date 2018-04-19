@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -297,6 +297,23 @@ renderEngine::rIntRect::rIntRect(int x, int y, int w, int h) : ir(x,y,w,h){
     top = y;
     widht = w;
     height = h;
+}
+
+void renderEngine::rIntRect::setTop(int t) {
+    top = t;
+    ir.top = t;
+}
+void renderEngine::rIntRect::setLeft(int l) {
+    left = l;
+    ir.left = l;
+}
+void renderEngine::rIntRect::setWidth(int w) {
+    widht = w;
+    ir.width = w;
+}
+void renderEngine::rIntRect::setHeight(int h) {
+    height = h;
+    ir.height = h;
 }
 
 bool renderEngine::rIntRect::contains(float x, float y) {

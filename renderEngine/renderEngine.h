@@ -37,6 +37,11 @@ public:
             int top;
             int widht;
             int height;
+            
+            void setTop(int t);
+            void setLeft(int l);
+            void setWidth(int w);
+            void setHeight(int h);
         private:
             sf::IntRect getIntRect();
             sf::IntRect ir;

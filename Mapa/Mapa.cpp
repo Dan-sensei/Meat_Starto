@@ -17,10 +17,12 @@
 
 #include "Mapa.h"
 #include "Nodo/NPCs/xPlotato.h"
+#include <math.h>
 
 #define SCALE 65.f
 #define MAP_ITERATION 10
 #define TAM_LISTA 7
+#define BACKGROUND_SCALE 1.9
 
  Mapa::Mapa() {
     std::cout << "Creando mapa..." << std::endl;
@@ -113,6 +115,20 @@
     longitud = 0;
     end = false;
     
+    //FONDO
+    renderEngine *sfml;
+    
+    //img_fondo.loadFromFIle("assets/fondo.PNG");
+    //f1.t.loadFromImage(f1.img,*f1.ir);
+    x_view = -1;
+    text_fondo.loadFromFile("assets/fondo.PNG");
+
+    f1.setTexture(text_fondo);
+    f1.setSize(1920*BACKGROUND_SCALE,1080*BACKGROUND_SCALE);
+    
+    f2.setTexture(text_fondo);
+    f2.setSize(1920*BACKGROUND_SCALE,1080*BACKGROUND_SCALE);
+        
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -473,6 +489,10 @@ void Mapa::render(float tick_) {
     int y_max = y_2 +(alto*15);
     */
     
+    //EMPIEZO A RENDERIZAR
+    f1.draw();
+    f2.draw();
+    
     renderEngine::rRectangleShape *r;
     renderEngine::rTexture *t;
     
@@ -583,6 +603,9 @@ void Mapa::updateMini() {
     mj_t *tetris;
     boss *javi;
     
+    //ACTUALIZO DEL FONDO
+    updateFondo();
+    
     if(pop){
         std::cout << "Borrando..." << std::endl;
         //hex_list.front()->~Nodo();
@@ -624,6 +647,46 @@ void Mapa::update(){
         (*it).preState();
         (*it).update();
     }
+}
+
+void Mapa::updateFondo() {
+    renderEngine *sfml;
+    float x,y;
+    float mv = 2;
+    
+    if(x_view == -1){
+        x_view = sfml->Instance().getViewCenter()[0];
+        
+        x = x_view-70*26;
+        y = sfml->Instance().getViewCenter()[1]-70*15;
+
+        f1.setPosition(x,y);
+    }
+    else if(x_view != sfml->Instance().getViewCenter()[0] && abs(x_view-sfml->Instance().getViewCenter()[0])>5){
+        //SOLO SI SE MUEVE LA CAMARA SE ACTUALIZA LA POSICION
+        bool signo; //TRUE: + , FALSE: -
+        if((x_view-sfml->Instance().getViewCenter()[0])<0){
+            signo = false;
+        }
+        else{
+            signo = true;
+        }
+        x_view = sfml->Instance().getViewCenter()[0];
+        
+        
+        x = x_view-70*26;
+        y = sfml->Instance().getViewCenter()[1]-70*15;
+
+        //f1.rect.setPosition(x,y);
+        signo ? f1.move(-mv,0) : f1.move(mv,0);
+    }
+    
+    f2.setPosition(f1.getPosition()[0]+f1.getSize()[0],f1.getPosition()[1]);
+    
+    if(f1.getPosition()[0] <= (sfml->Instance().getViewCenter()[0]-70*26)-f1.getSize()[0]){
+        f1.setPosition(f2.getPosition()[0],f2.getPosition()[1]);
+    }
+    
 }
 
 void Mapa::preState(){
