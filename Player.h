@@ -68,6 +68,7 @@ public:
     void powerDownFreeze();
     
     void setPosition(float x, float y);
+    std::string anima();
     
 private:
     int id;
@@ -77,6 +78,7 @@ private:
     std::string texture;
     renderEngine::rSprite sprite;
     Animator animator;
+    int key_r,key_l,key_up,key_hit;
     
     bool* keys;
     

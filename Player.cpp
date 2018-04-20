@@ -48,16 +48,36 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     //Asigna la textura con su color dependiendo del id del jugador
         case 0:
                 texture="assets/player0.png";
+                //KeyCode                
+                key_r=3;
+                key_l=0;
+                key_up=22;
+                key_hit=4;
         break;
         case 1:
                 texture="assets/player1.png";
+                //KeyCode                
+                key_r=72;
+                key_l=71;
+                key_up=73;
+                key_hit=4;
                 sprite.setPosition(x_, y_);
         break;
         case 2:
-                texture="assets/player2.png";    
+                texture="assets/player2.png"; 
+                //KeyCode                
+                key_r=-1;
+                key_l=10;
+                key_up=14;
+                key_hit=4;    
         break;
         case 3:
-                texture="assets/player3.png";                        
+                texture="assets/player3.png"; 
+                //KeyCode                
+                key_r=13;
+                key_l=21;
+                key_up=6;
+                key_hit=4;                       
         break;                           
     }
    
@@ -155,102 +175,56 @@ void Player::update(renderEngine::rTime deltatime){
 
 
 void Player::moveRigth(){
-    if(animator.GetCurrentAnimationName() != "a_rigth"){
+    if(animator.GetCurrentAnimationName() != "a_rigth" && animator.GetCurrentAnimationName() != "a_jump_r"){
         animator.SwitchAnimation("a_rigth");
+        std::cout<<"derecha"<<id;
     }
-     //if( keys[3]) {                                                             //
-        if(body.getLinearXVelocity() < speed)                                   //
-            body.applyForceToCenter(force, 0);                                  //
-        else                                                                    //  DERECHA
-            body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
-        
-    //}                                                                           //
-
 }
 
 void Player::moveRigth_b(){
-    if(animator.GetCurrentAnimationName() != "a_base_r"){
+    //if(animator.GetCurrentAnimationName() != "a_base_r"){
         animator.SwitchAnimation("a_base_r");
-    }
-    //Provisional
-    body.applyForceToCenter(0, 0);                                                                      //
-    body.setLinealVelocicity(0, body.getLinearYVelocity());
-
+    //}
        
 }
 
 void Player::moveLeft(){
-    if(animator.GetCurrentAnimationName() != "a_left"){
+    if(animator.GetCurrentAnimationName() != "a_left" && animator.GetCurrentAnimationName() != "a_jump_l"){
         animator.SwitchAnimation("a_left");
     }
-    //if( keys[0])  {                                                             //
-        if(body.getLinearXVelocity() > -speed)                                  //
-            body.applyForceToCenter(-force, 0);                                 //
-        else                                                                    //  IZQUIERDA
-            body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
-        
-    //}                                                                           //
+    std::cout<<"izquierda"<<id;
+                                                                         
 
 }
 
 void Player::moveLeft_b(){
-    if(animator.GetCurrentAnimationName() != "a_base_l"){
+    //if(animator.GetCurrentAnimationName() != "a_base_l"){
         animator.SwitchAnimation("a_base_l");
-    }
-    //Provisional
-    body.applyForceToCenter(0, 0);                                                                      //
-    body.setLinealVelocicity(0, body.getLinearYVelocity());
+    //}
+
 }
 
 void Player::moveUp(){
-    if(!isOnAir()){
-        body.applyForceToCenter(0, -jump);
-    }          
+    if(!isOnAir()){             
         
-        if(animator.GetCurrentAnimationName() == "a_left"){
+        if(animator.GetCurrentAnimationName() == "a_left" || animator.GetCurrentAnimationName() == "a_jump_l"){
             animator.SwitchAnimation("a_jump_l");
         }
-        if(animator.GetCurrentAnimationName() == "a_rigth"){
+        if(animator.GetCurrentAnimationName() == "a_rigth"||animator.GetCurrentAnimationName() == "a_jump_r" ){
             animator.SwitchAnimation("a_jump_r");
         }
-
+    }
 }
 void Player::moveUp_r(){
     if(animator.GetCurrentAnimationName() != "a_jump_r"){
         animator.SwitchAnimation("a_jump_r");
-        
-        if(!isOnAir()){
-            body.applyForceToCenter(0, -jump);
-        } 
-    }
-     //if( keys[3]) {                                                         //
-        if(body.getLinearXVelocity() < speed)                                   //
-            body.applyForceToCenter(force, 0);                                  //
-        else                                                                    //  DERECHA
-            body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
-        
-    //}
-    
-            
-        
+    }                  
   
 }
 void Player::moveUp_l(){
     if(animator.GetCurrentAnimationName() != "a_jump_l"){
         animator.SwitchAnimation("a_jump_l");
-        if(!isOnAir()){
-            body.applyForceToCenter(0, -jump);
-        } 
-    }
-    //if( keys[0])  {                                                             //
-        if(body.getLinearXVelocity() > -speed)                                  //
-            body.applyForceToCenter(-force, 0);                                 //
-        else                                                                    //  IZQUIERDA
-            body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
-        
-    //}                                                                           // 
-    
- 
+    } 
 
 }
 
@@ -267,56 +241,56 @@ void Player::moveDown(){
     if(animator.GetCurrentAnimationName() == "a_jump_r"){
         animator.SwitchAnimation("a_rigth");
     }
-    
 
 }
-
 
 //MOVIMIENTO
 void Player::movement(){
     preState();
-    // TECLA A  ==================================================================
-    /*if( keys[0])  {                                                             //
-        if(body.getLinearXVelocity() > -speed)                                  //
-            body.applyForceToCenter(-force, 0);                                 //
-        else                                                                    //  IZQUIERDA
-            body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
+    // SALTO======================================================================
+    if((keys[key_up]) && !isOnAir()){                                               //
+        body.applyForceToCenter(0, -jump);                                          //
+        moveUp();                                                                   //
+    }else{
+        //IZQUIERDA==================================================================
+        if( keys[key_l])  {                                                         //
+            if(body.getLinearXVelocity() > -speed)                                  //
+                body.applyForceToCenter(-force, 0);                                 //
+            else                                                                    //  
+                body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
+            if(!isOnAir()){
+                moveLeft(); 
+            }                                                                       //
+        }                                                                           //
+        // ===========================================================================
+
+        // DERECHA==================================================================
+        if( keys[key_r]) {                                                          //
+            if(body.getLinearXVelocity() < speed)                                   //
+                body.applyForceToCenter(force, 0);                                  //
+            else                                                                    //  
+                body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
+            if(!isOnAir()){
+                moveRigth();
+            }                                                                       //
+        }                                                                           //
+        // ===========================================================================
         
-    }                                                                           //
-    // ===========================================================================
+    }                                                                           
+    // =============================================================================//    
 
-    // TECLA D  ==================================================================
-    if( keys[3]) {                                                         //
-        if(body.getLinearXVelocity() < speed)                                   //
-            body.applyForceToCenter(force, 0);                                  //
-        else                                                                    //  DERECHA
-            body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
-        //moveRigth();
-    }                                                                           //
-    // ===========================================================================
- 
-    // TECLA W / ESPACIO  ========================================================
-    if((keys[57] || keys[22]) && !isOnAir()){                                   //
-        body.applyForceToCenter(0, -jump);                                      //
-        //moveUp();
-    }   
-     *                                                                      //
-    // ===========================================================================
-
-    //STOP CON DESLIZAMIENTO  ================================================================================
-    if(!keys[0] && body.getLinearXVelocity() < -2){                                                         //
+    //STOP CON DESLIZAMIENTO FRENADO==========================================================================
+    if(!keys[key_l] && body.getLinearXVelocity() < -2){                                                     //
         body.applyForceToCenter(force*stop_mult, 0);                                                        //
     }                                                                                                       //
-    else if(!keys[3] && body.getLinearXVelocity() > 2)                                                      //
+    else if(!keys[key_r] && body.getLinearXVelocity() > 2)                                                  //
         body.applyForceToCenter(-force*stop_mult, 0);                                                       //
-                                                                                                              // FRENADO
-    if(!keys[0] && !keys[3] && body.getLinearXVelocity() >= -2 && body.getLinearXVelocity() <= 2){          //
+                                                                                                            // 
+    if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -2 && body.getLinearXVelocity() <= 2){  //
         body.applyForceToCenter(0, 0);                                                                      //
         body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
     }                                                                                                       //
     //  ======================================================================================================
-   */ 
-    
 }
 
 void Player::interpola(float tick_){
@@ -329,6 +303,9 @@ void Player::interpola(float tick_){
     
     sprite.setPosition(x, y);
     sprite.setRotation(atan2(s,c)*180/M_PI);
+}
+std::string Player::anima(){
+    return animator.GetCurrentAnimationName(); 
 }
 
 void Player::draw(){

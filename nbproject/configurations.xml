@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>Animator.h</itemPath>
       <itemPath>AssetManager.h</itemPath>
+      <itemPath>Particle.h</itemPath>
       <itemPath>Player.h</itemPath>
       <itemPath>particleSystem.h</itemPath>
     </logicalFolder>
@@ -60,6 +61,7 @@
                    projectFiles="true">
       <itemPath>Animator.cpp</itemPath>
       <itemPath>AssetManager.cpp</itemPath>
+      <itemPath>Particle.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>particleSystem.cpp</itemPath>

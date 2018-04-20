@@ -133,38 +133,68 @@ void Juego::HandleEvents(){
             case renderEngine::rEvent::EventType::KeyReleased :
                 keys[event.getKeyCode()] = false;     
                 switch(event.getKeyCode()) {
-                    //JUGADOR 1
+                   //JUGADOR 1                    
                     case 0:
+                        if(readyPlayer.size()>=1){
                         readyPlayer[0]->moveLeft_b();
+                        }
                     break;
-
+                    
                     case 3:
+                        if(readyPlayer.size()>=1){
                         readyPlayer[0]->moveRigth_b();
-                    break;  
+                        }
+                    break; 
+                    
                     //JUGADOR 2
+                    
                     case 73:
+                        if(readyPlayer.size()>=2){
                         readyPlayer[1]->moveLeft_b();
+                        }
                     break;
 
                     case 72:
+                        if(readyPlayer.size()>=2){
                         readyPlayer[1]->moveRigth_b();
+                        }
                     break;
+                    
                     //JUGADOR 3
+                    
                     case 10:
+                        if(readyPlayer.size()>=3){
                         readyPlayer[2]->moveLeft_b();
+                        }
                     break;
 
                     case -1:
+                        if(readyPlayer.size()>=3){
                         readyPlayer[2]->moveRigth_b();
+                        }
                     break;
+                    
                     //JUGADOR 4
+                    
                     case 21:
+                        if(readyPlayer.size()>=4){
                         readyPlayer[3]->moveLeft_b();
+                        }
                     break;
 
                     case 13:
+                        if(readyPlayer.size()>=4){
                         readyPlayer[3]->moveRigth_b();
+                        }
                     break;
+                    /*
+                    case 57:
+                        std::cout<<"anim 1"<<readyPlayer[0]->anima()<<std::endl;
+                        std::cout<<"anim 2"<<readyPlayer[1]->anima()<<std::endl;
+                        std::cout<<"anim 3"<<readyPlayer[2]->anima()<<std::endl;
+                        std::cout<<"anim 4"<<readyPlayer[3]->anima()<<std::endl;
+                    break;
+                    */
                    
                 }
                 break;
@@ -174,90 +204,6 @@ void Juego::HandleEvents(){
         }
 
     }
-    //JUGADOR 1
-    if(keys[22]){
-        if(readyPlayer[0]->isOnAir()==false){
-            //Hay salto
-            if(keys[0])         readyPlayer[0]->moveUp_l(); 
-            else{ 
-                if(keys[3])     readyPlayer[0]->moveUp_r();
-                else            readyPlayer[0]->moveUp();
-            }
-        }
-        
-    }else{
-        //no hay salto
-        if(keys[0])             readyPlayer[0]->moveLeft(); 
-        if(keys[3])             readyPlayer[0]->moveRigth();
-        
-    }
-    //JUGADOR 2                                
-    if(keys[73]){ // arriba
-        if(readyPlayer[1]->isOnAir()==false){
-            //Hay salto
-            if(keys[71])         readyPlayer[1]->moveUp_l(); 
-            else{ 
-                if(keys[72])     readyPlayer[1]->moveUp_r();
-                else             readyPlayer[1]->moveUp();
-            }
-        }        
-        
-    }else{
-        //no hay salto
-        if(keys[71])             readyPlayer[1]->moveLeft(); 
-        if(keys[72])             readyPlayer[1]->moveRigth();
-        
-    }
-    //JUGADOR 3                                
-    if(keys[14]){ // arriba
-        if(readyPlayer[2]->isOnAir()==false){
-            //Hay salto
-            if(keys[10])         readyPlayer[2]->moveUp_l(); 
-            else{ 
-                if(keys[-1])     readyPlayer[2]->moveUp_r();
-                else             readyPlayer[2]->moveUp();
-            }
-        }        
-        
-    }else{
-        //no hay salto
-        if(keys[10])             readyPlayer[2]->moveLeft(); 
-        if(keys[-1])             readyPlayer[2]->moveRigth();
-        
-    }
-    //JUGADOR 4                                
-    if(keys[6]){ // arriba
-        if(readyPlayer[3]->isOnAir()==false){
-            //Hay salto
-            if(keys[21])         readyPlayer[3]->moveUp_l(); 
-            else{ 
-                if(keys[13])     readyPlayer[3]->moveUp_r();
-                else             readyPlayer[3]->moveUp();
-            }
-        }        
-        
-    }else{
-        //no hay salto
-        if(keys[21])             readyPlayer[3]->moveLeft(); 
-        if(keys[13])             readyPlayer[3]->moveRigth();
-        
-    }
-    
-    /*
-    if(keys[22] && !keys[0] && !keys[3])    readyPlayer[0]->moveUp();                                   //W
-    
-    if(keys[22] && keys[0]){
-                        readyPlayer[0]->moveUp_l();
-    }else{
-        if(keys[0])     readyPlayer[0]->moveLeft();  
-    }
-    
-    if(keys[22] && keys[3]){
-                        readyPlayer[0]->moveUp_r();
-    }else{
-        if(keys[3])     readyPlayer[0]->moveRigth();
-    }
-    */
     if(keys[16])    sfml->Instance().close();                                   //Q
 
     if(keys[36]){   
