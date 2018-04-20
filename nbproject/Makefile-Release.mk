@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Animator.o \
 	${OBJECTDIR}/AssetManager.o \
+	${OBJECTDIR}/Hud.o \
 	${OBJECTDIR}/Juego.o \
 	${OBJECTDIR}/MPuntuaciones.o \
 	${OBJECTDIR}/Mapa/Mapa.o \
@@ -47,6 +48,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Mapa/Nodo/Nodo.o \
 	${OBJECTDIR}/MenuInicio.o \
 	${OBJECTDIR}/MenuPausa.o \
+	${OBJECTDIR}/Particle.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/boss.o \
 	${OBJECTDIR}/main.o \
@@ -94,6 +96,11 @@ ${OBJECTDIR}/AssetManager.o: AssetManager.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AssetManager.o AssetManager.cpp
+
+${OBJECTDIR}/Hud.o: Hud.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Hud.o Hud.cpp
 
 ${OBJECTDIR}/Juego.o: Juego.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -144,6 +151,11 @@ ${OBJECTDIR}/MenuPausa.o: MenuPausa.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MenuPausa.o MenuPausa.cpp
+
+${OBJECTDIR}/Particle.o: Particle.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Particle.o Particle.cpp
 
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
