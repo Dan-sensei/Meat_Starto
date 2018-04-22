@@ -15,7 +15,7 @@
 #include "mj_t.h"
 #include <random>
 
-#define DES 700
+#define DES 1500
 
 mj_t::mj_t() {}
 
@@ -78,9 +78,6 @@ void mj_t::init(int x_) {
 }
 
 void mj_t::crearPieza() {
-    physicsEngine *world;
-    
-
     //GENERO EL NUMERO ALEATORIO
     //std::uniform_real_distribution<float> dv(4,8);
     
@@ -103,7 +100,7 @@ void mj_t::crearPieza() {
     
     for(int i=0 ; i<4 ; i++){
         nt = physicsEngine::Instance().genIntRandom(0, 6);
-        p->r[i].setFillColor('r');
+        p->r[i].setFillColor('g');
         p->r[i].setSize(a,a);
         switch(nt){
             case 1:
@@ -251,6 +248,7 @@ void mj_t::crearPieza() {
     //p->c.setOutlineThickness(7);
     v_piezas.push_back(*p);
     
+    //DANJER!
     delete p;
 }
 
@@ -278,25 +276,18 @@ void mj_t::update() {
             }
             
             //MUEVO LOS MUROS (BOX2D+SFML)
-            if(m2.pb.getYPosition()>500){
-                m2.pb.setLinealVelocicity(0,0);
+            if(m1.rect.getPosition()[1]<500){
+                m1.rect.move(0,5);
+                m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]+(70/2));
             }
-            else{
-                m2.pb.setLinealVelocicity(0,5);
-                m2.rect.setPosition(m2.rect.getPosition()[0],m2.pb.getYPosition());
-            }
-            
-            if(m1.pb.getYPosition()>500){
-                m1.pb.setLinealVelocicity(0,0);
-            }
-            else{
-                m1.pb.setLinealVelocicity(0,5);
-                m1.rect.setPosition(m1.rect.getPosition()[0],m1.pb.getYPosition());
+            if(m2.rect.getPosition()[1]<500){
+                m2.rect.move(0,5);
+                m2.pb.setPosition(m2.rect.getPosition()[0]+(70/2),m2.rect.getPosition()[1]+(70/2));
             }
             
             //CREO LAS PIEZAS
             if(dt.getElapsedTime().asSeconds() >= 0.2 && clock.getElapsedTime().asSeconds() < 55){
-                std::cout << "CREO PIEZA: " << clock.getElapsedTime().asSeconds() << std::endl;
+                //std::cout << "CREO PIEZA: " << clock.getElapsedTime().asSeconds() << std::endl;
                 dt.restart();
                 crearPieza();
             }
@@ -304,8 +295,10 @@ void mj_t::update() {
             //MUEVO LAS PIEZAS
             int fin_pieza = 5000;
             float v = 0.5f;
-            
+            bool elim = true;
+
             for(int i = 0 ; i<v_piezas.size() ; i++){
+                elim = true;
                 for(int j=0 ; j<4 ; j++){
                     if(v_piezas[i].r[j].getPosition()[1] < fin_pieza){
                         if(clock.getElapsedTime().asSeconds()<20){
@@ -320,10 +313,12 @@ void mj_t::update() {
                         else{
                             v_piezas[i].r[j].move(0,v_piezas[i].vel+(v*10));
                         }
+                        elim = false;
                     }
-                    else{
-                        v_piezas[i].r[j].setPosition(x_min, 2000);
-                    }
+                }
+                if(elim){
+                    v_piezas.erase(v_piezas.begin()+i);
+                    v_piezas.shrink_to_fit();
                 }
             }
             
@@ -333,12 +328,17 @@ void mj_t::update() {
                 on = false;
                 
                 v_piezas.clear();
-                m1.pb.setLinealVelocicity(0,-20);
-                m1.rect.setPosition(m1.rect.getPosition()[0],-140);
+                m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]);
             }
         }
         else if(x_ < x_min || x_ > x_max){
             on = false;
+        }
+    }
+    else if(!on){
+        if(m1.rect.getPosition()[1]>-200){
+            m1.rect.move(0,-5);
+            m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]+(70/2));
         }
     }
 }

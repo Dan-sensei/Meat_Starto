@@ -80,8 +80,6 @@ void boss::update() {
     renderEngine *sfml;
     
     float x_m = sfml->Instance().getViewCenter()[0];
-    float x_ = Juego::Instance().getPlayerPosition()[0];
-    float y_ = Juego::Instance().getPlayerPosition()[1];
     
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
     physicsEngine *world;
@@ -124,40 +122,7 @@ void boss::update() {
         updateJavi();
         
         //std::cout << " | ----------- Fases del Boss" << std::endl;
-        if(clock_boss.getElapsedTime().asSeconds()<20 && clock_boss.getElapsedTime().asSeconds()>=0){
-            if(dt_boss.getElapsedTime().asSeconds() > 0.2){
-                    //std::cout << "CREO BALA" << std::endl;
-                crearProyectil(x_,y_);
-                dt_boss.restart();
-            }
-        }
-        else if(clock_boss.getElapsedTime().asSeconds()>25 && clock_boss.getElapsedTime().asSeconds()<=26){
-            if(dt_boss.getElapsedTime().asSeconds() > 0.05){
-                    //std::cout << "CREO BALA" << std::endl;
-                crearProyectil(x_,y_);
-                dt_boss.restart();
-            }
-        }
-        else if(clock_boss.getElapsedTime().asSeconds()>28 && clock_boss.getElapsedTime().asSeconds()<=30){
-            if(dt_boss.getElapsedTime().asSeconds() > 0.5){
-                crearAbanicoProyectiles();
-                dt_boss.restart();
-            }
-        }
-        else if(clock_boss.getElapsedTime().asSeconds()>30 && clock_boss.getElapsedTime().asSeconds()<31){
-            if(dt_boss.getElapsedTime().asSeconds() > 0.002){
-                    //std::cout << "CREO BALA" << std::endl;
-                crearProyectil(x_,y_);
-                dt_boss.restart();
-            }
-        }
-        else if(clock_boss.getElapsedTime().asSeconds()>=31){
-            if(dt_boss.getElapsedTime().asSeconds() > 0.2){
-                    //std::cout << "CREO BALA" << std::endl;
-                crearProyectil(x_,y_);
-                dt_boss.restart();
-            }
-        }
+        fasesBoss();
             
         //std::cout << " | ----------- Habilidades especiales" << std::endl;
         if(dt_fan.getElapsedTime().asSeconds()>0.1){
@@ -178,8 +143,8 @@ void boss::update() {
             javi.proy[i]->r.move(vx,vy);
             
             //MILAGROSAMENTE FUNCIONA
-            if( javi.proy[i]->r.getPosition()[1]>2100    || javi.proy[i]->r.getPosition()[1]<0 || 
-                javi.proy[i]->r.getPosition()[0]>x_max   || javi.proy[i]->r.getPosition()[0]<x_min){
+            if( javi.proy[i]->r.getPosition()[1]>2600    || javi.proy[i]->r.getPosition()[1]<0 || 
+                javi.proy[i]->r.getPosition()[0]>x_max+(70*5)   || javi.proy[i]->r.getPosition()[0]<x_min-(70*5)){
                     //std::cout << "Soy un proyectil y me destruyo" << std::endl;
                 
                 delete javi.proy[i];
@@ -216,6 +181,50 @@ void boss::update() {
     }
     else{
         on = false;
+    }
+}
+
+void boss::fasesBoss() {
+    int np = Juego::Instance().getPlayers()->size();
+    int r = physicsEngine::Instance().genIntRandom(0,np-1);
+    
+    //std::cout << Juego::Instance().getPlayers()[0][r]->getName() << std::endl;
+    float x_ = Juego::Instance().getPlayers()[0][r]->getXPosition();
+    float y_ = Juego::Instance().getPlayers()[0][r]->getYPosition();
+    
+    if(clock_boss.getElapsedTime().asSeconds()<20 && clock_boss.getElapsedTime().asSeconds()>=0){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.2){
+                //std::cout << "CREO BALA" << std::endl;
+            crearProyectil(x_,y_);
+            dt_boss.restart();
+        }
+    }
+    else if(clock_boss.getElapsedTime().asSeconds()>25 && clock_boss.getElapsedTime().asSeconds()<=26){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.05){
+                //std::cout << "CREO BALA" << std::endl;
+            crearProyectil(x_,y_);
+            dt_boss.restart();
+        }
+    }
+    else if(clock_boss.getElapsedTime().asSeconds()>28 && clock_boss.getElapsedTime().asSeconds()<=30){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.5){
+            crearAbanicoProyectiles();
+            dt_boss.restart();
+        }
+    }
+    else if(clock_boss.getElapsedTime().asSeconds()>30 && clock_boss.getElapsedTime().asSeconds()<31){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.002){
+                //std::cout << "CREO BALA" << std::endl;
+            crearProyectil(x_,y_);
+            dt_boss.restart();
+        }
+    }
+    else if(clock_boss.getElapsedTime().asSeconds()>=31){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.2){
+                //std::cout << "CREO BALA" << std::endl;
+            crearProyectil(x_,y_);
+            dt_boss.restart();
+        }
     }
 }
 
