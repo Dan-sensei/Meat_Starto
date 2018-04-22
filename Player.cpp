@@ -177,7 +177,7 @@ void Player::update(renderEngine::rTime deltatime){
 void Player::moveRigth(){
     if(animator.GetCurrentAnimationName() != "a_rigth" && animator.GetCurrentAnimationName() != "a_jump_r"){
         animator.SwitchAnimation("a_rigth");
-        std::cout<<"derecha"<<id;
+        //std::cout<<"derecha"<<id;
     }
 }
 
@@ -192,7 +192,7 @@ void Player::moveLeft(){
     if(animator.GetCurrentAnimationName() != "a_left" && animator.GetCurrentAnimationName() != "a_jump_l"){
         animator.SwitchAnimation("a_left");
     }
-    std::cout<<"izquierda"<<id;
+    //std::cout<<"izquierda"<<id;
                                                                          
 
 }

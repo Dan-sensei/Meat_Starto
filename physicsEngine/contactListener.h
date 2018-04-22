@@ -15,12 +15,16 @@
 #define CONTACTLISTENER_H
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <list>
 
 
 class contactListener : public b2ContactListener {
 public:
     void BeginContact(b2Contact* contact) override;
     void EndContact(b2Contact* contact) override;
+    
+    std::list<b2Contact*> contacts;
 };
 
 #endif /* CONTACTLISTENER_H */

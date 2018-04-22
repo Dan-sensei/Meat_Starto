@@ -30,7 +30,7 @@ void contactListener::BeginContact(b2Contact* contact){
 
     
     physicsEngine::type* typeA = static_cast<physicsEngine::type*>(a);
-    physicsEngine::type* typeB = static_cast<physicsEngine::type*>(b);
+    physicsEngine::type* typeB = static_cast<physicsEngine::type*>(b);      
     
     //   GROUND = 1
     //   PLAYER = 2
@@ -40,15 +40,19 @@ void contactListener::BeginContact(b2Contact* contact){
     b2WorldManifold worldManifold;
     contact->GetWorldManifold(&worldManifold);
     
+    float normalX = worldManifold.normal.x;
+    float normalY = worldManifold.normal.y;
     // SUELO CON JUGADOR
     if(typeA->id == 1 && typeB->id == 2 ){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
+            contacts.push_back(contact);
             Player* p = static_cast<Player*>(typeB->data);
             p->setAir(1); 
         }
     }
     else if(typeB->id == 1 && typeA->id == 2){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -0.97 && normalY <= -1.03){
+            contacts.push_back(contact);
             Player* p = static_cast<Player*>(typeA->data);
             p->setAir(1);    
         }
@@ -56,13 +60,13 @@ void contactListener::BeginContact(b2Contact* contact){
     
     // SKULL CON JUGADOR
     if(typeA->id == 4 && typeB->id == 2 ){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
             Player* p = static_cast<Player*>(typeB->data);
             p->setAir(1); 
         }
     }
     else if(typeB->id == 4 && typeA->id == 2){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
             Player* p = static_cast<Player*>(typeB->data);
             p->setAir(1); 
         }
@@ -86,28 +90,52 @@ void contactListener::EndContact(b2Contact* contact){
     contact->GetWorldManifold(&worldManifold);
     
     if(typeA->id == 1 && typeB->id == 2){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
-            Player* p = static_cast<Player*>(typeB->data);
-            p->setAir(-1);
+        std::list<b2Contact*>::iterator it = contacts.begin();
+        while(it != contacts.end()){
+            if((*it) == contact){
+                Player* p = static_cast<Player*>(typeB->data);
+                p->setAir(-1);
+                contacts.erase(it++);
+            }
+            else
+                ++it;
         }
     }
     else if(typeB->id == 1 && typeA->id == 2){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
-            Player* p = static_cast<Player*>(typeA->data);
-            p->setAir(-1);
+        std::list<b2Contact*>::iterator it = contacts.begin();
+        while(it != contacts.end()){
+            if((*it) == contact){
+                Player* p = static_cast<Player*>(typeA->data);
+                p->setAir(-1);
+                contacts.erase(it++);
+            }
+            else
+                ++it;
         }
     }
     
     if(typeA->id == 4 && typeB->id == 2){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
-            Player* p = static_cast<Player*>(typeB->data);
-            p->setAir(-1);
+        std::list<b2Contact*>::iterator it = contacts.begin();
+        while(it != contacts.end()){
+            if((*it) == contact){
+                Player* p = static_cast<Player*>(typeB->data);
+                p->setAir(-1);
+                contacts.erase(it++);
+            }
+            else
+                ++it;
         }
     }
     else if(typeB->id == 4 && typeA->id == 2){
-        if(worldManifold.normal.x == 0 && worldManifold.normal.y == -1){
-            Player* p = static_cast<Player*>(typeB->data);
-            p->setAir(-1);
+        std::list<b2Contact*>::iterator it = contacts.begin();
+        while(it != contacts.end()){
+            if((*it) == contact){
+                Player* p = static_cast<Player*>(typeA->data);
+                p->setAir(-1);
+                contacts.erase(it++);
+            }
+            else
+                ++it;
         }
     }
     
