@@ -44,6 +44,7 @@ private:
     void crearProyectil(float x_, float y_);
     void crearProyectilTele();
     void updateJavi();
+    void fasesBoss();
     
     //float getVX_BP(); //DEVUELVE LA COMPONENTE X DEL VECTOR VELOCIDAD DEL 
     
