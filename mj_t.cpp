@@ -33,48 +33,42 @@ void mj_t::init(int x_) {
     physicsEngine *world;
     //  MURO1 (DERECHA)
     int a = 70; //ANCHO TILE
-    float x = x_max-(6*a);
-    float y = a*2;
-    int n = 23;
+    float x = x_max-(5*a);
+    float y = (a*2)-DES;
+    int n = 27;
     
     m1.rect.setSize(a,a*n);
     m1.rect.setPosition(x,y);
     m1.rect.setFillColor('k');
     
-    y = a;
-    m1.pb = world->Instance().createBody(a,a*44,x+(m1.rect.getSize()[0]/2),y-DES+(m1.rect.getSize()[1]/2),'k');
+    float w = m1.rect.getSize()[0];
+    float h = m1.rect.getSize()[1];
+    m1.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k');
+
     m1.pb.setUserData((void*)"Pared");
     float px = m1.pb.getXPosition();
     float py = m1.pb.getYPosition();
-    m1.rect.setPosition(x,py);
+    //m1.rect.setPosition(x,py);
     
     
     //  MURO2 (IZQUIERDA)
     x = x_min-(16*a);
-    y = a*2;
-    n = 23;
+    y = (a*2)-DES;
         
     m2.rect.setSize(a,a*n);
     m2.rect.setPosition(x,y);
     m2.rect.setFillColor('k');
     
-    y = a;
-    m2.pb = world->Instance().createBody(a,a*44,x+(m2.rect.getSize()[0]/2),y-DES+(m2.rect.getSize()[1]/2),'k');
+    w = m2.rect.getSize()[0];
+    h = m2.rect.getSize()[1];
+    m2.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k');
     
     px = m2.pb.getXPosition();
     py = m2.pb.getYPosition();
-    m2.rect.setPosition(x,py);
+    //m2.rect.setPosition(x,py);
     
     //m1.text.loadFromFile("assets/tetris/t_tetris.png");
     //m2.text.loadFromFile("assets/tetris/t_tetris.png");
-    
-    /*
-    //CREO LAS PIEZAS
-    for(int i = 0 ; i<100 ; i++){
-        crearPieza();
-    }
-    */
-    
 }
 
 void mj_t::crearPieza() {
@@ -276,13 +270,17 @@ void mj_t::update() {
             }
             
             //MUEVO LOS MUROS (BOX2D+SFML)
-            if(m1.rect.getPosition()[1]<500){
+            if(m1.rect.getPosition()[1]<210){
                 m1.rect.move(0,5);
-                m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]+(70/2));
+                float w = m2.rect.getSize()[0];
+                float h = m2.rect.getSize()[1];
+                m1.pb.setPosition(m1.rect.getPosition()[0]+(w/2),m1.rect.getPosition()[1]+(h/2));
             }
-            if(m2.rect.getPosition()[1]<500){
+            if(m2.rect.getPosition()[1]<140){
                 m2.rect.move(0,5);
-                m2.pb.setPosition(m2.rect.getPosition()[0]+(70/2),m2.rect.getPosition()[1]+(70/2));
+                float w = m2.rect.getSize()[0];
+                float h = m2.rect.getSize()[1];
+                m2.pb.setPosition(m2.rect.getPosition()[0]+(w/2),m2.rect.getPosition()[1]+(h/2));
             }
             
             //CREO LAS PIEZAS

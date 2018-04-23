@@ -11,7 +11,10 @@
  * Created on 9 de abril de 2018, 8:27
  */
 
+#include <complex>
+#include "../../../Juego.h"
 #include "xPlotato.h"
+#include "math.h"
 
 #define velocity 2.f
 
@@ -28,7 +31,8 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     sprite.setPosition(x_, y_);
     
     physicsEngine* world;
-    body = world->Instance().createBody(width, height, x_, y_, 'K');
+    //body = world->Instance().createBody(width, height, x_, y_, 'K');
+    body = world->Instance().createBody(width, height, x_, y_, 'd');
     t = new physicsEngine::type;
     t->id = 3;
     t->data = this;
@@ -47,6 +51,8 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     previous.y = actual.y = body.getYPosition();
     previous.r = actual.r = body.getRotation();
     
+    xplotar = false;
+    pum = false;
 }
 
 xPlotato::xPlotato(const xPlotato& orig) {
@@ -70,20 +76,60 @@ xPlotato::~xPlotato() {
 
 void xPlotato::update(){
     
-    if(abs(body.getLinearXVelocity()) < 1){
-        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-        sprite.setScale(-1, 1);
+    if(xplotar){
+        direccion();
+        if(xclock.getElapsedTime().asSeconds() > 1){
+            pum = true;
+        }
     }
     
-    if(target == x_begin && body.getXPosition() <= target ){
-        target = x_end;
-        body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-        sprite.setScale(1, 1);
+    if(!xplotar){
+        persigue();
         
+        if(abs(body.getLinearXVelocity()) < 1){
+            body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+            sprite.setScale(-1, 1);
+        }
+
+        if(target == x_begin && body.getXPosition() <= target ){
+            target = x_end;
+            body.setLinealVelocicity(velocity, body.getLinearYVelocity());
+            sprite.setScale(1, 1);
+
+        }
+        else if(target == x_end && body.getXPosition() >= target){
+            target = x_begin;
+            body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+            sprite.setScale(-1, 1);
+        }
     }
-    else if(target == x_end && body.getXPosition() >= target){
-        target = x_begin;
-        body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+}
+
+void xPlotato::persigue() {
+    int np = Juego::Instance().getPlayers()->size();
+    int r = physicsEngine::Instance().genIntRandom(0,np-1);
+
+    float x_ = (Juego::Instance().getPlayers()[0][r]->getXPosition()-sprite.getPosition()[0]);
+    float y_ = (Juego::Instance().getPlayers()[0][r]->getYPosition()-sprite.getPosition()[1]);
+
+    if(sqrt((x_*x_)+(y_*y_)) < 70*5){
+        std::cout << "LA PATATA TE OBSERVA: " << Juego::Instance().getPlayers()[0][r]->getName() << std::endl;
+        /*
+         */
+        xplotar = true;
+        pj = r;
+        direccion();
+        xclock.restart();
+    }
+}
+
+void xPlotato::direccion() {
+    if(sprite.getPosition()[0] > Juego::Instance().getPlayers()[0][pj]->getXPosition()){
+        body.setLinealVelocicity(-4.f,body.getLinearYVelocity());
         sprite.setScale(-1, 1);
+    }
+    else{
+        body.setLinealVelocicity(4.f,body.getLinearYVelocity());
+        sprite.setScale(1, 1);
     }
 }

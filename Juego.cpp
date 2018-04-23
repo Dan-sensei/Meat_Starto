@@ -63,8 +63,9 @@ Juego::Juego() {
     
     
     //JUGADORES
+
     int i = 0;
-    
+
     do{
         
         readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1260, 1400, 'D', keys));
@@ -75,7 +76,7 @@ Juego::Juego() {
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
-    //THE_ARID_FLATS.play();
+    THE_ARID_FLATS.play();
 
     rain.setPosition(1500, 200);
     rain.setType(1);
