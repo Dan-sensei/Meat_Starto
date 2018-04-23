@@ -16,6 +16,7 @@ build/Debug/GNU-Linux/Mapa/Nodo/NPCs/xPlotato.o: \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Ground.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/../../Player.h \
+ Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/xPlotato.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
@@ -77,6 +78,8 @@ Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h:
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/Ground.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/../../Player.h:
+
+Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h:
 

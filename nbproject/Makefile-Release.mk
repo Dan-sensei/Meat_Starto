@@ -42,6 +42,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/MPuntuaciones.o \
 	${OBJECTDIR}/Mapa/Mapa.o \
 	${OBJECTDIR}/Mapa/Nodo/Ground.o \
+	${OBJECTDIR}/Mapa/Nodo/Minijuegos/Minijuego.o \
+	${OBJECTDIR}/Mapa/Nodo/Minijuegos/goingUp.o \
 	${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o \
 	${OBJECTDIR}/Mapa/Nodo/NPCs/Skull.o \
 	${OBJECTDIR}/Mapa/Nodo/NPCs/xPlotato.o \
@@ -121,6 +123,16 @@ ${OBJECTDIR}/Mapa/Nodo/Ground.o: Mapa/Nodo/Ground.cpp
 	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Ground.o Mapa/Nodo/Ground.cpp
+
+${OBJECTDIR}/Mapa/Nodo/Minijuegos/Minijuego.o: Mapa/Nodo/Minijuegos/Minijuego.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/Minijuegos
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Minijuegos/Minijuego.o Mapa/Nodo/Minijuegos/Minijuego.cpp
+
+${OBJECTDIR}/Mapa/Nodo/Minijuegos/goingUp.o: Mapa/Nodo/Minijuegos/goingUp.cpp
+	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/Minijuegos
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa/Nodo/Minijuegos/goingUp.o Mapa/Nodo/Minijuegos/goingUp.cpp
 
 ${OBJECTDIR}/Mapa/Nodo/NPCs/NPC.o: Mapa/Nodo/NPCs/NPC.cpp
 	${MKDIR} -p ${OBJECTDIR}/Mapa/Nodo/NPCs

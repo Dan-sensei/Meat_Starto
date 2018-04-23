@@ -5,7 +5,8 @@ build/Debug/GNU-Linux/physicsEngine/physicsEngine.o: \
  physicsEngine/contactListener.h physicsEngine/pBody.h AssetManager.h \
  renderEngine/rSoundBuffer.h physicsEngine/physicsEngine.h \
  Mapa/Nodo/Nodo.h Mapa/Nodo/NPCs/NPC.h Mapa/Nodo/Ground.h \
- Mapa/Nodo/../../Player.h Mapa/Nodo/../../Animator.h
+ Mapa/Nodo/../../Player.h Mapa/Nodo/../../Animator.h \
+ Mapa/Nodo/Minijuegos/Minijuego.h
 
 /usr/include/tinyxml2.h:
 
@@ -38,3 +39,5 @@ Mapa/Nodo/Ground.h:
 Mapa/Nodo/../../Player.h:
 
 Mapa/Nodo/../../Animator.h:
+
+Mapa/Nodo/Minijuegos/Minijuego.h:

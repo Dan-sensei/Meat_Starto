@@ -12,8 +12,12 @@
     </logicalFolder>
     <logicalFolder name="f5" displayName="Mapa" projectFiles="true">
       <logicalFolder name="f2" displayName="Minijuegos" projectFiles="true">
+        <itemPath>Mapa/Nodo/Minijuegos/Minijuego.cpp</itemPath>
+        <itemPath>Mapa/Nodo/Minijuegos/Minijuego.h</itemPath>
         <itemPath>boss.cpp</itemPath>
         <itemPath>boss.h</itemPath>
+        <itemPath>Mapa/Nodo/Minijuegos/goingUp.cpp</itemPath>
+        <itemPath>Mapa/Nodo/Minijuegos/goingUp.h</itemPath>
         <itemPath>mj_t.cpp</itemPath>
         <itemPath>mj_t.h</itemPath>
       </logicalFolder>
@@ -88,10 +92,19 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
     <itemPath>Hud.cpp</itemPath>
     <itemPath>Hud.h</itemPath>
-    <itemPath>Particle.cpp</itemPath>
-    <itemPath>Particle.h</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -162,6 +175,14 @@
       <item path="Mapa/Nodo/Ground.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Mapa/Nodo/Ground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/Minijuego.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/Minijuego.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/goingUp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/goingUp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Mapa/Nodo/NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -287,6 +308,14 @@
       <item path="Mapa/Nodo/Ground.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Mapa/Nodo/Ground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/Minijuego.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/Minijuego.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/goingUp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa/Nodo/Minijuegos/goingUp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Mapa/Nodo/NPCs/NPC.cpp" ex="false" tool="1" flavor2="0">
       </item>
