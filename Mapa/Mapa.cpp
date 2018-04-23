@@ -20,7 +20,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 30
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 

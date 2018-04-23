@@ -26,6 +26,14 @@ public:
     void update();
     
 private:
+    void persigue();
+    void direccion();
+    
+    bool xplotar;
+    bool pum;
+    int pj;
+    renderEngine::rClock xclock;
+    
     physicsEngine::type* t;
     int x_begin;
     int x_end;
