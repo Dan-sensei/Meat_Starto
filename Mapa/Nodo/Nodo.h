@@ -53,8 +53,6 @@ public:
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);
     int getPop();
-    void setPreviousCheckPoint(Nodo::checkPoint prev);
-    Nodo::checkPoint getLastCheckPoint();
     
     virtual void update();
     void preState();

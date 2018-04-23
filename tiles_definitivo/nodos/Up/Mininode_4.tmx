@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="43" height="6" tilewidth="70" tileheight="70" infinite="0" nextobjectid="15">
+ <tileset firstgid="1" source="../../tiles_fv.tsx"/>
+ <layer name="Capa de Patrones 1" width="43" height="6">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,23,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,31,0,0,0,0,0,0,0,0,15,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,27,0,0,0,
+0,0,0,7,0,0,0,0,0,0,0,0,26,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,27,0,0,0,0,0,0,0,0,5,0,0,0,
+8,8,0,0,0,8,8,34,8,0,0,0,0,6,0,0,0,8,8,34,8,8,8,34,8,8,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,
+26,31,0,0,0,26,31,26,26,0,0,0,0,0,0,0,0,26,26,27,26,31,27,26,26,26,0,0,0,0,0,0,0,0,31,26,27,26,0,0,0,28,31,
+0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,6,0,7,7,0,0,0,0,0,0,0,0,5,0,5,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="colision">
+  <object id="1" x="0" y="280">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="2" x="210" y="70">
+   <polyline points="0,0 70,0 70,70 0,70 0,0"/>
+  </object>
+  <object id="3" x="350" y="280">
+   <polyline points="0,0 280,0 280,70 0,70 0,0"/>
+  </object>
+  <object id="4" x="840" y="140">
+   <polyline points="0,0 70,0 70,-70 140,-70 140,70 0,70 0,0"/>
+  </object>
+  <object id="5" x="1190" y="280">
+   <polyline points="0,0 630,0 630,70 0,70 0,0"/>
+  </object>
+  <object id="6" x="2030" y="70">
+   <polyline points="0,0 70,0 70,70 140,70 140,140 0,140 0,0"/>
+  </object>
+  <object id="7" x="2380" y="280">
+   <polyline points="0,0 280,0 280,70 0,70 0,0"/>
+  </object>
+  <object id="8" x="2730" y="70">
+   <polyline points="0,0 70,0 70,70 0,70 0,0"/>
+  </object>
+  <object id="10" x="2870" y="280">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="checkpoint">
+  <object id="12" x="1470" y="70" width="70" height="70"/>
+  <object id="13" x="2450" y="70" width="70" height="70"/>
+  <object id="14" x="350" y="70" width="70" height="70"/>
+ </objectgroup>
+</map>

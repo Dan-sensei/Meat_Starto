@@ -94,6 +94,9 @@ private:
     renderEngine::rClock inmortalityClock;
     renderEngine::rClock speedClock;
     
+    renderEngine::rClock respawnTimeClock;
+    bool spawned;
+    
     pBody body;
 };
 

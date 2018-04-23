@@ -228,6 +228,27 @@ void Nodo::update(){
         
         Player* ready = (*players)[i];
         
+        std::list<checkPoint>::iterator it = checkpoints.begin();
+        while(it != checkpoints.end()){
+            if(ready->getXPosition() > (*it).shape.getPosition()[0]){
+                (*it).active = true;
+                (*it).shape.setOutlineColor('g');
+                maxXCheckPoint = (*it).shape.getPosition()[0];
+            }
+
+            ++it;
+        }
+        
+        int x = 0;
+        it = checkpoints.begin();
+        while(it != checkpoints.end()){
+            if((*it).shape.getPosition()[0] < maxXCheckPoint)
+                checkpoints.erase(it++);
+            else
+                ++it;
+            x++;
+        }
+        
         // EVENTOS
         if(!ready->isInmortal())
             checkColisionsPinchos(ready);
@@ -239,7 +260,8 @@ void Nodo::update(){
                 //Puntero a funcion
                 pFunc funcion = array_funciones[powers[j].id];   
                 if(funcion != nullptr) (ready->*funcion)();
-                 flag = true;
+                powers.erase(powers.begin()+j);
+                flag = true;
             }
         }  
     }
@@ -252,23 +274,6 @@ void Nodo::update(){
 
 void Nodo::checkColisionsPinchos(Player* ready) {
     std::list<checkPoint>::iterator it = checkpoints.begin();
-    while(it != checkpoints.end()){
-        if(ready->getXPosition() > (*it).shape.getPosition()[0]){
-            (*it).active = true;
-            (*it).shape.setOutlineColor('g');
-            maxXCheckPoint = (*it).shape.getPosition()[0];
-        }
-
-        ++it;
-    }
-
-    it = checkpoints.begin();
-    while(it != checkpoints.end()){
-        if((*it).shape.getPosition()[0] < maxXCheckPoint)
-            checkpoints.erase(it++);
-        else
-            ++it;
-    }
 
     bool flag = false;
     //Colision con pinchos
@@ -315,27 +320,4 @@ void Nodo::newState(){
     for(int i = 0; i < npcs.size(); i++){
         npcs[i]->newState();
     }
-}
-
-Nodo::checkPoint Nodo::getLastCheckPoint() {
-    checkPoint last;
-    if(checkpoints.size() > 0){
-        last = checkpoints.back();
-
-        for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it){
-            if((*it).shape.getPosition()[0] > last.shape.getPosition()[0]){
-                last = (*it);
-            }
-            else if((*it).shape.getPosition()[0] == last.shape.getPosition()[0]){
-                if((*it).shape.getPosition()[1] < last.shape.getPosition()[0])
-                    last = (*it);
-            }
-        }
-    }
-
-    return last;
-}
-
-void Nodo::setPreviousCheckPoint(checkPoint prev) {
-    checkpoints.push_back(prev);
 }

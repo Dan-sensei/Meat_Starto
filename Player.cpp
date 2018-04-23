@@ -152,6 +152,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     exp = 0;
     
     MAXSPEED = constMaxSeed;
+    
+    spawned = false;
 }
 
 Player::~Player() {
@@ -257,6 +259,12 @@ void Player::moveDown(){
 
 //MOVIMIENTO
 void Player::movement(){
+    
+    if(spawned && respawnTimeClock.getElapsedTime().asSeconds() > 0.25){
+        body.setActive(true);
+        spawned = false;
+    }
+    
     preState();
     // SALTO======================================================================
     if((keys[key_up]) && !isOnAir()){                                               //
@@ -364,6 +372,8 @@ void Player::setAir(int i){
     onAir += i;
 }
 
+// POWERS! =================================================================
+
 void Player::powerUpInmortalidad() {
     std::cout << "INMORTALIDAD!" << std::endl;
     inmortal = true;
@@ -401,6 +411,9 @@ void Player::powerDownFreeze() {
 
 void Player::setPosition(float x, float y) {
     body.setPosition(x, y);
+    body.setActive(false);
+    respawnTimeClock.restart();
+    spawned = true;
 }
 
 int Player::getAir() {

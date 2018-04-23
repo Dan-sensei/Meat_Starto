@@ -31,6 +31,8 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         float getLinearXVelocity();                         // Obtiene la velocidad lineal en el eje X
         float getLinearYVelocity();                         // Obtiene la velocidad lienal en el eje Y
         
+        void setActive(bool flag);
+        
         float getXPosition();                               // Posición en el eje X
         float getYPosition();                               // Posición en el eje Y
         float getRotation();                                // Rotación
@@ -42,7 +44,7 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
         b2Body* getBody();                                  // Devuelve la variable Body de Box2D
 
     private:
-
+        
         b2Body* body;                                       //Variable b2Body de Box2D
 };
 

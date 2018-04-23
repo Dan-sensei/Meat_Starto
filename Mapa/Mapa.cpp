@@ -426,13 +426,6 @@ void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
     int width = 0;
     int height = 0;
     
-    if(hex_list.size() > 1){
-        std::list<Nodo>::iterator pre = hex_list.end();
-        --pre;
-        --pre;
-        actual.setPreviousCheckPoint((*pre).getLastCheckPoint());
-    }
-
     while (obj) {
         obj->QueryIntAttribute("x", &xCoord);
         xCoord += x_max;

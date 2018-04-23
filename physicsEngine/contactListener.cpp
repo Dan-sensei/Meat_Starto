@@ -109,7 +109,7 @@ void contactListener::EndContact(b2Contact* contact){
                 Player* p = static_cast<Player*>(typeB->data);
                 p->setAir(-1);
                 contacts.erase(it++);
-                std::cout <<"END AIR " << p->getAir() << std::endl;
+                //std::cout <<"END AIR " << p->getAir() << std::endl;
             }
             else
                 ++it;
@@ -122,7 +122,7 @@ void contactListener::EndContact(b2Contact* contact){
                 Player* p = static_cast<Player*>(typeA->data);
                 p->setAir(-1);
                 contacts.erase(it++);
-                std::cout <<"END AIR " << p->getAir() << std::endl;
+                //std::cout <<"END AIR " << p->getAir() << std::endl;
             }
             else
                 ++it;
