@@ -11,11 +11,11 @@
  * Created on 4 de abril de 2018, 13:10
  */
 
+
 #include "Hud.h"
 #include "MenuInicio.h"
 
 Hud::Hud(std::vector<Player*> jugadores) {//cambiar y pasar array de jugadores
-    renderEngine *sfml;
 
     players=jugadores;//cambiar a array de jugadores
 
@@ -182,8 +182,6 @@ void Hud::cambiarHud(Player* player){
 }
 
 void Hud::render(){
-
-    renderEngine *sfml;
     
     for(int i=0; i<players.size(); i++){
 
@@ -194,5 +192,4 @@ void Hud::render(){
         }
     }
 
-     sfml->Instance().display();
 }
