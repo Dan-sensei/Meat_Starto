@@ -61,6 +61,7 @@ private:
     void leeSkulls(tinyxml2::XMLElement *obj, Nodo &actual);
     void leePorwerUps(tinyxml2::XMLElement *obj, Nodo &actual);
     void leeCheckPoints(tinyxml2::XMLElement *obj, Nodo &actual);
+    void leeMinijuego(tinyxml2::XMLElement *obj, Nodo &actual);
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS
@@ -89,11 +90,12 @@ private:
 
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
-    std::vector<int> matriz_v2[15];     // Guarda sólo los nodos a los que está conectada cada posición del array
+    std::vector<int> matriz_v2[16];     // Guarda sólo los nodos a los que está conectada cada posición del array
     int nodo_actual;
     
     //TETRIS
     bool m_tetris;
+    bool goingUp;
     
     //FONDOS
     float x_view;

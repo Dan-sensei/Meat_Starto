@@ -74,7 +74,7 @@
     InitMatrix();
     
     std::cout << "MATRIZ DE ADYACENCIA" << std::endl;
-    for(int i = 0; i < 15; i++){
+    for(int i = 0; i < 16; i++){
         if(i<10)
         std::cout << "Nodo  " << i << " => ";
         else
@@ -111,12 +111,10 @@
     mapa_funciones.insert(std::make_pair("skull", &Mapa::leeSkulls));
     mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
     mapa_funciones.insert(std::make_pair("checkpoint", &Mapa::leeCheckPoints));
+    mapa_funciones.insert(std::make_pair("minijuego", &Mapa::leeMinijuego));
     
     longitud = 0;
     end = false;
-    
-    //FONDO
-    renderEngine *sfml;
     
     //img_fondo.loadFromFIle("assets/fondo.PNG");
     //f1.t.loadFromImage(f1.img,*f1.ir);
@@ -141,31 +139,31 @@ void Mapa::InitMatrix() {
     //  v es n x n
     //  n = 15
 
-    int aux[15][15] = {
+    int aux[16][16] = {
         
     /* ================================ NODOS ==============================  */
-    /*        0   1   2   3   4   5   6   7   8   9   10  11  12  13  14      */
-    /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|       */
-    /*  0 */  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  
-    /*  1 */  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  1,  
-    /*  2 */  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  
-    /*  3 */  0,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  
-    /*  4 */  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  0,  1,  0,  
-    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  1,  0,  
-    /*  6 */  0,  1,  1,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  
-    /*  7 */  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  
-    /*  8 */  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  
-    /*  9 */  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  1,  1,  1,  
-    /* 10 */  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  
-    /* 11 */  0,  1,  1,  1,  0,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  
-    /* 12 */  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,  
-    /* 13 */  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  
-    /* 14 */  0,  1,  0,  0,  0,  1,  1,  0,  1,  0,  1,  0,  1,  1,  1  
-            
+    /*        0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15     */
+    /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|      */
+    /*  0 */  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,
+    /*  1 */  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  1,  1,
+    /*  2 */  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  1,
+    /*  3 */  0,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,
+    /*  4 */  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  0,  1,  0,  1,
+    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  1,  0,  0,
+    /*  6 */  0,  1,  1,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  0,
+    /*  7 */  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  1,
+    /*  8 */  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  1,
+    /*  9 */  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  1,  1,  1,  1,
+    /* 10 */  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,
+    /* 11 */  0,  1,  1,  1,  0,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  1,
+    /* 12 */  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,  1,
+    /* 13 */  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  1,
+    /* 14 */  0,  1,  0,  0,  0,  1,  1,  0,  1,  0,  1,  0,  1,  1,  1,  0,
+    /* 15 */  0,  1 , 1,  1,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  0,  0      
     };
 
-    for(int i = 0; i < 15; i++)
-        for(int j = 0; j < 15; j++)
+    for(int i = 0; i < 16; i++)
+        for(int j = 0; j < 16; j++)
             if(aux[i][j] == 1)
                 matriz_v2[i].push_back(j);
 
@@ -448,6 +446,31 @@ void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
     
 }
 
+void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual) {
+    
+    tinyxml2::XMLElement* property;
+    int type = -1;
+    
+    property = obj->FirstChildElement("properties");
+    if(property) property->FirstChildElement("property")->QueryAttribute("value", &type);
+    
+    obj = obj->FirstChildElement("object");
+    
+    int x, width;
+    int y, height;
+    
+    // Área donde todos los jugadores deben estar para dar comienzo al minijuego
+    obj->QueryIntAttribute("x", &x);
+    obj->QueryIntAttribute("width", &width);
+    obj->QueryIntAttribute("y", &y);
+    obj->QueryIntAttribute("height", &height);
+    
+
+    actual.addMinigame(type, x, y, width, height);
+    
+    
+}
+
 
 void Mapa::render(float tick_) {
     renderEngine *sfml;
@@ -544,7 +567,7 @@ void Mapa::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
         //std::cout << path << std::endl;
-    
+    //nodo_actual = 15;
     LeeNodo(path);
     
     //EMPIEZA A LEER LA MATRIZ
@@ -607,22 +630,10 @@ void Mapa::updateMini() {
     updateFondo();
     
     if(pop){
-        std::cout << "Borrando..." << std::endl;
-        //hex_list.front()->~Nodo();
-        //std::cout << "HEX " << hex_list.size() << " | COMPLETE " << complete_list.size() << std::endl;
+        
         hex_list.pop_front();
         if(longitud < MAP_ITERATION)
             leeRandom();
-        
-        //hex_list.emplace_back(std::move(complete_list.front()));
-        //complete_list.pop_front();
-        //std::cout << "HEX " << hex_list.size() << " | COMPLETE " << complete_list.size() << std::endl;
-        //POP DE PINCHOS
-        /*
-        l_pinchos.pop_front();
-        l_pinchos.push_back(l_pinchos_aux.front());
-        l_pinchos_aux.pop_front();
-         */
         
         pop = false;
     }

@@ -15,19 +15,19 @@
 
 #include "particleSystem.h"
 
-particleSystem::particleSystem(int x, int y, int type_) {
+particleSystem::particleSystem() {
     
     int sizeX = AssetManager::GetTexture("assets/triangle.png").getXSize();
     int sizeY = AssetManager::GetTexture("assets/triangle.png").getYSize();
     sprite.setTexture(AssetManager::GetTexture("assets/triangle.png"));
     sprite.setOrigin(sizeX/2, sizeY/2);
-    sprite.setPosition(x, y);
+    sprite.setPosition(0, 0);
     //sprite.setScale(0.02, 0.5);
     
     max_particles = 50;
     lifeTime = -1;
-    xPos = x;
-    yPos = y;
+    xPos = 0;
+    yPos = 0;
     xVelocity = yVelocity = 0;
     radius = 0;
     xSide = ySide = 0;
@@ -42,8 +42,10 @@ particleSystem::particleSystem(int x, int y, int type_) {
     accumulator = 0;
 
     loop = true;
+    alignToDirectionBool = false;
+    drawGen = false;
     
-    type = type_;   // 0 = Circle, 1 = Square
+    type = 0;   // 0 = Circle, 1 = Square
     box.setOutlineThickness(2);
     box.setFillColor('t');
     box.setOutlineColor('r');
@@ -63,7 +65,7 @@ void particleSystem::draw(float tick_) {
         (*it).interpola(tick_);
         (*it).draw();   
     }
-    box.draw();
+    if(drawGen) box.draw();
 }
 
 void particleSystem::interpola(float tick_) {
@@ -100,10 +102,8 @@ void particleSystem::update() {
             // Variables independientes del shape
             if(lista_particular.size() < max_particles){
                 c++;
-                //Rotacion
-                r = particle_max_rotation;
-                if(particle_min_rotation != particle_max_rotation)
-                    r = physicsEngine::Instance().genIntRandom(particle_min_rotation, particle_max_rotation);
+              
+                
                 //Velocidad de rotacion
                 vr = particle_max_angular_velocity;
                 if(particle_min_angular_velocity != particle_max_angular_velocity)
@@ -122,6 +122,16 @@ void particleSystem::update() {
                 if(aux_target_x == 0 && aux_target_y == 0){
                     aux_target_x = physicsEngine::Instance().genFloatRandom(-1, 1);
                     aux_target_y = physicsEngine::Instance().genFloatRandom(-1, 1);
+                }
+                
+                if(alignToDirectionBool){
+                    r = atan2(aux_target_y, aux_target_x)*180/M_PI+90;
+                }
+                else{
+                    //Rotacion
+                    r = particle_max_rotation;
+                    if(particle_min_rotation != particle_max_rotation)
+                        r = physicsEngine::Instance().genIntRandom(particle_min_rotation, particle_max_rotation);
                 }
 
                 px = xPos;
@@ -266,3 +276,19 @@ float particleSystem::getYPosition() {
     return yPos;
 }
 
+float particleSystem::getXPosition() {
+    return xPos;
+}
+
+
+void particleSystem::setType(int type_) {
+    type = type_;
+}
+
+void particleSystem::drawGenerationArea(bool flag) {
+    drawGen = flag;
+}
+
+void particleSystem::alignToDirection(bool flag) {
+    alignToDirectionBool = flag;
+}

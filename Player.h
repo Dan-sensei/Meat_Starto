@@ -61,6 +61,7 @@ public:
     int onAir;
     void setAir(int i);
     bool isOnAir();
+    int getAir();
     
     void powerUpInmortalidad();
     void powerUpSpeed();

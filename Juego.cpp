@@ -29,7 +29,7 @@
 
 #define target_zoom 2
 
-Juego::Juego() :rain(1500, 500, 1) { 
+Juego::Juego() { 
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
     
@@ -63,24 +63,30 @@ Juego::Juego() :rain(1500, 500, 1) {
     
     
     //JUGADORES
-    for(int i = 0; i < MenuInicio::Instance()->numplayers; ++i)
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1260, 1400, 'D', keys));
+    int i = 0;
     
-    // En caso de que no se haya añadido ninguno
-    if(readyPlayer.size() == 0)
-        readyPlayer.push_back(new Player(0, "Jugador 0", 60.f, 60.f, 1260, 1400, 'D', keys));
+    do{
+        
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1260, 1400, 'D', keys));
+        ++i;
+        
+    }while( i < MenuInicio::Instance()->numplayers );
     
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
     //THE_ARID_FLATS.play();
 
+    rain.setPosition(1500, 200);
+    rain.setType(1);
     rain.setParticleSpeed(500);
     rain.setMaxParticleAmout(500);
     rain.setGenerationTimer(4);
     rain.setParticleLifeTime(1);
-    rain.setParticleDirection(0, 1);
-    rain.setRectangle(4000, 100);
+    rain.setParticleDirection(-0.1, 1);
+    rain.setRectangle(4000, 200);
+    rain.alignToDirection(true);
+    
     //rain.setParticleAngularVelocityRandomBetween(1, 5);
     //rain.setParticleRotationRandomBetween(-180, 180);
     rain.setSprite("assets/rain_drop.png");
@@ -338,7 +344,6 @@ void Juego::Render(){
     mapa->Instance().updateMini();
     mapa->Instance().render(tick);
     rain.draw(tick);
-    mapa->Instance().updateMini();
     for(int i=0; i< readyPlayer.size(); i++){
         readyPlayer[i]->draw();
     }

@@ -51,24 +51,37 @@ void contactListener::BeginContact(b2Contact* contact){
         }
     }
     else if(typeB->id == 1 && typeA->id == 2){
-        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -0.97 && normalY <= -1.03){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 0.97 && normalY <= 1.03){
             contacts.push_back(contact);
             Player* p = static_cast<Player*>(typeA->data);
-            p->setAir(1);    
+            p->setAir(1);  
         }
     }
     
     // SKULL CON JUGADOR
     if(typeA->id == 4 && typeB->id == 2 ){
         if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
+            contacts.push_back(contact);
             Player* p = static_cast<Player*>(typeB->data);
             p->setAir(1); 
         }
     }
     else if(typeB->id == 4 && typeA->id == 2){
-        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 1.03 && normalY <= 0.97){
+            contacts.push_back(contact);
             Player* p = static_cast<Player*>(typeB->data);
             p->setAir(1); 
+        }
+    }
+    
+    // xPlotato con Suelo
+    if(typeA->id == 1 && typeB->id == 3 ){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
+
+        }
+    }
+    else if(typeB->id == 1 && typeA->id == 3){
+        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 1.03 && normalY <= 0.97){
         }
     }
     
@@ -96,6 +109,7 @@ void contactListener::EndContact(b2Contact* contact){
                 Player* p = static_cast<Player*>(typeB->data);
                 p->setAir(-1);
                 contacts.erase(it++);
+                std::cout <<"END AIR " << p->getAir() << std::endl;
             }
             else
                 ++it;
@@ -108,6 +122,7 @@ void contactListener::EndContact(b2Contact* contact){
                 Player* p = static_cast<Player*>(typeA->data);
                 p->setAir(-1);
                 contacts.erase(it++);
+                std::cout <<"END AIR " << p->getAir() << std::endl;
             }
             else
                 ++it;

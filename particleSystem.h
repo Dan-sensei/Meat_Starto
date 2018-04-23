@@ -19,7 +19,7 @@
 
 class particleSystem {
 public:
-    particleSystem(int x, int y, int type_);
+    particleSystem();
     particleSystem(const particleSystem& orig);
     virtual ~particleSystem();
     
@@ -54,7 +54,11 @@ public:
     
     void setPosition(float x, float y);
     float getYPosition();
+    float getXPosition();
     
+    void alignToDirection(bool flag);
+    void drawGenerationArea(bool flag);
+    void setType(int type_);
     void interpola(float tick_);
     void draw(float tick_);
     
@@ -78,6 +82,7 @@ private:
     float rotation;
     float delayBetweenParticlesGeneration;
     float targetX, targetY;
+    bool alignToDirectionBool;
     
     //Variables de las partículas del sistema
     float particle_min_velocity, particle_max_velocity;
@@ -88,6 +93,7 @@ private:
     float accumulator;
  
     bool loop;
+    bool drawGen;
     
     int type;
     

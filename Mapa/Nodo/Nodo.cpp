@@ -17,6 +17,7 @@
 #include "NPCs/xPlotato.h"
 #include "NPCs/Skull.h"
 #include "Juego.h"
+#include "Minijuegos/goingUp.h"
 
 
 Nodo::Nodo(std::string sheet) {    
@@ -35,6 +36,8 @@ Nodo::Nodo(std::string sheet) {
     checkpoint.shape.setOutlineColor('r');
     checkpoint.shape.setFillColor('t');
     maxXCheckPoint = 0;
+    
+    minijuego = nullptr;
 }
 
 Nodo::Nodo(const Nodo& orig) {
@@ -69,6 +72,7 @@ Nodo::~Nodo() {
         delete npcs[i];
         npcs[i] = nullptr;
     }
+    delete minijuego;
 }
 
 
@@ -151,11 +155,13 @@ void Nodo::addCheckPoint(int x, int y, int width, int height) {
     checkpoint.shape.setOutlineColor('r');
     checkpoint.shape.setFillColor('t');
     
-    checkpoints.push_back(checkpoint);
-    
-    
+    checkpoints.push_back(checkpoint);   
 }
 
+void Nodo::addMinigame(int type, int x, int y, int width, int height) {
+    if(type == 1)
+        minijuego = new goingUp(x, y, width, height);
+}
 
 
 void Nodo::addPower(int id, int xMin, int xMax, int y_) {
@@ -210,6 +216,7 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 }
 
 void Nodo::update(){
+
     bool flag = false;
     for(int i = 0; i < npcs.size(); i++){
         npcs[i]->update();
@@ -229,10 +236,13 @@ void Nodo::update(){
             if(ready->getSprite().intersects(powers[j].sprite)){
                  flag = true;
             }
-        }
-        
-        
+        }  
     }
+    
+    if(minijuego != nullptr){
+        minijuego->update();
+    }
+    
 }
 
 void Nodo::checkColisionsPinchos(Player* ready) {
