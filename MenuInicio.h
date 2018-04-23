@@ -70,6 +70,10 @@ private:
     float posy;
     
     bool primero;
+   
+    renderEngine *sfml;
+    renderEngine::rTexture text_fondo;
+    renderEngine::rRectangleShape f1;
 
 
 

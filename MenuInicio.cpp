@@ -22,8 +22,6 @@ MenuInicio* MenuInicio::Instance(){
 }
 
 MenuInicio::MenuInicio() {
-
-    renderEngine *sfml;
     
     width =  sfml->Instance().getViewSize()[0];
     height = sfml->Instance().getViewSize()[1];
@@ -32,6 +30,11 @@ MenuInicio::MenuInicio() {
     posy = sfml->Instance().getViewCenter()[1];
   
     numplayers=1;
+    
+    text_fondo.loadFromFile("assets/fondo.PNG");
+    
+    f1.setTexture(text_fondo);
+    f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
   
    if (!font.loadFromFile("resources/fuente.ttf"))
     {
@@ -40,92 +43,92 @@ MenuInicio::MenuInicio() {
     }
     
    titulo.setFont(font);
-   titulo.setCharacterSize(20);
-   titulo.setFillColor(sf::Color::White);
+   titulo.setCharacterSize(18);
+   titulo.setFillColor(sf::Color::Black);
    titulo.setString("Meat Starto!");
    titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
   
    
    menu[0].setFont(font);
-   menu[0].setCharacterSize(20);
+   menu[0].setCharacterSize(16);
    menu[0].setFillColor(sf::Color::Red);
    menu[0].setString("Play");
    menu[0].setPosition(posx-width/3, posy-height/5);
    
    menu[1].setFont(font);
-   menu[1].setCharacterSize(20);
-   menu[1].setFillColor(sf::Color::White);
+   menu[1].setCharacterSize(16);
+   menu[1].setFillColor(sf::Color::Black);
    menu[1].setString("Options");
    menu[1].setPosition(posx-width/3, posy-height/10);
    
    menu[2].setFont(font);
-   menu[2].setCharacterSize(20);
-   menu[2].setFillColor(sf::Color::White);
+   menu[2].setCharacterSize(16);
+   menu[2].setFillColor(sf::Color::Black);
    menu[2].setString("How to play");
    menu[2].setPosition(posx-width/3, posy+height/10);
    
    menu[3].setFont(font);
-   menu[3].setCharacterSize(20);
-   menu[3].setFillColor(sf::Color::White);
+   menu[3].setCharacterSize(16);
+   menu[3].setFillColor(sf::Color::Black);
    menu[3].setString("Exit");
    menu[3].setPosition(posx-width/3, posy+height/5);
    
    
    /*MENU DE OPCIONES*/
    titulo2.setFont(font);
-   titulo2.setCharacterSize(20);
-   titulo2.setFillColor(sf::Color::White);
+   titulo2.setCharacterSize(18);
+   titulo2.setFillColor(sf::Color::Black);
    titulo2.setString("Options");
    titulo2.setPosition(posx-width/30, posy-height/3);
    
    menuop[0].setFont(font);
-   menuop[0].setCharacterSize(20);
+   menuop[0].setCharacterSize(16);
    menuop[0].setFillColor(sf::Color::Red);
    menuop[0].setString("Sound");
    menuop[0].setPosition(posx-width/3, posy-height/6);
    
    menuop[1].setFont(font);
-   menuop[1].setCharacterSize(20);
-   menuop[1].setFillColor(sf::Color::White);
+   menuop[1].setCharacterSize(16);
+   menuop[1].setFillColor(sf::Color::Black);
    menuop[1].setString("Exit");
    menuop[1].setPosition(posx-width/3, posy+height/10);
    
    
    /*Menu players*/
    titulo3.setFont(font);
-   titulo3.setCharacterSize(20);
-   titulo3.setFillColor(sf::Color::White);
+   titulo3.setCharacterSize(18);
+   titulo3.setFillColor(sf::Color::Black);
    titulo3.setString("Players");
    titulo3.setPosition(posx-width/30, posy-height/3);
    
    menuplayer[0].setFont(font);
-   menuplayer[0].setCharacterSize(20);
+   menuplayer[0].setCharacterSize(16);
    menuplayer[0].setFillColor(sf::Color::Red);
    menuplayer[0].setString("Play" );
    menuplayer[0].setPosition(posx-width/3, posy-height/6);
    
    menuplayer[1].setFont(font);
-   menuplayer[1].setCharacterSize(20);
-   menuplayer[1].setFillColor(sf::Color::White);
+   menuplayer[1].setCharacterSize(16);
+   menuplayer[1].setFillColor(sf::Color::Black);
    menuplayer[1].setString("Players "  + std::to_string(numplayers));
    menuplayer[1].setPosition(posx-width/3, posy+height/10);
    
    menuplayer[2].setFont(font);
-   menuplayer[2].setCharacterSize(20);
-   menuplayer[2].setFillColor(sf::Color::White);
+   menuplayer[2].setCharacterSize(16);
+   menuplayer[2].setFillColor(sf::Color::Black);
    menuplayer[2].setString("Exit");
    menuplayer[2].setPosition(posx-width/3, posy+height/8);
    
    
    /*How to play*/
    titulo4.setFont(font);
-   titulo4.setCharacterSize(20);
-   titulo4.setFillColor(sf::Color::White);
+   titulo4.setCharacterSize(18);
+   titulo4.setFillColor(sf::Color::Black);
    titulo4.setString("How to play");
    titulo4.setPosition(posx-width/30, posy-height/3);
    
    menuhow.setFont(font);
-   menuhow.setCharacterSize(20);
+   menuhow.setCharacterSize(16);
    menuhow.setFillColor(sf::Color::Red);
    menuhow.setString("Exit");
    menuhow.setPosition(posx-width/3, posy-height/6);
@@ -137,7 +140,10 @@ MenuInicio::MenuInicio() {
    selectedItemIndex3=0;
    selectedItemIndex4=3;
    statemenu=0;
+   
    primero=true;
+   
+
 }
 
 MenuInicio::MenuInicio(const MenuInicio& orig) {
@@ -147,10 +153,10 @@ MenuInicio::~MenuInicio() {
 }
 
 void MenuInicio::Render(){
-    renderEngine *sfml;
     
     sfml->Instance().clear('k'); 
-    
+        f1.draw();
+        
     switch(statemenu){
         case 0:   
             sfml->Instance().getWindow()->draw(titulo);
@@ -185,21 +191,21 @@ void MenuInicio::MoveUp(){
     switch(statemenu){
         case 0:
             if(selectedItemIndex-1>=0){
-                menu[selectedItemIndex].setFillColor(sf::Color::White);
+                menu[selectedItemIndex].setFillColor(sf::Color::Black);
                 selectedItemIndex--;
                 menu[selectedItemIndex].setFillColor(sf::Color::Red);
             }
             break;
         case 1:
             if(selectedItemIndex2-1>=0){
-                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
                 selectedItemIndex2--;
                 menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
             }
             break;
         case 2:
             if(selectedItemIndex3-1>=0){
-                menuplayer[selectedItemIndex3].setFillColor(sf::Color::White);
+                menuplayer[selectedItemIndex3].setFillColor(sf::Color::Black);
                 selectedItemIndex3--;
                 menuplayer[selectedItemIndex3].setFillColor(sf::Color::Red);
             }
@@ -213,21 +219,21 @@ void MenuInicio::MoveDown(){
     switch(statemenu){
         case 0:
             if(selectedItemIndex+1<MAX_NUMBER_OF_ITEMS){
-                menu[selectedItemIndex].setFillColor(sf::Color::White);
+                menu[selectedItemIndex].setFillColor(sf::Color::Black);
                 selectedItemIndex++;
                 menu[selectedItemIndex].setFillColor(sf::Color::Red);
             }
             break;
         case 1:
             if(selectedItemIndex2+1<MAX_NUMBER_OF_ITEMS2){
-                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
                 selectedItemIndex2++;
                 menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
             }
             break;
         case 2:
             if(selectedItemIndex3+1<MAX_NUMBER_OF_ITEMS3){
-                menuplayer[selectedItemIndex3].setFillColor(sf::Color::White);
+                menuplayer[selectedItemIndex3].setFillColor(sf::Color::Black);
                 selectedItemIndex3++;
                 menuplayer[selectedItemIndex3].setFillColor(sf::Color::Red);
             }
@@ -237,8 +243,10 @@ void MenuInicio::MoveDown(){
 
 void MenuInicio::Update(){
     renderEngine::rEvent event;
-    renderEngine *sfml;
-            
+
+    f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
+    f1.setPosition(((sfml->Instance().getViewCenter()[0])-(sfml->Instance().getViewSize()[0])/2), (sfml->Instance().getViewCenter()[1])-(sfml->Instance().getViewSize()[1])/2);
+
        while (sfml->Instance().pollEvent(event))
         {
             
@@ -274,21 +282,21 @@ void MenuInicio::Update(){
                                     switch(selectedItemIndex){
                                         case 0:
                                             statemenu=2;
-                                            std::cout<<"Play pressed"<< std::endl;
+                                           // std::cout<<"Play pressed"<< std::endl;
                                             break;
 
                                         case 1:
                                             statemenu=1;
-                                            std::cout<<"Option pressed"<< std::endl;
+                                          //  std::cout<<"Option pressed"<< std::endl;
                                             break;
 
                                         case 2:
                                             statemenu=3;
-                                            std::cout<<"how to play pressed"<< std::endl;
+                                         //   std::cout<<"how to play pressed"<< std::endl;
                                             break;
 
                                         case 3:
-                                            std::cout<<"Exit pressed"<< std::endl;
+                                         //   std::cout<<"Exit pressed"<< std::endl;
                                             sfml->Instance().close();
                                             break;                                            
 
@@ -298,12 +306,12 @@ void MenuInicio::Update(){
                                 case 1:
                                     switch(selectedItemIndex2){
                                         case 0:
-                                            std::cout<<"Sound pressed"<< std::endl;
+                                           // std::cout<<"Sound pressed"<< std::endl;
                                             break;
 
                                         case 1:
                                             statemenu=0;
-                                            std::cout<<"Exit pressed"<< std::endl;
+                                          //  std::cout<<"Exit pressed"<< std::endl;
 
                                             break;
                                     }
@@ -315,23 +323,24 @@ void MenuInicio::Update(){
                                             //cambiar estado a Motor
                                             statemenu=2;
                                             sfml->Instance().ChangeState(&Juego::Instance());
-                                            std::cout<<"Play pressed"<< std::endl;
+                                          //  std::cout<<"Play pressed"<< std::endl;
                                             break;
                                             
                                         case 1:
-                                            std::cout<<"Players pressed"<< std::endl;
+                                            sfml->Instance().ChangeState(&Juego::Instance());
+                                          //  std::cout<<"Players pressed"<< std::endl;
                                             break;
 
                                         case 2:
                                             statemenu=0;
-                                            std::cout<<"Exit pressed"<< std::endl;
+                                          // std::cout<<"Exit pressed"<< std::endl;
 
                                             break;
                                     }
                                     break;
                                 case 3:
                                     statemenu=0;
-                                    std::cout<<"Exit pressed"<< std::endl;
+                                 //   std::cout<<"Exit pressed"<< std::endl;
                                     break;
                                     
                             }         
@@ -363,33 +372,32 @@ void MenuInicio::Update(){
 }
 
 void MenuInicio::Handle(){
-    renderEngine *sfml;
     statemenu=0;
     
     if(primero==false){
-           titulo.setCharacterSize(44);
-            menu[0].setCharacterSize(36);
-            menu[1].setCharacterSize(36);
-            menu[2].setCharacterSize(36);
-            menu[3].setCharacterSize(36);
+           titulo.setCharacterSize(56);
+            menu[0].setCharacterSize(50);
+            menu[1].setCharacterSize(50);
+            menu[2].setCharacterSize(50);
+            menu[3].setCharacterSize(50);
 
 
             /*MENU DE OPCIONES*/
-            titulo2.setCharacterSize(44);
-            menuop[0].setCharacterSize(36);
-            menuop[1].setCharacterSize(36);
+            titulo2.setCharacterSize(56);
+            menuop[0].setCharacterSize(50);
+            menuop[1].setCharacterSize(50);
 
 
             /*Menu players*/
-            titulo3.setCharacterSize(44);
-            menuplayer[0].setCharacterSize(36);
-            menuplayer[1].setCharacterSize(36);
-            menuplayer[2].setCharacterSize(36);
+            titulo3.setCharacterSize(56);
+            menuplayer[0].setCharacterSize(50);
+            menuplayer[1].setCharacterSize(50);
+            menuplayer[2].setCharacterSize(50);
 
 
             /*How to play*/
-            titulo4.setCharacterSize(44);
-            menuhow.setCharacterSize(36);
+            titulo4.setCharacterSize(56);
+            menuhow.setCharacterSize(50);
             
     }
     

@@ -43,8 +43,6 @@ private:
     float posy;
     
     renderEngine *sfml;
-    bool cambio;
-    
     
 };
 

@@ -49,6 +49,10 @@ private:
     
     float posx;
     float posy;
+    
+    renderEngine *sfml;
+    renderEngine::rTexture text_fondo;
+    renderEngine::rRectangleShape f1;
 
 };
 

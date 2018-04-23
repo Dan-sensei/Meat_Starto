@@ -93,7 +93,7 @@ Juego::Juego() {
     rain.setSprite("assets/rain_drop.png");
     rain.setSpriteSize(0.002, 0.2);
      
-    //hud= new Hud(readyPlayer);
+    hud= new Hud(readyPlayer);
 }
 
 
@@ -350,7 +350,7 @@ void Juego::Render(){
     }
     
     
-   // hud->render();
+    hud->render();
 
     sfml->Instance().display();
     

@@ -22,16 +22,18 @@ MPuntuaciones* MPuntuaciones::Instance(){
 }
 
 MPuntuaciones::MPuntuaciones() {
-    
-    renderEngine *sfml;
-    
+        
     width =  sfml->Instance().getViewSize()[0];
     height = sfml->Instance().getViewSize()[1];
     
     posx = sfml->Instance().getViewCenter()[0];
     posy = sfml->Instance().getViewCenter()[1];
     
+    text_fondo.loadFromFile("assets/fondo.PNG");
     
+    f1.setTexture(text_fondo);
+    f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
+  
    if (!font.loadFromFile("resources/fuente.ttf"))
     {
             std::cerr << "Error cargando la imagen sprite.png";
@@ -39,13 +41,13 @@ MPuntuaciones::MPuntuaciones() {
     }
     
    titulo.setFont(font);
-   titulo.setCharacterSize(44);
-   titulo.setFillColor(sf::Color::White);
+   titulo.setCharacterSize(56);
+   titulo.setFillColor(sf::Color::Black);
    titulo.setString("Puntuaciones");
    titulo.setPosition(posx-width/30, posy-height/3);   
    
    tsalir.setFont(font);
-   tsalir.setCharacterSize(36);
+   tsalir.setCharacterSize(50);
    tsalir.setFillColor(sf::Color::Red);
    tsalir.setString("Exit");
    tsalir.setPosition(posx-width/3, posy+height/5);
@@ -59,8 +61,9 @@ MPuntuaciones::~MPuntuaciones() {
 }
 
 void MPuntuaciones::Render(){
-    renderEngine *sfml;
-    sfml->Instance().clear('b');
+
+    sfml->Instance().clear('k');
+    f1.draw();
     sfml->Instance().getWindow()->draw(titulo);
     sfml->Instance().getWindow()->draw(tsalir);
     sfml->Instance().getWindow()->display();
@@ -68,7 +71,6 @@ void MPuntuaciones::Render(){
 }
 
 void MPuntuaciones::Handle(){
-    renderEngine *sfml;
     
     width =  sfml->Instance().getViewSize()[0];
     height = sfml->Instance().getViewSize()[1];
@@ -92,7 +94,11 @@ void MPuntuaciones::Handle(){
 
 void MPuntuaciones::Update(){
     renderEngine::rEvent event;
-    renderEngine *sfml;
+    
+    f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
+    f1.setPosition(((sfml->Instance().getViewCenter()[0])-(sfml->Instance().getViewSize()[0])/2), (sfml->Instance().getViewCenter()[1])-(sfml->Instance().getViewSize()[1])/2);
+
+     
        while (sfml->Instance().pollEvent(event))
         {
             
