@@ -21,9 +21,14 @@
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
 #define force 50.f*FRAMERATE/UPDATE_STEP
-#define speed 12.f
+
 #define jump 2500
 #define stop_mult 1.2f
+
+#define inmortalityTime 5.f
+#define speedTime 5.f
+#define constMaxSeed 12.f
+#define meatEXP 250.f
 
 Player::Player(int id, std::string name, float width_, float height_, float x_, float y_, char type_, bool *keys_) : animator(sprite) {
     setId(id);
@@ -141,6 +146,12 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     sprite.setPosition(actual.x, actual.y);
     
+    inmortal = false;
+    level = 0;
+    exp_for_next_level = 500;
+    exp = 0;
+    
+    MAXSPEED = constMaxSeed;
 }
 
 Player::~Player() {
@@ -254,10 +265,10 @@ void Player::movement(){
     }else{
         //IZQUIERDA==================================================================
         if( keys[key_l])  {                                                         //
-            if(body.getLinearXVelocity() > -speed)                                  //
+            if(body.getLinearXVelocity() > -MAXSPEED)                                  //
                 body.applyForceToCenter(-force, 0);                                 //
             else                                                                    //  
-                body.setLinealVelocicity(-speed, body.getLinearYVelocity());        //
+                body.setLinealVelocicity(-MAXSPEED, body.getLinearYVelocity());        //
             if(!isOnAir()){
                 moveLeft(); 
             }                                                                       //
@@ -266,10 +277,10 @@ void Player::movement(){
 
         // DERECHA==================================================================
         if( keys[key_r]) {                                                          //
-            if(body.getLinearXVelocity() < speed)                                   //
+            if(body.getLinearXVelocity() < MAXSPEED)                                   //
                 body.applyForceToCenter(force, 0);                                  //
             else                                                                    //  
-                body.setLinealVelocicity(speed, body.getLinearYVelocity());         //
+                body.setLinealVelocicity(MAXSPEED, body.getLinearYVelocity());         //
             if(!isOnAir()){
                 moveRigth();
             }                                                                       //
@@ -291,6 +302,21 @@ void Player::movement(){
         body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
     }                                                                                                       //
     //  ======================================================================================================
+    
+    if(inmortal){
+        if(inmortalityClock.getElapsedTime().asSeconds() > inmortalityTime){
+            std::cout << "VUELVE A LA TIERRA CHATO" << std::endl;
+            inmortal = false;
+        }
+    }
+    
+    if(MAXSPEED > constMaxSeed){
+        if(speedClock.getElapsedTime().asSeconds() > speedTime){
+            std::cout << "SE ACABÓ EL GAS WE" << std::endl;
+            MAXSPEED = constMaxSeed;
+        }
+    }
+    
 }
 
 void Player::interpola(float tick_){
@@ -339,18 +365,37 @@ void Player::setAir(int i){
 }
 
 void Player::powerUpInmortalidad() {
-
+    std::cout << "INMORTALIDAD!" << std::endl;
+    inmortal = true;
+    inmortalityClock.restart();
 }
 
 void Player::powerUpSpeed() {
-
+    std::cout << "SPEED!" << std::endl;
+    MAXSPEED += 3;
+    speedClock.restart();
 }
 
-void Player::powerDownJump() {
+void Player::powerExperience() {
+    std::cout << "+" << meatEXP << " EXPERIENCIA!";
+    float newExp = exp + meatEXP;
+    if(newExp > exp_for_next_level){
+        level++;
+        newExp -= exp_for_next_level;
+        exp = newExp;
+    }
+    else
+        exp += newExp;
+    
+}
 
+
+void Player::powerDownJump() {
+    std::cout << "JUMP!" << std::endl;
 }
 
 void Player::powerDownFreeze() {
+    std::cout << "FREEZE!" << std::endl;
 
 }
 
@@ -360,4 +405,8 @@ void Player::setPosition(float x, float y) {
 
 int Player::getAir() {
     return onAir;
+}
+
+bool Player::isInmortal() {
+    return inmortal;
 }

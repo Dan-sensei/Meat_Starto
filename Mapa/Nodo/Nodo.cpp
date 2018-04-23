@@ -229,11 +229,16 @@ void Nodo::update(){
         Player* ready = (*players)[i];
         
         // EVENTOS
-        //checkColisionsPinchos(ready);
+        if(!ready->isInmortal())
+            checkColisionsPinchos(ready);
+        
         
         //Colision con powerups
         for(int j = 0; j < powers.size(); j++){
             if(ready->getSprite().intersects(powers[j].sprite)){
+                //Puntero a funcion
+                pFunc funcion = array_funciones[powers[j].id];   
+                if(funcion != nullptr) (ready->*funcion)();
                  flag = true;
             }
         }  

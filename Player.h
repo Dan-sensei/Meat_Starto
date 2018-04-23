@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include "Animator.h"
+#include "renderEngine/renderEngine.h"
 
 class Player {
 public:
@@ -45,6 +46,8 @@ public:
     void interpola(float tick_);
     void draw();
     
+    bool isInmortal();
+    
     struct state{
         float x;     // Posicion X
         float y;     // Posicion Y
@@ -65,6 +68,7 @@ public:
     
     void powerUpInmortalidad();
     void powerUpSpeed();
+    void powerExperience();
     void powerDownJump();
     void powerDownFreeze();
     
@@ -74,7 +78,6 @@ public:
 private:
     int id;
     int level;
-    float speed;
     std::string name; 
     std::string texture;
     renderEngine::rSprite sprite;
@@ -83,6 +86,13 @@ private:
     
     bool* keys;
     
+    float MAXSPEED;
+    float exp_for_next_level;
+    float exp;
+    
+    bool inmortal;
+    renderEngine::rClock inmortalityClock;
+    renderEngine::rClock speedClock;
     
     pBody body;
 };
