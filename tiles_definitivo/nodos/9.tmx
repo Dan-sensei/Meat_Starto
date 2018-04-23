@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="12" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="9">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="12" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="11">
  <tileset firstgid="1" source="../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="12" height="41">
   <data encoding="csv">
@@ -49,11 +49,14 @@
  <objectgroup name="skull">
   <object id="4" x="0" y="630" width="840" height="560"/>
  </objectgroup>
- <objectgroup name="checkpoint">
-  <object id="5" x="140" y="1260" width="70" height="280"/>
-  <object id="6" x="140" y="1750" width="70" height="140"/>
-  <object id="7" x="630" y="1540" width="70" height="210"/>
-  <object id="8" x="630" y="910" width="70" height="280"/>
+ <objectgroup color="#0000ff" name="checkpoint">
+  <object id="5" x="140" y="1260" width="70" height="70"/>
+  <object id="6" x="140" y="1750" width="70" height="70"/>
+  <object id="7" x="630" y="1540" width="70" height="70"/>
+  <object id="8" x="630" y="910" width="70" height="70"/>
+ </objectgroup>
+ <objectgroup color="#c80000" name="DEATH">
+  <object id="10" x="0" y="2660" width="840" height="210"/>
  </objectgroup>
  <objectgroup name="colision">
   <object id="1" x="420" y="1190">

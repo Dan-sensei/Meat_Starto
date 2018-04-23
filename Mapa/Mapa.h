@@ -62,6 +62,7 @@ private:
     void leePorwerUps(tinyxml2::XMLElement *obj, Nodo &actual);
     void leeCheckPoints(tinyxml2::XMLElement *obj, Nodo &actual);
     void leeMinijuego(tinyxml2::XMLElement *obj, Nodo &actual);
+    void leeDEATH(tinyxml2::XMLElement *obj, Nodo &actual);
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS

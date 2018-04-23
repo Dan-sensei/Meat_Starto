@@ -112,6 +112,7 @@
     mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
     mapa_funciones.insert(std::make_pair("checkpoint", &Mapa::leeCheckPoints));
     mapa_funciones.insert(std::make_pair("minijuego", &Mapa::leeMinijuego));
+    mapa_funciones.insert(std::make_pair("DEATH", &Mapa::leeDEATH));
     
     longitud = 0;
     end = false;
@@ -460,11 +461,30 @@ void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual) {
     obj->QueryIntAttribute("y", &y);
     obj->QueryIntAttribute("height", &height);
     
+    x += x_max;
 
     actual.addMinigame(type, x, y, width, height);
     
     
 }
+
+void Mapa::leeDEATH(tinyxml2::XMLElement* obj, Nodo& actual) {
+    obj = obj->FirstChildElement("object");
+    
+    int x, width;
+    int y, height;
+    
+    // Área donde todos los jugadores deben estar para dar comienzo al minijuego
+    obj->QueryIntAttribute("x", &x);
+    obj->QueryIntAttribute("width", &width);
+    obj->QueryIntAttribute("y", &y);
+    obj->QueryIntAttribute("height", &height);
+    
+    x += x_max;
+    
+    actual.addDEATH(x, y, width, height);
+}
+
 
 
 void Mapa::render(float tick_) {

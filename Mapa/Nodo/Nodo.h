@@ -45,10 +45,13 @@ public:
     void addPower(int id, int xMin, int xMax, int y_);
     void addCheckPoint(int x, int y, int width, int height);
     void addMinigame(int type, int x, int y, int width, int height);
-    
+    void addDEATH(int x, int y, int width, int height);
     
     //Eventos
+    void checkOutOfMap(Player* ready);
     void checkColisionsPinchos(Player* ready);
+    
+    void movePlayerToClosestCheckPoint(Player* ready);
     
     void setRectVector(std::vector<renderEngine::rIntRect> rect_);
     void setPop(int i);
@@ -68,6 +71,7 @@ private:
     
     std::vector<renderEngine::rIntRect> tileRect;
     
+    
     // Objetos que contiene el nodo
     std::vector<NPC*> npcs;
     std::vector<pBody> ground;
@@ -86,6 +90,8 @@ private:
     std::vector<power> powers;
     
     int aux_pop;
+    
+    renderEngine::rRectangleShape DEATH;
     
 };
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="36" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="21">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="36" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="23">
  <tileset firstgid="1" source="../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="36" height="41">
   <data encoding="csv">
@@ -46,13 +46,16 @@
 0,0,0,0,0,0,0,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,0,0,0
 </data>
  </layer>
- <objectgroup name="checkpoint">
-  <object id="12" x="350" y="1330" width="70" height="280"/>
-  <object id="14" x="630" y="1190" width="70" height="280"/>
-  <object id="16" x="980" y="1050" width="70" height="280"/>
-  <object id="17" x="1330" y="840" width="70" height="280"/>
-  <object id="18" x="1820" y="910" width="70" height="280"/>
-  <object id="20" x="2170" y="1120" width="70" height="280"/>
+ <objectgroup color="#0000ff" name="checkpoint">
+  <object id="12" x="350" y="1330" width="70" height="70"/>
+  <object id="14" x="630" y="1190" width="70" height="70"/>
+  <object id="16" x="980" y="1050" width="70" height="70"/>
+  <object id="17" x="1330" y="840" width="70" height="70"/>
+  <object id="18" x="1820" y="910" width="70" height="70"/>
+  <object id="20" x="2170" y="1120" width="70" height="70"/>
+ </objectgroup>
+ <objectgroup color="#c80000" name="DEATH">
+  <object id="22" x="0" y="2660" width="2520" height="210"/>
  </objectgroup>
  <objectgroup name="colision">
   <object id="1" x="140" y="1610">

@@ -90,9 +90,8 @@ Juego::Juego() {
     
     //rain.setParticleAngularVelocityRandomBetween(1, 5);
     //rain.setParticleRotationRandomBetween(-180, 180);
-    rain.setSprite("assets/rain_drop.png");
-    rain.setSpriteSize(0.002, 0.2);
-     
+    rain.setSprite("assets/THE_WATER_DROP.png");
+    rain.setSpriteSize(1, 0.8);
     hud= new Hud(readyPlayer);
 }
 
