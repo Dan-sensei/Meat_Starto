@@ -205,7 +205,7 @@ void Player::moveLeft_b(){
 }
 
 void Player::moveUp(){
-    if(!isOnAir()){             
+    if(!isOnAir()){
         
         if(animator.GetCurrentAnimationName() == "a_left" || animator.GetCurrentAnimationName() == "a_jump_l"){
             animator.SwitchAnimation("a_jump_l");

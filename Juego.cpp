@@ -64,7 +64,7 @@ Juego::Juego() :rain(1500, 500, 1) {
     
     //JUGADORES
     for(int i = 0; i < MenuInicio::Instance()->numplayers; ++i)
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1260, 1400, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1800, 1400, 'D', keys));
     
     // En caso de que no se haya añadido ninguno
     if(readyPlayer.size() == 0)
@@ -73,7 +73,7 @@ Juego::Juego() :rain(1500, 500, 1) {
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
-    //THE_ARID_FLATS.play();
+    THE_ARID_FLATS.play();
 
     rain.setParticleSpeed(500);
     rain.setMaxParticleAmout(500);

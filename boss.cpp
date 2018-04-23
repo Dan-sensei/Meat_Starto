@@ -333,7 +333,7 @@ void boss::crearProyectil(float x_, float y_) {
     //CREO EL PROYECTIL
     //LO AÑADO AL VECTOR DEL JEFE
     int a = 70;
-    float factor = 100;
+    float factor = 120;
     
     float w = 15;
     float h = 15;

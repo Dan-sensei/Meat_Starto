@@ -239,6 +239,8 @@ void Mapa::LeeNodo(std::string const& node_path) {
         //Puntero a funcion
         pFunc funcion = mapa_funciones[obj->Attribute("name")];   
         
+        //std::cout << obj->Attribute("name") << std::endl;
+        
         if(funcion != nullptr) (this->*funcion)(obj, hex_list.back());
        
         obj = obj->NextSiblingElement("objectgroup");
@@ -566,7 +568,8 @@ void Mapa::leeRandom(){
     std::string rand = std::to_string(target);
     path = path.operator +=(rand);
     path = path.operator +=(".tmx");
-
+    
+    std::cout << path << std::endl;
     //std::cout << "Nodo actual " << nodo_actual << " | Next " << target << std::endl;
 
     LeeNodo(path);
