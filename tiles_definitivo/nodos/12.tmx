@@ -93,7 +93,4 @@
   <object id="28" x="1890" y="1610" width="70" height="70"/>
   <object id="31" x="490" y="630" width="70" height="70"/>
  </objectgroup>
- <objectgroup color="#c80000" name="DEATH">
-  <object id="33" x="0" y="2660" width="2100" height="210"/>
- </objectgroup>
 </map>

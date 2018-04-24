@@ -46,9 +46,6 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#c80000" name="DEATH">
-  <object id="11" x="0" y="2450" width="4200" height="420"/>
- </objectgroup>
  <objectgroup color="#0000ff" name="checkpoint">
   <object id="6" x="2100" y="1400" width="70" height="70"/>
   <object id="8" x="1470" y="1540" width="70" height="70"/>

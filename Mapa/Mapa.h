@@ -41,12 +41,22 @@ public:
     void preState();
     void newState();
     
+    void setPlayers(std::vector<Player*>* ready);
+    void movePlayerToClosestCheckPoint(Player* ready);
+    
     virtual ~Mapa();
     
 private:
     Mapa();
     Mapa(const Mapa& orig);
     void operator=(Mapa const& orig);
+    
+    struct checkPoint{
+        renderEngine::rRectangleShape shape;
+        bool active;
+    };
+    
+    std::vector<Player*>* players;
     
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
@@ -62,7 +72,6 @@ private:
     void leePorwerUps(tinyxml2::XMLElement *obj, Nodo &actual);
     void leeCheckPoints(tinyxml2::XMLElement *obj, Nodo &actual);
     void leeMinijuego(tinyxml2::XMLElement *obj, Nodo &actual);
-    void leeDEATH(tinyxml2::XMLElement *obj, Nodo &actual);
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS
@@ -86,6 +95,14 @@ private:
     
     std::list<Nodo> hex_list;
     std::vector<renderEngine::rIntRect> spriteSheetRects;
+    float maxPoint;
+    std::list<checkPoint> active_points;
+    std::list<checkPoint> every_points;
+    void handleCheckPoints();
+    void checkOutOfMap(Player* ready);
+    renderEngine::rRectangleShape DEATH;
+    
+    
     int longitud;
     bool end;
 

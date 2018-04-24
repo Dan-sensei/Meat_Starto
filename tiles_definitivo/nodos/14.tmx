@@ -59,9 +59,6 @@
   <object id="11" x="1610" y="1190" width="70" height="70"/>
   <object id="12" x="1820" y="1260" width="70" height="70"/>
  </objectgroup>
- <objectgroup color="#c80000" name="DEATH">
-  <object id="14" x="0" y="2450" width="1960" height="420"/>
- </objectgroup>
  <objectgroup name="colision">
   <object id="2" x="140" y="1540">
    <polyline points="0,0 0,420 70,420 70,770 140,770 140,980 210,980 210,840 280,840 280,0 210,0 210,-70 70,-70 70,0 0,0"/>

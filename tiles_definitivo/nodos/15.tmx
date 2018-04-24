@@ -46,7 +46,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#0000ff" name="checkbox">
+ <objectgroup color="#0000ff" name="checkpoint">
   <object id="11" x="630" y="1050" width="70" height="70"/>
   <object id="15" x="1960" y="1750" width="70" height="70"/>
   <object id="16" x="2800" y="1750" width="70" height="70"/>
@@ -59,9 +59,6 @@
   <object id="6" x="70" y="1540">
    <polyline points="0,0 0,-140 210,-140 210,-210 420,-210 420,-280 910,-280 910,-210 1120,-210 1120,-140 1190,-140 1190,0 1260,0 1260,280 1190,280 1190,420 1120,420 1120,560 1050,560 1050,840 980,840 980,910"/>
   </object>
- </objectgroup>
- <objectgroup color="#c80000" name="DEATH">
-  <object id="18" x="0" y="2310" width="4200" height="560"/>
  </objectgroup>
  <objectgroup name="minijuego">
   <properties>
