@@ -32,6 +32,7 @@ void NPC::update(){
 
 void NPC::draw(){
     sprite.draw();
+    if(xplosion) xplosion->draw();
 }
 
 void NPC::preState(){
@@ -64,4 +65,8 @@ int NPC::getXPosition(){
 
 int NPC::getYPosition(){
     return body.getYPosition();
+}
+
+bool NPC::isAlive() {
+    return alive;
 }

@@ -52,7 +52,9 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     previous.r = actual.r = body.getRotation();
     
     xplotar = false;
-    pum = false;
+    alive = true;
+    
+    xplosion = NULL;
 }
 
 xPlotato::xPlotato(const xPlotato& orig) {
@@ -78,8 +80,17 @@ void xPlotato::update(){
     
     if(xplotar){
         direccion();
-        if(xclock.getElapsedTime().asSeconds() > 1){
-            pum = true;
+        //std::cout << xclock.getElapsedTime().asSeconds() << std::endl;
+        if(xclock.getElapsedTime().asSeconds() > 2.8){
+            if(!xplosion){
+                xplosion = new renderEngine::rCircleShape(140,30);
+                xplosion->setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
+                xplosion->setFillColor('r');
+                xplosion->setOrigin(140,140);
+            }
+        }
+        if(xclock.getElapsedTime().asSeconds() > 3){
+            alive = false;
         }
     }
     
@@ -103,6 +114,11 @@ void xPlotato::update(){
             sprite.setScale(-1, 1);
         }
     }
+    
+    if(xplosion){
+        xplosion->setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
+    }
+    
 }
 
 void xPlotato::persigue() {
@@ -114,8 +130,6 @@ void xPlotato::persigue() {
 
     if(sqrt((x_*x_)+(y_*y_)) < 70*5){
         std::cout << "LA PATATA TE OBSERVA: " << Juego::Instance().getPlayers()[0][r]->getName() << std::endl;
-        /*
-         */
         xplotar = true;
         pj = r;
         direccion();
@@ -143,5 +157,8 @@ void xPlotato::salta(int s) {
     else if(s==0){
         //std::cout << "Salto hacia la izquierda" << std::endl;
         body.applyLinearImpulse(0,imp);
+    }
+    else if(s==-1){
+        body.applyLinearImpulse(0,0);
     }
 }

@@ -31,7 +31,6 @@ private:
     void direccion();
     
     bool xplotar;
-    bool pum;
     int pj;
     renderEngine::rClock xclock;
     

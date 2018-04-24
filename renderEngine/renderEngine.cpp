@@ -366,6 +366,38 @@ renderEngine::rFont::rFont() {}
 void renderEngine::rFont::loadFromFile  (std::string str)   {   font.loadFromFile(str);}
 sf::Font* renderEngine::rFont::getFont   ()                 {   return &font;}
 
+//============================= CIRCLESHAPE =============================//
+
+renderEngine::rCircleShape::rCircleShape(float r, int pc) : cs(r,pc) {}
+
+void renderEngine::rCircleShape::draw() {
+    renderEngine* sfml;
+    sfml->Instance().getWindow()->draw(cs);
+}
+
+void renderEngine::rCircleShape::setFillColor(char c) {
+    switch(c){
+        case 't':   cs.setFillColor(sf::Color::Transparent);    break;
+        case 'r':   cs.setFillColor(sf::Color::Red);            break;
+        case 'g':   cs.setFillColor(sf::Color::Green);          break;
+        case 'b':   cs.setFillColor(sf::Color::Blue);           break;
+        case 'y':   cs.setFillColor(sf::Color::Yellow);         break;
+        case 'k':   cs.setFillColor(sf::Color::Black);          break;
+        default:    break;
+    }
+}
+
+void renderEngine::rCircleShape::setRadius(float r) {
+    cs.setRadius(r);
+}
+
+void renderEngine::rCircleShape::setPosition(float x, float y) {
+    cs.setPosition(x,y);
+}
+
+void renderEngine::rCircleShape::setOrigin(float x, float y) {
+    cs.setOrigin(x,y);
+}
 
 
 

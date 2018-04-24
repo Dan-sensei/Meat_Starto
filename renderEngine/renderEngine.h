@@ -102,6 +102,21 @@ public:
             sf::RectangleShape rs;
     };
     
+    class rCircleShape {
+        friend class renderEngine;
+        public:
+            rCircleShape(float r, int pc);
+            
+            void draw();
+            void setFillColor(char c);
+            void setPosition(float x, float y);
+            void setRadius(float r);
+            void setOrigin(float x, float y);
+            
+        private:
+            sf::CircleShape cs;
+    };
+    
     class rSprite {
         public:
             rSprite();                                  //CONSTRUCTOR
