@@ -43,9 +43,7 @@ Juego::Juego() {
     for(int i = 0; i<256; i++) keys[i]=false;
     
     //SINGLETON MUNDO
-    Mapa *mapa;
-    mapa->Instance();
-    mapa->Instance().CreaMapa();
+    Mapa::Instance().CreaMapa();
     
     //VISTA
     view = new renderEngine::rView(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
@@ -93,6 +91,8 @@ Juego::Juego() {
     rain.setSprite("assets/THE_WATER_DROP.png");
     rain.setSpriteSize(1, 0.8);
     hud= new Hud(readyPlayer);
+    
+    Mapa::Instance().setPlayers(&readyPlayer);
 }
 
 

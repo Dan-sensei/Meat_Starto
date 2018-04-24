@@ -20,7 +20,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 30
+#define MAP_ITERATION 10
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 
@@ -112,7 +112,6 @@
     mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
     mapa_funciones.insert(std::make_pair("checkpoint", &Mapa::leeCheckPoints));
     mapa_funciones.insert(std::make_pair("minijuego", &Mapa::leeMinijuego));
-    mapa_funciones.insert(std::make_pair("DEATH", &Mapa::leeDEATH));
     
     longitud = 0;
     end = false;
@@ -127,7 +126,12 @@
     
     f2.setTexture(text_fondo);
     f2.setSize(1920*BACKGROUND_SCALE,1080*BACKGROUND_SCALE);
-        
+    
+    DEATH.setOutlineThickness(2.f);
+    DEATH.setFillColor('t');
+    DEATH.setOutlineColor('r');
+    DEATH.setSize(8000, 400);
+    DEATH.setOrigin(DEATH.getSize()[0]/2, DEATH.getSize()[1]/2);
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -168,7 +172,7 @@ void Mapa::InitMatrix() {
             if(aux[i][j] == 1)
                 matriz_v2[i].push_back(j);
 
-
+    std::cout << "VIEW X: " << renderEngine::Instance().getViewSize()[0] << " | VIEW Y: " << renderEngine::Instance().getViewSize()[1] << std::endl;
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
@@ -435,7 +439,17 @@ void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
         obj->QueryIntAttribute("y", &yCoord);
         obj->QueryAttribute("height", &height);
         
-        actual.addCheckPoint(xCoord, yCoord, width, height);
+        checkPoint checkpoint;
+        checkpoint.active = false;
+        checkpoint.shape.setSize(width, height);
+        checkpoint.shape.setPosition(xCoord, yCoord);
+        checkpoint.shape.setOutlineThickness(2);
+        checkpoint.shape.setOutlineColor('r');
+        checkpoint.shape.setFillColor('t');
+        
+        every_points.push_back(checkpoint);
+        
+        //actual.addCheckPoint(xCoord, yCoord, width, height);
 
         obj = obj->NextSiblingElement("object");
     }
@@ -463,29 +477,8 @@ void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual) {
     
     x += x_max;
 
-    actual.addMinigame(type, x, y, width, height);
-    
-    
+    actual.addMinigame(type, x, y, width, height);   
 }
-
-void Mapa::leeDEATH(tinyxml2::XMLElement* obj, Nodo& actual) {
-    obj = obj->FirstChildElement("object");
-    
-    int x, width;
-    int y, height;
-    
-    // Área donde todos los jugadores deben estar para dar comienzo al minijuego
-    obj->QueryIntAttribute("x", &x);
-    obj->QueryIntAttribute("width", &width);
-    obj->QueryIntAttribute("y", &y);
-    obj->QueryIntAttribute("height", &height);
-    
-    x += x_max;
-    
-    actual.addDEATH(x, y, width, height);
-}
-
-
 
 void Mapa::render(float tick_) {
     renderEngine *sfml;
@@ -544,21 +537,21 @@ void Mapa::render(float tick_) {
         iterator++;
     }
 
-    //------------|  COLISIONES (DEBUG)  |------------//
-    /*
-    for(int i=0 ; i<objetos.size() ; i++){
-        window.draw(objetos[i]);
+    //------------|  CHECKPOINTS - DEBUG  |------------//
+    std::list<checkPoint>::iterator it = active_points.begin();
+    while(it != active_points.end()){
+        (*it).shape.draw();
+        ++it;
     }
-    */
     
-    //------------|  PINCHOS (DEBUG)  |------------//
-    /*
-    for(std::list<std::vector<renderEngine::rRectangleShape>>::iterator it=l_pinchos.begin(); it!=l_pinchos.end(); ++it){
-        for(int i = 0 ; i<(*it).size() ; i++){
-            (*it)[i].draw();
-        }
+    DEATH.draw();
+    
+    it = every_points.begin();
+    while(it != every_points.end()){
+        (*it).shape.draw();
+        ++it;
     }
-    */
+    
     
     //------------|  TETRIS  |------------//
     for(int i=0 ; i<power.size() ; i++){
@@ -584,6 +577,15 @@ void Mapa::CreaMapa() {
         //std::cout << path << std::endl;
     //nodo_actual = 15;
     LeeNodo(path);
+    
+    checkPoint first;
+    first = every_points.front();
+    active_points.push_back(first);
+    active_points.front().active = true;
+    active_points.front().shape.setOutlineColor('g');
+    maxPoint = active_points.front().shape.getPosition()[0];
+    
+    every_points.erase(every_points.begin());
     
     //EMPIEZA A LEER LA MATRIZ
     int iter = 0;   //CUENTA EL NUMERO DE ITERACIONES
@@ -674,6 +676,8 @@ void Mapa::update(){
         (*it).preState();
         (*it).update();
     }
+    DEATH.setPosition(renderEngine::Instance().getViewCenter()[0], renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]);
+    handleCheckPoints();
 }
 
 void Mapa::updateFondo() {
@@ -735,3 +739,70 @@ Mapa::Mapa(const Mapa& orig) {
 Mapa::~Mapa() {
 }
 
+void Mapa::setPlayers(std::vector<Player*>* ready) {
+    players = ready;
+}
+
+void Mapa::handleCheckPoints() {
+    bool flag;
+    for(int i = 0; i< players->size(); ++i) {
+        
+        Player* ready = (*players)[i];
+        flag = false;
+        std::list<checkPoint>::iterator it = every_points.begin();
+        while(it != every_points.end()){
+            if(ready->getXPosition() > (*it).shape.getPosition()[0]){
+                checkPoint aux;
+                aux = (*it);
+                aux.active = true;
+                aux.shape.setOutlineColor('g');
+                maxPoint = aux.shape.getPosition()[0];
+                
+                if(!flag){
+                    flag = true;
+                    active_points.clear();
+                }
+                
+                active_points.push_back(aux);
+                every_points.erase(it++);
+            }
+            else
+                ++it;
+        }
+        
+        // COMPRUEBA SI SE HA CAÍDO DEL MAPA
+        checkOutOfMap(ready);
+    }
+}
+
+void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
+    std::list<checkPoint>::iterator it = active_points.begin();
+    
+    float minX = active_points.front().shape.getPosition()[0];
+    float minY = active_points.front().shape.getPosition()[1];
+
+    float distX = minX - ready->getXPosition();
+    float distY = minY - ready->getYPosition();
+    float distance = sqrt(distX*distX + distY*distY);
+    float aux_d;
+
+    while(it != active_points.end()){
+        if((*it).active){
+            distX = (*it).shape.getPosition()[0] - ready->getXPosition();
+            distY = (*it).shape.getPosition()[1] - ready->getYPosition();
+            aux_d = sqrt(distX*distX + distY*distY);
+            if (aux_d < distance){
+                distance = aux_d;
+                minX = (*it).shape.getPosition()[0];
+                minY = (*it).shape.getPosition()[1];
+            }
+        }
+        ++it;
+    }
+    ready->setPosition(minX+35, minY+35);
+}
+
+void Mapa::checkOutOfMap(Player* ready) {
+    if(ready->getSprite().intersects(DEATH))
+        Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+}

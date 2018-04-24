@@ -133,3 +133,15 @@ void xPlotato::direccion() {
         sprite.setScale(1, 1);
     }
 }
+
+void xPlotato::salta(int s) {
+    float imp = -15;
+    if(s==1){
+        //std::cout << "Salto hacia la derecha" << std::endl; 
+        body.applyLinearImpulse(0,imp);
+    }
+    else if(s==0){
+        //std::cout << "Salto hacia la izquierda" << std::endl;
+        body.applyLinearImpulse(0,imp);
+    }
+}

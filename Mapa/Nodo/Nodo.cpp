@@ -186,12 +186,6 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     powers.push_back(p);
 }
 
-void Nodo::addDEATH(int x, int y, int width, int height) {
-    DEATH.setPosition(x, y);
-    DEATH.setSize(width, height);
-}
-
-
 void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 
     for(int i = 0; i < v_esprait.size(); i++){
@@ -244,18 +238,15 @@ void Nodo::update(){
             ++it;
         }
         
-        int x = 0;
         it = checkpoints.begin();
         while(it != checkpoints.end()){
             if((*it).shape.getPosition()[0] < maxXCheckPoint)
                 checkpoints.erase(it++);
             else
                 ++it;
-            x++;
         }
         
-        // COMPROEBA SI SE HA CAÍDO DEL MAPA
-        checkOutOfMap(ready);
+        
         
         // EVENTOS
         //if(!ready->isInmortal())
@@ -280,57 +271,16 @@ void Nodo::update(){
     
 }
 
-void Nodo::checkOutOfMap(Player* ready) {
-    if(ready->getSprite().intersects(DEATH)){
-        std::cout << "FUERA DEL MAPA" << std::endl;
-        movePlayerToClosestCheckPoint(ready);
-    }
-}
-
-
 void Nodo::checkColisionsPinchos(Player* ready) {
-    
-
     bool flag = false;
     //Colision con pinchos
     for(int j = 0; j < pinchos.size() && !flag; j++){
         if(ready->getSprite().intersects(pinchos[j])){
-            movePlayerToClosestCheckPoint(ready);
+            Mapa::Instance().movePlayerToClosestCheckPoint(ready);
             flag = true;
         }
     }
 }
-
-void Nodo::movePlayerToClosestCheckPoint(Player* ready) {
-    std::list<checkPoint>::iterator it = checkpoints.begin();
-    
-    float minX = checkpoints.front().shape.getPosition()[0];
-    float minY = checkpoints.front().shape.getPosition()[1];
-
-    float distX = minX - ready->getXPosition();
-    float distY = minY - ready->getYPosition();
-    float distance = sqrt(distX*distX + distY*distY);
-    float aux_d;
-
-    it = checkpoints.begin();
-    while(it != checkpoints.end()){
-        if((*it).active){
-            distX = (*it).shape.getPosition()[0] - ready->getXPosition();
-            distY = (*it).shape.getPosition()[1] - ready->getYPosition();
-            aux_d = sqrt(distX*distX + distY*distY);
-            if (aux_d < distance){
-                distance = aux_d;
-                minX = (*it).shape.getPosition()[0];
-                minY = (*it).shape.getPosition()[1];
-            }
-        }
-        ++it;
-    }
-
-    std::cout << "MUEVETE A " << minX << ", " << minY << std::endl;
-    ready->setPosition(minX+35, minY+35);
-}
-
 
 void Nodo::preState(){
     for(int i = 0; i < npcs.size(); i++){

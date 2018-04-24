@@ -89,9 +89,6 @@
   <object id="22" x="490" y="1260" width="490" height="70"/>
   <object id="24" x="910" y="1470" width="140" height="70"/>
  </objectgroup>
- <objectgroup color="#c80000" name="DEATH">
-  <object id="31" x="0" y="2520" width="2730" height="350"/>
- </objectgroup>
  <objectgroup color="#0000ff" name="checkpoint">
   <object id="28" x="490" y="1680" width="70" height="70"/>
   <object id="29" x="1330" y="1680" width="70" height="70"/>
