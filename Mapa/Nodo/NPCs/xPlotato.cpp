@@ -150,15 +150,17 @@ void xPlotato::direccion() {
 
 void xPlotato::salta(int s) {
     float imp = -15;
-    if(s==1){
-        //std::cout << "Salto hacia la derecha" << std::endl; 
-        body.applyLinearImpulse(0,imp);
-    }
-    else if(s==0){
-        //std::cout << "Salto hacia la izquierda" << std::endl;
-        body.applyLinearImpulse(0,imp);
-    }
-    else if(s==-1){
-        body.applyLinearImpulse(0,0);
+    if(xplotar){
+        if(s==1){
+            //std::cout << "Salto hacia la derecha" << std::endl; 
+            body.applyLinearImpulse(0,imp);
+        }
+        else if(s==0){
+            //std::cout << "Salto hacia la izquierda" << std::endl;
+            body.applyLinearImpulse(0,imp);
+        }
+        else if(s==-1){
+            body.applyLinearImpulse(0,0);
+        }
     }
 }

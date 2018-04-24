@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
