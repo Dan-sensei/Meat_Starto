@@ -116,6 +116,9 @@ void renderEngine::rSprite::draw() {
 bool renderEngine::rSprite::intersects(renderEngine::rRectangleShape rs) {
     return sprite.getGlobalBounds().intersects(rs.getRectShape().getGlobalBounds());
 }
+bool renderEngine::rSprite::intersects(renderEngine::rCircleShape cs) {
+    return sprite.getGlobalBounds().intersects(cs.getCircleShape().getGlobalBounds());
+}
 
 std::array<float, 2> renderEngine::rSprite::getPosition() {
     std::array<float,2> ret;
@@ -398,6 +401,21 @@ void renderEngine::rCircleShape::setPosition(float x, float y) {
 void renderEngine::rCircleShape::setOrigin(float x, float y) {
     cs.setOrigin(x,y);
 }
+
+sf::CircleShape renderEngine::rCircleShape::getCircleShape() {
+    return cs;
+}
+
+std::array<float, 2> renderEngine::rCircleShape::getPosition() {
+    std::array<float,2> ret;
+    
+    ret[0] = cs.getPosition().x;
+    ret[1] = cs.getPosition().y;
+    
+    return ret;
+}
+
+
 
 
 

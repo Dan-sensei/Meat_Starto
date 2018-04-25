@@ -326,7 +326,7 @@ void mj_t::update() {
                 on = false;
                 
                 v_piezas.clear();
-                m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]);
+                //m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]);
             }
         }
         else if(x_ < x_min || x_ > x_max){
@@ -334,9 +334,11 @@ void mj_t::update() {
         }
     }
     else if(!on){
-        if(m1.rect.getPosition()[1]>-200){
+        if(m1.rect.getPosition()[1]>-500){
             m1.rect.move(0,-5);
-            m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]+(70/2));
+            float w = m2.rect.getSize()[0];
+            float h = m2.rect.getSize()[1];
+            m1.pb.setPosition(m1.rect.getPosition()[0]+(w/2),m1.rect.getPosition()[1]+(h/2));
         }
     }
 }

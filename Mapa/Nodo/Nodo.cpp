@@ -202,12 +202,9 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
-    /*
     for(int i = 0; i < pinchos.size(); i++){
         pinchos[i].draw();
     }
-     */
-    
     
     for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it)
         (*it).shape.draw();
@@ -278,8 +275,8 @@ void Nodo::update(){
         
         
         // EVENTOS
-        //if(!ready->isInmortal())
-          //  checkColisionsPinchos(ready);
+        if(!ready->isInmortal())
+            //checkColisionsPinchos(ready);
         
         
         //Colision con powerups
@@ -306,6 +303,7 @@ void Nodo::checkColisionsPinchos(Player* ready) {
     for(int j = 0; j < pinchos.size() && !flag; j++){
         if(ready->getSprite().intersects(pinchos[j])){
             Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+            //ready->lvlDown();
             flag = true;
         }
     }
