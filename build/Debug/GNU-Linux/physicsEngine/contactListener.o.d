@@ -4,12 +4,9 @@ build/Debug/GNU-Linux/physicsEngine/contactListener.o: \
  physicsEngine/pBody.h physicsEngine/pConverter.h \
  physicsEngine/contactListener.h physicsEngine/pBody.h AssetManager.h \
  renderEngine/rSoundBuffer.h physicsEngine/contactListener.h Player.h \
- Animator.h Mapa/Nodo/Nodo.h Mapa/Nodo/NPCs/NPC.h Mapa/Nodo/Ground.h \
- Mapa/Nodo/../../Player.h Mapa/Nodo/Minijuegos/Minijuego.h \
- Mapa/Nodo/Minijuegos/goingUp.h renderEngine/renderEngine.h \
- Mapa/Nodo/Minijuegos/Minijuego.h Mapa/Mapa.h Mapa/../mj_t.h \
- Mapa/../boss.h Mapa/Nodo/Nodo.h Mapa/Nodo/NPCs/NPC.h \
- Mapa/Nodo/NPCs/xPlotato.h Mapa/Nodo/NPCs/NPC.h
+ Animator.h particleSystem.h Particle.h \
+ physicsEngine/../Mapa/Nodo/NPCs/xPlotato.h \
+ physicsEngine/../Mapa/Nodo/NPCs/NPC.h
 
 /usr/include/tinyxml2.h:
 
@@ -37,32 +34,10 @@ Player.h:
 
 Animator.h:
 
-Mapa/Nodo/Nodo.h:
+particleSystem.h:
 
-Mapa/Nodo/NPCs/NPC.h:
+Particle.h:
 
-Mapa/Nodo/Ground.h:
+physicsEngine/../Mapa/Nodo/NPCs/xPlotato.h:
 
-Mapa/Nodo/../../Player.h:
-
-Mapa/Nodo/Minijuegos/Minijuego.h:
-
-Mapa/Nodo/Minijuegos/goingUp.h:
-
-renderEngine/renderEngine.h:
-
-Mapa/Nodo/Minijuegos/Minijuego.h:
-
-Mapa/Mapa.h:
-
-Mapa/../mj_t.h:
-
-Mapa/../boss.h:
-
-Mapa/Nodo/Nodo.h:
-
-Mapa/Nodo/NPCs/NPC.h:
-
-Mapa/Nodo/NPCs/xPlotato.h:
-
-Mapa/Nodo/NPCs/NPC.h:
+physicsEngine/../Mapa/Nodo/NPCs/NPC.h:

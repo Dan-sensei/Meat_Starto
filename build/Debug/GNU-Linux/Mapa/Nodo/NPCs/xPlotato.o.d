@@ -9,7 +9,8 @@ build/Debug/GNU-Linux/Mapa/Nodo/NPCs/xPlotato.o: \
  Mapa/Nodo/NPCs/../../../MPuntuaciones.h Mapa/Nodo/NPCs/../../../Hud.h \
  Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h \
  Mapa/Nodo/NPCs/../../../Player.h Mapa/Nodo/NPCs/../../../Animator.h \
- Mapa/Nodo/NPCs/../../../Mapa/Mapa.h \
+ Mapa/Nodo/NPCs/../../../particleSystem.h \
+ Mapa/Nodo/NPCs/../../../Particle.h Mapa/Nodo/NPCs/../../../Mapa/Mapa.h \
  Mapa/Nodo/NPCs/../../../Mapa/../mj_t.h \
  Mapa/Nodo/NPCs/../../../Mapa/../boss.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Nodo.h \
@@ -19,14 +20,10 @@ build/Debug/GNU-Linux/Mapa/Nodo/NPCs/xPlotato.o: \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/goingUp.h \
  renderEngine/renderEngine.h \
- Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h \
- Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
- Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/xPlotato.h \
- Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
+ Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h Factory.h \
  Mapa/Nodo/NPCs/../../../mj_t.h Mapa/Nodo/NPCs/../../../boss.h \
- Mapa/Nodo/NPCs/../../../renderEngine/rMusic.h \
- Mapa/Nodo/NPCs/../../../particleSystem.h \
- Mapa/Nodo/NPCs/../../../Particle.h Mapa/Nodo/NPCs/xPlotato.h
+ Mapa/Nodo/NPCs/../../../renderEngine/rMusic.h Mapa/Nodo/NPCs/xPlotato.h \
+ Mapa/Nodo/NPCs/NPC.h
 
 /usr/include/tinyxml2.h:
 
@@ -68,6 +65,10 @@ Mapa/Nodo/NPCs/../../../Player.h:
 
 Mapa/Nodo/NPCs/../../../Animator.h:
 
+Mapa/Nodo/NPCs/../../../particleSystem.h:
+
+Mapa/Nodo/NPCs/../../../Particle.h:
+
 Mapa/Nodo/NPCs/../../../Mapa/Mapa.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/../mj_t.h:
@@ -90,11 +91,7 @@ renderEngine/renderEngine.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h:
 
-Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h:
-
-Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/xPlotato.h:
-
-Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h:
+Factory.h:
 
 Mapa/Nodo/NPCs/../../../mj_t.h:
 
@@ -102,8 +99,6 @@ Mapa/Nodo/NPCs/../../../boss.h:
 
 Mapa/Nodo/NPCs/../../../renderEngine/rMusic.h:
 
-Mapa/Nodo/NPCs/../../../particleSystem.h:
-
-Mapa/Nodo/NPCs/../../../Particle.h:
-
 Mapa/Nodo/NPCs/xPlotato.h:
+
+Mapa/Nodo/NPCs/NPC.h:

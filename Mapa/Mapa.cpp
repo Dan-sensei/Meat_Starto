@@ -20,7 +20,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 
@@ -361,15 +361,11 @@ void Mapa::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
         //std::cout << path << std::endl;
-<<<<<<< HEAD
+    
     nodo_actual = 0;
     CargaNodo(NODOS[0]);
     std::cout << "asdada " << every_points.size() << std::endl;
-=======
-    //nodo_actual = 15;
-    LeeNodo(path);
 
->>>>>>> 130dc8c8adb1756658b188ebb4be2950b1c0f0bf
     checkPoint first;
     first = every_points.front();
     active_points.push_back(first);
@@ -637,78 +633,6 @@ void Mapa::changeDirection(int dir) {
     direction = dir;
 }
 
-<<<<<<< HEAD
-=======
-void Mapa::LeeNodoAux(std::list<Nodo>& lista, const std::string& node_path, int &x_start, int &y_start) {
-    int map_width;
-    int map_height;
-
-    tinyxml2::XMLDocument map_doc;
-    map_doc.LoadFile(node_path.c_str());
-
-    tinyxml2::XMLElement *map;
-    map = map_doc.FirstChildElement("map");
-    map->QueryIntAttribute("width", &map_width);
-    map->QueryIntAttribute("height", &map_height);
-
-    lista.emplace_back(ts1);
-    lista.back().setRectVector(spriteSheetRects);
-    
-    //CONSIGO EL TEXTO
-    std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
-    std::string partes;
-    std::string p_aux;
-    int x_max_aux;
-    
-    y_start -= map_height*alto;
-
-    for (int i = 0; i < map_height; i++) {
-        for (int j = 0; j < map_width; j++) {
-            v_mapa.erase(0, 1);
-            partes = v_mapa.substr(0, 1);
-            v_mapa.erase(0, 1);
-            p_aux = v_mapa.substr(0, 1);
-            while (p_aux != "," && p_aux != "") {
-                partes = partes.operator+=(v_mapa.substr(0, 1));
-                v_mapa.erase(0, 1);
-                p_aux = v_mapa.substr(0, 1);
-            }
-            if (stoi(partes) != 0) {
-                lista.back().addTile(stoi(partes)-1, x_start + (ancho * j), y_start + alto * i);
-            }
-        }
-        partes = v_mapa.erase(0, 1);
-    }
-    
-    if(direction == 0)
-        x_max_aux = ancho * (map_width-1);
-    
-    tinyxml2::XMLElement *obj;
-    obj = map->FirstChildElement("objectgroup");
-    
-    while(obj){
-        
-        //Puntero a funcion
-        pFunc funcion = mapa_funciones[obj->Attribute("name")];   
-        
-        //std::cout << obj->Attribute("name") << std::endl;
-        
-        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back(), x_start, y_start);
-       
-        obj = obj->NextSiblingElement("objectgroup");
-    }
-    
-    if(direction == 0){
-        x_start += x_max_aux+ancho;
-        lista.back().setPop(x_start);
-    }
-    else{
-        lista.back().setPop(y_start);
-    }
-    
-}
-
->>>>>>> 130dc8c8adb1756658b188ebb4be2950b1c0f0bf
 void Mapa::setCameraDirection(int i) {
     cameraDir = i;
 }

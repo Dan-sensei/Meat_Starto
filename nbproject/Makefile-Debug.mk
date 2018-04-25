@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Animator.o \
 	${OBJECTDIR}/AssetManager.o \
+	${OBJECTDIR}/Factory.o \
 	${OBJECTDIR}/Hud.o \
 	${OBJECTDIR}/Juego.o \
 	${OBJECTDIR}/MPuntuaciones.o \
@@ -112,6 +113,11 @@ ${OBJECTDIR}/AssetManager.o: AssetManager.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine/renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AssetManager.o AssetManager.cpp
+
+${OBJECTDIR}/Factory.o: Factory.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -I/usr/include/Box2D -I. -include /usr/include/tinyxml2.h -include renderEngine/renderEngine.h -include physicsEngine/physicsEngine.h -include physicsEngine/pBody.h -include AssetManager.h -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Factory.o Factory.cpp
 
 ${OBJECTDIR}/Hud.o: Hud.cpp
 	${MKDIR} -p ${OBJECTDIR}
