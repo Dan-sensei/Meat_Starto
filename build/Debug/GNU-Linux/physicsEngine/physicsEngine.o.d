@@ -7,7 +7,8 @@ build/Debug/GNU-Linux/physicsEngine/physicsEngine.o: \
  Mapa/Nodo/Nodo.h Mapa/Nodo/NPCs/NPC.h Mapa/Nodo/Ground.h \
  Mapa/Nodo/../../Player.h Mapa/Nodo/../../Animator.h \
  Mapa/Nodo/../../renderEngine/renderEngine.h \
- Mapa/Nodo/Minijuegos/Minijuego.h
+ Mapa/Nodo/Minijuegos/Minijuego.h Mapa/Nodo/Minijuegos/goingUp.h \
+ renderEngine/renderEngine.h Mapa/Nodo/Minijuegos/Minijuego.h
 
 /usr/include/tinyxml2.h:
 
@@ -42,5 +43,11 @@ Mapa/Nodo/../../Player.h:
 Mapa/Nodo/../../Animator.h:
 
 Mapa/Nodo/../../renderEngine/renderEngine.h:
+
+Mapa/Nodo/Minijuegos/Minijuego.h:
+
+Mapa/Nodo/Minijuegos/goingUp.h:
+
+renderEngine/renderEngine.h:
 
 Mapa/Nodo/Minijuegos/Minijuego.h:

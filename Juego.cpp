@@ -302,7 +302,7 @@ void Juego::Update(){
         mapa->Instance().newState();
         rain.newState();
     }
-    std::cout << "CAMERA DIR " << cameraDirection << std::endl;
+    //std::cout << "CAMERA DIR " << cameraDirection << std::endl;
 }
 
 void Juego::Render(){

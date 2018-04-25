@@ -113,7 +113,10 @@ public:
             void setRadius(float r);
             void setOrigin(float x, float y);
             
+            std::array<float,2> getPosition();
+            
         private:
+            sf::CircleShape getCircleShape();   //NO VA BIEN
             sf::CircleShape cs;
     };
     
@@ -134,6 +137,7 @@ public:
             void setTextureRect(renderEngine::rIntRect rect);
             std::array<float,2> getPosition();          //DEVUELVE LA POSICION
             bool intersects(renderEngine::rRectangleShape rs);  //COLISION DE SFML PARA LOS PINCHOS
+            bool intersects(renderEngine::rCircleShape cs);  //COLISION DE SFML PARA LAS EXPLOSIONES
             sf::Sprite getSprite();
             void setColor(int r, int g, int b);
             void setColor(int r, int g, int b, int alpha);

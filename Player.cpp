@@ -147,7 +147,6 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     sprite.setPosition(actual.x, actual.y);
     
     inmortal = false;
-    level = 0;
     exp_for_next_level = 500;
     exp = 0;
     
@@ -414,6 +413,8 @@ void Player::setPosition(float x, float y) {
     body.setActive(false);
     respawnTimeClock.restart();
     spawned = true;
+    lvlDown();
+    onAir = 0;
 }
 
 int Player::getAir() {
@@ -422,4 +423,19 @@ int Player::getAir() {
 
 bool Player::isInmortal() {
     return inmortal;
+}
+
+void Player::lvlDown() {
+    if(level>0){
+        level--;
+    }
+    else if(level=0){
+        //MUERE
+    }
+}
+
+void Player::lvlUp() {
+    if(level<=6){
+        level++;
+    }
 }

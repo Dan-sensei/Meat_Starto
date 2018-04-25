@@ -78,6 +78,26 @@ xPlotato::~xPlotato() {
 
 void xPlotato::update(){
     
+    //PROXIMIDAD POR PERSONAJE
+    std::vector<Player*>* players = Juego::Instance().getPlayers();
+
+    for(int i=0 ; i<players->size() ; i++){
+        Player* ready = (*players)[i];
+        
+        if(ready->getSprite().intersects(sprite)){
+            Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+            alive = false;
+        }
+        if(xplosion){
+            float x_ = ready->getXPosition()-xplosion->getPosition()[0];
+            float y_ = ready->getYPosition()-xplosion->getPosition()[1];
+
+            if(sqrt((x_*x_)+(y_*y_)) < 70*2.5){   
+                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+            }
+        }
+    }
+    
     if(xplotar){
         direccion();
         //std::cout << xclock.getElapsedTime().asSeconds() << std::endl;

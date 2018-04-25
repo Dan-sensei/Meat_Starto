@@ -72,6 +72,9 @@ public:
     void powerDownJump();
     void powerDownFreeze();
     
+    void lvlDown();
+    void lvlUp();
+    
     void setPosition(float x, float y);
     std::string anima();
     
