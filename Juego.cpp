@@ -138,47 +138,49 @@ void Juego::HandleEvents(){
                 //std::cout << "Tecla " << event.getKeyCode() << std::endl;
                 
                 break;
+                
             case renderEngine::rEvent::EventType::KeyReleased :
                 keys[event.getKeyCode()] = false;     
+                
                 switch(event.getKeyCode()) {
-                   //JUGADOR 1                    
-                    case 0:
-                        if(readyPlayer.size()>=1){
-                        readyPlayer[0]->moveLeft_b();
-                        }
-                    break;
-                    
-                    case 3:
-                        if(readyPlayer.size()>=1){
-                        readyPlayer[0]->moveRigth_b();
-                        }
-                    break; 
                     
                     //JUGADOR 2
                     
-                    case 73:
+                    case 71:
                         if(readyPlayer.size()>=2){
-                        readyPlayer[1]->moveLeft_b();
+                            readyPlayer[1]->moveLeft_b();
                         }
                     break;
 
                     case 72:
                         if(readyPlayer.size()>=2){
-                        readyPlayer[1]->moveRigth_b();
+                            readyPlayer[1]->moveRigth_b();
                         }
                     break;
+                   //JUGADOR 1                    
+                    case 0:
+                        if(readyPlayer.size()>=1){
+                            readyPlayer[0]->moveLeft_b();
+                        }
+                    break;
+                    
+                    case 3:
+                        if(readyPlayer.size()>=1){
+                            readyPlayer[0]->moveRigth_b();
+                        }
+                    break; 
                     
                     //JUGADOR 3
                     
                     case 10:
                         if(readyPlayer.size()>=3){
-                        readyPlayer[2]->moveLeft_b();
+                            readyPlayer[2]->moveLeft_b();
                         }
                     break;
 
                     case -1:
                         if(readyPlayer.size()>=3){
-                        readyPlayer[2]->moveRigth_b();
+                            readyPlayer[2]->moveRigth_b();
                         }
                     break;
                     
@@ -186,26 +188,19 @@ void Juego::HandleEvents(){
                     
                     case 21:
                         if(readyPlayer.size()>=4){
-                        readyPlayer[3]->moveLeft_b();
+                            readyPlayer[3]->moveLeft_b();
                         }
                     break;
 
                     case 13:
                         if(readyPlayer.size()>=4){
-                        readyPlayer[3]->moveRigth_b();
+                            readyPlayer[3]->moveRigth_b();
                         }
                     break;
-                    /*
-                    case 57:
-                        std::cout<<"anim 1"<<readyPlayer[0]->anima()<<std::endl;
-                        std::cout<<"anim 2"<<readyPlayer[1]->anima()<<std::endl;
-                        std::cout<<"anim 3"<<readyPlayer[2]->anima()<<std::endl;
-                        std::cout<<"anim 4"<<readyPlayer[3]->anima()<<std::endl;
-                    break;
-                    */
                    
                 }
                 break;
+             
 
             default:
                 break;
@@ -319,7 +314,7 @@ void Juego::Render(){
     
     //ACTUALIÇAÇAO DEL PERSONAJE
     for(int i=0; i< readyPlayer.size(); i++){
-        readyPlayer[i]->update(animationClock.restart());
+        readyPlayer[i]->update();
         readyPlayer[i]->interpola(tick);
     }
     

@@ -512,9 +512,6 @@ void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, i
 
     Minijuego* mini = actual.addMinigame(type, x, y, width, height);
     if(type == 1){
-        y -= y_max;
-        y += height;
-        y -= 70*2;      //Quiero que se empiecen a generar 2 por encima de la plataforma
 
         bool flag;
         for(int i = 0; i < 16; i++){
@@ -526,27 +523,8 @@ void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, i
                 }
         }
         
-        goingUp* up = static_cast<goingUp*>(mini);
-        
-        std::list<Nodo>* nodosUp = up->getAscensionList();
-        std::string path;
-        changeDirection(1);
-        for(int i = 0; i < 9; i++){
-            path = "tiles_definitivo/nodos/Up/Mininode_";
-            int rand = physicsEngine::Instance().genIntRandom(1, 8);
-            path = path.operator +=( std::to_string(rand) );
-            path = path.operator +=(".tmx");
-            
-            LeeNodoAux(*nodosUp, path, x, y);
-        }
-        path = "tiles_definitivo/nodos/Up/Mininode_9.tmx";
-        LeeNodoAux(*nodosUp, path, x, y);
-        up->setEndArea(x, y, 43*ancho, 19*alto);
-        y_max = y;
-        changeDirection(0);
-        
     }
-        std::cout << "YMAX "<<y_max << std::endl;
+
 }
 
 void Mapa::render(float tick_) {

@@ -41,9 +41,28 @@ void goingUp::update() {
                     starter++;
 
             }
+            // Inicio el juego
             if(starter == players->size()){
+                int x = initArea.getPosition()[0];
+                int y = initArea.getPosition()[1];
+                y += initArea.getSize()[1];
+                y -= 70*2;      //Quiero que se empiecen a generar 2 por encima de la plataforma
                 BEGIN = true;
                 Juego::Instance().switchCameradirection();
+                std::string path;
+                Mapa::Instance().changeDirection(1);
+                for(int i = 0; i < 9; i++){
+                    path = "tiles_definitivo/nodos/Up/Mininode_";
+                    int rand = physicsEngine::Instance().genIntRandom(1, 8);
+                    path = path.operator +=( std::to_string(rand) );
+                    path = path.operator +=(".tmx");
+
+                    Mapa::Instance().LeeNodoAux(ascension, path, x, y);
+                }
+                path = "tiles_definitivo/nodos/Up/Mininode_9.tmx";
+                Mapa::Instance().LeeNodoAux(ascension, path, x, y);
+                setEndArea(x, y, 43*70, 19*70);
+                Mapa::Instance().changeDirection(0);
             }
         }
         else{
@@ -56,7 +75,7 @@ void goingUp::update() {
             }
         }
     }
-    //std::cout << "UEEEEE" << std::endl;
+    
 }
 
 void goingUp::draw(float tick_) {
