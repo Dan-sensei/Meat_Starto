@@ -27,7 +27,7 @@ public:
     }
     //</SINGLETON>
     
-    void init(int x_);
+    void init(int x_,int y_);
     void update();
     void render();
     bool isBossOn();
@@ -95,6 +95,7 @@ private:
     renderEngine::rClock dt_boss;           //DELTA TIME 1
     int x_max;                              //X MAXIMA DONDE ACABA EL BOSS
     int x_min;                              //X MINIMA DONDE EMPIEZA EL BOSS
+    int y_min;
     bool on;                                //TRUE: BOSS EN MARCHA
     bool restart;                           //TRUE: BOSS INICIADO
     

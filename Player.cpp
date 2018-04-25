@@ -409,7 +409,7 @@ void Player::powerDownFreeze() {
 }
 
 void Player::setPosition(float x, float y) {
-    body.setPosition(x, y);
+    body.setPosition(x,y);
     body.setActive(false);
     respawnTimeClock.restart();
     spawned = true;

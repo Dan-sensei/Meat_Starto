@@ -21,7 +21,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 
@@ -700,7 +700,7 @@ void Mapa::leeRandom(){
 
         //CREO LA CLASE TETRIS
         mj_t *tetris;
-        tetris->Instance().init(x_max);
+        tetris->Instance().init(x_max,y_max);
 
         m_tetris = true;
     }
@@ -727,7 +727,7 @@ void Mapa::updateMini() {
     if(longitud >= MAP_ITERATION && !end){
         std::string path = "tiles_definitivo/nodos/";
         boss *javi;
-        javi->Instance().init(x_max);
+        javi->Instance().init(x_max,y_max);
 
         path = "tiles_definitivo/nodos/fin.tmx";
             //std::cout << path << std::endl;

@@ -19,20 +19,21 @@
 boss::boss() {
 }
 
-void boss::init(int x_) {
+void boss::init(int x_,int y_) {
     //x_ ES LA POSICION MAXIMA DEL ANTERIOR NODO DIBUJADO
 
     //COORDENADAS
     float a = 70;
     x_min = x_+(a*12);
     x_max = x_+(a*53);
+    y_min = y_;
     
     on = false;
     restart = false;
     
     //BOSS
     javi.r.setSize(70,70);
-    javi.r.setPosition(x_min+(a*5),560);
+    javi.r.setPosition(x_min+(a*5),y_min+560);
     javi.r.setFillColor('r');
     javi.x_f = -1;
     javi.y_f = -1;
@@ -43,18 +44,18 @@ void boss::init(int x_) {
     
     //CREO LA "PUERTA"
     puerta[0].r.setSize(a*12,a*5);
-    puerta[0].r.setPosition(x_min-(a*8),(a*20)+DES);
-    puerta[1].r.setPosition(x_min+(a*4),(a*20)+DES);
-    puerta[2].r.setPosition(x_min+(a*4),(a*21)+DES);
-    puerta[3].r.setPosition(x_min+(a*4),(a*22)+DES);
-    puerta[4].r.setPosition(x_min+(a*4),(a*23)+DES);
-    puerta[5].r.setPosition(x_min+(a*4),(a*24)+DES);
-    puerta[6].r.setPosition(x_min+(a*5),(a*22)+DES);
-    puerta[7].r.setPosition(x_min+(a*5),(a*23)+DES);
-    puerta[8].r.setPosition(x_min+(a*5),(a*24)+DES);
-    puerta[9].r.setPosition(x_min+(a*6),(a*23)+DES);
-    puerta[10].r.setPosition(x_min+(a*6),(a*24)+DES);
-    puerta[11].r.setPosition(x_min+(a*7),(a*24)+DES);
+    puerta[0].r.setPosition(x_min-(a*8),(a*20)+DES+y_min);
+    puerta[1].r.setPosition(x_min+(a*4),(a*20)+DES+y_min);
+    puerta[2].r.setPosition(x_min+(a*4),(a*21)+DES+y_min);
+    puerta[3].r.setPosition(x_min+(a*4),(a*22)+DES+y_min);
+    puerta[4].r.setPosition(x_min+(a*4),(a*23)+DES+y_min);
+    puerta[5].r.setPosition(x_min+(a*4),(a*24)+DES+y_min);
+    puerta[6].r.setPosition(x_min+(a*5),(a*22)+DES+y_min);
+    puerta[7].r.setPosition(x_min+(a*5),(a*23)+DES+y_min);
+    puerta[8].r.setPosition(x_min+(a*5),(a*24)+DES+y_min);
+    puerta[9].r.setPosition(x_min+(a*6),(a*23)+DES+y_min);
+    puerta[10].r.setPosition(x_min+(a*6),(a*24)+DES+y_min);
+    puerta[11].r.setPosition(x_min+(a*7),(a*24)+DES+y_min);
     
     for(int i=0 ; i<12 ; i++){
         if(i != 0){
@@ -84,7 +85,7 @@ void boss::update() {
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
     physicsEngine *world;
     if(x_m> (x_min+(70*20)) && x_m < x_max){
-       //std::cout << " | ----------- Boss ON" << std::endl;
+        //std::cout << y_min << std::endl;
         //COMIENZA LA BATALLA FINAL
         on = true;
         
@@ -143,7 +144,7 @@ void boss::update() {
             javi.proy[i]->r.move(vx,vy);
             
             //MILAGROSAMENTE FUNCIONA
-            if( javi.proy[i]->r.getPosition()[1]>2600    || javi.proy[i]->r.getPosition()[1]<0 || 
+            if( javi.proy[i]->r.getPosition()[1]>y_min+2600    || javi.proy[i]->r.getPosition()[1]<y_min || 
                 javi.proy[i]->r.getPosition()[0]>x_max+(70*5)   || javi.proy[i]->r.getPosition()[0]<x_min-(70*5)){
                     //std::cout << "Soy un proyectil y me destruyo" << std::endl;
                 
@@ -194,7 +195,7 @@ void boss::fasesBoss() {
     
     if(clock_boss.getElapsedTime().asSeconds()<20 && clock_boss.getElapsedTime().asSeconds()>=0){
         if(dt_boss.getElapsedTime().asSeconds() > 0.2){
-                //std::cout << "CREO BALA" << std::endl;
+                //std::cout << "CREO BALA EN (" << x_ << "," << y_ << ")" << std::endl;
             crearProyectil(x_,y_);
             dt_boss.restart();
         }
@@ -240,7 +241,7 @@ void boss::updateJavi() {
         
         //factor_v = dv(gen);
         javi.x_f = physicsEngine::Instance().genIntRandom(x_min+(70*3),x_min+(70*34));
-        javi.y_f = physicsEngine::Instance().genIntRandom(70*7, 70*15);
+        javi.y_f = physicsEngine::Instance().genIntRandom(y_min+70*7, y_min+70*15);
         
         javi.x_v = (float) (javi.x_f-javi.r.getPosition()[0])/factor;
         javi.y_v = (float) (javi.y_f-javi.r.getPosition()[1])/factor;
@@ -340,6 +341,8 @@ void boss::crearProyectil(float x_, float y_) {
     
     float x = javi.r.getPosition()[0];
     float y = javi.r.getPosition()[1];
+
+    //std::cout << "CREO BALA EN (" << x_ << "," << y_ << ")" << std::endl;
     
     proyectil *aux = new proyectil;
     aux->r.setSize(w,h);
