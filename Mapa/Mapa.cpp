@@ -623,9 +623,9 @@ void Mapa::render(float tick_) {
 //LEE LA MATRIZ DE ADYACENCIA
 void Mapa::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
-    path = path.operator +=("15.tmx");
+    path = path.operator +=("0.tmx");
         //std::cout << path << std::endl;
-    nodo_actual = 15;
+    //nodo_actual = 15;
     LeeNodo(path);
 
     checkPoint first;
