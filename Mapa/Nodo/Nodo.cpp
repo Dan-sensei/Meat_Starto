@@ -19,9 +19,8 @@
 #include "Juego.h"
 
 
-
 Nodo::Nodo() {
-
+    
     array_funciones[0] = &Player::powerUpInmortalidad;
     array_funciones[1] = &Player::powerUpSpeed;
     array_funciones[2] = &Player::powerUpExperience;
@@ -91,9 +90,16 @@ void Nodo::setRectVector(std::vector<renderEngine::rIntRect> rect_){
 
 
 void Nodo::addTile(int id, int x, int y){
-
+    std::string path;
+    if(Mapa::Instance().getTotalIterations()/2 > Mapa::Instance().getIterations()){
+        path = "tiles_definitivo/tilesheet.png";
+    }
+    else{
+        path = "tiles_definitivo/tilesheet2.png";
+    }
+    
     renderEngine::rSprite sprite;
-    sprite.setTexture(AssetManager::GetTexture("tiles_definitivo/tilesheet.png"));
+    sprite.setTexture(AssetManager::GetTexture(path));
     sprite.setTextureRect(tileRect[id]);
     sprite.setPosition(x,y);
     

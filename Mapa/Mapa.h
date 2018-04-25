@@ -45,6 +45,10 @@ public:
     void changeDirection(int dir);
     
     void setCameraDirection(int i);
+    
+    int getIterations();
+    int getTotalIterations();
+    
     virtual ~Mapa();
     
 private:
@@ -80,6 +84,8 @@ private:
     //ALMACENA EL PATH DE LA IMAGEN Y SU ID
     tinyxml2::XMLDocument ts_doc;   //XML DEL MAPASHEET
     renderEngine::rImage ts;        //PNG DEL MAPASHEET
+    std::string ts1;
+    std::string ts2;
 
     
     //OBJETOS (colisiones del mapa)
@@ -116,6 +122,7 @@ private:
     
     //FONDOS
     float x_view;
+    float y_view;
     renderEngine::rTexture text_fondo;
     renderEngine::rRectangleShape f1;
     renderEngine::rRectangleShape f2;

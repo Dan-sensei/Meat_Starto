@@ -19,11 +19,12 @@
 
 mj_t::mj_t() {}
 
-void mj_t::init(int x_) {
+void mj_t::init(int x_,int y_) {
     //LE PASO LA x_max DE TILE
     x_max = x_;
     x_min = x_ - 19*70; //LONTIGUD YA PREFEDINIDA DE TILED
                         //CUANDO LLEGUE A LA MITAD DEL MINIJUEGO EMPIEZA
+    y_min = y_;
     
     restart = false;
     on = false;
@@ -34,7 +35,7 @@ void mj_t::init(int x_) {
     //  MURO1 (DERECHA)
     int a = 70; //ANCHO TILE
     float x = x_max-(5*a);
-    float y = (a*2)-DES;
+    float y = (a*3)+y_min;
     int n = 27;
     
     m1.rect.setSize(a,a*n);
@@ -45,7 +46,11 @@ void mj_t::init(int x_) {
     float h = m1.rect.getSize()[1];
     m1.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k');
 
-    m1.pb.setUserData((void*)"Pared");
+    t = new physicsEngine::type;
+    t->id = 1;
+    t->data = this;
+    m1.pb.setUserData(t);
+    
     float px = m1.pb.getXPosition();
     float py = m1.pb.getYPosition();
     //m1.rect.setPosition(x,py);
@@ -53,7 +58,7 @@ void mj_t::init(int x_) {
     
     //  MURO2 (IZQUIERDA)
     x = x_min-(16*a);
-    y = (a*2)-DES;
+    y = (a*2)-DES+y_min;
         
     m2.rect.setSize(a,a*n);
     m2.rect.setPosition(x,y);
@@ -62,6 +67,7 @@ void mj_t::init(int x_) {
     w = m2.rect.getSize()[0];
     h = m2.rect.getSize()[1];
     m2.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k');
+    m2.pb.setUserData(t);
     
     px = m2.pb.getXPosition();
     py = m2.pb.getYPosition();
@@ -78,13 +84,15 @@ void mj_t::crearPieza() {
     //RANDOM
     int rx = physicsEngine::Instance().genIntRandom(0, 24);
     int np = physicsEngine::Instance().genIntRandom(0, 6);
-    float rv = physicsEngine::Instance().genFloatRandom(8, 10);
+    //float rv = physicsEngine::Instance().genFloatRandom(8*2, 10*2);
+    float rv = physicsEngine::Instance().genFloatRandom(25, 28);
+    int rc = physicsEngine::Instance().genIntRandom(0,3);
     int nt;
     
     //COORD
     int a = 70;
-    int x = rx*70+(x_min-(16*70))+(a);
-    int y = 0;
+    int x = rx*70+(x_min-(16*70))+(2*a);
+    int y = y_min;
     
     int x2, y2;
     
@@ -94,7 +102,22 @@ void mj_t::crearPieza() {
     
     for(int i=0 ; i<4 ; i++){
         nt = physicsEngine::Instance().genIntRandom(0, 6);
-        p->r[i].setFillColor('g');
+        
+        switch(rc){
+            case 0:
+                p->r[i].setFillColor('b');
+                break;
+            case 1:
+                p->r[i].setFillColor('r');
+                break;
+            case 2:
+                p->r[i].setFillColor('g');
+                break;
+            case 3:
+                p->r[i].setFillColor('y');
+                break;
+        }
+        
         p->r[i].setSize(a,a);
         switch(nt){
             case 1:
@@ -270,13 +293,15 @@ void mj_t::update() {
             }
             
             //MUEVO LOS MUROS (BOX2D+SFML)
-            if(m1.rect.getPosition()[1]<210){
+            /*
+            if(m1.rect.getPosition()[1]<y_min+210){
                 m1.rect.move(0,5);
                 float w = m2.rect.getSize()[0];
                 float h = m2.rect.getSize()[1];
                 m1.pb.setPosition(m1.rect.getPosition()[0]+(w/2),m1.rect.getPosition()[1]+(h/2));
             }
-            if(m2.rect.getPosition()[1]<140){
+             */
+            if(m2.rect.getPosition()[1]<y_min+140){
                 m2.rect.move(0,5);
                 float w = m2.rect.getSize()[0];
                 float h = m2.rect.getSize()[1];
@@ -291,7 +316,7 @@ void mj_t::update() {
             }
             
             //MUEVO LAS PIEZAS
-            int fin_pieza = 5000;
+            int fin_pieza = y_min+5000;
             float v = 0.5f;
             bool elim = true;
 
@@ -334,7 +359,7 @@ void mj_t::update() {
         }
     }
     else if(!on){
-        if(m1.rect.getPosition()[1]>-500){
+        if(m1.rect.getPosition()[1]>y_min-500){
             m1.rect.move(0,-5);
             float w = m2.rect.getSize()[0];
             float h = m2.rect.getSize()[1];

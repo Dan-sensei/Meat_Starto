@@ -48,7 +48,9 @@
                 //SI SE CAMBIA, CAMBIAR TAMBIEN _tile *tiles[37] EN EL .h;
     
     //LEO EL TILESHEET Y ALMACENO LOS CUADRADOS DE RECORTE
-    ts.loadFromFIle("tiles_definitivo/tilesheet.png");
+    ts1 = "tiles_definitivo/tilesheet.png";
+    ts2 = "tiles_definitivo/tilesheet2.png";
+    ts.loadFromFIle(ts1);
     ts_doc.LoadFile("tiles_definitivo/xml_spritesheet.xml");
     map = ts_doc.FirstChildElement("TextureAtlas")->FirstChildElement("sprite");
     
@@ -94,6 +96,7 @@
     //img_fondo.loadFromFIle("assets/fondo.PNG");
     //f1.t.loadFromImage(f1.img,*f1.ir);
     x_view = -1;
+    y_view = -1;
     text_fondo.loadFromFile("assets/fondo.PNG");
 
     f1.setTexture(text_fondo);
@@ -358,9 +361,15 @@ void Mapa::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
         //std::cout << path << std::endl;
+<<<<<<< HEAD
     nodo_actual = 0;
     CargaNodo(NODOS[0]);
     std::cout << "asdada " << every_points.size() << std::endl;
+=======
+    //nodo_actual = 15;
+    LeeNodo(path);
+
+>>>>>>> 130dc8c8adb1756658b188ebb4be2950b1c0f0bf
     checkPoint first;
     first = every_points.front();
     active_points.push_back(first);
@@ -414,7 +423,7 @@ void Mapa::leeRandom(){
 
         //CREO LA CLASE TETRIS
         mj_t *tetris;
-        tetris->Instance().init(x_max);
+        tetris->Instance().init(x_max,y_max);
 
         m_tetris = true;
     }
@@ -441,7 +450,7 @@ void Mapa::updateMini() {
     if(longitud >= MAP_ITERATION && !end){
         std::string path = "tiles_definitivo/nodos/";
         boss *javi;
-        javi->Instance().init(x_max);
+        javi->Instance().init(x_max,y_max);
 
         path = "tiles_definitivo/nodos/fin.tmx";
             //std::cout << path << std::endl;
@@ -468,11 +477,12 @@ void Mapa::updateFondo() {
     float x,y;
     float mv = 2;
     
-    if(x_view == -1){
+    if(x_view == -1 && y_view == -1){
         x_view = sfml->Instance().getViewCenter()[0];
+        y_view = sfml->Instance().getViewCenter()[1];
         
-        x = x_view-70*26;
-        y = sfml->Instance().getViewCenter()[1]-70*15;
+        x = x_view-70*27;
+        y = y_view-70*15;
 
         f1.setPosition(x,y);
     }
@@ -487,12 +497,19 @@ void Mapa::updateFondo() {
         }
         x_view = sfml->Instance().getViewCenter()[0];
         
-        
-        x = x_view-70*26;
-        y = sfml->Instance().getViewCenter()[1]-70*15;
+        x = x_view-70*27;
+        y = y_view-70*15;
 
         //f1.rect.setPosition(x,y);
         signo ? f1.move(-mv,0) : f1.move(mv,0);
+    }
+    else if(y_view != sfml->Instance().getViewCenter()[1] && abs(y_view-sfml->Instance().getViewCenter()[1])>5){
+        y_view = sfml->Instance().getViewCenter()[1];
+        
+        x = x_view-70*27;
+        y = y_view-70*15;
+        
+        f1.setPosition(x,y);
     }
     
     f2.setPosition(f1.getPosition()[0]+f1.getSize()[0],f1.getPosition()[1]);
@@ -583,30 +600,32 @@ void Mapa::handleCheckPoints() {
 }
 
 void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
-    std::list<checkPoint>::iterator it = active_points.begin();
-    
-    float minX = active_points.front().shape.getPosition()[0];
-    float minY = active_points.front().shape.getPosition()[1];
+    if(!ready->isInmortal()){
+        std::list<checkPoint>::iterator it = active_points.begin();
 
-    float distX = minX - ready->getXPosition();
-    float distY = minY - ready->getYPosition();
-    float distance = sqrt(distX*distX + distY*distY);
-    float aux_d;
+        float minX = active_points.front().shape.getPosition()[0];
+        float minY = active_points.front().shape.getPosition()[1];
 
-    while(it != active_points.end()){
-        if((*it).active){
-            distX = (*it).shape.getPosition()[0] - ready->getXPosition();
-            distY = (*it).shape.getPosition()[1] - ready->getYPosition();
-            aux_d = sqrt(distX*distX + distY*distY);
-            if (aux_d < distance){
-                distance = aux_d;
-                minX = (*it).shape.getPosition()[0];
-                minY = (*it).shape.getPosition()[1];
+        float distX = minX - ready->getXPosition();
+        float distY = minY - ready->getYPosition();
+        float distance = sqrt(distX*distX + distY*distY);
+        float aux_d;
+
+        while(it != active_points.end()){
+            if((*it).active){
+                distX = (*it).shape.getPosition()[0] - ready->getXPosition();
+                distY = (*it).shape.getPosition()[1] - ready->getYPosition();
+                aux_d = sqrt(distX*distX + distY*distY);
+                if (aux_d < distance){
+                    distance = aux_d;
+                    minX = (*it).shape.getPosition()[0];
+                    minY = (*it).shape.getPosition()[1];
+                }
             }
+            ++it;
         }
-        ++it;
+        ready->setPosition(minX+35, minY+35);
     }
-    ready->setPosition(minX+35, minY+35);
 }
 
 void Mapa::checkOutOfMap(Player* ready) {
@@ -618,6 +637,86 @@ void Mapa::changeDirection(int dir) {
     direction = dir;
 }
 
+<<<<<<< HEAD
+=======
+void Mapa::LeeNodoAux(std::list<Nodo>& lista, const std::string& node_path, int &x_start, int &y_start) {
+    int map_width;
+    int map_height;
+
+    tinyxml2::XMLDocument map_doc;
+    map_doc.LoadFile(node_path.c_str());
+
+    tinyxml2::XMLElement *map;
+    map = map_doc.FirstChildElement("map");
+    map->QueryIntAttribute("width", &map_width);
+    map->QueryIntAttribute("height", &map_height);
+
+    lista.emplace_back(ts1);
+    lista.back().setRectVector(spriteSheetRects);
+    
+    //CONSIGO EL TEXTO
+    std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
+    std::string partes;
+    std::string p_aux;
+    int x_max_aux;
+    
+    y_start -= map_height*alto;
+
+    for (int i = 0; i < map_height; i++) {
+        for (int j = 0; j < map_width; j++) {
+            v_mapa.erase(0, 1);
+            partes = v_mapa.substr(0, 1);
+            v_mapa.erase(0, 1);
+            p_aux = v_mapa.substr(0, 1);
+            while (p_aux != "," && p_aux != "") {
+                partes = partes.operator+=(v_mapa.substr(0, 1));
+                v_mapa.erase(0, 1);
+                p_aux = v_mapa.substr(0, 1);
+            }
+            if (stoi(partes) != 0) {
+                lista.back().addTile(stoi(partes)-1, x_start + (ancho * j), y_start + alto * i);
+            }
+        }
+        partes = v_mapa.erase(0, 1);
+    }
+    
+    if(direction == 0)
+        x_max_aux = ancho * (map_width-1);
+    
+    tinyxml2::XMLElement *obj;
+    obj = map->FirstChildElement("objectgroup");
+    
+    while(obj){
+        
+        //Puntero a funcion
+        pFunc funcion = mapa_funciones[obj->Attribute("name")];   
+        
+        //std::cout << obj->Attribute("name") << std::endl;
+        
+        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back(), x_start, y_start);
+       
+        obj = obj->NextSiblingElement("objectgroup");
+    }
+    
+    if(direction == 0){
+        x_start += x_max_aux+ancho;
+        lista.back().setPop(x_start);
+    }
+    else{
+        lista.back().setPop(y_start);
+    }
+    
+}
+
+>>>>>>> 130dc8c8adb1756658b188ebb4be2950b1c0f0bf
 void Mapa::setCameraDirection(int i) {
     cameraDir = i;
+}
+
+int Mapa::getIterations() {
+    return longitud;
+}
+
+int Mapa::getTotalIterations() {
+    return MAP_ITERATION;
 }

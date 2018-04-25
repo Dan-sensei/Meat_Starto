@@ -23,7 +23,7 @@ public:
     }
     //</SINGLETON>
     
-    void init(int x_);
+    void init(int x_,int y_);
     
     void update();
     void render();
@@ -59,9 +59,12 @@ private:
     renderEngine::rClock dt;        //DELTA TIME AL CREAR LAS PIEZAS
     int x_min;                      //POSICION MINIMA DONDE SE EJECUTA EL MINIJUEGO
     int x_max;                      //POSICION MAXIMA DONDE SE EJECUTA EL MINIJUEGO
+    int y_min;
     bool restart;                   //TRUE: SE HA REINICIADO clock Y SE HA INICIADO EL MINIJUEGO
     bool on;                        //TRUE: EL MINIJUEGO ESTA EN MARCHA
     bool fin;                       //TRUE: SE HA ACABADO EL MINIJUEGO
+    
+    physicsEngine::type* t;
 };
 
 #endif /* MJ_T_H */
