@@ -22,7 +22,7 @@ class Nodo;
 
 class goingUp : public Minijuego {
 public:
-    goingUp(int x, int y, int width, int height);
+    goingUp(int x, int y, int width, int height, std::vector<int> IDs_mininodo);
     goingUp(const goingUp& orig);
     virtual ~goingUp();
     
@@ -41,6 +41,7 @@ private:
     renderEngine::rRectangleShape initArea;
     renderEngine::rRectangleShape endArea;
     
+    std::vector<int> IDs;
     std::list<Nodo> ascension;
 };
 

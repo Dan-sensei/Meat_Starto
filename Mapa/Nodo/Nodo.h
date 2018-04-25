@@ -45,7 +45,7 @@ public:
     void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     void addPower(int id, int xMin, int xMax, int y_);
     void addCheckPoint(int x, int y, int width, int height);
-    Minijuego* addMinigame(int type, int x, int y, int width, int height);
+    Minijuego* addMinigame(int type, int x, int y, int width, int height, std::vector<int> IDs_mininodo);
     
     //Eventos
     void checkColisionsPinchos(Player* ready);

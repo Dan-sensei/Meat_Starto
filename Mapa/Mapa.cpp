@@ -20,9 +20,10 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 10
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
+#define altura_minijuego 9
 
  Mapa::Mapa() {
     std::cout << "Creando mapa..." << std::endl;
@@ -120,6 +121,8 @@
     
     //LeeNodo("tiles_definitivo/nodos/0.tmx");
     
+    Factory::Instance().LeeNodo("tiles_definitivo/nodos/15.tmx");
+    
     std::string path;
     for(int i = 0; i < 16; ++i){
         path = "tiles_definitivo/nodos/";
@@ -189,49 +192,51 @@ void Mapa::InitMatrix() {
 }
 
 // CONSTRUYE EL NODO i DEL VECTOR "NODOS" QUE CONTIENE LA INFORMACIÓN NECESARIA PARA CREARLO
+void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, int &x_, int &y_) {
 
-void Mapa::CargaNodo(Factory::NodeStruct const& nodo) {
-
-    hex_list.emplace_back();
+    lista.emplace_back();
     
     int randomX = 0;
     int randomY = 0;
     
-    hex_list.back().setRectVector(spriteSheetRects);
+    if(direction == 1)
+        y_ -= nodo.map_height*nodo.tile_height;
+    
+    lista.back().setRectVector(spriteSheetRects);
     
     // CARGO LAS TILES
     for(int i = 0; i < nodo.Tiles.size(); ++i)
-        hex_list.back().addTile(nodo.Tiles[i].id, x_max + nodo.Tiles[i].x, y_max + nodo.Tiles[i].y);
+        lista.back().addTile(nodo.Tiles[i].id, x_ + nodo.Tiles[i].x, y_ + nodo.Tiles[i].y);
     
     // CARGO EL SUELO
     for(int i = 0; i < nodo.Grounds.size(); ++i){
         std::vector<std::array<int, 2>> newCoords;
         for(int j = 0; j < nodo.Grounds[i].coords.size(); ++j){
             std::array<int, 2> updated;
-            updated[0] =  x_max + nodo.Grounds[i].coords[j][0];
-            updated[1] =  y_max + nodo.Grounds[i].coords[j][1];
+            updated[0] =  x_ + nodo.Grounds[i].coords[j][0];
+            updated[1] =  y_ + nodo.Grounds[i].coords[j][1];
             newCoords.push_back(updated);
         }
-        hex_list.back().addGround(newCoords);
+        lista.back().addGround(newCoords);
         newCoords.clear();
     }
     
     // CARGO LAS XPLOTATOS
     for(int i = 0; i < nodo.xPlotatos.size(); ++i){
         randomX = physicsEngine::Instance().genIntRandom(nodo.xPlotatos[i].xMin, nodo.xPlotatos[i].xMax);
-        hex_list.back().addxPlotato(x_max + randomX, y_max + nodo.xPlotatos[i].y, x_max + nodo.xPlotatos[i].xMin, x_max + nodo.xPlotatos[i].xMax);
+        lista.back().addxPlotato(x_ + randomX, y_ + nodo.xPlotatos[i].y, x_ + nodo.xPlotatos[i].xMin, x_ + nodo.xPlotatos[i].xMax);
     }
     
     // CARGO LOS SKULLS
     for(int i = 0; i < nodo.Skulls.size(); ++i){
         randomX = physicsEngine::Instance().genIntRandom(nodo.Skulls[i].xMin, nodo.Skulls[i].xMax);
         randomY = physicsEngine::Instance().genIntRandom(nodo.Skulls[i].yMin, nodo.Skulls[i].yMax);
-        hex_list.back().addSkull(x_max + randomX, y_max + randomY, x_max + nodo.Skulls[i].xMin, x_max + nodo.Skulls[i].xMax, y_max + nodo.Skulls[i].yMin, y_max + nodo.Skulls[i].yMax);
+        lista.back().addSkull(x_ + randomX, y_ + randomY, x_ + nodo.Skulls[i].xMin, x_ + nodo.Skulls[i].xMax, y_ + nodo.Skulls[i].yMin, y_ + nodo.Skulls[i].yMax);
     }
     
     // CARGO LOS POWERS
     for(int i = 0; i < nodo.Powers.size(); ++i){
-        hex_list.back().addPower(nodo.Powers[i].id, x_max + nodo.Powers[i].xMin, x_max + nodo.Powers[i].xMax, y_max + nodo.Powers[i].y);
+        lista.back().addPower(nodo.Powers[i].id, x_ + nodo.Powers[i].xMin, x_ + nodo.Powers[i].xMax, y_ + nodo.Powers[i].y);
     }
     
     // CARGO LOS PUNTOS DE CONTROL
@@ -239,21 +244,28 @@ void Mapa::CargaNodo(Factory::NodeStruct const& nodo) {
         checkPoint checkpoint;
         checkpoint.active = false;
         checkpoint.shape.setSize(nodo.Checkpoints[i].width, nodo.Checkpoints[i].height);
-        checkpoint.shape.setPosition(x_max + nodo.Checkpoints[i].x, y_max + nodo.Checkpoints[i].y);
+        checkpoint.shape.setPosition(x_ + nodo.Checkpoints[i].x, y_ + nodo.Checkpoints[i].y);
         checkpoint.shape.setOutlineThickness(2);
         checkpoint.shape.setOutlineColor('r');
         checkpoint.shape.setFillColor('t');
         every_points.push_back(checkpoint);
     }
     
-    x_max += nodo.map_width * nodo.tile_width;
-
-}
-
-
-
-
-/*
+    // MINIJUEGO
+    if(nodo.minijuego.type == 1){
+        std::cout << "GOING UP GENERADO!" << std::endl;
+        std::vector<int> IDs_mininodo;
+        for(int i = 0; i < altura_minijuego; ++i){
+            IDs_mininodo.push_back(physicsEngine::Instance().genIntRandom(0, 7));
+        }
+        
+        Minijuego* mini = lista.back().addMinigame(nodo.minijuego.type, x_ + nodo.minijuego.x, y_ + nodo.minijuego.y, nodo.minijuego.width, nodo.minijuego.height, IDs_mininodo);
+        
+        for(int i = 0; i < IDs_mininodo.size(); ++i){
+            y_ -= MININODOS[IDs_mininodo[i]].map_height*MININODOS[IDs_mininodo[i]].tile_height;
+        }
+        y_ += 2*nodo.tile_height;
+        
         bool flag;
         for(int i = 0; i < 16; i++){
             flag = false;
@@ -263,6 +275,18 @@ void Mapa::CargaNodo(Factory::NodeStruct const& nodo) {
                     flag = true;
                 }
         }
+    }
+    
+    if(direction == 0)
+        x_ += nodo.map_width * nodo.tile_width;
+
+}
+
+
+
+
+/*
+        
  */
 
 void Mapa::render(float tick_) {
@@ -358,13 +382,9 @@ void Mapa::render(float tick_) {
 //LEE LA MATRIZ DE ADYACENCIA
 void Mapa::CreaMapa() {
     
-    std::string path = "tiles_definitivo/nodos/";
-    path = path.operator +=("0.tmx");
-        //std::cout << path << std::endl;
     
-    nodo_actual = 0;
-    CargaNodo(NODOS[0]);
-    std::cout << "asdada " << every_points.size() << std::endl;
+    nodo_actual = 15;
+    CargaNodo(hex_list, NODOS[nodo_actual], x_max, y_max);
 
     checkPoint first;
     first = every_points.front();
@@ -372,7 +392,7 @@ void Mapa::CreaMapa() {
     active_points.front().active = true;
     active_points.front().shape.setOutlineColor('g');
     maxPoint = active_points.front().shape.getPosition()[0];
-    std::cout << "asdada" << std::endl;
+
     every_points.erase(every_points.begin());
     
     //EMPIEZA A LEER LA MATRIZ
@@ -398,7 +418,7 @@ void Mapa::leeRandom(){
     std::cout << path << std::endl;
     //std::cout << "Nodo actual " << nodo_actual << " | Next " << target << std::endl;
 
-    CargaNodo(NODOS[target]);
+    CargaNodo(hex_list, NODOS[target], x_max, y_max);
     longitud++;
 
     if(target == 6 && !m_tetris) {
@@ -451,7 +471,7 @@ void Mapa::updateMini() {
         path = "tiles_definitivo/nodos/fin.tmx";
             //std::cout << path << std::endl;
 
-        CargaNodo(BOSS);
+        CargaNodo(hex_list, BOSS, x_max, y_max);
         end = true;
     }
     
@@ -643,4 +663,8 @@ int Mapa::getIterations() {
 
 int Mapa::getTotalIterations() {
     return MAP_ITERATION;
+}
+
+Factory::NodeStruct Mapa::getMINI(int i) {
+    return MININODOS[i];
 }

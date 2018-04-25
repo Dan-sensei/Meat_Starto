@@ -48,6 +48,8 @@ public:
     
     int getIterations();
     int getTotalIterations();
+    void CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, int &x_, int &y_);
+    Factory::NodeStruct getMINI(int i);
     
     virtual ~Mapa();
     
@@ -69,7 +71,6 @@ private:
     Factory::NodeStruct BOSS;
     
     //----------------METODOS PRIVADOS
-    void CargaNodo(Factory::NodeStruct const& nodo);
     void InitMatrix();
     void updateFondo();
     

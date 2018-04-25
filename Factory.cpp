@@ -21,7 +21,7 @@ Factory::Factory() {
     mapa_funciones.insert(std::make_pair("skull", &Factory::leeSkulls));
     mapa_funciones.insert(std::make_pair("power", &Factory::leePorwerUps));
     mapa_funciones.insert(std::make_pair("checkpoint", &Factory::leeCheckPoints));
-    mapa_funciones.insert(std::make_pair("minijuegi", &Factory::leeMinijuego));
+    mapa_funciones.insert(std::make_pair("minijuego", &Factory::leeMinijuego));
 }
 
 
@@ -51,6 +51,8 @@ Factory::NodeStruct Factory::LeeNodo(std::string const& path) {
     NODO.tile_width = tileWidth;
     NODO.tile_height = tileHeight;
 
+    NODO.minijuego.type = -1;
+    
     //CONSIGO EL TEXTO
     std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
     std::string partes;
@@ -306,6 +308,8 @@ void Factory::leeCheckPoints(tinyxml2::XMLElement* obj, NodeStruct& node) {
 }
 
 void Factory::leeMinijuego(tinyxml2::XMLElement* obj, NodeStruct& node) {
+    
+    std::cout << "MINIJUEGO"<< std::endl;
     
     MinijuegoStruct mini;
     

@@ -14,13 +14,20 @@
 #include "goingUp.h"
 #include "Juego.h"
 
-goingUp::goingUp(int x, int y, int width, int height) {
+goingUp::goingUp(int x, int y, int width, int height, std::vector<int> IDs_mininodo) {
     initArea.setPosition(x, y);
     initArea.setSize(width, height);
+    initArea.setOutlineThickness(2.f);
+    initArea.setOutlineColor('r');
+    initArea.setFillColor('t');
+    std::cout << x << ", " << y << std::endl;
     BEGIN = false;
     END = false;
     endArea.setOutlineThickness(2.f);
     endArea.setOutlineColor('r');
+    
+    for(int i = 0; i < IDs_mininodo.size(); ++i)
+        IDs.push_back(IDs_mininodo[i]);
 }
 
 
@@ -43,25 +50,19 @@ void goingUp::update() {
             }
             // Inicio el juego
             if(starter == players->size()){
+                std::cout << "INICIO JODER" << std::endl;
                 int x = initArea.getPosition()[0];
                 int y = initArea.getPosition()[1];
                 y += initArea.getSize()[1];
                 y -= 70*2;      //Quiero que se empiecen a generar 2 por encima de la plataforma
                 BEGIN = true;
                 Juego::Instance().switchCameradirection();
-                std::string path;
                 Mapa::Instance().changeDirection(1);
-                for(int i = 0; i < 9; i++){
-                    path = "tiles_definitivo/nodos/Up/Mininode_";
-                    int rand = physicsEngine::Instance().genIntRandom(1, 8);
-                    path = path.operator +=( std::to_string(rand) );
-                    path = path.operator +=(".tmx");
-
-                    //Mapa::Instance().LeeNodoAux(ascension, path, x, y);
+                for(int i = 0; i < IDs.size(); i++){
+                    Mapa::Instance().CargaNodo(ascension, Mapa::Instance().getMINI(IDs[i]), x, y);
                 }
-                path = "tiles_definitivo/nodos/Up/Mininode_9.tmx";
-                //Mapa::Instance().LeeNodoAux(ascension, path, x, y);
-                setEndArea(x, y, 43*70, 19*70);
+                Mapa::Instance().CargaNodo(ascension, Mapa::Instance().getMINI(8), x, y); // Último
+                setEndArea(x, y, 43*70, 11*70);
                 Mapa::Instance().changeDirection(0);
             }
         }
@@ -79,7 +80,7 @@ void goingUp::update() {
 }
 
 void goingUp::draw(float tick_) {
-    
+    //initArea.draw();
     for(std::list<Nodo>::iterator it=ascension.begin(); it!=ascension.end(); ++it){
         (*it).miniDraw(tick_);
     }

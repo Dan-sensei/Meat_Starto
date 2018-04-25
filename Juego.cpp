@@ -69,7 +69,7 @@ Juego::Juego() {
 
     do {
         
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1700, 1400, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1200, 1200, 'D', keys));
         ++i;
         
     }while( i < MenuInicio::Instance()->numplayers );

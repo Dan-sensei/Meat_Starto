@@ -165,9 +165,9 @@ void Nodo::addCheckPoint(int x, int y, int width, int height) {
     checkpoints.push_back(checkpoint);   
 }
 
-Minijuego* Nodo::addMinigame(int type, int x, int y, int width, int height) {
+Minijuego* Nodo::addMinigame(int type, int x, int y, int width, int height, std::vector<int> IDs_mininodo) {
     if(type == 1)
-        minijuego = new goingUp(x, y, width, height);
+        minijuego = new goingUp(x, y, width, height, IDs_mininodo);
     
     return minijuego;
 }
