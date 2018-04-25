@@ -17,7 +17,7 @@
 #include "NPCs/xPlotato.h"
 #include "NPCs/Skull.h"
 #include "Juego.h"
-#include "Minijuegos/goingUp.h"
+
 
 
 Nodo::Nodo(std::string sheet) {    
@@ -158,9 +158,11 @@ void Nodo::addCheckPoint(int x, int y, int width, int height) {
     checkpoints.push_back(checkpoint);   
 }
 
-void Nodo::addMinigame(int type, int x, int y, int width, int height) {
+Minijuego* Nodo::addMinigame(int type, int x, int y, int width, int height) {
     if(type == 1)
         minijuego = new goingUp(x, y, width, height);
+    
+    return minijuego;
 }
 
 
@@ -212,7 +214,28 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
     
     for(int i = 0; i < powers.size(); i++)
         powers[i].sprite.draw();
+    
+    if(minijuego != nullptr)
+        minijuego->draw(tick_);
+    
 }
+
+void Nodo::miniDraw(float tick_) {
+    for(int i = 0; i < v_esprait.size(); i++)
+            v_esprait[i].draw();
+    
+    //------------|  ENEMIGOS  |------------//
+    for(int j = 0; j < npcs.size(); j++){
+            npcs[j]->interpola(tick_);
+            npcs[j]->draw();
+        }
+    for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it)
+        (*it).shape.draw();
+    
+    for(int i = 0; i < powers.size(); i++)
+        powers[i].sprite.draw();
+}
+
 
 void Nodo::update(){
 

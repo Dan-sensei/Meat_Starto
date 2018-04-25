@@ -25,3 +25,7 @@ Minijuego::~Minijuego() {
 void Minijuego::update() {
     std::cout << "Minijuego update" << std::endl;
 }
+
+void Minijuego::draw(float tick_) {
+
+}

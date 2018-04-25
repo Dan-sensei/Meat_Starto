@@ -46,10 +46,13 @@ Juego::Juego() {
     Mapa::Instance().CreaMapa();
     
     //VISTA
-    view = new renderEngine::rView(0,0,sfml->Instance().getSize()[0],sfml->Instance().getSize()[1]);
+    view = new renderEngine::rView(0, 0, sfml->Instance().getSize()[0], sfml->Instance().getSize()[1]);
     //ZUMO
     view->zoom(target_zoom);
     sfml->Instance().setView(*view);
+    
+    
+    view->setCenter(view->getCenter()[0], CAM_H);
     
     //INTERPOLACION
     accumulator = 0.0f;
@@ -64,9 +67,9 @@ Juego::Juego() {
 
     int i = 0;
 
-    do{
+    do {
         
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1260, 1400, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 2700, 1400, 'D', keys));
         ++i;
         
     }while( i < MenuInicio::Instance()->numplayers );
@@ -76,23 +79,22 @@ Juego::Juego() {
     THE_ARID_FLATS.setLoop(true);
     THE_ARID_FLATS.play();
 
-    rain.setPosition(1500, 200);
-    rain.setType(1);
-    rain.setParticleSpeed(500);
-    rain.setMaxParticleAmout(500);
-    rain.setGenerationTimer(4);
-    rain.setParticleLifeTime(1);
-    rain.setParticleDirection(-0.1, 1);
-    rain.setRectangle(4000, 200);
-    rain.alignToDirection(true);
+    rain.setPosition(1500, 200);                    // Posicion del sistema de partículas
+    rain.setType(1);                                // Tipo: Determina el área de generado | 0 = Círculo - 1 = Rectángulo (Por defecto tienen tamaño 0 y emitirán hacia el exterior aleatoriamente)
+    rain.setParticleSpeed(500);                     // Velocidad lineal de las partículas
+    rain.setMaxParticleAmout(500);                  // Máximo número de partículas
+    rain.setGenerationTimer(4);                     // Tiempo (ms) de delay entre la generación de partículas (En este caso se genera una partícula cada 4 ms)
+    rain.setParticleLifeTime(1);                    // Tiempo de vida en segundos, de vida d elas partículas
+    rain.setParticleDirection(-0.1, 1);             // Dirección de las partículas, debe ser un número entre 0 y 1
+    rain.setRectangle(4000, 200);                   // Área de generado, en este caso es un rectángulo, así que le digo ancho y alto, si fuera un círculo, llamaría a setCircle(float radius);
+    rain.alignToDirection(true);                    // Alinea las partículas a la dirección del movimiento, por defecto es false, si está a true, se ingora la rotación inicial
+    rain.setSprite("assets/THE_WATER_DROP.png");    // Cambia el sprite
+    rain.setSpriteSize(1, 0.8);                     // Cambia el tamaño del sprite
     
-    //rain.setParticleAngularVelocityRandomBetween(1, 5);
-    //rain.setParticleRotationRandomBetween(-180, 180);
-    rain.setSprite("assets/THE_WATER_DROP.png");
-    rain.setSpriteSize(1, 0.8);
     hud= new Hud(readyPlayer);
     
     Mapa::Instance().setPlayers(&readyPlayer);
+    cameraDirection = 0;
 }
 
 
@@ -300,6 +302,7 @@ void Juego::Update(){
         mapa->Instance().newState();
         rain.newState();
     }
+    std::cout << "CAMERA DIR " << cameraDirection << std::endl;
 }
 
 void Juego::Render(){
@@ -332,8 +335,14 @@ void Juego::Render(){
         //std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;
         
         //COMENTAR EL IF SI SE QUIERE QUE LA CAMARA VAYA HACIA ATRAS
-        if(readyPlayer[n]->getXPosition()>view->getCenter()[0])
-            view->setCenter(readyPlayer[n]->getXPosition(),CAM_H);
+        if(cameraDirection == 0){
+            if(readyPlayer[n]->getXPosition()>view->getCenter()[0])
+                view->setCenter(readyPlayer[n]->getXPosition(), view->getCenter()[1]);
+        }    
+        else{
+            if(readyPlayer[n]->getYPosition()<view->getCenter()[1])
+                view->setCenter(view->getCenter()[0], readyPlayer[n]->getYPosition());
+        }
         
         //std::cout << "CAMARA > X: " << sfml->Instance().getViewCenter()[0] << " | Y: " << sfml->Instance().getViewCenter()[1] << std::endl;
     }
@@ -373,4 +382,9 @@ Juego::~Juego() {
 
 std::vector<Player*>* Juego::getPlayers() {
     return &readyPlayer;
+}
+
+void Juego::switchCameradirection() {
+    cameraDirection = (cameraDirection == 0) ? 1 : 0;
+    Mapa::Instance().setCameraDirection(cameraDirection);
 }

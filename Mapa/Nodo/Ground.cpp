@@ -28,5 +28,6 @@ Ground::Ground(const Ground& orig) {
 }
 
 Ground::~Ground() {
+    std::cout << "Destruyendo suelo" << std::endl;
 }
 

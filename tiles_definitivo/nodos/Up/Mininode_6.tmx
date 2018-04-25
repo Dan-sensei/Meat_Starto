@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="43" height="17" tilewidth="70" tileheight="70" infinite="0" nextobjectid="1">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="43" height="17" tilewidth="70" tileheight="70" infinite="0" nextobjectid="25">
  <tileset firstgid="1" source="../../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="43" height="17">
   <data encoding="csv">
@@ -22,4 +22,58 @@
 0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup color="#0000ff" name="checkpoint">
+  <object id="18" x="1470" y="350" width="70" height="70"/>
+  <object id="20" x="770" y="70" width="70" height="70"/>
+  <object id="21" x="2170" y="70" width="70" height="70"/>
+  <object id="23" x="2240" y="770" width="70" height="70"/>
+  <object id="24" x="700" y="770" width="70" height="70"/>
+ </objectgroup>
+ <objectgroup name="colision">
+  <object id="1" x="280" y="70">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="2" x="700" y="210">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="3" x="1120" y="350">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="4" x="1400" y="560">
+   <polyline points="0,0 210,0 210,70 0,70 0,0"/>
+  </object>
+  <object id="5" x="1750" y="350">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="6" x="2170" y="210">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="7" x="2590" y="70">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="8" x="2380" y="560">
+   <polyline points="0,0 70,0 70,70 0,70 0,0"/>
+  </object>
+  <object id="9" x="2590" y="1050">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="10" x="2170" y="910">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="12" x="1750" y="770">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="13" x="1120" y="770">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="15" x="700" y="910">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="16" x="420" y="560">
+   <polyline points="0,0 70,0 70,70 0,70 0,0"/>
+  </object>
+  <object id="17" x="280" y="1050">
+   <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+ </objectgroup>
 </map>

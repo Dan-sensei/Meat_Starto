@@ -17,6 +17,8 @@
 #include "renderEngine/renderEngine.h"
 #include "Minijuego.h"
 
+class Nodo;
+
 class goingUp : public Minijuego {
 public:
     goingUp(int x, int y, int width, int height);
@@ -24,10 +26,21 @@ public:
     virtual ~goingUp();
     
     void update();
+    void draw(float tick_);
+    
+    void setEndArea(float x, float y, float width, float height);
+    bool hasStarted();
+    std::list<Nodo>* getAscensionList();
     
 private:
+    
+    bool BEGIN;
+    bool END;
     float minX, maxX;
     renderEngine::rRectangleShape initArea;
+    renderEngine::rRectangleShape endArea;
+    
+    std::list<Nodo> ascension;
 };
 
 #endif /* GOINGUP_H */

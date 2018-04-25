@@ -46,6 +46,7 @@ public:
     void Update();  
     virtual void Handle();
     
+    void switchCameradirection();
     std::vector<Player*>* getPlayers();
 
     std::array<float,2> getPlayerPosition(); //DEBERIA DE DEVOLVER TODAS LAS POSICIONES DE TODOS LOS PERSONAJES
@@ -78,6 +79,8 @@ private:
     sf::Text  titulo2;
     sf::Text  titulo3;
     static Juego* instance;
+    
+    int cameraDirection;
     
     rMusic THE_ARID_FLATS;
     particleSystem rain; 

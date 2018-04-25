@@ -21,6 +21,7 @@ public:
     virtual ~Minijuego();
     
     virtual void update();
+    virtual void draw(float tick_);
     
 private:
 

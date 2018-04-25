@@ -40,7 +40,7 @@
    <polyline points="0,0 140,0 140,70 0,70 0,0"/>
   </object>
  </objectgroup>
- <objectgroup name="checkpoint">
+ <objectgroup color="#0000ff" name="checkpoint">
   <object id="12" x="1470" y="70" width="70" height="70"/>
   <object id="13" x="2450" y="70" width="70" height="70"/>
   <object id="14" x="350" y="70" width="70" height="70"/>

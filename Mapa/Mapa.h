@@ -43,7 +43,9 @@ public:
     
     void setPlayers(std::vector<Player*>* ready);
     void movePlayerToClosestCheckPoint(Player* ready);
+    void changeDirection(int dir);
     
+    void setCameraDirection(int i);
     virtual ~Mapa();
     
 private:
@@ -60,18 +62,19 @@ private:
     
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
+    void LeeNodoAux(std::list<Nodo> &lista, std::string const& node_path, int &x_start, int &y_start);
     void InitMatrix();
     void updateFondo();
     
-    typedef void (Mapa::*pFunc)(tinyxml2::XMLElement *, Nodo &);
+    typedef void (Mapa::*pFunc)(tinyxml2::XMLElement *, Nodo &, int x_starto, int y_starto);
     std::map<std::string, pFunc> mapa_funciones;
     
-    void leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual);
-    void leexPlotatos(tinyxml2::XMLElement *obj, Nodo &actual);
-    void leeSkulls(tinyxml2::XMLElement *obj, Nodo &actual);
-    void leePorwerUps(tinyxml2::XMLElement *obj, Nodo &actual);
-    void leeCheckPoints(tinyxml2::XMLElement *obj, Nodo &actual);
-    void leeMinijuego(tinyxml2::XMLElement *obj, Nodo &actual);
+    void leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
+    void leexPlotatos(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
+    void leeSkulls(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
+    void leePorwerUps(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
+    void leeCheckPoints(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
+    void leeMinijuego(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS
@@ -92,12 +95,15 @@ private:
     
     //PARA CONSTRUIR EL MAPA
     int x_max;
+    int y_max;
     
     std::list<Nodo> hex_list;
     std::vector<renderEngine::rIntRect> spriteSheetRects;
     float maxPoint;
     std::list<checkPoint> active_points;
     std::list<checkPoint> every_points;
+    int direction;
+    int cameraDir;
     void handleCheckPoints();
     void checkOutOfMap(Player* ready);
     renderEngine::rRectangleShape DEATH;
@@ -113,13 +119,15 @@ private:
     
     //TETRIS
     bool m_tetris;
-    bool goingUp;
+    bool goingUpBool;
     
     //FONDOS
     float x_view;
     renderEngine::rTexture text_fondo;
     renderEngine::rRectangleShape f1;
     renderEngine::rRectangleShape f2;
+    
+    renderEngine::rRectangleShape debug;
 };
 
 #endif /* MAPA_H */

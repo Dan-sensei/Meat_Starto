@@ -21,6 +21,7 @@
 #include "Ground.h"
 #include "../../Player.h"
 #include "Minijuegos/Minijuego.h"
+#include "Minijuegos/goingUp.h"
 
 class Nodo {
 private:
@@ -44,7 +45,7 @@ public:
     void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     void addPower(int id, int xMin, int xMax, int y_);
     void addCheckPoint(int x, int y, int width, int height);
-    void addMinigame(int type, int x, int y, int width, int height);
+    Minijuego* addMinigame(int type, int x, int y, int width, int height);
     
     //Eventos
     void checkColisionsPinchos(Player* ready);
@@ -60,6 +61,7 @@ public:
     void newState();
     
     void draw(float tick_, renderEngine::rIntRect limit, int min, int max);
+    void miniDraw(float tick_);
     
 private:
     

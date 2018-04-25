@@ -17,10 +17,11 @@
 
 #include "Mapa.h"
 #include "Nodo/NPCs/xPlotato.h"
+#include "Nodo/Minijuegos/goingUp.h"
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 30
+#define MAP_ITERATION 10
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 
@@ -94,6 +95,7 @@
     
     //LO UTILIZO AL LEER TODOS LOS NODOS DE LA MATRIZ
     x_max = 0;
+    y_max = 0;
     
     //TETRIS
     mj_t *tetris;
@@ -111,7 +113,6 @@
     mapa_funciones.insert(std::make_pair("skull", &Mapa::leeSkulls));
     mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
     mapa_funciones.insert(std::make_pair("checkpoint", &Mapa::leeCheckPoints));
-    mapa_funciones.insert(std::make_pair("minijuego", &Mapa::leeMinijuego));
     
     longitud = 0;
     end = false;
@@ -132,6 +133,14 @@
     DEATH.setOutlineColor('r');
     DEATH.setSize(8000, 400);
     DEATH.setOrigin(DEATH.getSize()[0]/2, DEATH.getSize()[1]/2);
+    
+    cameraDir = 0;
+    
+    direction = 0;
+    debug.setFillColor('r');
+    debug.setSize(20, 20);
+    debug.setOrigin(10,10);
+    debug.setPosition(1330, 1050+845-70*3);
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -171,13 +180,10 @@ void Mapa::InitMatrix() {
         for(int j = 0; j < 16; j++)
             if(aux[i][j] == 1)
                 matriz_v2[i].push_back(j);
-
-    std::cout << "VIEW X: " << renderEngine::Instance().getViewSize()[0] << " | VIEW Y: " << renderEngine::Instance().getViewSize()[1] << std::endl;
 }
 
 //LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
 void Mapa::LeeNodo(std::string const& node_path) {
-    renderEngine::rClock optimo_clock;
     // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
     
     int map_width;
@@ -201,8 +207,8 @@ void Mapa::LeeNodo(std::string const& node_path) {
     std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
     std::string partes;
     std::string p_aux;
-    int x_max_aux = x_max;
-
+    int x_max_aux;
+    int y_max_aux;
 
     for (int i = 0; i < map_height; i++) {
         for (int j = 0; j < map_width; j++) {
@@ -222,42 +228,62 @@ void Mapa::LeeNodo(std::string const& node_path) {
             }
 
             if (stoi(partes) != 0) {
-                hex_list.back().addTile(stoi(partes)-1, x_max + (ancho * j), alto * i);
+                hex_list.back().addTile(stoi(partes)-1, x_max + (ancho * j), y_max + alto * i);
             }
-            
-            x_max_aux = (x_max_aux < x_max + ancho*j) ? (x_max + ancho*j) : x_max_aux;
-
         }
-
         partes = v_mapa.erase(0, 1);
     }
     
+    
+    if(direction == 0)
+        x_max_aux = ancho * (map_width-1);
+    else
+        y_max_aux = alto  * (map_height-1);
+    
+
     // </editor-fold> 
     
     tinyxml2::XMLElement *obj;
-    obj = map->FirstChildElement("objectgroup");
+    tinyxml2::XMLElement *objMinijuego;
     
+    obj = map->FirstChildElement("objectgroup");
+    objMinijuego = map->FirstChildElement("objectgroup");
+    std::string m = "minijuego";
+    bool miniG = false;
     while(obj){
+
+        if(m.compare(objMinijuego->Attribute("name")) == 0)
+            miniG = true;
+        else
+            objMinijuego = objMinijuego->NextSiblingElement("objectgroup");
+        
         
         //Puntero a funcion
         pFunc funcion = mapa_funciones[obj->Attribute("name")];   
-        
+
         //std::cout << obj->Attribute("name") << std::endl;
-        
-        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back());
-       
+
+        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back(), x_max, y_max);
+
         obj = obj->NextSiblingElement("objectgroup");
+        
     }
 
-    x_max = x_max_aux+ancho;
+    if(miniG)
+        leeMinijuego(objMinijuego, hex_list.back(), x_max, y_max);
     
-    hex_list.back().setPop(x_max);
-    
-    std::cout << "Nodo creado en " << optimo_clock.getElapsedTime().asSeconds() << " segundos!" << std::endl;
+    if(direction == 0){
+        x_max += x_max_aux+ancho;
+        hex_list.back().setPop(x_max);
+    }
+    else{
+        y_max -= y_max_aux-alto;
+        hex_list.back().setPop(y_max);
+    }
     
 }
 
-void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
+void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto){
     //CONSIGO LOS OBJETOS (COLISIONES)
     //NO COMPRUEBO SI NO TIENE COLISION, YA QUE SE SUPONE QUE TODOS LOS NODOS VAN A TENER COLISION, SI O SI
     tinyxml2::XMLElement *poly;
@@ -297,9 +323,9 @@ void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
                 vertex.erase(0, 1);
 
                 if (i == 0) 
-                    x2 = x + x_max + stoi(v_aux);
+                    x2 = x + x_starto + stoi(v_aux);
                 else 
-                    y2 = y + stoi(v_aux);
+                    y2 = y + y_starto + stoi(v_aux);
                 
             }
 
@@ -324,7 +350,7 @@ void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
         //</DEBUG>
         
         
-        actual.addGround(vec);        
+        actual.addGround(vec);
         
         objetos.push_back(*cs);     //GUARDO LOS ConvexShapes PARA DEBUG
         //BORRAR cs -> !IMPORTANTE
@@ -337,7 +363,7 @@ void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual){
     }
 }
 
-void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
+void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto){
 
     obj = obj->FirstChildElement("object");
 
@@ -348,12 +374,14 @@ void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
     
     while (obj) {
         obj->QueryIntAttribute("x", &xCoord);
-        xCoord += x_max;
         obj->QueryIntAttribute("width", &width);
 
         obj->QueryIntAttribute("y", &yCoord);
         obj->QueryAttribute("height", &height);
 
+        xCoord += x_starto;
+        yCoord += y_starto;
+        
         int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
         int x_rand = physicsEngine::Instance().genIntRandom(xCoord, xCoord+width);
 
@@ -363,7 +391,7 @@ void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual){
     }
 }
 
-void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual){
+void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto){
     
     //POWER UP/DOWN 
     obj = obj->FirstChildElement("object");
@@ -381,12 +409,12 @@ void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual){
         
         int   random = physicsEngine::Instance().genIntRandom(0, 3);
         
-        actual.addPower(random, x_max + x, x + x_max + w, y + 35);
+        actual.addPower(random, x_starto + x, x + x_starto + w, y_starto + y + 35);
         obj = obj->NextSiblingElement("object");
     }
 }
 
-void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
+void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto){
     
     obj = obj->FirstChildElement("object");
 
@@ -406,12 +434,14 @@ void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
         if(number) number->FirstChildElement("property")->QueryAttribute("value", &n);
         
         obj->QueryIntAttribute("x", &xCoord);
-        xCoord += x_max;
         obj->QueryIntAttribute("width", &width);
 
         obj->QueryIntAttribute("y", &yCoord);
         obj->QueryAttribute("height", &height);
 
+        xCoord += x_starto;
+        yCoord += y_starto;
+        
         float randomX = physicsEngine::Instance().genIntRandom(xCoord, xCoord + width);
         float randomY = physicsEngine::Instance().genIntRandom(yCoord, yCoord + height);
         
@@ -422,7 +452,7 @@ void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual){
     }
 }
 
-void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
+void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto) {
     
     obj = obj->FirstChildElement("object");
 
@@ -433,11 +463,13 @@ void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
     
     while (obj) {
         obj->QueryIntAttribute("x", &xCoord);
-        xCoord += x_max;
         obj->QueryIntAttribute("width", &width);
 
         obj->QueryIntAttribute("y", &yCoord);
         obj->QueryAttribute("height", &height);
+        
+        xCoord += x_starto;
+        yCoord += y_starto;
         
         checkPoint checkpoint;
         checkpoint.active = false;
@@ -456,8 +488,8 @@ void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual) {
     
 }
 
-void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual) {
-    
+void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto) {
+
     tinyxml2::XMLElement* property;
     int type = -1;
     
@@ -476,8 +508,45 @@ void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual) {
     obj->QueryIntAttribute("height", &height);
     
     x += x_max;
+    y += y_max;
 
-    actual.addMinigame(type, x, y, width, height);   
+    Minijuego* mini = actual.addMinigame(type, x, y, width, height);
+    if(type == 1){
+        y -= y_max;
+        y += height;
+        y -= 70*2;      //Quiero que se empiecen a generar 2 por encima de la plataforma
+
+        bool flag;
+        for(int i = 0; i < 16; i++){
+            flag = false;
+            for(int j = 0; j < matriz_v2[i].size() && !flag; j++)
+                if(matriz_v2[i][j] == 15){
+                    matriz_v2[i].erase(matriz_v2[i].begin()+j);
+                    flag = true;
+                }
+        }
+        
+        goingUp* up = static_cast<goingUp*>(mini);
+        
+        std::list<Nodo>* nodosUp = up->getAscensionList();
+        std::string path;
+        changeDirection(1);
+        for(int i = 0; i < 9; i++){
+            path = "tiles_definitivo/nodos/Up/Mininode_";
+            int rand = physicsEngine::Instance().genIntRandom(1, 8);
+            path = path.operator +=( std::to_string(rand) );
+            path = path.operator +=(".tmx");
+            
+            LeeNodoAux(*nodosUp, path, x, y);
+        }
+        path = "tiles_definitivo/nodos/Up/Mininode_9.tmx";
+        LeeNodoAux(*nodosUp, path, x, y);
+        up->setEndArea(x, y, 43*ancho, 19*alto);
+        y_max = y;
+        changeDirection(0);
+        
+    }
+        std::cout << "YMAX "<<y_max << std::endl;
 }
 
 void Mapa::render(float tick_) {
@@ -493,7 +562,7 @@ void Mapa::render(float tick_) {
     int w = 1920;
     int h = 1080;
     int xa = x-w-ancho;
-    int ya = y-h-ancho;
+    int ya = y-h-alto;
     
     //w = 1366
     //h = 739
@@ -523,15 +592,15 @@ void Mapa::render(float tick_) {
     //EMPIEZO A RENDERIZAR
     f1.draw();
     f2.draw();
-    
-    renderEngine::rRectangleShape *r;
-    renderEngine::rTexture *t;
-    
+
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
        
         (*it).draw(tick_, ir, x_min_, x_max_);
         
-        if(iterator == TAM_LISTA/2-1 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
+        if(direction == 0 && iterator == TAM_LISTA/2-1 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
+            pop = true;
+        }
+        else if(direction == 1 && iterator == TAM_LISTA/2-1 && (*it).getPop() > sfml->Instance().getViewCenter()[1]){
             pop = true;
         }
         iterator++;
@@ -567,7 +636,7 @@ void Mapa::render(float tick_) {
     boss *javi;
     javi->Instance().render();
     
-    
+    debug.draw();
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
@@ -620,7 +689,7 @@ void Mapa::leeRandom(){
 
         //Borro el nodo Tetris de todos los vectores
         bool flag;
-        for(int i = 0; i < 15; i++){
+        for(int i = 0; i < 16; i++){
             flag = false;
             for(int j = 0; j < matriz_v2[i].size() && !flag; j++)
                 if(matriz_v2[i][j] == 6){
@@ -676,7 +745,7 @@ void Mapa::update(){
         (*it).preState();
         (*it).update();
     }
-    DEATH.setPosition(renderEngine::Instance().getViewCenter()[0], renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]);
+    DEATH.setPosition(renderEngine::Instance().getViewCenter()[0], renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]-50);
     handleCheckPoints();
 }
 
@@ -750,24 +819,48 @@ void Mapa::handleCheckPoints() {
         Player* ready = (*players)[i];
         flag = false;
         std::list<checkPoint>::iterator it = every_points.begin();
-        while(it != every_points.end()){
-            if(ready->getXPosition() > (*it).shape.getPosition()[0]){
-                checkPoint aux;
-                aux = (*it);
-                aux.active = true;
-                aux.shape.setOutlineColor('g');
-                maxPoint = aux.shape.getPosition()[0];
-                
-                if(!flag){
-                    flag = true;
-                    active_points.clear();
+        if(cameraDir == 0){
+            while(it != every_points.end()){
+                if(ready->getXPosition() > (*it).shape.getPosition()[0]){
+                    checkPoint aux;
+                    aux = (*it);
+                    aux.active = true;
+                    aux.shape.setOutlineColor('g');
+                    maxPoint = aux.shape.getPosition()[0];
+
+                    if(!flag){
+                        flag = true;
+                        active_points.clear();
+                    }
+
+                    active_points.push_back(aux);
+                    every_points.erase(it++);
                 }
-                
-                active_points.push_back(aux);
-                every_points.erase(it++);
+                else
+                    ++it;
             }
-            else
-                ++it;
+        }
+        else if(cameraDir == 1){
+            
+            while(it != every_points.end()){
+                if(ready->getYPosition() < (*it).shape.getPosition()[1]){
+                    checkPoint aux;
+                    aux = (*it);
+                    aux.active = true;
+                    aux.shape.setOutlineColor('g');
+                    maxPoint = aux.shape.getPosition()[1];
+
+                    if(!flag){
+                        flag = true;
+                        active_points.clear();
+                    }
+
+                    active_points.push_back(aux);
+                    every_points.erase(it++);
+                }
+                else
+                    ++it;
+            }
         }
         
         // COMPRUEBA SI SE HA CAÍDO DEL MAPA
@@ -805,4 +898,81 @@ void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
 void Mapa::checkOutOfMap(Player* ready) {
     if(ready->getSprite().intersects(DEATH))
         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+}
+
+void Mapa::changeDirection(int dir) {
+    direction = dir;
+}
+
+void Mapa::LeeNodoAux(std::list<Nodo>& lista, const std::string& node_path, int &x_start, int &y_start) {
+    int map_width;
+    int map_height;
+
+    tinyxml2::XMLDocument map_doc;
+    map_doc.LoadFile(node_path.c_str());
+
+    tinyxml2::XMLElement *map;
+    map = map_doc.FirstChildElement("map");
+    map->QueryIntAttribute("width", &map_width);
+    map->QueryIntAttribute("height", &map_height);
+
+    lista.emplace_back("tiles_definitivo/tilesheet.png");
+    lista.back().setRectVector(spriteSheetRects);
+    
+    //CONSIGO EL TEXTO
+    std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
+    std::string partes;
+    std::string p_aux;
+    int x_max_aux;
+    
+    y_start -= map_height*alto;
+
+    for (int i = 0; i < map_height; i++) {
+        for (int j = 0; j < map_width; j++) {
+            v_mapa.erase(0, 1);
+            partes = v_mapa.substr(0, 1);
+            v_mapa.erase(0, 1);
+            p_aux = v_mapa.substr(0, 1);
+            while (p_aux != "," && p_aux != "") {
+                partes = partes.operator+=(v_mapa.substr(0, 1));
+                v_mapa.erase(0, 1);
+                p_aux = v_mapa.substr(0, 1);
+            }
+            if (stoi(partes) != 0) {
+                lista.back().addTile(stoi(partes)-1, x_start + (ancho * j), y_start + alto * i);
+            }
+        }
+        partes = v_mapa.erase(0, 1);
+    }
+    
+    if(direction == 0)
+        x_max_aux = ancho * (map_width-1);
+    
+    tinyxml2::XMLElement *obj;
+    obj = map->FirstChildElement("objectgroup");
+    
+    while(obj){
+        
+        //Puntero a funcion
+        pFunc funcion = mapa_funciones[obj->Attribute("name")];   
+        
+        //std::cout << obj->Attribute("name") << std::endl;
+        
+        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back(), x_start, y_start);
+       
+        obj = obj->NextSiblingElement("objectgroup");
+    }
+    
+    if(direction == 0){
+        x_start += x_max_aux+ancho;
+        lista.back().setPop(x_start);
+    }
+    else{
+        lista.back().setPop(y_start);
+    }
+    
+}
+
+void Mapa::setCameraDirection(int i) {
+    cameraDir = i;
 }
