@@ -21,7 +21,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 2
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 
@@ -50,7 +50,9 @@
                 //SI SE CAMBIA, CAMBIAR TAMBIEN _tile *tiles[37] EN EL .h;
     
     //LEO EL TILESHEET Y ALMACENO LOS CUADRADOS DE RECORTE
-    ts.loadFromFIle("tiles_definitivo/tilesheet.png");
+    ts1 = "tiles_definitivo/tilesheet.png";
+    ts2 = "tiles_definitivo/tilesheet2.png";
+    ts.loadFromFIle(ts1);
     ts_doc.LoadFile("tiles_definitivo/xml_spritesheet.xml");
     map = ts_doc.FirstChildElement("TextureAtlas")->FirstChildElement("sprite");
     
@@ -120,6 +122,7 @@
     //img_fondo.loadFromFIle("assets/fondo.PNG");
     //f1.t.loadFromImage(f1.img,*f1.ir);
     x_view = -1;
+    y_view = -1;
     text_fondo.loadFromFile("assets/fondo.PNG");
 
     f1.setTexture(text_fondo);
@@ -199,7 +202,7 @@ void Mapa::LeeNodo(std::string const& node_path) {
     map->QueryIntAttribute("width", &map_width);
     map->QueryIntAttribute("height", &map_height);
 
-    hex_list.emplace_back("tiles_definitivo/tilesheet.png");
+    hex_list.emplace_back(ts1);
     
     hex_list.back().setRectVector(spriteSheetRects);
     
@@ -624,7 +627,7 @@ void Mapa::CreaMapa() {
         //std::cout << path << std::endl;
     //nodo_actual = 15;
     LeeNodo(path);
-    
+
     checkPoint first;
     first = every_points.front();
     active_points.push_back(first);
@@ -732,11 +735,12 @@ void Mapa::updateFondo() {
     float x,y;
     float mv = 2;
     
-    if(x_view == -1){
+    if(x_view == -1 && y_view == -1){
         x_view = sfml->Instance().getViewCenter()[0];
+        y_view = sfml->Instance().getViewCenter()[1];
         
-        x = x_view-70*26;
-        y = sfml->Instance().getViewCenter()[1]-70*15;
+        x = x_view-70*27;
+        y = y_view-70*15;
 
         f1.setPosition(x,y);
     }
@@ -751,12 +755,20 @@ void Mapa::updateFondo() {
         }
         x_view = sfml->Instance().getViewCenter()[0];
         
-        
-        x = x_view-70*26;
-        y = sfml->Instance().getViewCenter()[1]-70*15;
+        x = x_view-70*27;
+        y = y_view-70*15;
 
         //f1.rect.setPosition(x,y);
         signo ? f1.move(-mv,0) : f1.move(mv,0);
+    }
+    else if(y_view != sfml->Instance().getViewCenter()[1] && abs(y_view-sfml->Instance().getViewCenter()[1])>5){
+        std::cout << "Cambia la posicion en Y del fonfo" << std::endl;
+        y_view = sfml->Instance().getViewCenter()[1];
+        
+        x = x_view-70*27;
+        y = y_view-70*15;
+        
+        f1.setPosition(x,y);
     }
     
     f2.setPosition(f1.getPosition()[0]+f1.getSize()[0],f1.getPosition()[1]);
@@ -894,7 +906,7 @@ void Mapa::LeeNodoAux(std::list<Nodo>& lista, const std::string& node_path, int 
     map->QueryIntAttribute("width", &map_width);
     map->QueryIntAttribute("height", &map_height);
 
-    lista.emplace_back("tiles_definitivo/tilesheet.png");
+    lista.emplace_back(ts1);
     lista.back().setRectVector(spriteSheetRects);
     
     //CONSIGO EL TEXTO
@@ -953,4 +965,12 @@ void Mapa::LeeNodoAux(std::list<Nodo>& lista, const std::string& node_path, int 
 
 void Mapa::setCameraDirection(int i) {
     cameraDir = i;
+}
+
+int Mapa::getIterations() {
+    return longitud;
+}
+
+int Mapa::getTotalIterations() {
+    return MAP_ITERATION;
 }

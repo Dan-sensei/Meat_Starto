@@ -69,7 +69,7 @@ Juego::Juego() {
 
     do {
         
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 2700, 1400, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 2000, 1400, 'D', keys));
         ++i;
         
     }while( i < MenuInicio::Instance()->numplayers );
@@ -77,7 +77,7 @@ Juego::Juego() {
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
-    THE_ARID_FLATS.play();
+    //THE_ARID_FLATS.play();
 
     rain.setPosition(1500, 200);                    // Posicion del sistema de partículas
     rain.setType(1);                                // Tipo: Determina el área de generado | 0 = Círculo - 1 = Rectángulo (Por defecto tienen tamaño 0 y emitirán hacia el exterior aleatoriamente)

@@ -64,9 +64,6 @@ public:
     void miniDraw(float tick_);
     
 private:
-    
-    renderEngine::rSprite tile;
-    
     physicsEngine::type* t;
     
     std::vector<renderEngine::rIntRect> tileRect;

@@ -21,8 +21,6 @@
 
 
 Nodo::Nodo(std::string sheet) {    
-    tile.setTexture(AssetManager::GetTexture(sheet));
-    
     array_funciones[0] = &Player::powerUpInmortalidad;
     array_funciones[1] = &Player::powerUpSpeed;
     array_funciones[2] = &Player::powerDownJump;
@@ -61,7 +59,6 @@ Nodo::Nodo(const Nodo& orig) {
         checkpoints.push_back(*it);
     
     aux_pop = orig.aux_pop;
-    tile = orig.tile;
     
     maxXCheckPoint = orig.maxXCheckPoint;
 }
@@ -90,9 +87,16 @@ void Nodo::setRectVector(std::vector<renderEngine::rIntRect> rect_){
 
 
 void Nodo::addTile(int id, int x, int y){
-
+    std::string path;
+    if(Mapa::Instance().getTotalIterations()/2 > Mapa::Instance().getIterations()){
+        path = "tiles_definitivo/tilesheet.png";
+    }
+    else{
+        path = "tiles_definitivo/tilesheet2.png";
+    }
+    
     renderEngine::rSprite sprite;
-    sprite.setTexture(AssetManager::GetTexture("tiles_definitivo/tilesheet.png"));
+    sprite.setTexture(AssetManager::GetTexture(path));
     sprite.setTextureRect(tileRect[id]);
     sprite.setPosition(x,y);
     
