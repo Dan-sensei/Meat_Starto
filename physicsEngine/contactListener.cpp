@@ -93,11 +93,26 @@ void contactListener::BeginContact(b2Contact* contact){
     
     // xPlotato con Suelo
     if(typeA->id == 1 && typeB->id == 3 ){
+        //std::cout << "XPLOTATO-SUELO: NormalX: " << normalX << " | NormalY: " << normalY << std::endl;
         if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
-
         }
+        else if(normalY >= -0.02 && normalY <= 0.02 && normalX >= -1.03 && normalX <= -0.97){
+            //std::cout << "Choco con la derecha" << std::endl;
+            contacts.push_back(contact);
+            xPlotato* p = static_cast<xPlotato*>(typeB->data);
+            p->salta(1);
+        }
+        else if(normalY >= -0.02 && normalY <= 0.02 && normalX <= 1.03 && normalX >= 0.97){
+            //std::cout << "Choco con la izquierda" << std::endl;
+            contacts.push_back(contact);
+            xPlotato* p = static_cast<xPlotato*>(typeB->data);
+            p->salta(0);
+        }
+        
+        
     }
     else if(typeB->id == 1 && typeA->id == 3){
+        std::cout << "SUELO-XPLOTATO: NormalX: " << normalX << " | NormalY: " << normalY << std::endl;
         if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 1.03 && normalY <= 0.97){
         }
     }
@@ -171,4 +186,28 @@ void contactListener::EndContact(b2Contact* contact){
         }
     }
     
+    if(typeA->id == 3 && typeB->id == 1){
+        std::list<b2Contact*>::iterator it = contacts.begin();
+        while(it != contacts.end()){
+            if((*it) == contact){
+                xPlotato* p = static_cast<xPlotato*>(typeA->data);
+                p->salta(-1);
+                contacts.erase(it++);
+            }
+            else
+                ++it;
+        }
+    }
+    else if(typeB->id == 3 && typeA->id == 1){
+        std::list<b2Contact*>::iterator it = contacts.begin();
+        while(it != contacts.end()){
+            if((*it) == contact){
+                xPlotato* p = static_cast<xPlotato*>(typeB->data);
+                p->salta(-1);
+                contacts.erase(it++);
+            }
+            else
+                ++it;
+        }
+    }
 }

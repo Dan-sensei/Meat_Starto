@@ -25,7 +25,6 @@ public:
     
     void update();
     
-    
 private:
     void recalcula();
     

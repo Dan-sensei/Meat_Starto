@@ -32,6 +32,7 @@ public:
     
     int getXPosition();
     int getYPosition();
+    bool isAlive();
     
 protected:
     int hp;
@@ -45,6 +46,9 @@ protected:
     };
     state previous;
     state actual;
+    
+    bool alive;
+    renderEngine::rCircleShape *xplosion;
     
 private:
     

@@ -242,6 +242,12 @@ void Nodo::update(){
     bool flag = false;
     for(int i = 0; i < npcs.size(); i++){
         npcs[i]->update();
+        
+        if(!npcs[i]->isAlive()){
+            delete npcs[i];
+            npcs[i] = NULL;
+            npcs.erase(npcs.begin()+i);
+        }
     }
     
     std::vector<Player*>* players = Juego::Instance().getPlayers();
