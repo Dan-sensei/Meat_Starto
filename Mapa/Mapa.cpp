@@ -21,7 +21,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 2
+#define MAP_ITERATION 10
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 
@@ -623,9 +623,9 @@ void Mapa::render(float tick_) {
 //LEE LA MATRIZ DE ADYACENCIA
 void Mapa::CreaMapa() {
     std::string path = "tiles_definitivo/nodos/";
-    path = path.operator +=("0.tmx");
+    path = path.operator +=("15.tmx");
         //std::cout << path << std::endl;
-    //nodo_actual = 15;
+    nodo_actual = 15;
     LeeNodo(path);
 
     checkPoint first;
@@ -762,7 +762,6 @@ void Mapa::updateFondo() {
         signo ? f1.move(-mv,0) : f1.move(mv,0);
     }
     else if(y_view != sfml->Instance().getViewCenter()[1] && abs(y_view-sfml->Instance().getViewCenter()[1])>5){
-        std::cout << "Cambia la posicion en Y del fonfo" << std::endl;
         y_view = sfml->Instance().getViewCenter()[1];
         
         x = x_view-70*27;
@@ -859,30 +858,32 @@ void Mapa::handleCheckPoints() {
 }
 
 void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
-    std::list<checkPoint>::iterator it = active_points.begin();
-    
-    float minX = active_points.front().shape.getPosition()[0];
-    float minY = active_points.front().shape.getPosition()[1];
+    if(!ready->isInmortal()){
+        std::list<checkPoint>::iterator it = active_points.begin();
 
-    float distX = minX - ready->getXPosition();
-    float distY = minY - ready->getYPosition();
-    float distance = sqrt(distX*distX + distY*distY);
-    float aux_d;
+        float minX = active_points.front().shape.getPosition()[0];
+        float minY = active_points.front().shape.getPosition()[1];
 
-    while(it != active_points.end()){
-        if((*it).active){
-            distX = (*it).shape.getPosition()[0] - ready->getXPosition();
-            distY = (*it).shape.getPosition()[1] - ready->getYPosition();
-            aux_d = sqrt(distX*distX + distY*distY);
-            if (aux_d < distance){
-                distance = aux_d;
-                minX = (*it).shape.getPosition()[0];
-                minY = (*it).shape.getPosition()[1];
+        float distX = minX - ready->getXPosition();
+        float distY = minY - ready->getYPosition();
+        float distance = sqrt(distX*distX + distY*distY);
+        float aux_d;
+
+        while(it != active_points.end()){
+            if((*it).active){
+                distX = (*it).shape.getPosition()[0] - ready->getXPosition();
+                distY = (*it).shape.getPosition()[1] - ready->getYPosition();
+                aux_d = sqrt(distX*distX + distY*distY);
+                if (aux_d < distance){
+                    distance = aux_d;
+                    minX = (*it).shape.getPosition()[0];
+                    minY = (*it).shape.getPosition()[1];
+                }
             }
+            ++it;
         }
-        ++it;
+        ready->setPosition(minX+35, minY+35);
     }
-    ready->setPosition(minX+35, minY+35);
 }
 
 void Mapa::checkOutOfMap(Player* ready) {

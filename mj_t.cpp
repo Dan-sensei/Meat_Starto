@@ -35,7 +35,7 @@ void mj_t::init(int x_,int y_) {
     //  MURO1 (DERECHA)
     int a = 70; //ANCHO TILE
     float x = x_max-(5*a);
-    float y = (a*2)-DES+y_min;
+    float y = (a*3)+y_min;
     int n = 27;
     
     m1.rect.setSize(a,a*n);
@@ -84,12 +84,14 @@ void mj_t::crearPieza() {
     //RANDOM
     int rx = physicsEngine::Instance().genIntRandom(0, 24);
     int np = physicsEngine::Instance().genIntRandom(0, 6);
-    float rv = physicsEngine::Instance().genFloatRandom(8, 10);
+    //float rv = physicsEngine::Instance().genFloatRandom(8*2, 10*2);
+    float rv = physicsEngine::Instance().genFloatRandom(25, 28);
+    int rc = physicsEngine::Instance().genIntRandom(0,3);
     int nt;
     
     //COORD
     int a = 70;
-    int x = rx*70+(x_min-(16*70))+(a);
+    int x = rx*70+(x_min-(16*70))+(2*a);
     int y = y_min;
     
     int x2, y2;
@@ -100,7 +102,22 @@ void mj_t::crearPieza() {
     
     for(int i=0 ; i<4 ; i++){
         nt = physicsEngine::Instance().genIntRandom(0, 6);
-        p->r[i].setFillColor('g');
+        
+        switch(rc){
+            case 0:
+                p->r[i].setFillColor('b');
+                break;
+            case 1:
+                p->r[i].setFillColor('r');
+                break;
+            case 2:
+                p->r[i].setFillColor('g');
+                break;
+            case 3:
+                p->r[i].setFillColor('y');
+                break;
+        }
+        
         p->r[i].setSize(a,a);
         switch(nt){
             case 1:
@@ -276,12 +293,14 @@ void mj_t::update() {
             }
             
             //MUEVO LOS MUROS (BOX2D+SFML)
+            /*
             if(m1.rect.getPosition()[1]<y_min+210){
                 m1.rect.move(0,5);
                 float w = m2.rect.getSize()[0];
                 float h = m2.rect.getSize()[1];
                 m1.pb.setPosition(m1.rect.getPosition()[0]+(w/2),m1.rect.getPosition()[1]+(h/2));
             }
+             */
             if(m2.rect.getPosition()[1]<y_min+140){
                 m2.rect.move(0,5);
                 float w = m2.rect.getSize()[0];
