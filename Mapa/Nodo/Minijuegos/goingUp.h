@@ -17,6 +17,7 @@
 #include "renderEngine/renderEngine.h"
 #include "Minijuego.h"
 
+
 class Nodo;
 
 class goingUp : public Minijuego {

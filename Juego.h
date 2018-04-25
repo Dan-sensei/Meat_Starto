@@ -60,7 +60,6 @@ private:
     std::vector<Player*> readyPlayer;
     
     renderEngine::rClock masterClock;
-    renderEngine::rClock animationClock;
     
     double dt;
     float accumulator;

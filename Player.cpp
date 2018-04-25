@@ -66,7 +66,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=71;
                 key_up=73;
                 key_hit=4;
-                sprite.setPosition(x_, y_);
+                //sprite.setPosition(x_, y_);
         break;
         case 2:
                 texture="assets/player2.png"; 
@@ -182,15 +182,14 @@ renderEngine::rSprite Player::getSprite(){
     return sprite;
 }
 
-void Player::update(renderEngine::rTime deltatime){
-    animator.Update(deltatime);
+void Player::update(){
+    animator.Update(animationClock.restart());
 }
 
 
 void Player::moveRigth(){
     if(animator.GetCurrentAnimationName() != "a_rigth" && animator.GetCurrentAnimationName() != "a_jump_r"){
         animator.SwitchAnimation("a_rigth");
-        //std::cout<<"derecha"<<id;
     }
 }
 

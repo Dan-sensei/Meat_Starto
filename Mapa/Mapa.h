@@ -45,6 +45,8 @@ public:
     void movePlayerToClosestCheckPoint(Player* ready);
     void changeDirection(int dir);
     
+    void LeeNodoAux(std::list<Nodo> &lista, std::string const& node_path, int &x_start, int &y_start);
+    
     void setCameraDirection(int i);
     virtual ~Mapa();
     
@@ -62,7 +64,6 @@ private:
     
     //----------------METODOS PRIVADOS
     void LeeNodo(std::string const& node_path);
-    void LeeNodoAux(std::list<Nodo> &lista, std::string const& node_path, int &x_start, int &y_start);
     void InitMatrix();
     void updateFondo();
     

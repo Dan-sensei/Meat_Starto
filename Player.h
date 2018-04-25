@@ -32,7 +32,7 @@ public:
     std::string getName();
     renderEngine::rSprite getSprite();
     
-    void update(renderEngine::rTime deltatime);
+    void update();
     void moveRigth();
     void moveRigth_b();
     void moveLeft();
@@ -85,7 +85,7 @@ private:
     int key_r,key_l,key_up,key_hit;
     
     bool* keys;
-    
+    renderEngine::rClock animationClock;
     float MAXSPEED;
     float exp_for_next_level;
     float exp;
