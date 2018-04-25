@@ -17,8 +17,7 @@
 #include "contactListener.h"
 
 #include "Player.h"
-#include "Mapa/Nodo/Nodo.h"
-#include "Mapa/Mapa.h"
+#include "../Mapa/Nodo/NPCs/xPlotato.h"
 
 void contactListener::BeginContact(b2Contact* contact){
     //std::cout << "Start contact" << std::endl;
@@ -42,6 +41,7 @@ void contactListener::BeginContact(b2Contact* contact){
     
     float normalX = worldManifold.normal.x;
     float normalY = worldManifold.normal.y;
+   
     
     // SUELO CON JUGADOR
     if(typeA->id == 1 && typeB->id == 2 ){
@@ -70,7 +70,7 @@ void contactListener::BeginContact(b2Contact* contact){
     else if(typeB->id == 4 && typeA->id == 2){
         if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 1.03 && normalY <= 0.97){
             contacts.push_back(contact);
-            Player* p = static_cast<Player*>(typeB->data);
+            Player* p = static_cast<Player*>(typeA->data);
             p->setAir(1); 
         }
     }
@@ -86,7 +86,7 @@ void contactListener::BeginContact(b2Contact* contact){
     else if(typeB->id == 4 && typeA->id == 2){
         if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 1.03 && normalY <= 0.97){
             contacts.push_back(contact);
-            Player* p = static_cast<Player*>(typeB->data);
+            Player* p = static_cast<Player*>(typeA->data);
             p->setAir(1); 
         }
     }
@@ -94,9 +94,7 @@ void contactListener::BeginContact(b2Contact* contact){
     // xPlotato con Suelo
     if(typeA->id == 1 && typeB->id == 3 ){
         //std::cout << "XPLOTATO-SUELO: NormalX: " << normalX << " | NormalY: " << normalY << std::endl;
-        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
-        }
-        else if(normalY >= -0.02 && normalY <= 0.02 && normalX >= -1.03 && normalX <= -0.97){
+        if(normalY >= -0.02 && normalY <= 0.02 && normalX >= -1.03 && normalX <= -0.97){
             //std::cout << "Choco con la derecha" << std::endl;
             contacts.push_back(contact);
             xPlotato* p = static_cast<xPlotato*>(typeB->data);
@@ -112,9 +110,7 @@ void contactListener::BeginContact(b2Contact* contact){
         
     }
     else if(typeB->id == 1 && typeA->id == 3){
-        std::cout << "SUELO-XPLOTATO: NormalX: " << normalX << " | NormalY: " << normalY << std::endl;
-        if(normalX >= -0.02 && normalX <= 0.02 && normalY >= 1.03 && normalY <= 0.97){
-        }
+        
     }
     
 

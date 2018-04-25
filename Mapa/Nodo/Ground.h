@@ -17,7 +17,7 @@
 
 class Ground {
 public:
-    Ground(std::vector<std::array<float,2> > coords);
+    Ground(std::vector<std::array<int,2> > coords);
     Ground(const Ground& orig);
     virtual ~Ground();
     

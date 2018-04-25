@@ -72,7 +72,7 @@ pBody physicsEngine::createBody(float width_, float height_, float px_, float py
 void physicsEngine::updateWorld(float tick_){ world.Step(tick_, 8.f, 3.f); }
 
 
-pBody physicsEngine::createGround(std::vector<std::array<float, 2>> vertex_, type* data){
+pBody physicsEngine::createGround(std::vector<std::array<int, 2>> vertex_, type* data){
 
     pBody result;
     

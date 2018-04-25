@@ -52,6 +52,8 @@ particleSystem::particleSystem() {
     box.setSize(xSide, ySide);
     box.setOrigin(xSide/2, ySide/2);
     box.setPosition(xPos, yPos);
+    
+    active = true;
 }
 
 particleSystem::particleSystem(const particleSystem& orig) {
@@ -63,6 +65,13 @@ particleSystem::~particleSystem() {
 void particleSystem::draw(float tick_) {
     for(std::list<Particle>::iterator it=lista_particular.begin(); it!=lista_particular.end(); ++it){
         (*it).interpola(tick_);
+        (*it).draw();   
+    }
+    if(drawGen) box.draw();
+}
+
+void particleSystem::NoUsarEstedraw() {
+    for(std::list<Particle>::iterator it=lista_particular.begin(); it!=lista_particular.end(); ++it){
         (*it).draw();   
     }
     if(drawGen) box.draw();
@@ -89,6 +98,8 @@ void particleSystem::preState() {
 void particleSystem::update() {
     box.setPosition(xPos, yPos);
     //std::cout << "PARTICULAS " << lista_particular.size() << std::endl;
+    if(active){
+        
     float px, py, vx, vy, r, vr, life;
     float aux_v;
     float aux_target_x, aux_target_y;
@@ -167,6 +178,7 @@ void particleSystem::update() {
             }
         }
 
+    }
     }
     
     std::list<Particle>::iterator it = lista_particular.begin();
@@ -291,4 +303,12 @@ void particleSystem::drawGenerationArea(bool flag) {
 
 void particleSystem::alignToDirection(bool flag) {
     alignToDirectionBool = flag;
+}
+
+void particleSystem::howManyParticlesAre() {
+    std::cout << "Particle system " << lista_particular.size() << std::endl;
+}
+
+void particleSystem::setActive(bool flag) {
+    active = flag;
 }

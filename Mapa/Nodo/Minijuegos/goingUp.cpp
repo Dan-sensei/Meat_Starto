@@ -57,10 +57,10 @@ void goingUp::update() {
                     path = path.operator +=( std::to_string(rand) );
                     path = path.operator +=(".tmx");
 
-                    Mapa::Instance().LeeNodoAux(ascension, path, x, y);
+                    //Mapa::Instance().LeeNodoAux(ascension, path, x, y);
                 }
                 path = "tiles_definitivo/nodos/Up/Mininode_9.tmx";
-                Mapa::Instance().LeeNodoAux(ascension, path, x, y);
+                //Mapa::Instance().LeeNodoAux(ascension, path, x, y);
                 setEndArea(x, y, 43*70, 19*70);
                 Mapa::Instance().changeDirection(0);
             }

@@ -22,8 +22,7 @@
 #include "../mj_t.h"
 #include "../boss.h"
 #include "Nodo/Nodo.h"
-#include "Nodo/NPCs/NPC.h"
-#include "Nodo/NPCs/xPlotato.h"
+#include "Factory.h"
 
 class Mapa {
 public:
@@ -45,8 +44,6 @@ public:
     void movePlayerToClosestCheckPoint(Player* ready);
     void changeDirection(int dir);
     
-    void LeeNodoAux(std::list<Nodo> &lista, std::string const& node_path, int &x_start, int &y_start);
-    
     void setCameraDirection(int i);
     virtual ~Mapa();
     
@@ -62,20 +59,15 @@ private:
     
     std::vector<Player*>* players;
     
+    
+    std::vector<Factory::NodeStruct> NODOS;
+    std::vector<Factory::NodeStruct> MININODOS;
+    Factory::NodeStruct BOSS;
+    
     //----------------METODOS PRIVADOS
-    void LeeNodo(std::string const& node_path);
+    void CargaNodo(Factory::NodeStruct const& nodo);
     void InitMatrix();
     void updateFondo();
-    
-    typedef void (Mapa::*pFunc)(tinyxml2::XMLElement *, Nodo &, int x_starto, int y_starto);
-    std::map<std::string, pFunc> mapa_funciones;
-    
-    void leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
-    void leexPlotatos(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
-    void leeSkulls(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
-    void leePorwerUps(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
-    void leeCheckPoints(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
-    void leeMinijuego(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto);
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS

@@ -16,7 +16,6 @@
 #include <complex>
 
 #include "Mapa.h"
-#include "Nodo/NPCs/xPlotato.h"
 #include "Nodo/Minijuegos/goingUp.h"
 #include <math.h>
 
@@ -37,12 +36,11 @@
     ancho = atoi(d_aux->FirstChildElement("tileset")->Attribute("tilewidth"));
     alto = atoi(d_aux->FirstChildElement("tileset")->Attribute("tileheight"));
     
+    Factory::Instance().setTileSize(ancho, alto);
+    
     //ALMACENO LA INFORMACION DE LAS TILES
     tinyxml2::XMLElement *map;
     map = doc.FirstChildElement("tileset")->FirstChildElement("tile");
-    
-    //WHILE
-    tinyxml2::XMLElement *m_aux;
     
     //ANYADO EL PATH DE LA CARPETA
     
@@ -73,22 +71,6 @@
     
     //INICIALIZO LA MATRIZ DE ADYACENCIA
     InitMatrix();
-    
-    std::cout << "MATRIZ DE ADYACENCIA" << std::endl;
-    for(int i = 0; i < 16; i++){
-        if(i<10)
-        std::cout << "Nodo  " << i << " => ";
-        else
-        std::cout << "Nodo " << i << " => ";
-        for(int j = 0; j < matriz_v2[i].size(); j++){
-            if(matriz_v2[i][j] <10)
-                std::cout << " " << matriz_v2[i][j] << ",  ";
-            else
-                std::cout << matriz_v2[i][j] << ",  ";
-                
-        }
-        std::cout << std::endl;
-    }
 
     //-----------VARIABLES DE CLASE-----------//
     pop = false;
@@ -104,15 +86,7 @@
     
     //BOSS
     boss *javi;
-    javi->Instance();       //INICIALIZO EL BOSS
-    
-
-    //MAPA DE PUNTEROS A FUNCION
-    mapa_funciones.insert(std::make_pair("colision", &Mapa::leeColisiones));
-    mapa_funciones.insert(std::make_pair("spawn", &Mapa::leexPlotatos));
-    mapa_funciones.insert(std::make_pair("skull", &Mapa::leeSkulls));
-    mapa_funciones.insert(std::make_pair("power", &Mapa::leePorwerUps));
-    mapa_funciones.insert(std::make_pair("checkpoint", &Mapa::leeCheckPoints));
+    javi->Instance();       //INICIALIZO EL BOSS  
     
     longitud = 0;
     end = false;
@@ -135,12 +109,41 @@
     DEATH.setOrigin(DEATH.getSize()[0]/2, DEATH.getSize()[1]/2);
     
     cameraDir = 0;
-    
     direction = 0;
     debug.setFillColor('r');
     debug.setSize(20, 20);
     debug.setOrigin(10,10);
     debug.setPosition(1330, 1050+845-70*3);
+    
+    //LeeNodo("tiles_definitivo/nodos/0.tmx");
+    
+    std::string path;
+    for(int i = 0; i < 16; ++i){
+        path = "tiles_definitivo/nodos/";
+        std::string number = std::to_string(i);
+        path = path.operator +=(number);
+        path = path.operator +=(".tmx");
+        
+        Factory::NodeStruct n;
+        n = Factory::Instance().LeeNodo(path);
+        
+        NODOS.push_back(n);
+    }
+    
+    
+    for(int i = 1; i < 10; ++i){
+        path = "tiles_definitivo/nodos/Up/Mininode_";
+        std::string number = std::to_string(i);
+        path = path.operator +=(number);
+        path = path.operator +=(".tmx");
+        
+        Factory::NodeStruct n;
+        n = Factory::Instance().LeeNodo(path);
+        
+        MININODOS.push_back(n);
+    }
+    BOSS = Factory::Instance().LeeNodo("tiles_definitivo/nodos/fin.tmx");
+    
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -182,337 +185,72 @@ void Mapa::InitMatrix() {
                 matriz_v2[i].push_back(j);
 }
 
-//LEE Y CONSTRUYE EL NODO QUE LE PASES POR PARAMETRO
-void Mapa::LeeNodo(std::string const& node_path) {
-    // <editor-fold defaultstate="collapsed" desc="LEO EL MAPA">
+// CONSTRUYE EL NODO i DEL VECTOR "NODOS" QUE CONTIENE LA INFORMACIÓN NECESARIA PARA CREARLO
+
+void Mapa::CargaNodo(Factory::NodeStruct const& nodo) {
+
+    hex_list.emplace_back();
     
-    int map_width;
-    int map_height;
-
-    //ABRO EL ARCHIVO
-    tinyxml2::XMLDocument map_doc;
-    map_doc.LoadFile(node_path.c_str());
-
-    //CONSIGO EL ANCHO Y EL ALTO DEL NODO (Número de casillas del mapa)
-    tinyxml2::XMLElement *map;
-    map = map_doc.FirstChildElement("map");
-    map->QueryIntAttribute("width", &map_width);
-    map->QueryIntAttribute("height", &map_height);
-
-    hex_list.emplace_back("tiles_definitivo/tilesheet.png");
+    int randomX = 0;
+    int randomY = 0;
     
     hex_list.back().setRectVector(spriteSheetRects);
     
-    //CONSIGO EL TEXTO
-    std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
-    std::string partes;
-    std::string p_aux;
-    int x_max_aux;
-    int y_max_aux;
-
-    for (int i = 0; i < map_height; i++) {
-        for (int j = 0; j < map_width; j++) {
-
-            //ELIMINO EL SALTO DE LINEA DE CADA FILA
-            v_mapa.erase(0, 1);
-            
-            //CONSIGO EL NUMERO
-            partes = v_mapa.substr(0, 1);
-            v_mapa.erase(0, 1);
-            p_aux = v_mapa.substr(0, 1);
-
-            while (p_aux != "," && p_aux != "") {
-                partes = partes.operator+=(v_mapa.substr(0, 1));
-                v_mapa.erase(0, 1);
-                p_aux = v_mapa.substr(0, 1);
-            }
-
-            if (stoi(partes) != 0) {
-                hex_list.back().addTile(stoi(partes)-1, x_max + (ancho * j), y_max + alto * i);
-            }
+    // CARGO LAS TILES
+    for(int i = 0; i < nodo.Tiles.size(); ++i)
+        hex_list.back().addTile(nodo.Tiles[i].id, x_max + nodo.Tiles[i].x, y_max + nodo.Tiles[i].y);
+    
+    // CARGO EL SUELO
+    for(int i = 0; i < nodo.Grounds.size(); ++i){
+        std::vector<std::array<int, 2>> newCoords;
+        for(int j = 0; j < nodo.Grounds[i].coords.size(); ++j){
+            std::array<int, 2> updated;
+            updated[0] =  x_max + nodo.Grounds[i].coords[j][0];
+            updated[1] =  y_max + nodo.Grounds[i].coords[j][1];
+            newCoords.push_back(updated);
         }
-        partes = v_mapa.erase(0, 1);
+        hex_list.back().addGround(newCoords);
+        newCoords.clear();
     }
     
-    
-    if(direction == 0)
-        x_max_aux = ancho * (map_width-1);
-    else
-        y_max_aux = alto  * (map_height-1);
-    
-
-    // </editor-fold> 
-    
-    tinyxml2::XMLElement *obj;
-    tinyxml2::XMLElement *objMinijuego;
-    
-    obj = map->FirstChildElement("objectgroup");
-    objMinijuego = map->FirstChildElement("objectgroup");
-    std::string m = "minijuego";
-    bool miniG = false;
-    while(obj){
-
-        if(m.compare(objMinijuego->Attribute("name")) == 0)
-            miniG = true;
-        else
-            objMinijuego = objMinijuego->NextSiblingElement("objectgroup");
-        
-        
-        //Puntero a funcion
-        pFunc funcion = mapa_funciones[obj->Attribute("name")];   
-
-        //std::cout << obj->Attribute("name") << std::endl;
-
-        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back(), x_max, y_max);
-
-        obj = obj->NextSiblingElement("objectgroup");
-        
-    }
-
-    if(miniG)
-        leeMinijuego(objMinijuego, hex_list.back(), x_max, y_max);
-    
-    if(direction == 0){
-        x_max += x_max_aux+ancho;
-        hex_list.back().setPop(x_max);
-    }
-    else{
-        y_max -= y_max_aux-alto;
-        hex_list.back().setPop(y_max);
+    // CARGO LAS XPLOTATOS
+    for(int i = 0; i < nodo.xPlotatos.size(); ++i){
+        randomX = physicsEngine::Instance().genIntRandom(nodo.xPlotatos[i].xMin, nodo.xPlotatos[i].xMax);
+        hex_list.back().addxPlotato(x_max + randomX, y_max + nodo.xPlotatos[i].y, x_max + nodo.xPlotatos[i].xMin, x_max + nodo.xPlotatos[i].xMax);
     }
     
-}
-
-void Mapa::leeColisiones(tinyxml2::XMLElement *obj, Nodo &actual, int x_starto, int y_starto){
-    //CONSIGO LOS OBJETOS (COLISIONES)
-    //NO COMPRUEBO SI NO TIENE COLISION, YA QUE SE SUPONE QUE TODOS LOS NODOS VAN A TENER COLISION, SI O SI
-    tinyxml2::XMLElement *poly;
-    int x, x2;
-    int y, y2;
-    std::string vertex, v_aux, v_aux2;
-    std::vector<std::array<float, 2>> vec;
-    renderEngine::rConvexShape *cs;
-
-    obj = obj->FirstChildElement("object");
-
-    while (obj) {
-        x = atoi(obj->Attribute("x")); //COORDENADA X ABSOLUTA
-        y = atoi(obj->Attribute("y")); //COORDENADA Y ABSOLUTA
-
-        //============================================//
-        //PARA CREAR LOS VERTICES DEL ConvexShape
-        cs = new renderEngine::rConvexShape;
-
-        //============================================//
-
-        poly = obj->FirstChildElement("polyline"); //OBJETO POLYLINE
-        vertex = poly->Attribute("points"); //STRING CON LAS COORDENADAS
-
-        //CONSIGO EL NUMERO
-        while (1) {
-            for (int i = 0; i < 2; i++) {
-                v_aux = vertex.substr(0, 1);
-                vertex.erase(0, 1);
-                v_aux2 = vertex.substr(0, 1);
-
-                while (v_aux2 != "," && v_aux2 != " " && v_aux2 != "") {
-                    v_aux = v_aux.operator+=(vertex.substr(0, 1));
-                    vertex.erase(0, 1);
-                    v_aux2 = vertex.substr(0, 1);
-                }
-                vertex.erase(0, 1);
-
-                if (i == 0) 
-                    x2 = x + x_starto + stoi(v_aux);
-                else 
-                    y2 = y + y_starto + stoi(v_aux);
-                
-            }
-
-            //ALMACENO EL VERTICE
-            std::array<float, 2> coords = {(float)x2, (float)y2};
-            vec.push_back(coords);
-            
-            if (vertex == "") {
-                break;
-            }
-        }
-
-        cs->setPointCount(vec.size());
-        for (int i = 0; i < vec.size(); i++) {
-            cs->setPoint(i, vec[i][0], vec[i][1]);
-        }
-        
-        //<DEBUG>
-        cs->setFillColor('t');
-        cs->setOutlineColor('r');
-        cs->setOutlineThickness(5);
-        //</DEBUG>
-        
-        
-        actual.addGround(vec);
-        
-        objetos.push_back(*cs);     //GUARDO LOS ConvexShapes PARA DEBUG
-        //BORRAR cs -> !IMPORTANTE
-        delete cs;
-        cs = nullptr;
-        //VACIAR vec -> !IMPORTANTE
-        vec.clear();
-
-        obj = obj->NextSiblingElement("object");
+    // CARGO LOS SKULLS
+    for(int i = 0; i < nodo.Skulls.size(); ++i){
+        randomX = physicsEngine::Instance().genIntRandom(nodo.Skulls[i].xMin, nodo.Skulls[i].xMax);
+        randomY = physicsEngine::Instance().genIntRandom(nodo.Skulls[i].yMin, nodo.Skulls[i].yMax);
+        hex_list.back().addSkull(x_max + randomX, y_max + randomY, x_max + nodo.Skulls[i].xMin, x_max + nodo.Skulls[i].xMax, y_max + nodo.Skulls[i].yMin, y_max + nodo.Skulls[i].yMax);
     }
-}
-
-void Mapa::leexPlotatos(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto){
-
-    obj = obj->FirstChildElement("object");
-
-    int xCoord = 0;
-    int yCoord = 0;
-    int width = 0;
-    int height = 0;
     
-    while (obj) {
-        obj->QueryIntAttribute("x", &xCoord);
-        obj->QueryIntAttribute("width", &width);
-
-        obj->QueryIntAttribute("y", &yCoord);
-        obj->QueryAttribute("height", &height);
-
-        xCoord += x_starto;
-        yCoord += y_starto;
-        
-        int y_spawn = yCoord + height - AssetManager::GetTexture("assets/BOSS.jpg").getYSize() / 2;
-        int x_rand = physicsEngine::Instance().genIntRandom(xCoord, xCoord+width);
-
-        actual.addxPlotato(x_rand, y_spawn, xCoord, xCoord+width);
-
-        obj = obj->NextSiblingElement("object");
+    // CARGO LOS POWERS
+    for(int i = 0; i < nodo.Powers.size(); ++i){
+        hex_list.back().addPower(nodo.Powers[i].id, x_max + nodo.Powers[i].xMin, x_max + nodo.Powers[i].xMax, y_max + nodo.Powers[i].y);
     }
-}
-
-void Mapa::leePorwerUps(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto){
     
-    //POWER UP/DOWN 
-    obj = obj->FirstChildElement("object");
-
-    int x = 0;
-    int y = 0;
-    int w = 0;
-    int h = 0;
-
-    while (obj) {
-        obj->QueryIntAttribute("x", &x);
-        obj->QueryIntAttribute("y", &y);
-        obj->QueryIntAttribute("width", &w);
-        obj->QueryIntAttribute("height", &h);
-        
-        int   random = physicsEngine::Instance().genIntRandom(0, 3);
-        
-        actual.addPower(random, x_starto + x, x + x_starto + w, y_starto + y + 35);
-        obj = obj->NextSiblingElement("object");
-    }
-}
-
-void Mapa::leeSkulls(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto){
-    
-    obj = obj->FirstChildElement("object");
-
-    int xCoord = 0;
-    int yCoord = 0;
-    int width = 0;
-    int height = 0;
-
-
-    tinyxml2::XMLElement* number;
-    int n = 1;
-    
-    while (obj) {
-        
-        //Número de enemigos en esta área
-        number = obj->FirstChildElement("properties");
-        if(number) number->FirstChildElement("property")->QueryAttribute("value", &n);
-        
-        obj->QueryIntAttribute("x", &xCoord);
-        obj->QueryIntAttribute("width", &width);
-
-        obj->QueryIntAttribute("y", &yCoord);
-        obj->QueryAttribute("height", &height);
-
-        xCoord += x_starto;
-        yCoord += y_starto;
-        
-        float randomX = physicsEngine::Instance().genIntRandom(xCoord, xCoord + width);
-        float randomY = physicsEngine::Instance().genIntRandom(yCoord, yCoord + height);
-        
-        for (int i = 0; i < n; i++)
-            actual.addSkull(randomX, randomY, xCoord, xCoord+width, yCoord, yCoord+height);
-
-        obj = obj->NextSiblingElement("object");
-    }
-}
-
-void Mapa::leeCheckPoints(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto) {
-    
-    obj = obj->FirstChildElement("object");
-
-    int xCoord = 0;
-    int yCoord = 0;
-    int width = 0;
-    int height = 0;
-    
-    while (obj) {
-        obj->QueryIntAttribute("x", &xCoord);
-        obj->QueryIntAttribute("width", &width);
-
-        obj->QueryIntAttribute("y", &yCoord);
-        obj->QueryAttribute("height", &height);
-        
-        xCoord += x_starto;
-        yCoord += y_starto;
-        
+    // CARGO LOS PUNTOS DE CONTROL
+    for(int i = 0; i < nodo.Checkpoints.size(); ++i){
         checkPoint checkpoint;
         checkpoint.active = false;
-        checkpoint.shape.setSize(width, height);
-        checkpoint.shape.setPosition(xCoord, yCoord);
+        checkpoint.shape.setSize(nodo.Checkpoints[i].width, nodo.Checkpoints[i].height);
+        checkpoint.shape.setPosition(x_max + nodo.Checkpoints[i].x, y_max + nodo.Checkpoints[i].y);
         checkpoint.shape.setOutlineThickness(2);
         checkpoint.shape.setOutlineColor('r');
         checkpoint.shape.setFillColor('t');
-        
         every_points.push_back(checkpoint);
-        
-        //actual.addCheckPoint(xCoord, yCoord, width, height);
-
-        obj = obj->NextSiblingElement("object");
     }
     
+    x_max += nodo.map_width * nodo.tile_width;
+
 }
 
-void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, int y_starto) {
 
-    tinyxml2::XMLElement* property;
-    int type = -1;
-    
-    property = obj->FirstChildElement("properties");
-    if(property) property->FirstChildElement("property")->QueryAttribute("value", &type);
-    
-    obj = obj->FirstChildElement("object");
-    
-    int x, width;
-    int y, height;
-    
-    // Área donde todos los jugadores deben estar para dar comienzo al minijuego
-    obj->QueryIntAttribute("x", &x);
-    obj->QueryIntAttribute("width", &width);
-    obj->QueryIntAttribute("y", &y);
-    obj->QueryIntAttribute("height", &height);
-    
-    x += x_max;
-    y += y_max;
 
-    Minijuego* mini = actual.addMinigame(type, x, y, width, height);
-    if(type == 1){
 
+/*
         bool flag;
         for(int i = 0; i < 16; i++){
             flag = false;
@@ -522,10 +260,7 @@ void Mapa::leeMinijuego(tinyxml2::XMLElement* obj, Nodo& actual, int x_starto, i
                     flag = true;
                 }
         }
-        
-    }
-
-}
+ */
 
 void Mapa::render(float tick_) {
     renderEngine *sfml;
@@ -619,19 +354,20 @@ void Mapa::render(float tick_) {
 
 //LEE LA MATRIZ DE ADYACENCIA
 void Mapa::CreaMapa() {
+    
     std::string path = "tiles_definitivo/nodos/";
     path = path.operator +=("0.tmx");
         //std::cout << path << std::endl;
-    //nodo_actual = 15;
-    LeeNodo(path);
-    
+    nodo_actual = 0;
+    CargaNodo(NODOS[0]);
+    std::cout << "asdada " << every_points.size() << std::endl;
     checkPoint first;
     first = every_points.front();
     active_points.push_back(first);
     active_points.front().active = true;
     active_points.front().shape.setOutlineColor('g');
     maxPoint = active_points.front().shape.getPosition()[0];
-    
+    std::cout << "asdada" << std::endl;
     every_points.erase(every_points.begin());
     
     //EMPIEZA A LEER LA MATRIZ
@@ -657,7 +393,7 @@ void Mapa::leeRandom(){
     std::cout << path << std::endl;
     //std::cout << "Nodo actual " << nodo_actual << " | Next " << target << std::endl;
 
-    LeeNodo(path);
+    CargaNodo(NODOS[target]);
     longitud++;
 
     if(target == 6 && !m_tetris) {
@@ -710,7 +446,7 @@ void Mapa::updateMini() {
         path = "tiles_definitivo/nodos/fin.tmx";
             //std::cout << path << std::endl;
 
-        LeeNodo(path);
+        CargaNodo(BOSS);
         end = true;
     }
     
@@ -880,75 +616,6 @@ void Mapa::checkOutOfMap(Player* ready) {
 
 void Mapa::changeDirection(int dir) {
     direction = dir;
-}
-
-void Mapa::LeeNodoAux(std::list<Nodo>& lista, const std::string& node_path, int &x_start, int &y_start) {
-    int map_width;
-    int map_height;
-
-    tinyxml2::XMLDocument map_doc;
-    map_doc.LoadFile(node_path.c_str());
-
-    tinyxml2::XMLElement *map;
-    map = map_doc.FirstChildElement("map");
-    map->QueryIntAttribute("width", &map_width);
-    map->QueryIntAttribute("height", &map_height);
-
-    lista.emplace_back("tiles_definitivo/tilesheet.png");
-    lista.back().setRectVector(spriteSheetRects);
-    
-    //CONSIGO EL TEXTO
-    std::string v_mapa = map->FirstChildElement("layer")->FirstChildElement("data")->GetText();
-    std::string partes;
-    std::string p_aux;
-    int x_max_aux;
-    
-    y_start -= map_height*alto;
-
-    for (int i = 0; i < map_height; i++) {
-        for (int j = 0; j < map_width; j++) {
-            v_mapa.erase(0, 1);
-            partes = v_mapa.substr(0, 1);
-            v_mapa.erase(0, 1);
-            p_aux = v_mapa.substr(0, 1);
-            while (p_aux != "," && p_aux != "") {
-                partes = partes.operator+=(v_mapa.substr(0, 1));
-                v_mapa.erase(0, 1);
-                p_aux = v_mapa.substr(0, 1);
-            }
-            if (stoi(partes) != 0) {
-                lista.back().addTile(stoi(partes)-1, x_start + (ancho * j), y_start + alto * i);
-            }
-        }
-        partes = v_mapa.erase(0, 1);
-    }
-    
-    if(direction == 0)
-        x_max_aux = ancho * (map_width-1);
-    
-    tinyxml2::XMLElement *obj;
-    obj = map->FirstChildElement("objectgroup");
-    
-    while(obj){
-        
-        //Puntero a funcion
-        pFunc funcion = mapa_funciones[obj->Attribute("name")];   
-        
-        //std::cout << obj->Attribute("name") << std::endl;
-        
-        if(funcion != nullptr) (this->*funcion)(obj, hex_list.back(), x_start, y_start);
-       
-        obj = obj->NextSiblingElement("objectgroup");
-    }
-    
-    if(direction == 0){
-        x_start += x_max_aux+ancho;
-        lista.back().setPop(x_start);
-    }
-    else{
-        lista.back().setPop(y_start);
-    }
-    
 }
 
 void Mapa::setCameraDirection(int i) {

@@ -20,13 +20,15 @@
 
 
 
-Nodo::Nodo(std::string sheet) {    
-    tile.setTexture(AssetManager::GetTexture(sheet));
-    
+Nodo::Nodo() {
+
     array_funciones[0] = &Player::powerUpInmortalidad;
     array_funciones[1] = &Player::powerUpSpeed;
-    array_funciones[2] = &Player::powerDownJump;
-    array_funciones[3] = &Player::powerDownFreeze;
+    array_funciones[2] = &Player::powerUpExperience;
+    array_funciones[3] = &Player::powerDownJump;
+    array_funciones[4] = &Player::powerDownFreeze;
+    array_funciones[5] = &Player::powerDownLevelOne;
+    array_funciones[6] = &Player::powerDownFish;
     
     checkPoint checkpoint;
     checkpoint.active = false;
@@ -61,7 +63,6 @@ Nodo::Nodo(const Nodo& orig) {
         checkpoints.push_back(*it);
     
     aux_pop = orig.aux_pop;
-    tile = orig.tile;
     
     maxXCheckPoint = orig.maxXCheckPoint;
 }
@@ -127,7 +128,7 @@ void Nodo::addTile(int id, int x, int y){
     }
 }
 
-void Nodo::addGround(std::vector<std::array<float,2> > coords){
+void Nodo::addGround(std::vector<std::array<int,2> > coords){
     physicsEngine* world;
     
     t = new physicsEngine::type;
@@ -170,11 +171,14 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     power p;
     p.id = id;
     
-    std::string sprite[4];
-    sprite[0] = "assets/powerUp.png";
-    sprite[1] = "assets/powerUp.png";
-    sprite[2] = "assets/powerDown.png";
-    sprite[3] = "assets/powerDown.png";
+    std::string sprite[7];
+    sprite[0] = "assets/powerUp.png";       // Estrella
+    sprite[1] = "assets/powerUp.png";       // Café
+    sprite[2] = "assets/powerUp.png";       // Carne
+    sprite[3] = "assets/powerDown.png";     // Flan
+    sprite[4] = "assets/powerDown.png";     // Helado
+    sprite[5] = "assets/powerDown.png";     // Biberón
+    sprite[6] = "assets/powerDown.png";     // Pescado
     
     std::string target = sprite[id];
     

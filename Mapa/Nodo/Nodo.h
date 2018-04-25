@@ -35,12 +35,12 @@ private:
     };
 public:
 
-    Nodo(std::string sheet);
+    Nodo();
     Nodo(const Nodo& orig);
     virtual ~Nodo();
     
     void addTile(int id, int x, int y);
-    void addGround(std::vector<std::array<float, 2>> coords);
+    void addGround(std::vector<std::array<int, 2>> coords);
     void addxPlotato(int x_, int y_, int x_min, int x_max);
     void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     void addPower(int id, int xMin, int xMax, int y_);
@@ -83,7 +83,7 @@ private:
     Minijuego* minijuego;
     
     typedef void (Player::*pFunc)(void);
-    pFunc array_funciones[4];
+    pFunc array_funciones[7];
     
     
     

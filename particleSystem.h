@@ -61,6 +61,9 @@ public:
     void setType(int type_);
     void interpola(float tick_);
     void draw(float tick_);
+    void NoUsarEstedraw();
+    void howManyParticlesAre();
+    void setActive(bool flag);
     
     void preState();
     void newState();
@@ -73,6 +76,7 @@ private:
     renderEngine::rClock timerClock;
     
     //Variables del sistema en sí
+    bool active;
     int max_particles;
     float lifeTime;
     float xPos, yPos;

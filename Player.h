@@ -17,6 +17,7 @@
 #include <string>
 #include "Animator.h"
 #include "renderEngine/renderEngine.h"
+#include "particleSystem.h"
 
 class Player {
 public:
@@ -66,11 +67,14 @@ public:
     bool isOnAir();
     int getAir();
     
-    void powerUpInmortalidad();
-    void powerUpSpeed();
-    void powerExperience();
-    void powerDownJump();
-    void powerDownFreeze();
+    void powerUpInmortalidad();     // 0
+    void powerUpSpeed();            // 1
+    void powerUpExperience();       // 2
+    
+    void powerDownJump();           // 3
+    void powerDownFreeze();         // 4
+    void powerDownLevelOne();       // 5
+    void powerDownFish();           // 6
     
     void lvlDown();
     void lvlUp();
@@ -101,6 +105,8 @@ private:
     bool spawned;
     
     pBody body;
+    
+    particleSystem blood;
 };
 
 #endif /* PLAYER_H */

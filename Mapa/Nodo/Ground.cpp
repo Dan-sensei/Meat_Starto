@@ -13,7 +13,7 @@
 
 #include "Ground.h"
 
-Ground::Ground(std::vector<std::array<float,2> > coords) {
+Ground::Ground(std::vector<std::array<int,2> > coords) {
     physicsEngine* world;
     
     t = new physicsEngine::type;

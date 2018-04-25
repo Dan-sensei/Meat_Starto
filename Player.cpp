@@ -153,6 +153,22 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     MAXSPEED = constMaxSeed;
     
     spawned = false;
+    
+    blood.setPosition(x_, y_);                    // Posicion del sistema de partículas
+    blood.setType(1);                                // Tipo: Determina el área de generado | 0 = Círculo - 1 = Rectángulo (Por defecto tienen tamaño 0 y emitirán hacia el exterior aleatoriamente)
+    blood.setParticleSpeed(0);                     // Velocidad lineal de las partículas
+    blood.setMaxParticleAmout(500);                  // Máximo número de partículas
+    blood.setGenerationTimer(5);                     // Tiempo (ms) de delay entre la generación de partículas (En este caso se genera una partícula cada 4 ms)
+    blood.setParticleLifeTime(0.25);                    // Tiempo de vida en segundos, de vida d elas partículas
+    blood.setParticleDirection(-1, 0);             // Dirección de las partículas, debe ser un número entre 0 y 1
+    blood.setRectangle(60, 20);                   // Área de generado, en este caso es un rectángulo, así que le digo ancho y alto, si fuera un círculo, llamaría a setCircle(float radius);
+    //blood.setCircle(30);
+    blood.setParticleRotationRandomBetween(-180, 180);
+    blood.setSprite("assets/RED.png");    // Cambia el sprite
+    blood.setSpriteSize(1, 1);                     // Cambia el tamaño del sprite
+    blood.setParticleAngularVelocityRandomBetween(-10, -15);
+    //blood.drawGenerationArea(true);
+    
 }
 
 Player::~Player() {
@@ -257,7 +273,8 @@ void Player::moveDown(){
 
 //MOVIMIENTO
 void Player::movement(){
-    
+    //blood.setActive(false);
+
     if(spawned && respawnTimeClock.getElapsedTime().asSeconds() > 0.25){
         body.setActive(true);
         spawned = false;
@@ -278,6 +295,7 @@ void Player::movement(){
             if(!isOnAir()){
                 moveLeft(); 
             }                                                                       //
+
         }                                                                           //
         // ===========================================================================
 
@@ -290,6 +308,7 @@ void Player::movement(){
             if(!isOnAir()){
                 moveRigth();
             }                                                                       //
+
         }                                                                           //
         // ===========================================================================
         
@@ -323,6 +342,23 @@ void Player::movement(){
         }
     }
     
+    
+    if(abs(body.getLinearYVelocity())>1){
+        blood.setRectangle(60,60);
+        blood.setPosition(body.getXPosition(), body.getYPosition());
+    }
+    else{
+        blood.setRectangle(60, 25);
+        blood.setPosition(body.getXPosition(), body.getYPosition()+24);
+    }
+    
+    if(body.getLinearXVelocity() != 0 || body.getLinearYVelocity() != 0)
+        blood.setActive(true);
+    
+    //blood.howManyParticlesAre();
+    //std::cout << blood.getXPosition() << ", " << blood.getYPosition() << std::endl;
+    //blood.update();
+   
 }
 
 void Player::interpola(float tick_){
@@ -335,6 +371,7 @@ void Player::interpola(float tick_){
     
     sprite.setPosition(x, y);
     sprite.setRotation(atan2(s,c)*180/M_PI);
+    //blood.interpola(tick_);
 }
 std::string Player::anima(){
     return animator.GetCurrentAnimationName(); 
@@ -342,6 +379,7 @@ std::string Player::anima(){
 
 void Player::draw(){
     sprite.draw();
+    //blood.NoUsarEstedraw();
 }
 
 void Player::preState(){
@@ -352,6 +390,7 @@ void Player::newState(){
     actual.x = body.getXPosition();
     actual.y = body.getYPosition();
     actual.r = body.getRotation();
+    blood.newState();
 }
 
 float Player::getXPosition(){
@@ -384,7 +423,7 @@ void Player::powerUpSpeed() {
     speedClock.restart();
 }
 
-void Player::powerExperience() {
+void Player::powerUpExperience() {
     std::cout << "+" << meatEXP << " EXPERIENCIA!";
     float newExp = exp + meatEXP;
     if(newExp > exp_for_next_level){
@@ -406,6 +445,15 @@ void Player::powerDownFreeze() {
     std::cout << "FREEZE!" << std::endl;
 
 }
+
+void Player::powerDownLevelOne() {
+    std::cout << "VUELVES AL LEVEL ONE" << std::endl;
+}
+
+void Player::powerDownFish() {
+    std::cout << "CONTROLES INVERTIDOS!" << std::endl;
+}
+
 
 void Player::setPosition(float x, float y) {
     body.setPosition(x, y);
