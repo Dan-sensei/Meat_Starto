@@ -197,7 +197,12 @@ void Juego::HandleEvents(){
                             readyPlayer[3]->moveRigth_b();
                         }
                     break;
-                   
+                   case 57:
+                       /*ESPACIO PARA CAMBIAR DE PUNYO CORTO A LARGO*/
+                        std::cout<<"CAMBIO"<<std::endl;
+                        readyPlayer[0]->double_hit(true);
+                        
+                    break;
                 }
                 break;
              

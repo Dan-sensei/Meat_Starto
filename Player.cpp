@@ -47,12 +47,12 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     level=1;
 
     
-    sprite.setOrigin(30, 39);
+    sprite.setOrigin(48/2, 40/2);
     sprite.setScale(1.4f, 1.5f);
     switch(id){
     //Asigna la textura con su color dependiendo del id del jugador
         case 0:
-                texture="assets/player0.png";
+                texture="assets/player0a.png";
                 //KeyCode                
                 key_r=3;
                 key_l=0;
@@ -60,7 +60,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_hit=4;
         break;
         case 1:
-                texture="assets/player1.png";
+                texture="assets/player1a.png";
                 //KeyCode                
                 key_r=72;
                 key_l=71;
@@ -69,7 +69,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 //sprite.setPosition(x_, y_);
         break;
         case 2:
-                texture="assets/player2.png"; 
+                texture="assets/player2a.png"; 
                 //KeyCode                
                 key_r=-1;
                 key_l=10;
@@ -77,7 +77,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_hit=4;    
         break;
         case 3:
-                texture="assets/player3.png"; 
+                texture="assets/player3a.png"; 
                 //KeyCode                
                 key_r=13;
                 key_l=21;
@@ -85,12 +85,23 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_hit=4;                       
         break;                           
     }
-   
+   /*MANO*/
     
-    sf::Vector2i spriteSize(60,60);
+    int width = AssetManager::GetTexture(texture).getXSize();
+    int height = AssetManager::GetTexture(texture).getYSize();
+
+    mano.setTexture(AssetManager::GetTexture(texture));
+    renderEngine::rIntRect hit_s_(60,200,67,49);
+    renderEngine::rIntRect hit_double_(20,200,130,49);
+    mano.setTextureRect(hit_s_);
+    mano.setOrigin(-20,25);
     
+    
+    /*ANIMACIONES*/
+    //sf::Vector2i spriteSize(60,60);
+    sf::Vector2i spriteSize(48,40);
     Animator::Animation* anim = &animator.CreateAnimation("a_bas",texture, renderEngine::rTime(3), false);
-    anim->AddFrames(sf::Vector2i(0,0), sf::Vector2i(60,60), 1);
+    anim->AddFrames(sf::Vector2i(0,0), sf::Vector2i(48,40), 1);
     animator.SwitchAnimation("a_bas");
     
     Animator::Animation* a_base = &animator.CreateAnimation("a_base",texture, renderEngine::rTime(3), false);
@@ -98,15 +109,15 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     //Giro Derecha
     Animator::Animation* a_rigth = &animator.CreateAnimation("a_rigth",texture, renderEngine::rTime(0.3), false);
-    a_rigth->AddFrames(sf::Vector2i(300,0), spriteSize , 3);
+    a_rigth->AddFrames(sf::Vector2i(240,0), spriteSize , 3);
     Animator::Animation* a_base_r = &animator.CreateAnimation("a_base_r",texture, renderEngine::rTime(0.2), false);
-    a_base_r->AddFrames(sf::Vector2i(480,0), spriteSize , 2);
+    a_base_r->AddFrames(sf::Vector2i(384,0), spriteSize , 2);
     
     //Giro Izquierda
     Animator::Animation* a_left = &animator.CreateAnimation("a_left",texture, renderEngine::rTime(0.3), false);
     a_left->AddFrames(sf::Vector2i(0,0), spriteSize , 3);
     Animator::Animation* a_base_l = &animator.CreateAnimation("a_base_l",texture, renderEngine::rTime(0.2), false);
-    a_base_l->AddFrames(sf::Vector2i(180,0), spriteSize , 2);
+    a_base_l->AddFrames(sf::Vector2i(144,0), spriteSize , 2);
     
     /*
     //Salto izquierda
@@ -126,13 +137,13 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     //Prueba de salto
     //Salto izquierda
     Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l",texture, renderEngine::rTime(0.7), false);
-    a_jump_l->AddFrames(sf::Vector2i(0,60), spriteSize ,9);  
-    a_jump_l->AddFrames(sf::Vector2i(0,120), spriteSize ,3);
+    a_jump_l->AddFrames(sf::Vector2i(0,40), spriteSize ,9);  
+    a_jump_l->AddFrames(sf::Vector2i(48,80), spriteSize ,2);
     
     //Salto derecha
     Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r",texture, renderEngine::rTime(0.7), false);
-    a_jump_r->AddFrames(sf::Vector2i(0,180), spriteSize ,9); 
-    a_jump_r->AddFrames(sf::Vector2i(180,120), spriteSize ,3);  
+    a_jump_r->AddFrames(sf::Vector2i(0,120), spriteSize ,9); 
+    a_jump_r->AddFrames(sf::Vector2i(192,80), spriteSize ,2);  
     
     //Para colision
     Animator::Animation*  a_fall_l = &animator.CreateAnimation("a_fall_l",texture, renderEngine::rTime(0.5), false);
@@ -145,6 +156,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     previous.r = actual.r = body.getRotation();
     
     sprite.setPosition(actual.x, actual.y);
+    mano.setPosition(actual.x, actual.y);
+    
     
     inmortal = false;
     exp_for_next_level = 500;
@@ -199,8 +212,22 @@ renderEngine::rSprite Player::getSprite(){
 
 void Player::update(){
     animator.Update(animationClock.restart());
+    
 }
 
+void Player::double_hit(bool b){
+    //Cambiar longitud del golpe. True = doble golpe // False = golpe simple
+    if(doublehit != b){
+        doublehit=b;             
+        if(doublehit==false){
+            renderEngine::rIntRect hit_s_(60,200,67,49);
+            mano.setTextureRect(hit_s_);
+        }else{
+            renderEngine::rIntRect hit_double_(20,200,130,49);
+            mano.setTextureRect(hit_double_);
+        }
+    }        
+}
 
 void Player::moveRigth(){
     if(animator.GetCurrentAnimationName() != "a_rigth" && animator.GetCurrentAnimationName() != "a_jump_r"){
@@ -281,6 +308,23 @@ void Player::movement(){
     }
     
     preState();
+    //GOLPE
+    if(keys[key_hit]){
+        hit=true;
+        if(animator.GetCurrentAnimationName()== "a_rigth" || animator.GetCurrentAnimationName()== "a_base_r" || animator.GetCurrentAnimationName()== "a_jump_r"){
+            //Golpe hacia la derecha
+            mano.setScale(1,1);           
+        }else{
+            //golpe a la izquierda
+            mano.setScale(-1,1);
+        }        
+        
+    }else{
+        if(hit==true){
+            hit=false;
+        }      
+    }
+    
     // SALTO======================================================================
     if((keys[key_up]) && !isOnAir()){                                               //
         body.applyForceToCenter(0, -jump);                                          //
@@ -371,6 +415,7 @@ void Player::interpola(float tick_){
     
     sprite.setPosition(x, y);
     sprite.setRotation(atan2(s,c)*180/M_PI);
+    mano.setPosition(x,y);
     //blood.interpola(tick_);
 }
 std::string Player::anima(){
@@ -378,6 +423,10 @@ std::string Player::anima(){
 }
 
 void Player::draw(){
+    
+    if(hit==true){
+        mano.draw();
+    }
     sprite.draw();
     //blood.NoUsarEstedraw();
 }

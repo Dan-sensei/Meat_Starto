@@ -34,6 +34,7 @@ public:
     renderEngine::rSprite getSprite();
     
     void update();
+    void double_hit(bool b);
     void moveRigth();
     void moveRigth_b();
     void moveLeft();
@@ -88,6 +89,9 @@ private:
     std::string name; 
     std::string texture;
     renderEngine::rSprite sprite;
+    renderEngine::rSprite mano;    
+    bool hit;
+    int hand_length;
     Animator animator;
     int key_r,key_l,key_up,key_hit;
     
@@ -98,6 +102,7 @@ private:
     float exp;
     
     bool inmortal;
+    bool doublehit;
     renderEngine::rClock inmortalityClock;
     renderEngine::rClock speedClock;
     
