@@ -210,6 +210,24 @@ renderEngine::rSprite Player::getSprite(){
     return sprite;
 }
 
+int Player::getExp() {
+    return exp;
+}
+
+
+int Player::getExp_levelup() {
+    return exp_for_next_level;
+}
+
+
+void Player::hazInmortal(){
+    if (inmortal==false)
+        inmortal=true;
+    else
+        inmortal=false;
+}
+
+
 void Player::update(){
     animator.Update(animationClock.restart());
     

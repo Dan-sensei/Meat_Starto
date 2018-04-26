@@ -145,8 +145,8 @@ void Hud::cambiarHud(Player* player){
         posy = sfml->Instance().getViewCenter()[1];
     
        menu[0].setString("Player " + std::to_string(player->getId()+1));
-       menu[1].setString(""+player->getName());
-       menu[2].setString("Level " + std::to_string(player->getLevel()));
+       menu[1].setString("Level " + std::to_string(player->getLevel()));
+       menu[2].setString("Exp: " + std::to_string(player->getExp()) +"/"+ std::to_string(player->getExp_levelup()));
        hudsprite=player->getSprite();
 
                
