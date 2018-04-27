@@ -65,10 +65,8 @@ public:
     void preState();
     void newState();
     
-    physicsEngine::type* t;
-    physicsEngine::type* sensorData;
-    
     int onAir;
+    bool touchingWall;
     void setAir(int i);
     bool isOnAir();
     int getAir();
@@ -86,7 +84,7 @@ public:
     void lvlUp();
     
     void hazInmortal();
-
+    void setTouchingWall(bool flag);
     
     void setPosition(float x, float y);
     std::string anima();
@@ -109,6 +107,7 @@ private:
     int exp_for_next_level;
     int exp;
     
+    bool stopJump;
     bool inmortal;
     bool doublehit;
     renderEngine::rClock inmortalityClock;
@@ -118,6 +117,9 @@ private:
     bool spawned;
     
     pBody body;
+    
+    physicsEngine::type* t;
+    physicsEngine::type* bottom;
     
     particleSystem blood;
 };

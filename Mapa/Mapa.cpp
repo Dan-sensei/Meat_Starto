@@ -20,10 +20,12 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 0
+#define MAP_ITERATION 10
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
+#define nodoInicial 0
+
 
  Mapa::Mapa() {
     std::cout << "Creando mapa..." << std::endl;
@@ -172,8 +174,8 @@ void Mapa::InitMatrix() {
     /*  2 */  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  1,
     /*  3 */  0,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,
     /*  4 */  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  0,  1,  0,  1,
-    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  1,  0,  0,
-    /*  6 */  0,  1,  1,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  0,
+    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,
+    /*  6 */  0,  1,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  0,
     /*  7 */  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  1,
     /*  8 */  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  1,
     /*  9 */  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  1,  1,  1,  1,
@@ -384,7 +386,7 @@ void Mapa::render(float tick_) {
 void Mapa::CreaMapa() {
     
     
-    nodo_actual = 15;
+    nodo_actual = nodoInicial;
     CargaNodo(hex_list, NODOS[nodo_actual], x_max, y_max);
 
     checkPoint first;

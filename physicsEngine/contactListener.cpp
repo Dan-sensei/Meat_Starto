@@ -20,9 +20,6 @@
 #include "../Mapa/Nodo/NPCs/xPlotato.h"
 
 void contactListener::BeginContact(b2Contact* contact){
-    //std::cout << "Start contact" << std::endl;
-    b2Fixture* fixtureA = contact->GetFixtureA();
-    b2Fixture* fixtureB = contact->GetFixtureB();
     
     void* a = contact->GetFixtureA()->GetUserData();
     void* b = contact->GetFixtureB()->GetUserData();
@@ -34,18 +31,18 @@ void contactListener::BeginContact(b2Contact* contact){
     //   PLAYER = 2
     // XPLOTATO = 3
     //    SKULL = 4
+    
+    // PIES DEL JUGADOR = 5
 
+    
     b2WorldManifold worldManifold;
     contact->GetWorldManifold(&worldManifold);
     
     float normalX = worldManifold.normal.x;
     float normalY = worldManifold.normal.y;
-    std::cout << "CORE " << std::endl;
-    std::cout << "BODY A " << typeA->id << std::endl;
-    std::cout << "BODY B " << typeB->id << std::endl;
-    
-    std::cout << "DUMPED " << std::endl;
-    
+
+
+
     if(typeA->id == 5 || typeB->id == 5 ){
         if(typeA->id == 5){
             Player* p = static_cast<Player*>(typeA->data);
@@ -56,6 +53,7 @@ void contactListener::BeginContact(b2Contact* contact){
             p->setAir(1); 
         }
     }
+
     
     /*
     // SUELO CON JUGADOR
@@ -149,6 +147,7 @@ void contactListener::EndContact(b2Contact* contact){
     contact->GetWorldManifold(&worldManifold);
     
     if(typeA->id == 5 || typeB->id == 5 ){
+
         if(typeA->id == 5){
             Player* p = static_cast<Player*>(typeA->data);
             p->setAir(-1); 
@@ -158,6 +157,8 @@ void contactListener::EndContact(b2Contact* contact){
             p->setAir(-1); 
         }
     }
+    
+
     
     /*
     if(typeA->id == 1 && typeB->id == 2){

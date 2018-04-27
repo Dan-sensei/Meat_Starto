@@ -72,7 +72,7 @@ pBody physicsEngine::createBody(float width_, float height_, float px_, float py
     return result;                                                      // Lo devolvemos
 }
 
-pBody physicsEngine::createPlayer(float width_, float height_, float px_, float py_, type* main, type* data) {
+pBody physicsEngine::createPlayer(float width_, float height_, float px_, float py_, type* main, type* bottom) {
     
     pBody result;       //Creo un pBody
     
@@ -94,16 +94,14 @@ pBody physicsEngine::createPlayer(float width_, float height_, float px_, float 
     b2Fixture* mainBodyFixture = result.getBody()->CreateFixture(&fixtureDef);                       // Finalizamos la creación del Body creado su Fixture
     mainBodyFixture->SetUserData(main);
 
-    
+    b2PolygonShape sensorBottom;
+    sensorBottom.SetAsBox(pConverter::pixelToWorld(width_/2 - 2), pConverter::pixelToWorld(5), b2Vec2(0, pConverter::pixelToWorld(height_/2)), 0);
     b2FixtureDef sensor;
-    sensor.density = 1.f;
+    sensor.density = 0.f;
     sensor.isSensor = true;
-    b2PolygonShape sensorShape;
-    sensorShape.SetAsBox(pConverter::pixelToWorld(5), pConverter::pixelToWorld(5), b2Vec2(0, pConverter::pixelToWorld(height_/2)), 0);
-    sensor.shape = &sensorShape;
-    b2Fixture* THE_SENSOR = result.getBody()->CreateFixture(&sensor);
-   
-    THE_SENSOR->SetUserData(data);
+    sensor.shape = &sensorBottom;
+    b2Fixture* bot = result.getBody()->CreateFixture(&sensor);
+    bot->SetUserData(bottom);
 
     return result;    
 }

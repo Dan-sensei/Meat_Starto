@@ -22,12 +22,13 @@
 #define UPDATE_STEP 15.f
 #define force 50.f*FRAMERATE/UPDATE_STEP
 
-#define jump 40
-#define stop_mult 1.2f
+#define jump 2000
+#define minJumpVelocity 13
+#define stop_mult 1.5f
 
 #define inmortalityTime 5.f
 #define speedTime 5.f
-#define constMaxSeed 12.f
+#define constMaxSeed 14.f
 #define meatEXP 250.f
 
 Player::Player(int id, std::string name, float width_, float height_, float x_, float y_, char type_, bool *keys_) : animator(sprite) {
@@ -40,17 +41,18 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     t->id = 2;
     t->data = this;
     
-    sensorData = new physicsEngine::type;
-    sensorData->id = 5;
-    sensorData->data = this;
+    bottom = new physicsEngine::type;
+    bottom->id = 5;
+    bottom->data = this;
     
-    body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, sensorData);
+    body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, bottom);
 
     onAir = 0;
     level=1;
 
     
-    sprite.setOrigin(48/2, 40/2);
+    
+    sprite.setOrigin(48/2, 40/2+4);
     sprite.setScale(1.4f, 1.6f);
     switch(id){
     //Asigna la textura con su color dependiendo del id del jugador
@@ -185,6 +187,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     blood.setParticleAngularVelocityRandomBetween(-10, -15);
     //blood.drawGenerationArea(true);
     
+    touchingWall = false;
+    stopJump = false;
 }
 
 Player::~Player() {
@@ -345,11 +349,13 @@ void Player::movement(){
             hit=false;
         }      
     }
-    
+    std::cout << "Y " << body.getLinearYVelocity() << std::endl;
     // SALTO======================================================================
     if((keys[key_up]) && !isOnAir()){                                               //
-        body.applyLinearImpulse(0, -jump);                                          //
+        std::cout << "APPLY force" << std::endl;
+        body.applyForceToCenter(0, -jump);                                          //
         moveUp();                                                                   //
+        stopJump = false;
     }else{
         //IZQUIERDA==================================================================
         if( keys[key_l])  {                                                         //
@@ -378,26 +384,27 @@ void Player::movement(){
         // ===========================================================================
         
     }           
-    int counterjump = 1000;
+    //-30
+    //-13
+
     if(isOnAir()){
-        if(!keys[key_up]){
-            //std::cout << "FUERZAAAAAAA" << std::endl;
-            if(counterjump > 0)
-                counterjump -= 500;
-            if(body.getLinearYVelocity()<20)
-                body.applyForceToCenter(0, counterjump);
+        if(!keys[key_up] && !stopJump){
+            if(body.getLinearYVelocity() < -minJumpVelocity){
+                stopJump = true;
+                body.setLinealVelocicity(body.getLinearXVelocity(), -minJumpVelocity);
+            } 
         }
     }
     // =============================================================================//    
 
     //STOP CON DESLIZAMIENTO FRENADO==========================================================================
-    if(!keys[key_l] && body.getLinearXVelocity() < -2){                                                     //
+    if(!keys[key_l] && body.getLinearXVelocity() < -3){                                                     //
         body.applyForceToCenter(force*stop_mult, 0);                                                        //
     }                                                                                                       //
-    else if(!keys[key_r] && body.getLinearXVelocity() > 2)                                                  //
+    else if(!keys[key_r] && body.getLinearXVelocity() > 3)                                                  //
         body.applyForceToCenter(-force*stop_mult, 0);                                                       //
                                                                                                             // 
-    if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -2 && body.getLinearXVelocity() <= 2){  //
+    if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -3 && body.getLinearXVelocity() <= 3){  //
         body.applyForceToCenter(0, 0);                                                                      //
         body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
     }                                                                                                       //
@@ -484,7 +491,7 @@ float Player::getYPosition() {
 
 bool Player::isOnAir(){
     
-    return (body.getLinearYVelocity() != 0) ? true : false;
+    return (onAir > 0) ? false : true;
 }
 void Player::setAir(int i){
     onAir += i;

@@ -70,7 +70,7 @@ Juego::Juego() {
 
     do {
         
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 60.f, 1200, 1200, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, 1200, 1200, 'D', keys));
         ++i;
         
     }while( i < MenuInicio::Instance()->numplayers );
@@ -227,10 +227,6 @@ void Juego::HandleEvents(){
 }
 
 void Juego::Update(){
-    renderEngine    *sfml;
-    Mapa            *mapa;
-    physicsEngine   *world;
-    
     
     // FIXED TIME STEP UPDATE
     dt = masterClock.restart().asSeconds();
@@ -269,13 +265,13 @@ void Juego::Update(){
     while(accumulator >= 1/UPDATE_STEP){
         //std::cout << "UPDATE-- " << accumulator << std::endl;
         
-        float window_width = static_cast<float>(sfml->Instance().getSize()[0]);
-        float window_height = static_cast<float>(sfml->Instance().getSize()[1]);  
+        float window_width = static_cast<float>(renderEngine::Instance().getSize()[0]);
+        float window_height = static_cast<float>(renderEngine::Instance().getSize()[1]);  
         float zoom = (1005*target_zoom)/window_height;
 
         view->setSize(window_width, window_height);
         view->zoom(zoom);
-        sfml->Instance().setView(*view);
+        renderEngine::Instance().setView(*view);
         
         rain.setPosition(view->getCenter()[0], rain.getYPosition());
 
@@ -284,13 +280,13 @@ void Juego::Update(){
             readyPlayer[i]->movement();
         }
         
-        mapa->Instance().update();
+        Mapa::Instance().update();
         rain.update();
 
         // BUCLE DE STEPS DE BOX2D
         for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
             //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
-            world->Instance().updateWorld(BOX2D_STEP);
+            physicsEngine::Instance().updateWorld(BOX2D_STEP);
             //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
         }
 
@@ -300,7 +296,7 @@ void Juego::Update(){
         for(int i=0; i< readyPlayer.size(); i++){
             readyPlayer[i]->newState();
         }        
-        mapa->Instance().newState();
+        Mapa::Instance().newState();
         rain.newState();
     }
     //std::cout << "CAMERA DIR " << cameraDirection << std::endl;
