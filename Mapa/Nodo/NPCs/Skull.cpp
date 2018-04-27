@@ -30,11 +30,11 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
     sprite.setPosition(x_, y_);
     
     physicsEngine* world;
-    body = world->Instance().createBody(width, height, x_, y_, 'k');
     t = new physicsEngine::type;
     t->id = 4;
     t->data = this;
-    body.setUserData(t);
+    body = world->Instance().createBody(width, height, x_, y_, 'k', t);
+    
     
     //Zona en la que se puede mover teniendo en cuenta el ancho y alto del sprite
     x_min = x_b + width/2;

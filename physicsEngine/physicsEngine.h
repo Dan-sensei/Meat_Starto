@@ -37,8 +37,10 @@ public:
         int id;
         void* data;
     };
+    type* t;
 
-    pBody createBody(float width_, float height_, float px_, float py_, char type_);        // Crea y devuelve un pBody pasándole, ancho, alto, posicionX, posicionY, tipo ('S'tatic, 'D'ynamic, 'K'inematic)
+    pBody createPlayer(float width_, float height_, float px_, float py_, type* main, type* data);
+    pBody createBody(float width_, float height_, float px_, float py_, char type_, type* data);        // Crea y devuelve un pBody pasándole, ancho, alto, posicionX, posicionY, tipo ('S'tatic, 'D'ynamic, 'K'inematic)
     pBody createGround(std::vector<std::array<int, 2>> vertex_, type* data);              // Crea el suelo del mapa, pasándole un vector de coordenadas, que serán los vértices que lo forman, y el número de vértices totales
     void setGravity(float gx_, float gy_);                                                  // Ajusta la gravedad del mundo
     void updateWorld(float tick_);                                                          // Actualiza el mundo

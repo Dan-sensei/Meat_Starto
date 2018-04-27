@@ -26,7 +26,7 @@ void physicsEngine::setGravity(float gx_, float gy_){
     world.SetGravity(gravity);
 }
 
-pBody physicsEngine::createBody(float width_, float height_, float px_, float py_, char type_){
+pBody physicsEngine::createBody(float width_, float height_, float px_, float py_, char type_, type* data){
     
     pBody result;       //Creo un pBody
     
@@ -55,7 +55,11 @@ pBody physicsEngine::createBody(float width_, float height_, float px_, float py
     
     bodyDef.fixedRotation = true;                                       // Determina si la rotación del cuerpo es fija
     result.setBody(world.CreateBody(&bodyDef));                         // Creamos el cuerpo usando el world
-    result.getBody()->SetUserData((void*)"undefined");
+    
+    t = new type;
+    t->id = 0;
+    
+    result.getBody()->SetUserData(t);
     
     b2FixtureDef fixtureDef;                                            // Creamos las características físicas del cuerpo con un b2FixtureDef
     fixtureDef.density = 1.f;
@@ -63,10 +67,47 @@ pBody physicsEngine::createBody(float width_, float height_, float px_, float py
     fixtureDef.restitution = 0.f;                                       
     fixtureDef.shape = &shape;
     
-    result.getBody()->CreateFixture(&fixtureDef);                       // Finalizamos la creación del Body creado su Fixture
-    
+    b2Fixture* fixture = result.getBody()->CreateFixture(&fixtureDef);                       // Finalizamos la creación del Body creado su Fixture
+    fixture->SetUserData(data);
     return result;                                                      // Lo devolvemos
 }
+
+pBody physicsEngine::createPlayer(float width_, float height_, float px_, float py_, type* main, type* data) {
+    
+    pBody result;       //Creo un pBody
+    
+    b2PolygonShape shape;
+    shape.SetAsBox(pConverter::pixelToWorld(width_/2), pConverter::pixelToWorld(height_/2), b2Vec2(0, 0), 0);
+    
+    b2BodyDef bodyDef;
+    bodyDef.position = b2Vec2(pConverter::pixelToWorld(px_), pConverter::pixelToWorld(py_));
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.fixedRotation = true;
+    result.setBody(world.CreateBody(&bodyDef));
+    
+    
+    b2FixtureDef fixtureDef;                                            // Creamos las características físicas del cuerpo con un b2FixtureDef
+    fixtureDef.density = 1.f;
+    fixtureDef.friction = 0.0f;
+    fixtureDef.restitution = 0.f;                                       
+    fixtureDef.shape = &shape;
+    b2Fixture* mainBodyFixture = result.getBody()->CreateFixture(&fixtureDef);                       // Finalizamos la creación del Body creado su Fixture
+    mainBodyFixture->SetUserData(main);
+
+    
+    b2FixtureDef sensor;
+    sensor.density = 1.f;
+    sensor.isSensor = true;
+    b2PolygonShape sensorShape;
+    sensorShape.SetAsBox(pConverter::pixelToWorld(5), pConverter::pixelToWorld(5), b2Vec2(0, pConverter::pixelToWorld(height_/2)), 0);
+    sensor.shape = &sensorShape;
+    b2Fixture* THE_SENSOR = result.getBody()->CreateFixture(&sensor);
+   
+    THE_SENSOR->SetUserData(data);
+
+    return result;    
+}
+
 
 
 void physicsEngine::updateWorld(float tick_){ world.Step(tick_, 8.f, 3.f); }
@@ -86,14 +127,13 @@ pBody physicsEngine::createGround(std::vector<std::array<int, 2>> vertex_, type*
     bodyDef.type = b2_staticBody;
     
     result.setBody(world.CreateBody(&bodyDef));
-    result.setUserData(data);
-
     b2FixtureDef fixtureDef;
     //fixtureDef.density = 1.f;
     fixtureDef.shape = &chain;
     
-    result.getBody()->CreateFixture(&fixtureDef);
-
+    b2Fixture* fixture  = result.getBody()->CreateFixture(&fixtureDef);
+    fixture->SetUserData(data);
+    
     return result;
 }
 

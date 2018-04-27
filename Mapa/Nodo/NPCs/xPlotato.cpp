@@ -30,12 +30,13 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     sprite.setOrigin(width / 2, height / 2);
     sprite.setPosition(x_, y_);
     
-    physicsEngine* world;
-    //body = world->Instance().createBody(width, height, x_, y_, 'K');
-    body = world->Instance().createBody(width, height, x_, y_, 'd');
     t = new physicsEngine::type;
     t->id = 3;
     t->data = this;
+    
+    //body = world->Instance().createBody(width, height, x_, y_, 'K');
+    body = physicsEngine::Instance().createBody(width, height, x_, y_, 'd', t);
+    
     body.setUserData(t);
     
 

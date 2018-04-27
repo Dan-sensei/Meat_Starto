@@ -46,6 +46,7 @@ public:
     
     void setCameraDirection(int i);
     
+    int getYMax();
     int getIterations();
     int getTotalIterations();
     void CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, int &x_, int &y_);

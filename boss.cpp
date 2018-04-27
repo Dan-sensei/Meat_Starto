@@ -102,12 +102,12 @@ void boss::update() {
                 float h = puerta[i].r.getSize()[1];
                 x = puerta[i].r.getPosition()[0]+(w/2);
                 y = puerta[i].r.getPosition()[1]+(h/2);
-                puerta[i].b = world->Instance().createBody(w,h,x,y,'k');
                 
                 t = new physicsEngine::type;
                 t->id = 1;
                 t->data = this;
-                puerta[i].b.setUserData(t);
+                
+                puerta[i].b = world->Instance().createBody(w, h ,x , y, 'k', t);
             }
 
             clock_boss.restart();   //REINICIO LOS RELOJES

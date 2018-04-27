@@ -66,6 +66,7 @@ public:
     void newState();
     
     physicsEngine::type* t;
+    physicsEngine::type* sensorData;
     
     int onAir;
     void setAir(int i);
