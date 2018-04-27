@@ -19,8 +19,10 @@
 #include "State.h" 
 #include "MenuInicio.h"
 #include "Juego.h"
+#include "Player.h"
 
-#define NUMBER_OF_ITEMS 2
+#define NUMBER_OF_ITEMS 3
+#define NUMBER_OF_ITEMS2 2
 
 class MenuPausa: public State{
 public:
@@ -38,12 +40,18 @@ public:
     static MenuPausa* Instance();//Singleton
     
 private:
-    int selectedItemIndex;
+  int selectedItemIndex;
+    int selectedItemIndex2;
+
+    int statemenu;
     sf::Font font;
     sf::Text menu[NUMBER_OF_ITEMS];
     sf::Text  titulo;
     static MenuPausa* instance;
     
+    sf::Text  titulo2;
+    sf::Text menuop[NUMBER_OF_ITEMS2];
+
     float width;
     float height;
     
@@ -53,7 +61,11 @@ private:
     renderEngine *sfml;
     renderEngine::rTexture text_fondo;
     renderEngine::rRectangleShape f1;
-
+    
+    std::vector<Player*>* jugadores;
+    
+    void PonInmortal();
+    bool InmortalOn;
 };
 
 #endif /* MENUPAUSA_H */

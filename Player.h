@@ -33,6 +33,10 @@ public:
     std::string getName();
     renderEngine::rSprite getSprite();
     
+    int getExp();
+    int getExp_levelup();
+    
+    
     void update();
     void double_hit(bool b);
     void moveRigth();
@@ -81,6 +85,9 @@ public:
     void lvlDown();
     void lvlUp();
     
+    void hazInmortal();
+
+    
     void setPosition(float x, float y);
     std::string anima();
     
@@ -99,8 +106,8 @@ private:
     bool* keys;
     renderEngine::rClock animationClock;
     float MAXSPEED;
-    float exp_for_next_level;
-    float exp;
+    int exp_for_next_level;
+    int exp;
     
     bool inmortal;
     bool doublehit;

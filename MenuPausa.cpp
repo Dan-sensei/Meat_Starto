@@ -35,6 +35,8 @@ MenuPausa::MenuPausa() {
     
     f1.setTexture(text_fondo);
     f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
+    
+    InmortalOn=false;
   
   
    if (!font.loadFromFile("resources/fuente.ttf"))
@@ -54,15 +56,44 @@ MenuPausa::MenuPausa() {
    menu[0].setCharacterSize(50);
    menu[0].setFillColor(sf::Color::Red);
    menu[0].setString("Continue");
-   menu[0].setPosition(posx-width/3, posy-height/6);
+   menu[0].setPosition(posx-width/3, posy-height/5);
    
    menu[1].setFont(font);
    menu[1].setCharacterSize(50);
    menu[1].setFillColor(sf::Color::Black);
-   menu[1].setString("Exit");
-   menu[1].setPosition(posx-width/3, posy+height/10);
+   menu[1].setString("Opciones");
+   menu[1].setPosition(posx-width/3, posy);
+   
+   menu[2].setFont(font);
+   menu[2].setCharacterSize(50);
+   menu[2].setFillColor(sf::Color::Black);
+   menu[2].setString("Exit");
+   menu[2].setPosition(posx-width/3, posy+height/5);
+   
+   /*MENU DE OPCIONES*/
+   titulo2.setFont(font);
+   titulo2.setCharacterSize(56);
+   titulo2.setFillColor(sf::Color::Black);
+   titulo2.setString("Options");
+   titulo2.setPosition(posx-width/30, posy-height/3);
+   
+   menuop[0].setFont(font);
+   menuop[0].setCharacterSize(50);
+   menuop[0].setFillColor(sf::Color::Red);
+   menuop[0].setString("Inmortal OFF");
+   menuop[0].setPosition(posx-width/3, posy-height/6);
+   
+   menuop[1].setFont(font);
+   menuop[1].setCharacterSize(50);
+   menuop[1].setFillColor(sf::Color::Black);
+   menuop[1].setString("Exit");
+   menuop[1].setPosition(posx-width/3, posy+height/10);
    
    selectedItemIndex=0;
+   selectedItemIndex2=0;
+   statemenu=0;
+   
+   jugadores= Juego::Instance().getPlayers();
 }
 
 
@@ -77,27 +108,66 @@ void MenuPausa::Render(){
     sfml->Instance().clear('k');  
     f1.draw();
     
-    sfml->Instance().getWindow()->draw(titulo);
-    for(int i=0; i<NUMBER_OF_ITEMS;i++){
-        sfml->Instance().getWindow()->draw(menu[i]);
+    switch(statemenu){
+        case 0:   
+            sfml->Instance().getWindow()->draw(titulo);
+            for(int i=0; i<NUMBER_OF_ITEMS;i++){
+                sfml->Instance().getWindow()->draw(menu[i]);
+            }
+            break;
+        case 1:
+            sfml->Instance().getWindow()->draw(titulo2);
+            for(int i=0; i<NUMBER_OF_ITEMS2;i++){
+                sfml->Instance().getWindow()->draw(menuop[i]);
+            }
+            break;
     }
 
      sfml->Instance().display();
     
 }
 void MenuPausa::MoveUp(){
-    if(selectedItemIndex-1>=0){
-        menu[selectedItemIndex].setFillColor(sf::Color::Black);
-        selectedItemIndex--;
-        menu[selectedItemIndex].setFillColor(sf::Color::Red);
-    } 
+        switch(statemenu){
+        case 0:
+            if(selectedItemIndex-1>=0){
+                menu[selectedItemIndex].setFillColor(sf::Color::Black);
+                selectedItemIndex--;
+                menu[selectedItemIndex].setFillColor(sf::Color::Red);
+            }
+            break;
+        case 1:
+            if(selectedItemIndex2-1>=0){
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
+                selectedItemIndex2--;
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
+            }
+            break;
+        }
 }
 
 void MenuPausa::MoveDown(){
-    if(selectedItemIndex+1<NUMBER_OF_ITEMS){
-        menu[selectedItemIndex].setFillColor(sf::Color::Black);
-        selectedItemIndex++;
-        menu[selectedItemIndex].setFillColor(sf::Color::Red);
+     switch(statemenu){
+        case 0:
+            if(selectedItemIndex+1<MAX_NUMBER_OF_ITEMS){
+                menu[selectedItemIndex].setFillColor(sf::Color::Black);
+                selectedItemIndex++;
+                menu[selectedItemIndex].setFillColor(sf::Color::Red);
+            }
+            break;
+        case 1:
+            if(selectedItemIndex2+1<MAX_NUMBER_OF_ITEMS2){
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
+                selectedItemIndex2++;
+                menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
+            }
+            break;
+     }
+}
+
+
+void MenuPausa::PonInmortal(){
+    for(int i=0; i<jugadores->size(); i++){
+      //jugadores[0][i]->hazInmortal();
     }
 }
 
@@ -138,20 +208,47 @@ void MenuPausa::Update(){
                         break;
                         
                         case sf::Keyboard::Return:
-
-                            switch(selectedItemIndex){
+                            
+                             switch(statemenu){
                                 case 0:
-                                    std::cout<<"Continue pressed"<< std::endl;
-                                    sfml->Instance().ChangeState(&Juego::Instance());
-                                    break;
+                                   switch(selectedItemIndex){
+                                        case 0:
+                                           //std::cout<<"Continue pressed"<< std::endl;
+                                            sfml->Instance().ChangeState(&Juego::Instance());
+                                            break;
 
-                                case 1:
-                                    sfml->Instance().ChangeState(MenuInicio::Instance());
-                                    std::cout<<"Exit pressed"<< std::endl;
+                                        case 1:
+                                            statemenu=1;
+                                            //std::cout<<"Exit pressed"<< std::endl;
+                                            break;
+
+                                        case 2:
+                                            sfml->Instance().ChangeState(MenuInicio::Instance());
+                                           // std::cout<<"Exit pressed"<< std::endl;
+                                            break;
+                                    }
                                     break;
-                            }
- 
-                       
+                                    
+                                case 1:
+                                    switch(selectedItemIndex2){
+                                        case 0:
+                                            if(InmortalOn==true){
+                                                menuop[0].setString("Inmortal OFF");
+                                                InmortalOn=false;
+                                            }else{
+                                                menuop[0].setString("Inmortal ON");
+                                                InmortalOn=true;
+                                            }
+                                            PonInmortal();
+                                            break;
+
+                                        case 1:
+                                            statemenu=0;
+                                            break;
+                                    }
+                                    break;
+                             }
+                                                  
                             break;
                         //Cualquier tecla desconocida se imprime por pantalla su código
                         default:
@@ -174,8 +271,9 @@ void MenuPausa::Handle(){
     posy = sfml->Instance().getViewCenter()[1];
     
     titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
-    menu[0].setPosition(posx-width/3, posy-height/9);
-    menu[1].setPosition(posx-width/3, posy+height/7);
+    menu[0].setPosition(posx-width/3, posy-height/5);
+    menu[1].setPosition(posx-width/3, posy);
+    menu[2].setPosition(posx-width/3, posy+height/5);
     
     while (sfml->Instance().isOpen())
     {
@@ -186,4 +284,3 @@ void MenuPausa::Handle(){
 
     }
 }
-
