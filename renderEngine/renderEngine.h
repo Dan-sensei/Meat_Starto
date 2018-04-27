@@ -193,13 +193,21 @@ public:
         public:
             rEvent();
             enum EventType{                //ENUMERACION CON LOS DISTINTOS EVENTOS (FALTA PONER LOS QUE SE VAYAN A UTILIZAR)
-                KeyPressed      = sf::Event::EventType::KeyPressed,
-                KeyReleased     = sf::Event::EventType::KeyReleased,
+                KeyPressed                  = sf::Event::EventType::KeyPressed,
+                KeyReleased                 = sf::Event::EventType::KeyReleased,
+                JoystickConnected           = sf::Event::EventType::JoystickConnected,
+                JoystickDisconnected        = sf::Event::EventType::JoystickDisconnected,
+                JoystickButtonPressed       = sf::Event::EventType::JoystickButtonPressed,
+                JoystickButtonReleased      = sf::Event::EventType::JoystickButtonReleased,
+                JoystickMoved               = sf::Event::EventType::JoystickMoved
             };
             sf::Event::EventType sfType();
             
-            
             int getKeyCode();                                                   //DEVUELVE EL CODIGO DEL EVENTO DE TECLADO
+            int getJoystickButton();                                            //DEVUELVE EL CODIGO DE EVENTO DE BOTON DEL MANDO
+            float getJoystickMoveAxis();                                          //EJE DE MOVIMIENTO DEL JOYSTICK/CRUCETA
+            float getJoystickMovePosition();                                      //POSICION DE MOVIMIENTO DEL JOYSTICK/CRUCETA
+            int getJoystickId();                                                //ID DEL MANDO: 0,1,2,3
             
         private:
             sf::Event* getEvent();
@@ -263,7 +271,7 @@ public:
     std::array<float,2> getViewCenter();            //DEVUELVE EL CENTRO DE LA VENTANA
     std::array<float,2> getViewSize();              //DEVUELVE EL CENTRO DE LA VENTANA
 
-    
+    bool isJoystickConnected(int j);                //TRUE: SI EL JOYSTICK J ESTA CONECTADO
     void setView(rView v);                          //ESTABLECER UNA VISTA
     bool pollEvent(rEvent &e);                      //PARA CONTROLAR LOS EVENTOS
     void ChangeState(State* pState);                //CAMBIO DE ESTADO

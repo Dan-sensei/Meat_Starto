@@ -383,7 +383,7 @@ void Mapa::render(float tick_) {
 void Mapa::CreaMapa() {
     
     
-    nodo_actual = 15;
+    nodo_actual = 0;
     CargaNodo(hex_list, NODOS[nodo_actual], x_max, y_max);
 
     checkPoint first;

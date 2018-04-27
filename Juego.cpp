@@ -130,9 +130,190 @@ void Juego::HandleEvents(){
     
     renderEngine::rEvent event;
         //0x7fff11e212f0
+    
+    int jAxis;
+    float jPosition;
+    int der;
+    int izq;
+    
     while(sfml->Instance().pollEvent(event)){
         
+        /* CODIGOS DE LOS MANDOS:
+         * ----------------------
+         * XBOX:
+         *  A:  0
+         *  B:  1
+         *  X:  2
+         *  Y:  3
+         *  LB: 4
+         *  RB: 5
+         */
+        
         switch(event.sfType()){
+            case renderEngine::rEvent::EventType::JoystickButtonPressed :
+                for(int i=0 ; i<getPlayers()->size() ; i++){
+                    if(renderEngine::Instance().isJoystickConnected(i)){
+                        //std::cout << "BUTTON: " << event.getJoystickButton() << std::endl;
+                        switch (i){
+                            case 0:
+                                std::cout << "J1" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                break;
+                            case 1:
+                                std::cout << "J2" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                break;
+                            case 2:
+                                std::cout << "J3" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                break;
+                            case 3:
+                                std::cout << "J4" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                break;
+                        }
+                    }
+                }
+                break;
+            case renderEngine::rEvent::EventType::JoystickButtonReleased :
+                //std::cout << "BUTTON: " << event.getJoystickButton() << std::endl;
+                for(int i=0 ; i<getPlayers()->size() ; i++){
+                    if(renderEngine::Instance().isJoystickConnected(i)){
+                        //std::cout << "BUTTON: " << event.getJoystickButton() << std::endl;
+                        switch (i){
+                            case 0:
+                                std::cout << "J1" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                break;
+                            case 1:
+                                std::cout << "J2" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                break;
+                            case 2:
+                                std::cout << "J3" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                break;
+                            case 3:
+                                std::cout << "J4" << std::endl;
+                                if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                break;
+                        }
+                    }
+                }
+                break;
+            case renderEngine::rEvent::EventType::JoystickMoved :
+                    jAxis = event.getJoystickMoveAxis();
+                    jPosition = event.getJoystickMovePosition();
+                    
+                    for(int i=0 ; i<getPlayers()->size(); i++){
+                        if(renderEngine::Instance().isJoystickConnected(i) && abs(event.getJoystickMovePosition())>20){
+                            switch(event.getJoystickId()){
+                                case 0:
+                                    der = 3;
+                                    izq = 0;
+                                    if(jAxis == 0 && jPosition > 0 && !keys[der]){
+                                        keys[der] = true;
+                                        if(keys[izq]==true) keys[izq]=false;
+                                    }
+                                    if(jAxis == 0 && jPosition < 0 && !keys[izq]){
+                                        keys[izq] = true;
+                                        if(keys[der]==true) keys[der]=false;
+                                    }
+                                    break;
+                                case 1:
+                                    der = 72;
+                                    izq = 71;
+                                    if(jAxis == 0 && jPosition > 0 && !keys[der]){
+                                        keys[der] = true;
+                                        if(keys[izq]==true) keys[izq]=false;
+                                    }
+                                    if(jAxis == 0 && jPosition < 0 && !keys[izq]){
+                                        keys[izq] = true;
+                                        if(keys[der]==true) keys[der]=false;
+                                    }
+                                    break;
+                                case 2:
+                                    der = -1;
+                                    izq = 10;
+                                    if(jAxis == 0 && jPosition > 0 && !keys[der]){
+                                        keys[der] = true;
+                                        if(keys[izq]==true) keys[izq]=false;
+                                    }
+                                    if(jAxis == 0 && jPosition < 0 && !keys[izq]){
+                                        keys[izq] = true;
+                                        if(keys[der]==true) keys[der]=false;
+                                    }
+                                    break;
+                                case 3:
+                                    der = 13;
+                                    izq = 21;
+                                    if(jAxis == 0 && jPosition > 0 && !keys[der]){
+                                        keys[der] = true;
+                                        if(keys[izq]==true) keys[izq]=false;
+                                    }
+                                    if(jAxis == 0 && jPosition < 0 && !keys[izq]){
+                                        keys[izq] = true;
+                                        if(keys[der]==true) keys[der]=false;
+                                    }
+                                    break;
+                            }
+                        }
+                        else if(renderEngine::Instance().isJoystickConnected(i)){
+                            switch(event.getJoystickId()){
+                                case 0:
+                                    der = 3;
+                                    izq = 0;
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[der]){
+                                        keys[der] = false;
+                                    }
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[izq]){
+                                        keys[izq] = false;
+                                    }
+                                    break;
+                                case 1:
+                                    der = 72;
+                                    izq = 71;
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[der]){
+                                        keys[der] = false;
+                                    }
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[izq]){
+                                        keys[izq] = false;
+                                    }
+                                    break;
+                                case 2:
+                                    der = -1;
+                                    izq = 10;
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[der]){
+                                        keys[der] = false;
+                                    }
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[izq]){
+                                        keys[izq] = false;
+                                    }
+                                    break;
+                                case 3:
+                                    der = 13;
+                                    izq = 21;
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[der]){
+                                        keys[der] = false;
+                                    }
+                                    if(jAxis == 0 && abs(jPosition) < 20 && keys[izq]){
+                                        keys[izq] = false;
+                                    }
+                                    break;
+                            }
+
+                        }
+                    }
+                break;
+            
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
                 //std::cout << "Tecla " << event.getKeyCode() << std::endl;
