@@ -21,13 +21,12 @@
 
 void contactListener::BeginContact(b2Contact* contact){
     //std::cout << "Start contact" << std::endl;
-    b2Body* bodyA = contact->GetFixtureA()->GetBody();
-    b2Body* bodyB = contact->GetFixtureB()->GetBody();
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtureB = contact->GetFixtureB();
     
-    void* a = bodyA->GetUserData();
-    void* b = bodyB->GetUserData();
+    void* a = contact->GetFixtureA()->GetUserData();
+    void* b = contact->GetFixtureB()->GetUserData();
 
-    
     physicsEngine::type* typeA = static_cast<physicsEngine::type*>(a);
     physicsEngine::type* typeB = static_cast<physicsEngine::type*>(b);      
     
@@ -35,20 +34,38 @@ void contactListener::BeginContact(b2Contact* contact){
     //   PLAYER = 2
     // XPLOTATO = 3
     //    SKULL = 4
-    
+
     b2WorldManifold worldManifold;
     contact->GetWorldManifold(&worldManifold);
     
     float normalX = worldManifold.normal.x;
     float normalY = worldManifold.normal.y;
-   
+    std::cout << "CORE " << std::endl;
+    std::cout << "BODY A " << typeA->id << std::endl;
+    std::cout << "BODY B " << typeB->id << std::endl;
     
+    std::cout << "DUMPED " << std::endl;
+    
+    if(typeA->id == 5 || typeB->id == 5 ){
+        if(typeA->id == 5){
+            Player* p = static_cast<Player*>(typeA->data);
+            p->setAir(1); 
+        }
+        else if(typeB->id == 5){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(1); 
+        }
+    }
+    
+    /*
     // SUELO CON JUGADOR
     if(typeA->id == 1 && typeB->id == 2 ){
         if(normalX >= -0.02 && normalX <= 0.02 && normalY >= -1.03 && normalY <= -0.97){
+            std::cout << "CORE " << std::endl;
             contacts.push_back(contact);
             Player* p = static_cast<Player*>(typeB->data);
             p->setAir(1); 
+            std::cout << "DUMPED " << std::endl;
         }
     }
     else if(typeB->id == 1 && typeA->id == 2){
@@ -112,17 +129,18 @@ void contactListener::BeginContact(b2Contact* contact){
     else if(typeB->id == 1 && typeA->id == 3){
         
     }
+     */
     
 
 }
 
 void contactListener::EndContact(b2Contact* contact){
     //std::cout << "End contact" << std::endl;
-    b2Body* bodyA = contact->GetFixtureA()->GetBody();
-    b2Body* bodyB = contact->GetFixtureB()->GetBody();
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtureB = contact->GetFixtureB();
     
-    void* a = bodyA->GetUserData();
-    void* b = bodyB->GetUserData();
+    void* a = fixtureA->GetUserData();
+    void* b = fixtureB->GetUserData();
     
     physicsEngine::type* typeA = static_cast<physicsEngine::type*>(a);
     physicsEngine::type* typeB = static_cast<physicsEngine::type*>(b);
@@ -130,6 +148,18 @@ void contactListener::EndContact(b2Contact* contact){
     b2WorldManifold worldManifold;
     contact->GetWorldManifold(&worldManifold);
     
+    if(typeA->id == 5 || typeB->id == 5 ){
+        if(typeA->id == 5){
+            Player* p = static_cast<Player*>(typeA->data);
+            p->setAir(-1); 
+        }
+        else if(typeB->id == 5){
+            Player* p = static_cast<Player*>(typeB->data);
+            p->setAir(-1); 
+        }
+    }
+    
+    /*
     if(typeA->id == 1 && typeB->id == 2){
         std::list<b2Contact*>::iterator it = contacts.begin();
         while(it != contacts.end()){
@@ -206,4 +236,5 @@ void contactListener::EndContact(b2Contact* contact){
                 ++it;
         }
     }
+     */
 }

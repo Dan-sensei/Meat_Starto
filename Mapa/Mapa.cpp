@@ -20,7 +20,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -279,7 +279,8 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
     
     if(direction == 0)
         x_ += nodo.map_width * nodo.tile_width;
-
+    
+    lista.back().setPop(x_);
 }
 
 
@@ -466,12 +467,13 @@ void Mapa::updateMini() {
     if(longitud >= MAP_ITERATION && !end){
         std::string path = "tiles_definitivo/nodos/";
         boss *javi;
-        javi->Instance().init(x_max,y_max);
+        javi->Instance().init(x_max, y_max);
 
         path = "tiles_definitivo/nodos/fin.tmx";
             //std::cout << path << std::endl;
-
+        std::cout << "GENERANDO BOSS... XMAX = " << x_max << " | YMAX = " << y_max << std::endl;
         CargaNodo(hex_list, BOSS, x_max, y_max);
+        std::cout << "BOSS GENERADO " << "XMAX = " << x_max << " | YMAX = " << y_max << std::endl;
         end = true;
     }
     
@@ -484,7 +486,7 @@ void Mapa::update(){
         (*it).preState();
         (*it).update();
     }
-    DEATH.setPosition(renderEngine::Instance().getViewCenter()[0], renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]-50);
+    DEATH.setPosition(renderEngine::Instance().getViewCenter()[0], renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+250);
     handleCheckPoints();
 }
 
@@ -667,4 +669,8 @@ int Mapa::getTotalIterations() {
 
 Factory::NodeStruct Mapa::getMINI(int i) {
     return MININODOS[i];
+}
+
+int Mapa::getYMax() {
+    return y_max;
 }

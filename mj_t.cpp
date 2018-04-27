@@ -44,12 +44,12 @@ void mj_t::init(int x_,int y_) {
     
     float w = m1.rect.getSize()[0];
     float h = m1.rect.getSize()[1];
-    m1.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k');
-
+    
     t = new physicsEngine::type;
     t->id = 1;
     t->data = this;
-    m1.pb.setUserData(t);
+    
+    m1.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k', t);
     
     float px = m1.pb.getXPosition();
     float py = m1.pb.getYPosition();
@@ -66,8 +66,7 @@ void mj_t::init(int x_,int y_) {
     
     w = m2.rect.getSize()[0];
     h = m2.rect.getSize()[1];
-    m2.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k');
-    m2.pb.setUserData(t);
+    m2.pb = world->Instance().createBody(w,h,x+(w/2),y+(h/2),'k', t);
     
     px = m2.pb.getXPosition();
     py = m2.pb.getYPosition();

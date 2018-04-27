@@ -22,7 +22,7 @@
 #define UPDATE_STEP 15.f
 #define force 50.f*FRAMERATE/UPDATE_STEP
 
-#define jump 2500
+#define jump 40
 #define stop_mult 1.2f
 
 #define inmortalityTime 5.f
@@ -33,22 +33,25 @@
 Player::Player(int id, std::string name, float width_, float height_, float x_, float y_, char type_, bool *keys_) : animator(sprite) {
     setId(id);
     setName(name);
-    
-    physicsEngine* world;
-    
+
     keys = keys_;
-    body = world->Instance().createBody(width_, height_, x_, y_, type_);
     
     t = new physicsEngine::type;
     t->id = 2;
     t->data = this;
-    body.setUserData(t);
+    
+    sensorData = new physicsEngine::type;
+    sensorData->id = 5;
+    sensorData->data = this;
+    
+    body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, sensorData);
+
     onAir = 0;
     level=1;
 
     
     sprite.setOrigin(48/2, 40/2);
-    sprite.setScale(1.4f, 1.5f);
+    sprite.setScale(1.4f, 1.6f);
     switch(id){
     //Asigna la textura con su color dependiendo del id del jugador
         case 0:
@@ -301,7 +304,7 @@ void Player::moveDown(){
 //MOVIMIENTO
 void Player::movement(){
     //blood.setActive(false);
-
+    
     if(spawned && respawnTimeClock.getElapsedTime().asSeconds() > 0.25){
         body.setActive(true);
         spawned = false;
@@ -327,7 +330,7 @@ void Player::movement(){
     
     // SALTO======================================================================
     if((keys[key_up]) && !isOnAir()){                                               //
-        body.applyForceToCenter(0, -jump);                                          //
+        body.applyLinearImpulse(0, -jump);                                          //
         moveUp();                                                                   //
     }else{
         //IZQUIERDA==================================================================
@@ -356,7 +359,17 @@ void Player::movement(){
         }                                                                           //
         // ===========================================================================
         
-    }                                                                           
+    }           
+    int counterjump = 1000;
+    if(isOnAir()){
+        if(!keys[key_up]){
+            //std::cout << "FUERZAAAAAAA" << std::endl;
+            if(counterjump > 0)
+                counterjump -= 500;
+            if(body.getLinearYVelocity()<20)
+                body.applyForceToCenter(0, counterjump);
+        }
+    }
     // =============================================================================//    
 
     //STOP CON DESLIZAMIENTO FRENADO==========================================================================
@@ -452,7 +465,8 @@ float Player::getYPosition() {
 
 
 bool Player::isOnAir(){
-    return (onAir <= 0) ? true : false;
+    
+    return (body.getLinearYVelocity() != 0) ? true : false;
 }
 void Player::setAir(int i){
     onAir += i;

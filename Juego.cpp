@@ -30,6 +30,7 @@
 #define target_zoom 2
 
 Juego::Juego() { 
+    
     renderEngine* sfml;
     sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
     
@@ -343,6 +344,9 @@ void Juego::Render(){
             if(readyPlayer[n]->getYPosition()<view->getCenter()[1])
                 view->setCenter(view->getCenter()[0], readyPlayer[n]->getYPosition());
         }
+        
+        //view->setCenter(view->getCenter()[0]+20, Mapa::Instance().getYMax()+1400);        <- Esta línea hace que recorra el mapa la camara
+                                                                                            // Si solo ves nubes, es porque se ha generado el minijueg de subir, y la altura se ha puesto automáticamente ahí, np.
         
         //std::cout << "CAMARA > X: " << sfml->Instance().getViewCenter()[0] << " | Y: " << sfml->Instance().getViewCenter()[1] << std::endl;
     }
