@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -36,6 +36,8 @@ void                renderEngine::close     ()          {   window.close();}
 bool                renderEngine::isOpen    ()          {   return window.isOpen();}   //TRUE SI LA VENTANA ESTA ABIERTA
 sf::RenderWindow*   renderEngine::getWindow ()          {   return &window;}   
 bool                renderEngine::pollEvent (rEvent &e) {   return window.pollEvent(*e.getEvent());}
+bool renderEngine::isJoystickConnected      (int j)     {   sf::Joystick::isConnected(j);}
+
 void renderEngine::ChangeState(State* pState) {
     _state = pState;
     if(NULL != _state){
@@ -160,7 +162,12 @@ renderEngine::rTime renderEngine::rClock::getElapsedTime() {clock.getElapsedTime
 //============================= EVENTOS =============================//
 renderEngine::rEvent::rEvent() {}
 
-int renderEngine::rEvent::getKeyCode() {return event.key.code;}
+int renderEngine::rEvent::getKeyCode()              {return event.key.code;}
+int renderEngine::rEvent::getJoystickButton()       {return event.joystickButton.button;}
+float renderEngine::rEvent::getJoystickMoveAxis()     {return event.joystickMove.axis;}
+float renderEngine::rEvent::getJoystickMovePosition() {return event.joystickMove.position;}
+int renderEngine::rEvent::getJoystickId()           {return event.joystickConnect.joystickId;}
+
 
 sf::Event*              renderEngine::rEvent::getEvent  () {    return &event;}
 sf::Event::EventType    renderEngine::rEvent::sfType    () {    return event.type;}

@@ -385,7 +385,6 @@ void Mapa::render(float tick_) {
 //LEE LA MATRIZ DE ADYACENCIA
 void Mapa::CreaMapa() {
     
-    
     nodo_actual = nodoInicial;
     CargaNodo(hex_list, NODOS[nodo_actual], x_max, y_max);
 
