@@ -294,6 +294,8 @@ void Factory::leeCheckPoints(tinyxml2::XMLElement* obj, NodeStruct& node) {
     
     obj = obj->FirstChildElement("object");
     
+    std::vector<CheckpointStruct> aux;
+    
     while (obj) {
         obj->QueryIntAttribute("x", &(check.x));
         obj->QueryIntAttribute("width", &(check.width));
@@ -301,10 +303,23 @@ void Factory::leeCheckPoints(tinyxml2::XMLElement* obj, NodeStruct& node) {
         obj->QueryIntAttribute("y", &(check.y));
         obj->QueryAttribute("height", &(check.height));
 
-        node.Checkpoints.push_back(check);
+        aux.push_back(check);
         
         obj = obj->NextSiblingElement("object");
-    } 
+    }
+    
+    CheckpointStruct tmp;
+    
+    for (int i=1; i < aux.size(); i++)
+        for (int j=0 ; j < aux.size() - 1; j++)
+            if (aux[j].x > aux[j+1].x){
+                tmp = aux[j];
+                aux[j] = aux[j+1];
+                aux[j+1] = tmp;
+            }    
+    
+    for (int i=1; i < aux.size(); i++)
+        node.Checkpoints.push_back(aux[i]);
 }
 
 void Factory::leeMinijuego(tinyxml2::XMLElement* obj, NodeStruct& node) {

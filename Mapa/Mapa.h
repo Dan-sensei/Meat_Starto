@@ -35,6 +35,7 @@ public:
     void CreaMapa();
     void leeRandom();
     void render(float tick_);
+    void renderBackground();
     void updateMini();
     void update();
     void preState();
@@ -69,6 +70,7 @@ private:
     
     std::vector<Factory::NodeStruct> NODOS;
     std::vector<Factory::NodeStruct> MININODOS;
+    Factory::NodeStruct UP;
     Factory::NodeStruct BOSS;
     
     //----------------METODOS PRIVADOS
@@ -107,7 +109,6 @@ private:
     int cameraDir;
     void handleCheckPoints();
     void checkOutOfMap(Player* ready);
-    renderEngine::rRectangleShape DEATH;
     
     
     int longitud;
@@ -115,7 +116,7 @@ private:
 
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
-    std::vector<int> matriz_v2[16];     // Guarda sólo los nodos a los que está conectada cada posición del array
+    std::vector<int> matriz_v2[15];     // Guarda sólo los nodos a los que está conectada cada posición del array
     int nodo_actual;
     
     //TETRIS
@@ -129,7 +130,7 @@ private:
     renderEngine::rRectangleShape f1;
     renderEngine::rRectangleShape f2;
     
-    renderEngine::rRectangleShape debug;
+    std::vector<renderEngine::rRectangleShape> debug;
 };
 
 #endif /* MAPA_H */

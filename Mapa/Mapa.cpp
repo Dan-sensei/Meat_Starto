@@ -108,25 +108,16 @@
     f2.setTexture(text_fondo);
     f2.setSize(1920*BACKGROUND_SCALE,1080*BACKGROUND_SCALE);
     
-    DEATH.setOutlineThickness(2.f);
-    DEATH.setFillColor('t');
-    DEATH.setOutlineColor('r');
-    DEATH.setSize(8000, 400);
-    DEATH.setOrigin(DEATH.getSize()[0]/2, DEATH.getSize()[1]/2);
-    
     cameraDir = 0;
     direction = 0;
-    debug.setFillColor('r');
-    debug.setSize(20, 20);
-    debug.setOrigin(10,10);
-    debug.setPosition(1330, 1050+845-70*3);
+    
     
     //LeeNodo("tiles_definitivo/nodos/0.tmx");
     
     Factory::Instance().LeeNodo("tiles_definitivo/nodos/15.tmx");
     
     std::string path;
-    for(int i = 0; i < 16; ++i){
+    for(int i = 0; i < 15; ++i){
         path = "tiles_definitivo/nodos/";
         std::string number = std::to_string(i);
         path = path.operator +=(number);
@@ -150,6 +141,7 @@
         
         MININODOS.push_back(n);
     }
+    UP = Factory::Instance().LeeNodo("tiles_definitivo/nodos/15.tmx");
     BOSS = Factory::Instance().LeeNodo("tiles_definitivo/nodos/fin.tmx");
     
 }
@@ -164,31 +156,30 @@ void Mapa::InitMatrix() {
     //  v es n x n
     //  n = 15
 
-    int aux[16][16] = {
+    int aux[15][15] = {
         
     /* ================================ NODOS ==============================  */
-    /*        0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15     */
-    /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|      */
-    /*  0 */  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,
-    /*  1 */  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  1,  1,
-    /*  2 */  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,  1,
-    /*  3 */  0,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,
-    /*  4 */  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  0,  1,  0,  1,
-    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,
-    /*  6 */  0,  1,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,  0,
-    /*  7 */  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,  1,
-    /*  8 */  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,  1,
-    /*  9 */  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  1,  1,  1,  1,
-    /* 10 */  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,  0,
-    /* 11 */  0,  1,  1,  1,  0,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  1,
-    /* 12 */  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,  1,
-    /* 13 */  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,  1,
-    /* 14 */  0,  1,  0,  0,  0,  1,  1,  0,  1,  0,  1,  0,  1,  1,  1,  0,
-    /* 15 */  0,  1 , 1,  1,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,  0,  0      
+    /*        0   1   2   3   4   5   6   7   8   9   10  11  12  13  14     */
+    /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|      */
+    /*  0 */  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
+    /*  1 */  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  1,
+    /*  2 */  0,  1,  0,  1,  1,  1,  1,  1,  0,  0,  1,  0,  0,  0,  0,
+    /*  3 */  0,  1,  1,  0,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,
+    /*  4 */  0,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  1,  0,  1,  0,
+    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  1,  0,  0,  1,  0,  0,  0,
+    /*  6 */  0,  1,  0,  1,  1,  1,  0,  1,  1,  0,  0,  1,  0,  1,  0,
+    /*  7 */  0,  0,  0,  0,  1,  0,  1,  0,  1,  1,  0,  0,  1,  0,  0,
+    /*  8 */  0,  0,  0,  0,  1,  0,  0,  0,  1,  1,  0,  0,  1,  0,  0,
+    /*  9 */  0,  1,  0,  1,  0,  1,  0,  1,  1,  0,  1,  0,  1,  1,  1,
+    /* 10 */  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1,  0,  0,
+    /* 11 */  0,  1,  1,  1,  0,  1,  0,  0,  1,  1,  1,  0,  1,  1,  1,
+    /* 12 */  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  0,  1,  0,
+    /* 13 */  0,  0,  0,  1,  1,  0,  0,  0,  1,  0,  0,  1,  1,  0,  1,
+    /* 14 */  0,  1,  0,  0,  0,  1,  1,  0,  1,  0,  1,  0,  1,  1,  1  
     };
 
-    for(int i = 0; i < 16; i++)
-        for(int j = 0; j < 16; j++)
+    for(int i = 0; i < 15; i++)
+        for(int j = 0; j < 15; j++)
             if(aux[i][j] == 1)
                 matriz_v2[i].push_back(j);
 }
@@ -263,34 +254,31 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
         
         Minijuego* mini = lista.back().addMinigame(nodo.minijuego.type, x_ + nodo.minijuego.x, y_ + nodo.minijuego.y, nodo.minijuego.width, nodo.minijuego.height, IDs_mininodo);
         
+        y_ += nodo.minijuego.y;
+        y_ += nodo.minijuego.height;
+        y_ -= 70*2;
+        
         for(int i = 0; i < IDs_mininodo.size(); ++i){
             y_ -= MININODOS[IDs_mininodo[i]].map_height*MININODOS[IDs_mininodo[i]].tile_height;
         }
-        y_ += 2*nodo.tile_height;
         
-        bool flag;
-        for(int i = 0; i < 16; i++){
-            flag = false;
-            for(int j = 0; j < matriz_v2[i].size() && !flag; j++)
-                if(matriz_v2[i][j] == 15){
-                    matriz_v2[i].erase(matriz_v2[i].begin()+j);
-                    flag = true;
-                }
-        }
+        y_ -= MININODOS[8].map_height*MININODOS[8].tile_height;
+        y_ += 14*MININODOS[8].tile_height;
+        x_ += MININODOS[8].map_width * MININODOS[8].tile_width - nodo.minijuego.width;
     }
     
-    if(direction == 0)
+    if(direction == 0){
         x_ += nodo.map_width * nodo.tile_width;
+        renderEngine::rRectangleShape r;
+        r.setFillColor('r');
+        r.setSize(20, 20);
+        r.setOrigin(10,10);
+        r.setPosition(x_max, y_max);
+        debug.push_back(r);
+    }
     
     lista.back().setPop(x_);
 }
-
-
-
-
-/*
-        
- */
 
 void Mapa::render(float tick_) {
     renderEngine *sfml;
@@ -332,20 +320,16 @@ void Mapa::render(float tick_) {
     int y_max = y_2 +(alto*15);
     */
     
-    //EMPIEZO A RENDERIZAR
-    f1.draw();
-    f2.draw();
+
 
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
        
         (*it).draw(tick_, ir, x_min_, x_max_);
         
-        if(direction == 0 && iterator == TAM_LISTA/2-1 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
+        if(iterator == TAM_LISTA/2-1 && (*it).getPop() < sfml->Instance().getViewCenter()[0]){
             pop = true;
         }
-        else if(direction == 1 && iterator == TAM_LISTA/2-1 && (*it).getPop() > sfml->Instance().getViewCenter()[1]){
-            pop = true;
-        }
+
         iterator++;
     }
 
@@ -355,9 +339,7 @@ void Mapa::render(float tick_) {
         (*it).shape.draw();
         ++it;
     }
-    
-    DEATH.draw();
-    
+
     it = every_points.begin();
     while(it != every_points.end()){
         (*it).shape.draw();
@@ -379,7 +361,8 @@ void Mapa::render(float tick_) {
     boss *javi;
     javi->Instance().render();
     
-    debug.draw();
+    for(int i = 0; i < debug.size(); ++i)
+        debug[i].draw();
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
@@ -411,16 +394,12 @@ void Mapa::leeRandom(){
     int r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
     
     int target = matriz_v2[nodo_actual][r];
+    if(longitud == MAP_ITERATION/2){
+        CargaNodo(hex_list, UP, x_max, y_max);
+    }
+    else
+        CargaNodo(hex_list, NODOS[target], x_max, y_max);
     
-    std::string path = "tiles_definitivo/nodos/";
-    std::string rand = std::to_string(target);
-    path = path.operator +=(rand);
-    path = path.operator +=(".tmx");
-    
-    std::cout << path << std::endl;
-    //std::cout << "Nodo actual " << nodo_actual << " | Next " << target << std::endl;
-
-    CargaNodo(hex_list, NODOS[target], x_max, y_max);
     longitud++;
 
     if(target == 6 && !m_tetris) {
@@ -430,7 +409,7 @@ void Mapa::leeRandom(){
 
         //Borro el nodo Tetris de todos los vectores
         bool flag;
-        for(int i = 0; i < 16; i++){
+        for(int i = 0; i < 15; i++){
             flag = false;
             for(int j = 0; j < matriz_v2[i].size() && !flag; j++)
                 if(matriz_v2[i][j] == 6){
@@ -466,15 +445,10 @@ void Mapa::updateMini() {
         pop = false;
     }
     if(longitud >= MAP_ITERATION && !end){
-        std::string path = "tiles_definitivo/nodos/";
         boss *javi;
         javi->Instance().init(x_max, y_max);
 
-        path = "tiles_definitivo/nodos/fin.tmx";
-            //std::cout << path << std::endl;
-        std::cout << "GENERANDO BOSS... XMAX = " << x_max << " | YMAX = " << y_max << std::endl;
         CargaNodo(hex_list, BOSS, x_max, y_max);
-        std::cout << "BOSS GENERADO " << "XMAX = " << x_max << " | YMAX = " << y_max << std::endl;
         end = true;
     }
     
@@ -487,9 +461,15 @@ void Mapa::update(){
         (*it).preState();
         (*it).update();
     }
-    DEATH.setPosition(renderEngine::Instance().getViewCenter()[0], renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+250);
     handleCheckPoints();
 }
+
+void Mapa::renderBackground() {
+    //EMPIEZO A RENDERIZAR
+    f1.draw();
+    f2.draw();
+}
+
 
 void Mapa::updateFondo() {
     renderEngine *sfml;
@@ -648,7 +628,7 @@ void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
 }
 
 void Mapa::checkOutOfMap(Player* ready) {
-    if(ready->getSprite().intersects(DEATH))
+    if(ready->getYPosition() > renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+250)
         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
 }
 
