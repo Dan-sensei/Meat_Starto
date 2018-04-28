@@ -101,8 +101,7 @@ void boss::update() {
     if(x_m> (x_min+(70*20)) && x_m < x_max){
         //std::cout << y_min << std::endl;
         //COMIENZA LA BATALLA FINAL
-        on = true;
-        
+        on = true;        
         if(!restart){
             //std::cout << " | ----------- Restart" << std::endl;
             //AQUI SOLO ENTRA UNA VEZ

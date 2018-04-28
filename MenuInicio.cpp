@@ -131,13 +131,13 @@ MenuInicio::MenuInicio() {
    menuop[0].setCharacterSize(16);
    menuop[0].setFillColor(sf::Color::White);
    menuop[0].setString("Sound");
-   menuop[0].setPosition(posx-width/3, posy-height/6);
+   menuop[0].setPosition(posx-width/2, posy-height/6);
    
    menuop[1].setFont(font);
    menuop[1].setCharacterSize(16);
    menuop[1].setFillColor(sf::Color::Black);
    menuop[1].setString("Exit");
-   menuop[1].setPosition(posx-width/3, posy+height/10);
+   menuop[1].setPosition(posx-width/2, posy+height/10);
    
    
    /*Menu players*/
@@ -151,19 +151,19 @@ MenuInicio::MenuInicio() {
    menuplayer[0].setCharacterSize(16);
    menuplayer[0].setFillColor(sf::Color::White);
    menuplayer[0].setString("Play" );
-   menuplayer[0].setPosition(posx-width/3, posy-height/6);
+   menuplayer[0].setPosition(posx-width/2, posy-height/6);
    
    menuplayer[1].setFont(font);
    menuplayer[1].setCharacterSize(16);
    menuplayer[1].setFillColor(sf::Color::Black);
    menuplayer[1].setString("Players "  + std::to_string(numplayers));
-   menuplayer[1].setPosition(posx-width/3, posy+height/10);
+   menuplayer[1].setPosition(posx-width/2, posy+height/10);
    
    menuplayer[2].setFont(font);
    menuplayer[2].setCharacterSize(16);
    menuplayer[2].setFillColor(sf::Color::Black);
    menuplayer[2].setString("Exit");
-   menuplayer[2].setPosition(posx-width/3, posy+height/8);
+   menuplayer[2].setPosition(posx-width/2, posy+height/8);
    
    
    /*How to play*/
@@ -321,23 +321,23 @@ void MenuInicio::MoveDown(){
 void MenuInicio::muevepersonaje(int selec){
     
 
-            switch(selec){
-                case 0:
-                    personaje.setPosition(posx-width/11, posy-height/21);
-                    break;
+    switch(selec){
+        case 0:
+            personaje.setPosition(posx-width/11, posy-height/21);
+            break;
 
-                case 1:
-                    personaje.setPosition(posx-width/40, posy+height/12);
-                    break;
+        case 1:
+            personaje.setPosition(posx-width/40, posy+height/12);
+            break;
 
-                case 2:
-                    personaje.setPosition(posx-width/11, posy+height/4.7);
-                    break;
+        case 2:
+            personaje.setPosition(posx-width/11, posy+height/4.7);
+            break;
 
-                case 3:
-                    personaje.setPosition(posx-width/40, posy+height/2.9);
-                    break;
-            }
+        case 3:
+            personaje.setPosition(posx-width/40, posy+height/2.9);
+            break;
+    }
       
 }
 
@@ -492,6 +492,7 @@ void MenuInicio::Handle(){
             menu[1].setCharacterSize(48);
             menu[2].setCharacterSize(48);
             menu[3].setCharacterSize(48);
+            
             for(int i=0; i<MAX_NUMBER_OF_ITEMS; i++){
                 mancha[i].setScale(1.6, 1.6);
             }
@@ -549,13 +550,13 @@ void MenuInicio::Handle(){
     
    /*MENU DE OPCIONES*/
    titulo2.setPosition(posx-width/15, posy-height/3);
-   menuop[0].setPosition(posx-width/20, posy-height/15);
+   menuop[0].setPosition(posx-width/30, posy-height/15);
    menuop[1].setPosition(posx-width/30, posy+height/5);
    
    
    /*Menu players*/
    titulo3.setPosition(posx-width/15, posy-height/3);
-   menuplayer[0].setPosition(posx-width/20, posy-height/15);
+   menuplayer[0].setPosition(posx-width/30, posy-height/15);
    menuplayer[1].setPosition(posx, posy+height/15);
    menuplayer[2].setPosition(posx-width/20, posy+height/5);
    

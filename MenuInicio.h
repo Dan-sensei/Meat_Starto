@@ -85,6 +85,7 @@ private:
     float tam;
     
     void muevepersonaje(int selec);
+    renderEngine::rTime reloj;
 
 
 };
