@@ -61,8 +61,10 @@ void goingUp::update() {
                 for(int i = 0; i < IDs.size(); i++){
                     Mapa::Instance().CargaNodo(ascension, Mapa::Instance().getMINI(IDs[i]), x, y);
                 }
+                y += 14*70;
+                
                 Mapa::Instance().CargaNodo(ascension, Mapa::Instance().getMINI(8), x, y); // Último
-                setEndArea(x, y, 43*70, 11*70);
+                setEndArea(x, y, 43*70, 24*70);
                 Mapa::Instance().changeDirection(0);
             }
         }

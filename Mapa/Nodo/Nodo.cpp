@@ -279,9 +279,7 @@ void Nodo::update(){
             else
                 ++it;
         }
-        
-        
-        
+
         // EVENTOS
         if(!ready->isInmortal())
             checkColisionsPinchos(ready);

@@ -31,15 +31,9 @@
 
 Juego::Juego() { 
     
-    renderEngine* sfml;
-    sfml->Instance(); //CREO EL SINGLETON, SE CREA ADEMAS LA VENTANA
+    physicsEngine::Instance().setGravity(0.f, 100.f);
     
-    physicsEngine* world;
-    world->Instance();  //Creo el Singleton en la primera llamada a Instancia
-    world->Instance().setGravity(0.f, 100.f);
-    
-    //player.setFixedRotation(false);
-    //player.setUserData("Player1")
+
     keys = new bool [256];
     for(int i = 0; i<256; i++) keys[i]=false;
     
@@ -47,10 +41,10 @@ Juego::Juego() {
     Mapa::Instance().CreaMapa();
     
     //VISTA
-    view = new renderEngine::rView(0, 0, sfml->Instance().getSize()[0], sfml->Instance().getSize()[1]);
+    view = new renderEngine::rView(0, 0, renderEngine::Instance().getSize()[0], renderEngine::Instance().getSize()[1]);
     //ZUMO
     view->zoom(target_zoom);
-    sfml->Instance().setView(*view);
+    renderEngine::Instance().setView(*view);
     
     
     view->setCenter(view->getCenter()[0], CAM_H);
@@ -91,6 +85,18 @@ Juego::Juego() {
     rain.alignToDirection(true);                    // Alinea las partículas a la dirección del movimiento, por defecto es false, si está a true, se ingora la rotación inicial
     rain.setSprite("assets/THE_WATER_DROP.png");    // Cambia el sprite
     rain.setSpriteSize(1, 0.8);                     // Cambia el tamaño del sprite
+    
+    minirain.setPosition(1500, 200);                    
+    minirain.setType(1);                               
+    minirain.setParticleSpeed(300);                     
+    minirain.setMaxParticleAmout(1000);                  
+    minirain.setGenerationTimer(2);                  
+    minirain.setParticleLifeTime(1);
+    minirain.setParticleDirection(-0.1, 1);
+    minirain.setRectangle(4000, 200);                  
+    minirain.alignToDirection(true);                   
+    minirain.setSprite("assets/THE_WATER_DROP.png");    
+    minirain.setSpriteSize(0.7, 0.4); 
     
     hud= new Hud(readyPlayer);
     
@@ -455,6 +461,7 @@ void Juego::Update(){
         renderEngine::Instance().setView(*view);
         
         rain.setPosition(view->getCenter()[0], rain.getYPosition());
+        minirain.setPosition(view->getCenter()[0], rain.getYPosition());
 
         // LÓGICA DE LOS NPC Y JUGADORES
         for(int i=0; i< readyPlayer.size(); i++){
@@ -463,12 +470,11 @@ void Juego::Update(){
         
         Mapa::Instance().update();
         rain.update();
+        minirain.update();
 
         // BUCLE DE STEPS DE BOX2D
         for(int i = 0; i < FRAMERATE/UPDATE_STEP; i++){
-            //std::cout << "      |--STEP: V " << player.getLinearXVelocity() << std::endl;
             physicsEngine::Instance().updateWorld(BOX2D_STEP);
-            //std::cout << "             : V " << player.getLinearXVelocity() << std::endl;
         }
 
         accumulator -= 1/UPDATE_STEP;
@@ -479,18 +485,14 @@ void Juego::Update(){
         }        
         Mapa::Instance().newState();
         rain.newState();
+        minirain.newState();
     }
-    //std::cout << "CAMERA DIR " << cameraDirection << std::endl;
 }
 
 void Juego::Render(){
     //std::cout << "RENDER == " << tick << std::endl;
-    renderEngine    *sfml;
-    Mapa            *mapa;
-    mj_t            *tetris;
-    boss            *javi;
     
-    sfml->Instance().clear('w');
+    renderEngine::Instance().clear('w');
         
     // TICK PARA LA INTERPOLAÇAO
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
@@ -503,7 +505,7 @@ void Juego::Render(){
     
     
     //ACTUALIÇAÇAO DE LA CAMARA
-    if(!tetris->Instance().isTetrisOn() && !javi->Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
+    if(!mj_t::Instance().isTetrisOn() && !boss::Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
         int n=0;
         for(int i=0; i< readyPlayer.size(); i++){
             if(readyPlayer[i]->getXPosition() > readyPlayer[n]->getXPosition()){
@@ -522,27 +524,26 @@ void Juego::Render(){
                 view->setCenter(view->getCenter()[0], readyPlayer[n]->getYPosition());
         }
         
-        //view->setCenter(view->getCenter()[0]+20, Mapa::Instance().getYMax()+1400);        <- Esta línea hace que recorra el mapa la camara
+        //view->setCenter(view->getCenter()[0]+20, Mapa::Instance().getYMax()+1400);        // <- Esta línea hace que recorra el mapa la camara
                                                                                             // Si solo ves nubes, es porque se ha generado el minijueg de subir, y la altura se ha puesto automáticamente ahí, np.
         
-        //std::cout << "CAMARA > X: " << sfml->Instance().getViewCenter()[0] << " | Y: " << sfml->Instance().getViewCenter()[1] << std::endl;
     }
 
-    sfml->Instance().setView(*view);
+    renderEngine::Instance().setView(*view);
 
     //ACTUALIÇAÇAO DEL MAPA
-    mapa->Instance().updateMini();
-    mapa->Instance().render(tick);
+    Mapa::Instance().updateMini();
+    Mapa::Instance().renderBackground();
+    minirain.draw(tick);
     rain.draw(tick);
+    Mapa::Instance().render(tick);
     for(int i=0; i< readyPlayer.size(); i++){
         readyPlayer[i]->draw();
     }
     
-    
     hud->render();
 
-    sfml->Instance().display();
-    
+    renderEngine::Instance().display();
 }
 
 std::array<float, 2> Juego::getPlayerPosition() {

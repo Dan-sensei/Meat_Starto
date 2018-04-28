@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="43" height="17" tilewidth="70" tileheight="70" infinite="0" nextobjectid="25">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="43" height="17" tilewidth="70" tileheight="70" infinite="0" nextobjectid="26">
  <tileset firstgid="1" source="../../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="43" height="17">
   <data encoding="csv">
 0,0,0,0,1,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,0,0,0,0,
-0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,26,0,0,0,0,
+0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,25,26,28,27,32,0,0,0,0,0,0,0,0,0,0,0,0,0,26,26,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,8,0,0,0,0,0,6,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,26,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31,26,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,8,0,0,0,0,0,0,0,8,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -74,6 +74,9 @@
   </object>
   <object id="17" x="280" y="1050">
    <polyline points="0,0 140,0 140,70 0,70 0,0"/>
+  </object>
+  <object id="25" x="1330" y="70">
+   <polyline points="0,0 350,0 350,70 0,70 0,0"/>
   </object>
  </objectgroup>
 </map>

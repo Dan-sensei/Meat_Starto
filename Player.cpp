@@ -349,24 +349,22 @@ void Player::movement(){
             hit=false;
         }      
     }
-    std::cout << "Y " << body.getLinearYVelocity() << std::endl;
-    // SALTO======================================================================
+    
+    // SALTO==========================================================================
     if((keys[key_up]) && !isOnAir()){                                               //
-        std::cout << "APPLY force" << std::endl;
         body.applyForceToCenter(0, -jump);                                          //
         moveUp();                                                                   //
-        stopJump = false;
-    }else{
-        //IZQUIERDA==================================================================
+        stopJump = false;                                                           //
+    }else{                                                                          //
+        //IZQUIERDA===================================================================
         if( keys[key_l])  {                                                         //
-            if(body.getLinearXVelocity() > -MAXSPEED)                                  //
+            if(body.getLinearXVelocity() > -MAXSPEED)                               //
                 body.applyForceToCenter(-force, 0);                                 //
             else                                                                    //  
-                body.setLinealVelocicity(-MAXSPEED, body.getLinearYVelocity());        //
-            if(!isOnAir()){
-                moveLeft(); 
+                body.setLinealVelocicity(-MAXSPEED, body.getLinearYVelocity());     //
+            if(!isOnAir()){                                                         //
+                moveLeft();                                                         //
             }                                                                       //
-
         }                                                                           //
         // ===========================================================================
 
@@ -512,7 +510,7 @@ void Player::powerUpSpeed() {
 }
 
 void Player::powerUpExperience() {
-    std::cout << "+" << meatEXP << " EXPERIENCIA!";
+    std::cout << "+" << meatEXP << " EXPERIENCIA!" << std::endl;
     float newExp = exp + meatEXP;
     if(newExp > exp_for_next_level){
         level++;
