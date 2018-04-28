@@ -45,10 +45,10 @@ public:
     int numplayers;
     
 private:
-    int selectedItemIndex;
+     int selectedItemIndex;
     int selectedItemIndex2;
     int selectedItemIndex3;
-    int selectedItemIndex4;
+   // int selectedItemIndex4;
     sf::Font font;
     sf::Text menu[MAX_NUMBER_OF_ITEMS];
     sf::Text menuop[MAX_NUMBER_OF_ITEMS2];
@@ -75,6 +75,16 @@ private:
     renderEngine::rTexture text_fondo;
     renderEngine::rRectangleShape f1;
 
+    renderEngine::rSprite logo;
+    renderEngine::rSprite logo1;
+    renderEngine::rSprite personaje;
+    renderEngine::rSprite mancha[MAX_NUMBER_OF_ITEMS];
+    renderEngine::rSprite mancha2[MAX_NUMBER_OF_ITEMS2];
+    renderEngine::rSprite mancha3[MAX_NUMBER_OF_ITEMS3];
+    
+    float tam;
+    
+    void muevepersonaje(int selec);
 
 
 };
