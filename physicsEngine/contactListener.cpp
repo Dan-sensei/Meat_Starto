@@ -106,6 +106,7 @@ void contactListener::BeginContact(b2Contact* contact){
         }
     }
     
+     */
     // xPlotato con Suelo
     if(typeA->id == 1 && typeB->id == 3 ){
         //std::cout << "XPLOTATO-SUELO: NormalX: " << normalX << " | NormalY: " << normalY << std::endl;
@@ -127,7 +128,6 @@ void contactListener::BeginContact(b2Contact* contact){
     else if(typeB->id == 1 && typeA->id == 3){
         
     }
-     */
     
 
 }
@@ -213,6 +213,7 @@ void contactListener::EndContact(b2Contact* contact){
         }
     }
     
+     */
     if(typeA->id == 3 && typeB->id == 1){
         std::list<b2Contact*>::iterator it = contacts.begin();
         while(it != contacts.end()){
@@ -237,5 +238,4 @@ void contactListener::EndContact(b2Contact* contact){
                 ++it;
         }
     }
-     */
 }

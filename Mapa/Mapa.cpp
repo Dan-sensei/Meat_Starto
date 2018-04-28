@@ -20,7 +20,7 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 0
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -525,10 +525,10 @@ void Mapa::updateFondo() {
     else if(y_view != sfml->Instance().getViewCenter()[1] && abs(y_view-sfml->Instance().getViewCenter()[1])>5){
         y_view = sfml->Instance().getViewCenter()[1];
         
-        x = x_view-70*27;
+        //x = x_view-70*27;
         y = y_view-70*15;
         
-        f1.setPosition(x,y);
+        f1.setPosition(f1.getPosition()[0],y);
     }
     
     f2.setPosition(f1.getPosition()[0]+f1.getSize()[0],f1.getPosition()[1]);

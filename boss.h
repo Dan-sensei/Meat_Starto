@@ -17,6 +17,8 @@
 #include <random>
 #include <math.h>
 
+#include "renderEngine/renderEngine.h"
+
 
 class boss {
 public:
@@ -45,6 +47,7 @@ private:
     void crearProyectilTele();
     void updateJavi();
     void fasesBoss();
+    renderEngine::rIntRect getIntRect();
     
     //float getVX_BP(); //DEVUELVE LA COMPONENTE X DEL VECTOR VELOCIDAD DEL 
     
@@ -57,6 +60,7 @@ private:
         renderEngine::rRectangleShape r;
         float v_x;  //COMPONENTE X DEL VECTOR DE MOVIMIENTO
         float v_y;  //COMPONENTE Y DEL VECTOR DE MOVIMIENTO
+        renderEngine::rTexture t;
     };
     struct proyectilT: proyectil{
         float a;            //AMPLITUD
@@ -78,11 +82,11 @@ private:
         std::vector<proyectilT*> proyT;             //VECTOR DE PROYECTILES T
         
         //LOS VALORES DE x_f E y_f CAMBIAN
-        float x_v;          //X DEL VECTOR VELOCIDAD
-        float y_v;          //Y DEL VECTOR VELOCIDAD
-        int x_f;            //X DE POSICION FINAL
-        int y_f;            //Y DE POSICION FINAL
-        bool llegada;       //TRUE: HA LLEGADO A LA POSICION FINAL Y BUSCA UNA NUEVA
+        float x_v;              //X DEL VECTOR VELOCIDAD
+        float y_v;              //Y DEL VECTOR VELOCIDAD
+        float x_f;              //X DE POSICION FINAL
+        float y_f;              //Y DE POSICION FINAL
+        bool llegada;           //TRUE: HA LLEGADO A LA POSICION FINAL Y BUSCA UNA NUEVA
         renderEngine::rIntRect *ir;
     };
     renderEngine::rRectangleShape r_aux;    //DEBUG
@@ -90,16 +94,21 @@ private:
     t_muro puerta[12];
     jefe javi;
     
-    renderEngine::rClock clock_boss;        //DETERMINA LAS ACCIONES DEL BOSS
+    renderEngine::rClock clock_boss;        //DETERMINA LAS ACCIONES DEL BOSS Y SU DURACION
     renderEngine::rClock dt_fan;            //ABANICO
     renderEngine::rClock dt_boss;           //DELTA TIME 1
     int x_max;                              //X MAXIMA DONDE ACABA EL BOSS
     int x_min;                              //X MINIMA DONDE EMPIEZA EL BOSS
     int y_min;
+    bool fin;                               //TRUE: BOSS ACABADO
     bool on;                                //TRUE: BOSS EN MARCHA
     bool restart;                           //TRUE: BOSS INICIADO
     
     physicsEngine::type* t;
+    
+    renderEngine::rImage proy_boss;
+    renderEngine::rText time_text;
+    renderEngine::rFont time_font;
     
 };
 

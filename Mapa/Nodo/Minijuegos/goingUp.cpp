@@ -14,8 +14,10 @@
 #include "goingUp.h"
 #include "Juego.h"
 
+#define OFFSET 70*20
+
 goingUp::goingUp(int x, int y, int width, int height, std::vector<int> IDs_mininodo) {
-    initArea.setPosition(x, y);
+    initArea.setPosition(x+OFFSET, y);
     initArea.setSize(width, height);
     initArea.setOutlineThickness(2.f);
     initArea.setOutlineColor('r');
@@ -51,7 +53,7 @@ void goingUp::update() {
             // Inicio el juego
             if(starter == players->size()){
                 std::cout << "INICIO JODER" << std::endl;
-                int x = initArea.getPosition()[0];
+                int x = initArea.getPosition()[0]-OFFSET;
                 int y = initArea.getPosition()[1];
                 y += initArea.getSize()[1];
                 y -= 70*2;      //Quiero que se empiecen a generar 2 por encima de la plataforma

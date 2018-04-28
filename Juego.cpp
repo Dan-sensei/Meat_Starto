@@ -160,6 +160,7 @@ void Juego::HandleEvents(){
                                 std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = true;
                                 break;
                             case 1:
                                 std::cout << "J2" << std::endl;
@@ -190,6 +191,7 @@ void Juego::HandleEvents(){
                                 std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = false;
                                 break;
                             case 1:
                                 std::cout << "J2" << std::endl;

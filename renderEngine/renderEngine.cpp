@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -266,6 +266,11 @@ void renderEngine::rRectangleShape::setFillColor(char c) {
         case 'k':   rs.setFillColor(sf::Color::Black);          break;
         default:    break;
     }
+}
+
+void renderEngine::rRectangleShape::setFillRGBAColor(int r, int g, int b, int a) {
+    sf::Color color(r,g,b,a);
+    rs.setFillColor(color);
 }
 
 void renderEngine::rRectangleShape::setOutlineColor(char c) {

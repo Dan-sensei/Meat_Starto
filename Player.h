@@ -99,7 +99,7 @@ private:
     bool hit;
     int hand_length;
     Animator animator;
-    int key_r,key_l,key_up,key_hit;
+    int key_r,key_l,key_up,key_hit,key_suicide;
     
     bool* keys;
     renderEngine::rClock animationClock;

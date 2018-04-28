@@ -30,6 +30,7 @@ public:
         friend class renderEngine;
         public:
             rIntRect();                             //CONSTRUCTOR 1 (NO UTILIZAR)
+            //X,Y,W,H
             rIntRect(int x, int y, int w, int h);   //CONSTRUCTOR 2
             
             bool contains(float x, float y);        //TRUE: INTRECT CONTIENE AL PUNTO P(X,Y)
@@ -88,7 +89,8 @@ public:
             void setOrigin(float x, float y);               //ESTABLECER EL PUNTO CENTRAL
             void setTexture(rTexture &t);                   //ESTABLECER TEXTURA
             void setPosition(float x, float y);             //ESTABLECER POSICION
-            void setFillColor(char c);                      //ESTABLECER UN COLOR
+            void setFillColor(char c);                          //ESTABLECER UN COLOR
+            void setFillRGBAColor(int r,int g, int b, int a=255);   //ESTABLECE UN COLOR PASANDO LOS PARAMETROS RGBA
             void setSize(float x, float y);                 //ESTABLECER UN TAMANYO
             void setRotation(float a);                      //ESTABLECER UNA ROTACION
             

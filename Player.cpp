@@ -15,8 +15,10 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <complex>
 #include "Animator.h"
 #include "Mapa/Mapa.h"
+#include "Juego.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -63,6 +65,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=0;
                 key_up=22;
                 key_hit=4;
+                key_suicide=28;
         break;
         case 1:
                 texture="assets/player1a.png";
@@ -71,6 +74,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=71;
                 key_up=73;
                 key_hit=4;
+                key_suicide=-1;
                 //sprite.setPosition(x_, y_);
         break;
         case 2:
@@ -80,6 +84,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=10;
                 key_up=14;
                 key_hit=4;    
+                key_suicide=-1;
         break;
         case 3:
                 texture="assets/player3a.png"; 
@@ -88,6 +93,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=21;
                 key_up=6;
                 key_hit=4;                       
+                key_suicide=-1;
         break;                           
     }
    /*MANO*/
@@ -236,6 +242,11 @@ void Player::hazInmortal(){
 
 
 void Player::update(){
+    if(exp>exp_for_next_level){
+        lvlUp();
+        exp = exp-exp_for_next_level;
+        exp_for_next_level+=100;
+    }
     animator.Update(animationClock.restart());
     
 }
@@ -424,6 +435,28 @@ void Player::movement(){
         }
     }
     
+    if(key_suicide != -1 && keys[key_suicide]){
+        std::cout << "BUM" << std::endl;
+        
+        if(!inmortal){
+            Mapa::Instance().movePlayerToClosestCheckPoint(this);
+            lvlDown();           
+        }
+        
+        std::vector<Player*>* players = Juego::Instance().getPlayers();
+        for(int i=0 ; i<players->size() ; i++){
+            Player* ready = (*players)[i];
+            int x = ready->getXPosition()-sprite.getPosition()[0];
+            int y = ready->getYPosition()-sprite.getPosition()[1];
+            
+            if(sqrt(x*x+y*y)<150){
+                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                ready->lvlDown();
+            }
+        }
+        
+        keys[key_suicide] = false;
+    }
     
     if(abs(body.getLinearYVelocity())>1){
         blood.setRectangle(60,60);
