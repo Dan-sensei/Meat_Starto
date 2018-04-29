@@ -327,7 +327,7 @@ void Juego::HandleEvents(){
             
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
-                //std::cout << "Tecla " << event.getKeyCode() << std::endl;
+                //    std::cout << "Tecla " << event.getKeyCode() << std::endl;
                 
                 break;
                 
