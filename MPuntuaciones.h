@@ -18,6 +18,7 @@
 #include "MenuPausa.h"
 #include "MenuInicio.h"
 #include "Juego.h"
+#include "Player.h"
 
 class MPuntuaciones: public State {
 public:
@@ -28,6 +29,7 @@ public:
     void Update();
     virtual void Handle();
     void Render();
+    void recuento();
     
     static MPuntuaciones* Instance();//Singleton
     
@@ -35,6 +37,8 @@ public:
 private:
     int selectedItemIndex;
     sf::Font font;
+     sf::Text** menu;
+    renderEngine::rSprite* sprite;
     sf::Text tsalir;
     sf::Text  titulo;
     sf::RenderWindow* window;
@@ -50,7 +54,10 @@ private:
     renderEngine *sfml;
     renderEngine::rTexture text_fondo;
     renderEngine::rRectangleShape f1;
+    renderEngine::rSprite mancha;
+    renderEngine::rSprite personaje;
 
+    std::vector<Player*>* jugadores;
 
 };
 

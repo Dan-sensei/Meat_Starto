@@ -36,7 +36,7 @@
 Player::Player(int id, std::string name, float width_, float height_, float x_, float y_, char type_, bool *keys_) : animator(sprite) {
     setId(id);
     setName(name);
-
+    
     keys = keys_;
     
     t = new physicsEngine::type;
@@ -195,6 +195,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     touchingWall = false;
     stopJump = false;
+    muertes=0;
+    enemigos=0;
 }
 
 Player::~Player() {
@@ -234,10 +236,12 @@ int Player::getExp_levelup() {
 
 
 void Player::hazInmortal(){
-    if (inmortal==false)
+    if (inmortal==false){
         inmortal=true;
-    else
+    }else{
         inmortal=false;
+
+    }
 }
 
 
@@ -594,8 +598,10 @@ bool Player::isInmortal() {
 void Player::lvlDown() {
     if(level>0){
         level--;
+        muertes++;
     }
-    else if(level=0){
+    else if(level==0){
+        muertes++;
         //MUERE
     }
 }
@@ -604,4 +610,12 @@ void Player::lvlUp() {
     if(level<=6){
         level++;
     }
+}
+
+int Player::getMuertes(){
+    return muertes;
+}
+
+int Player::getEnemigos(){
+    return enemigos;
 }

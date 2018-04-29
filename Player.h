@@ -35,6 +35,8 @@ public:
     
     int getExp();
     int getExp_levelup();
+    int getMuertes();
+    int getEnemigos();
     
     
     void update();
@@ -122,6 +124,9 @@ private:
     physicsEngine::type* bottom;
     
     particleSystem blood;
+    
+    int muertes;
+    int enemigos;
 };
 
 #endif /* PLAYER_H */

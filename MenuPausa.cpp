@@ -218,7 +218,7 @@ void MenuPausa::MoveDown(){
 
 void MenuPausa::PonInmortal(){
     for(int i=0; i<jugadores->size(); i++){
-      //jugadores[0][i]->hazInmortal();
+      jugadores[0][i]->hazInmortal();
     }
 }
 
