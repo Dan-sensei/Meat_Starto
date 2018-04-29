@@ -606,7 +606,6 @@ void Mapa::updateFondo() {
         y = y_view-70*15;
         
         background1.setPosition(background1.getPosition()[0],y);
-
     }
     
     background2.setPosition(background1.getPosition()[0]+text_fondo.getXSize()*2, background1.getPosition()[1]);

@@ -52,13 +52,8 @@ void goingUp::update() {
             }
             // Inicio el juego
             if(starter == players->size()){
-<<<<<<< HEAD
                 Mapa::Instance().changeSpriteSheet("tiles_definitivo/tilesheet.png");
-                int x = initArea.getPosition()[0];
-=======
-                std::cout << "INICIO JODER" << std::endl;
                 int x = initArea.getPosition()[0]-OFFSET;
->>>>>>> 42678a4671f98fbe109f37731095aa254ac5cb27
                 int y = initArea.getPosition()[1];
                 y += initArea.getSize()[1];
                 y -= 70*2;      //Quiero que se empiecen a generar 2 por encima de la plataforma
