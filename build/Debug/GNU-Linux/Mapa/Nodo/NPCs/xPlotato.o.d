@@ -6,16 +6,16 @@ build/Debug/GNU-Linux/Mapa/Nodo/NPCs/xPlotato.o: \
  renderEngine/rSoundBuffer.h Mapa/Nodo/NPCs/../../../Juego.h \
  Mapa/Nodo/NPCs/../../../State.h Mapa/Nodo/NPCs/../../../MenuPausa.h \
  Mapa/Nodo/NPCs/../../../MenuInicio.h Mapa/Nodo/NPCs/../../../Juego.h \
- Mapa/Nodo/NPCs/../../../MPuntuaciones.h Mapa/Nodo/NPCs/../../../Hud.h \
- Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h \
  Mapa/Nodo/NPCs/../../../Player.h Mapa/Nodo/NPCs/../../../Animator.h \
+ Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h \
  Mapa/Nodo/NPCs/../../../particleSystem.h \
- Mapa/Nodo/NPCs/../../../Particle.h Mapa/Nodo/NPCs/../../../Mapa/Mapa.h \
+ Mapa/Nodo/NPCs/../../../Particle.h \
+ Mapa/Nodo/NPCs/../../../MPuntuaciones.h Mapa/Nodo/NPCs/../../../Hud.h \
+ Mapa/Nodo/NPCs/../../../Mapa/Mapa.h \
  Mapa/Nodo/NPCs/../../../Mapa/../mj_t.h \
  Mapa/Nodo/NPCs/../../../Mapa/../boss.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Nodo.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
- Mapa/Nodo/NPCs/../../../Mapa/Nodo/Ground.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/../../Player.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/Minijuego.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Minijuegos/goingUp.h \
@@ -55,19 +55,19 @@ Mapa/Nodo/NPCs/../../../MenuInicio.h:
 
 Mapa/Nodo/NPCs/../../../Juego.h:
 
-Mapa/Nodo/NPCs/../../../MPuntuaciones.h:
-
-Mapa/Nodo/NPCs/../../../Hud.h:
-
-Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h:
-
 Mapa/Nodo/NPCs/../../../Player.h:
 
 Mapa/Nodo/NPCs/../../../Animator.h:
 
+Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h:
+
 Mapa/Nodo/NPCs/../../../particleSystem.h:
 
 Mapa/Nodo/NPCs/../../../Particle.h:
+
+Mapa/Nodo/NPCs/../../../MPuntuaciones.h:
+
+Mapa/Nodo/NPCs/../../../Hud.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Mapa.h:
 
@@ -78,8 +78,6 @@ Mapa/Nodo/NPCs/../../../Mapa/../boss.h:
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/Nodo.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h:
-
-Mapa/Nodo/NPCs/../../../Mapa/Nodo/Ground.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/../../Player.h:
 

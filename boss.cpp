@@ -11,10 +11,14 @@
  * Created on 5 de abril de 2018, 16:11
  */
 
+#include <math.h>
+
 #include "boss.h"
 #include "Juego.h"
 
 #define DES 2000
+#define ADJUST 490
+#define SPRITE_FACTOR 16
 
 boss::boss() {
 }
@@ -44,24 +48,24 @@ void boss::init(int x_,int y_) {
     
     //CREO LA "PUERTA"
     puerta[0].r.setSize(a*12,a*5);
-    puerta[0].r.setPosition(x_min-(a*8),(a*20)+DES+y_min);
-    puerta[1].r.setPosition(x_min+(a*4),(a*20)+DES+y_min);
-    puerta[2].r.setPosition(x_min+(a*4),(a*21)+DES+y_min);
-    puerta[3].r.setPosition(x_min+(a*4),(a*22)+DES+y_min);
-    puerta[4].r.setPosition(x_min+(a*4),(a*23)+DES+y_min);
-    puerta[5].r.setPosition(x_min+(a*4),(a*24)+DES+y_min);
-    puerta[6].r.setPosition(x_min+(a*5),(a*22)+DES+y_min);
-    puerta[7].r.setPosition(x_min+(a*5),(a*23)+DES+y_min);
-    puerta[8].r.setPosition(x_min+(a*5),(a*24)+DES+y_min);
-    puerta[9].r.setPosition(x_min+(a*6),(a*23)+DES+y_min);
-    puerta[10].r.setPosition(x_min+(a*6),(a*24)+DES+y_min);
-    puerta[11].r.setPosition(x_min+(a*7),(a*24)+DES+y_min);
+    puerta[0].r.setPosition(x_min-(a*8),(a*20)+DES+y_min+ADJUST);
+    puerta[1].r.setPosition(x_min+(a*4),(a*20)+DES+y_min+ADJUST);
+    puerta[2].r.setPosition(x_min+(a*4),(a*21)+DES+y_min+ADJUST);
+    puerta[3].r.setPosition(x_min+(a*4),(a*22)+DES+y_min+ADJUST);
+    puerta[4].r.setPosition(x_min+(a*4),(a*23)+DES+y_min+ADJUST);
+    puerta[5].r.setPosition(x_min+(a*4),(a*24)+DES+y_min+ADJUST);
+    puerta[6].r.setPosition(x_min+(a*5),(a*22)+DES+y_min+ADJUST);
+    puerta[7].r.setPosition(x_min+(a*5),(a*23)+DES+y_min+ADJUST);
+    puerta[8].r.setPosition(x_min+(a*5),(a*24)+DES+y_min+ADJUST);
+    puerta[9].r.setPosition(x_min+(a*6),(a*23)+DES+y_min+ADJUST);
+    puerta[10].r.setPosition(x_min+(a*6),(a*24)+DES+y_min+ADJUST);
+    puerta[11].r.setPosition(x_min+(a*7),(a*24)+DES+y_min+ADJUST);
     
     for(int i=0 ; i<12 ; i++){
         if(i != 0){
             puerta[i].r.setSize(a,a);
         }
-        puerta[i].r.setFillColor('r');
+        puerta[i].r.setFillRGBAColor(28,58,104);
     }
     
     //---DEBUG
@@ -75,6 +79,17 @@ void boss::init(int x_,int y_) {
     ir_aux.setFillColor('t');
     ir_aux.setOutlineColor('g');
     ir_aux.setOutlineThickness(5);
+    
+    //std::string path = "assets/boss/fire_boss_ad.png";        //COMIDA    128x128
+    std::string path = "assets/boss/fire1.png";                 //FUEGO     72x48
+    proy_boss.loadFromFIle(path);
+
+    //TEXTOS
+    time_font.loadFromFile("resources/fuente.ttf");
+    time_text.setFont(time_font);
+    time_text.setCharacterSize(50);
+    time_text.setFillColor('k');
+    
 }
 
 void boss::update() {
@@ -87,8 +102,7 @@ void boss::update() {
     if(x_m> (x_min+(70*20)) && x_m < x_max){
         //std::cout << y_min << std::endl;
         //COMIENZA LA BATALLA FINAL
-        on = true;
-        
+        on = true;        
         if(!restart){
             //std::cout << " | ----------- Restart" << std::endl;
             //AQUI SOLO ENTRA UNA VEZ
@@ -114,6 +128,9 @@ void boss::update() {
             dt_boss.restart();
             dt_fan.restart();
             restart = true;
+            
+            time_text.setPosition(renderEngine::Instance().getViewCenter()[0]-70*22,renderEngine::Instance().getViewCenter()[1]-70*5);
+
         }
         
         //HACER UNA ESPECIE DE ANIMACION
@@ -126,7 +143,7 @@ void boss::update() {
         fasesBoss();
             
         //std::cout << " | ----------- Habilidades especiales" << std::endl;
-        if(dt_fan.getElapsedTime().asSeconds()>0.1){
+        if(dt_fan.getElapsedTime().asSeconds()>0.2){
             //GENERO EL NUMERO ALEATORIO
             int rand = physicsEngine::Instance().genIntRandom(0, 100);
             if(rand>97)    crearAbanicoProyectiles();
@@ -156,29 +173,12 @@ void boss::update() {
             }
         }
         
-        //MOVIMIENTO DE LOS PROYECTILES TELEDIRIGIDOS
-        /*
-        for(int i=0 ; i<javi.proyT.size() ; i++){
-            javi.proyT[i]->r.move(0,5);
-
-            //javi.proyT[i]->r.rotate(javi.proyT[i]->angle);
-            
-            
-            
-            if( javi.proy[i]->r.getPosition()[1]>2100    || javi.proyT[i]->r.getPosition()[1]<0 || 
-                javi.proy[i]->r.getPosition()[0]>x_max   || javi.proyT[i]->r.getPosition()[0]<x_min){
-                    //std::cout << "Soy un proyectil y me destruyo" << std::endl;
-                
-                delete javi.proyT[i];
-                javi.proyT[i] = NULL;
-                
-                javi.proyT.erase(javi.proyT.begin()+i);
-                if(i+1==javi.proyT.size())   javi.proyT.shrink_to_fit();
-            }
+        if(clock_boss.getElapsedTime().asSeconds()>40){
+            //std::cout << "SE HA ACABADO EL BOSS" << std::endl;
+            sfml->Instance().ChangeState(MPuntuaciones::Instance());
         }
-        */
-
-
+    
+        time_text.setString(std::to_string(40-static_cast<int>(clock_boss.getElapsedTime().asSeconds())));
     }
     else{
         on = false;
@@ -194,7 +194,7 @@ void boss::fasesBoss() {
     float y_ = Juego::Instance().getPlayers()[0][r]->getYPosition();
     
     if(clock_boss.getElapsedTime().asSeconds()<20 && clock_boss.getElapsedTime().asSeconds()>=0){
-        if(dt_boss.getElapsedTime().asSeconds() > 0.2){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.35){
                 //std::cout << "CREO BALA EN (" << x_ << "," << y_ << ")" << std::endl;
             crearProyectil(x_,y_);
             dt_boss.restart();
@@ -208,7 +208,7 @@ void boss::fasesBoss() {
         }
     }
     else if(clock_boss.getElapsedTime().asSeconds()>28 && clock_boss.getElapsedTime().asSeconds()<=30){
-        if(dt_boss.getElapsedTime().asSeconds() > 0.5){
+        if(dt_boss.getElapsedTime().asSeconds() > 1){
             crearAbanicoProyectiles();
             dt_boss.restart();
         }
@@ -221,7 +221,7 @@ void boss::fasesBoss() {
         }
     }
     else if(clock_boss.getElapsedTime().asSeconds()>=31){
-        if(dt_boss.getElapsedTime().asSeconds() > 0.2){
+        if(dt_boss.getElapsedTime().asSeconds() > 0.3){
                 //std::cout << "CREO BALA" << std::endl;
             crearProyectil(x_,y_);
             dt_boss.restart();
@@ -242,7 +242,15 @@ void boss::updateJavi() {
         //factor_v = dv(gen);
         javi.x_f = physicsEngine::Instance().genIntRandom(x_min+(70*3),x_min+(70*34));
         javi.y_f = physicsEngine::Instance().genIntRandom(y_min+70*7, y_min+70*15);
+        /*
+        float x_d = javi.r.getPosition()[0] - javi.x_f;
+        float y_d = javi.r.getPosition()[1] - javi.y_f;
         
+        float angle = atan2(y_d,x_d);
+
+        javi.x_v = cos(angle)*factor;
+        javi.y_v = sin(angle)*factor;
+         */
         javi.x_v = (float) (javi.x_f-javi.r.getPosition()[0])/factor;
         javi.y_v = (float) (javi.y_f-javi.r.getPosition()[1])/factor;
         
@@ -275,6 +283,19 @@ void boss::updateJavi() {
 
 }
 
+renderEngine::rIntRect boss::getIntRect() {
+    int f = SPRITE_FACTOR;
+    
+    //PARA LA COMIDA
+    /*
+    int x = physicsEngine::Instance().genIntRandom(1,7);
+    int y = physicsEngine::Instance().genIntRandom(1,7);
+    //std::cout << "X: " << x << " | Y: " << y << " | W: " << f << " | H: " << f << std::endl;
+    renderEngine::rIntRect ret(x*16,y*16,f,f);
+    return ret;
+     */
+}
+
 void boss::crearProyectilTele() {
     // ------------ EN PRUEBAS ------------ //
     
@@ -303,41 +324,77 @@ void boss::crearProyectilTele() {
 }
 
 void boss::crearAbanicoProyectiles(){
-        std::cout << "Javi used fan of bullets" << std::endl;
-
+    //std::cout << "Javi used fan of bullets" << std::endl;
+    float r = physicsEngine::Instance().genFloatRandom(2.1,3.3);
+        
     float ang = 0.125;
     for(float i=0 ; i<4 ; i+=ang){
-        int factor = 15;    //FACTOR VELOCIDAD
-        int w = 25;
-        int h = 25;
+        if(i<=r || i>=r+0.6){
+            float i_a = i+1;
+            if(i_a > 4){
+                i_a-4;
+            }
+            
+            int factor = 5;    //FACTOR VELOCIDAD
+            float s_factor = 1.5;
+                
+            float w = 18*s_factor;
+            float h = 48*s_factor;
+            float w_ir = 18;
+            float h_ir = 48;
 
-        float s_x = sin(M_PI/180*(90*i));
-        float s_y = cos(M_PI/180*(90*i));
+            float s_x = sin(M_PI/180*(90*i_a));
+            float s_y = cos(M_PI/180*(90*i_a));
 
-            //std::cout << "X-> sin(" << 90*i << ") : " << s_x << std::endl; //X
-            //std::cout << "Y-> cos(" << 90*i << ") : " << s_y << std::endl; //Y
-            //std::cout << std::endl;
+                //std::cout << "X-> sin(" << 90*i << ") : " << s_x << std::endl; //X
+                //std::cout << "Y-> cos(" << 90*i << ") : " << s_y << std::endl; //Y
+                //std::cout << std::endl;
 
-        proyectil *p_aux = new proyectil;
-        p_aux->v_x = s_x*factor;
-        p_aux->v_y = s_y*factor;
+            proyectil *p_aux = new proyectil;
+            p_aux->v_x = s_x*factor;
+            p_aux->v_y = s_y*factor;
 
-        p_aux->r.setSize(w,h);
-        p_aux->r.setPosition(javi.r.getPosition()[0],javi.r.getPosition()[1]);
-        p_aux->r.setFillColor('b');
+            p_aux->r.setSize(w,h);
+            p_aux->r.setPosition(javi.r.getPosition()[0],javi.r.getPosition()[1]);
+            //p_aux->r.setFillRGBAColor(160,196,255);
+            //p_aux->r.setFillColor('b');
+            
+            //TEXTURA DE FUEGO
+            renderEngine::rIntRect ir(0,0,w_ir,h_ir);
+            p_aux->t.loadFromImage(proy_boss,ir);
+            p_aux->r.setTexture(p_aux->t);
+            
+            float angle = atan2(s_y,s_x);
+            p_aux->r.rotate((angle/M_PI*180)+90);
 
-        javi.proy.push_back(p_aux);
+            
+            
+            //ELIJO LA TEXTURA ALEATORIAMENTE
+            /*
+            renderEngine::rIntRect ir = getIntRect();
+            p_aux->t.loadFromImage(proy_boss,ir);
+            p_aux->r.setTexture(p_aux->t);
+            */
+
+            javi.proy.push_back(p_aux);
+        }
     }
 }
 
 void boss::crearProyectil(float x_, float y_) {
+    //ELIJO LA TEXTURA ALEATORIAMENTE
+    //renderEngine::rIntRect ir = getIntRect();
+    
     //CREO EL PROYECTIL
     //LO AÑADO AL VECTOR DEL JEFE
     int a = 70;
-    float factor = 120;
+    float factor = 20;
+    float s_factor = 1.5;
     
-    float w = 15;
-    float h = 15;
+    float w = 18*s_factor;
+    float h = 48*s_factor;
+    float w_ir = 18;
+    float h_ir = 48;
     
     float x = javi.r.getPosition()[0];
     float y = javi.r.getPosition()[1];
@@ -347,14 +404,26 @@ void boss::crearProyectil(float x_, float y_) {
     proyectil *aux = new proyectil;
     aux->r.setSize(w,h);
     aux->r.setPosition(x+(a/2),y+(a/2));
-    aux->r.setFillColor('k');
+    //aux->r.setFillColor('k');
+    
+    //TEXTURA DEL PROYECTIL
+    renderEngine::rIntRect ir(0,0,w_ir,h_ir);
+    aux->t.loadFromImage(proy_boss,ir);
+    aux->r.setTexture(aux->t);
     
     //AQUI SE DEBERIAN DE CONSEGUIR LAS POSICIONES DE LOS PERSONAJES
     //HE TENIDO QUE PASARLAS A TRAVES DE 3 FUNCIONES
         //std::cout << "X: " << x_ << std::endl;
         //std::cout << "Y: " << y_ << std::endl;
-    aux->v_x = (x_ - x)/factor;
-    aux->v_y = (y_ - y)/factor;
+    float x_dist = x_ - x;
+    float y_dist = y_ - y;
+    
+    float angle = atan2(y_dist,x_dist);
+    //std::cout << "angle: " << angle/M_PI*180 << std::endl;
+    aux->r.rotate((angle/M_PI*180)+90);
+    
+    aux->v_x = cos(angle)*factor;
+    aux->v_y = sin(angle)*factor;
         //std::cout << "V (" << aux.v_x << "," << aux.v_y << ")" << std::endl;
     
     javi.proy.push_back(aux);
@@ -367,7 +436,7 @@ void boss::render() {
         /*
         r_aux.draw();
         ir_aux.draw();
-        */
+        //*/
         //</DEBUG>
         
         for(int i=0 ; i<12 ; i++){
@@ -376,10 +445,8 @@ void boss::render() {
         for(int i=0 ; i<javi.proy.size() ; i++){
             javi.proy[i]->r.draw();
         }
-        for(int i=0 ; i<javi.proyT.size() ; i++){
-            javi.proyT[i]->r.draw();
-        }
         javi.r.draw();
+        time_text.draw();
     }
 }
 

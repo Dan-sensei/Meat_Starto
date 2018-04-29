@@ -35,6 +35,8 @@ public:
     
     int getExp();
     int getExp_levelup();
+    int getMuertes();
+    int getEnemigos();
     
     
     void update();
@@ -87,6 +89,7 @@ public:
     void setTouchingWall(bool flag);
     
     void setPosition(float x, float y);
+    void transportToSecondPhase(float x, float y);
     std::string anima();
     
 private:
@@ -99,7 +102,7 @@ private:
     bool hit;
     int hand_length;
     Animator animator;
-    int key_r,key_l,key_up,key_hit;
+    int key_r,key_l,key_up,key_hit,key_suicide;
     
     bool* keys;
     renderEngine::rClock animationClock;
@@ -122,6 +125,32 @@ private:
     physicsEngine::type* bottom;
     
     particleSystem blood;
+    
+    int muertes;
+    int enemigos;
+    
+    renderEngine::rImage indicadores_power;
+    struct indicador{
+        renderEngine::rIntRect *ir;
+        renderEngine::rTexture t;
+        renderEngine::rSprite sprite;
+    };
+    indicador *invincible;
+    indicador *speed;
+    
+    indicador *expup;
+    renderEngine::rClock exp_clock;
+    
+    indicador *freeze;
+    bool freezed;
+    renderEngine::rClock frigoclock;
+    
+    indicador *controls;
+    renderEngine::rClock controls_clock;
+    bool inv_control;
+    
+    indicador *lvl1;
+    renderEngine::rClock baby_clock;
 };
 
 #endif /* PLAYER_H */

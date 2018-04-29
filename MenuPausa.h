@@ -61,6 +61,10 @@ private:
     renderEngine *sfml;
     renderEngine::rTexture text_fondo;
     renderEngine::rRectangleShape f1;
+    renderEngine::rSprite personaje;
+    renderEngine::rSprite mancha[NUMBER_OF_ITEMS];
+    
+    void muevepersonaje(int selec);
     
     std::vector<Player*>* jugadores;
     

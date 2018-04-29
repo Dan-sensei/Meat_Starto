@@ -36,6 +36,31 @@ MenuPausa::MenuPausa() {
     f1.setTexture(text_fondo);
     f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
     
+    /*PERSONAJE*/
+    std::string sprite_name1 = "assets/personaje.png";
+    
+    int widthp = AssetManager::GetTexture(sprite_name1).getXSize();
+    int heightp = AssetManager::GetTexture(sprite_name1).getYSize();
+    
+    personaje.setTexture(AssetManager::GetTexture(sprite_name1));
+    personaje.setOrigin(widthp / 2, heightp / 2.1);
+    personaje.setScale(0.15, 0.15);
+    personaje.setPosition(posx-width/11, posy-height/21);
+
+    
+    
+    /*MANCHAS DEL MENU*/
+    std::string sprite_name = "assets/mancha1.png";
+    
+    int widths = AssetManager::GetTexture(sprite_name).getXSize();
+    int heights = AssetManager::GetTexture(sprite_name).getYSize();
+    
+    for(int i=0; i<NUMBER_OF_ITEMS; i++){
+        mancha[i].setTexture(AssetManager::GetTexture(sprite_name));
+        mancha[i].setOrigin(widths / 2, heights / 2.1);
+        mancha[i].setScale(1.65, 1.65);
+    }
+    
     InmortalOn=false;
   
   
@@ -48,46 +73,39 @@ MenuPausa::MenuPausa() {
    titulo.setFont(font);
    titulo.setCharacterSize(56);
    titulo.setFillColor(sf::Color::Black);
-   titulo.setString("Pause");
-   titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
+   titulo.setString("Pause");  
   
    
    menu[0].setFont(font);
-   menu[0].setCharacterSize(50);
-   menu[0].setFillColor(sf::Color::Red);
+   menu[0].setCharacterSize(48);
+   menu[0].setFillColor(sf::Color::White);
    menu[0].setString("Continue");
-   menu[0].setPosition(posx-width/3, posy-height/5);
    
    menu[1].setFont(font);
-   menu[1].setCharacterSize(50);
+   menu[1].setCharacterSize(48);
    menu[1].setFillColor(sf::Color::Black);
    menu[1].setString("Opciones");
-   menu[1].setPosition(posx-width/3, posy);
    
    menu[2].setFont(font);
-   menu[2].setCharacterSize(50);
+   menu[2].setCharacterSize(48);
    menu[2].setFillColor(sf::Color::Black);
    menu[2].setString("Exit");
-   menu[2].setPosition(posx-width/3, posy+height/5);
    
    /*MENU DE OPCIONES*/
    titulo2.setFont(font);
    titulo2.setCharacterSize(56);
    titulo2.setFillColor(sf::Color::Black);
    titulo2.setString("Options");
-   titulo2.setPosition(posx-width/30, posy-height/3);
    
    menuop[0].setFont(font);
-   menuop[0].setCharacterSize(50);
-   menuop[0].setFillColor(sf::Color::Red);
+   menuop[0].setCharacterSize(40);
+   menuop[0].setFillColor(sf::Color::White);
    menuop[0].setString("Inmortal OFF");
-   menuop[0].setPosition(posx-width/3, posy-height/6);
    
    menuop[1].setFont(font);
-   menuop[1].setCharacterSize(50);
+   menuop[1].setCharacterSize(44);
    menuop[1].setFillColor(sf::Color::Black);
    menuop[1].setString("Exit");
-   menuop[1].setPosition(posx-width/3, posy+height/10);
    
    selectedItemIndex=0;
    selectedItemIndex2=0;
@@ -110,15 +128,21 @@ void MenuPausa::Render(){
     
     switch(statemenu){
         case 0:   
-            sfml->Instance().getWindow()->draw(titulo);
-            for(int i=0; i<NUMBER_OF_ITEMS;i++){
+             sfml->Instance().getWindow()->draw(titulo);
+           for(int i=NUMBER_OF_ITEMS-1; i>=0 ;i--){
+                mancha[i].draw();
                 sfml->Instance().getWindow()->draw(menu[i]);
+                personaje.draw();
             }
             break;
         case 1:
             sfml->Instance().getWindow()->draw(titulo2);
-            for(int i=0; i<NUMBER_OF_ITEMS2;i++){
+            mancha[0].draw();
+            mancha[2].draw();
+            
+            for(int i=NUMBER_OF_ITEMS2-1; i>=0 ;i--){
                 sfml->Instance().getWindow()->draw(menuop[i]);
+                personaje.draw();
             }
             break;
     }
@@ -126,39 +150,66 @@ void MenuPausa::Render(){
      sfml->Instance().display();
     
 }
+
+void MenuPausa::muevepersonaje(int selec){
+   
+            switch(selec){
+                case 0:
+                    personaje.setPosition(posx-width/11, posy-height/21);
+                    break;
+
+                case 1:
+                    personaje.setPosition(posx-width/40, posy+height/12);
+                    break;
+
+                case 2:
+                    personaje.setPosition(posx-width/11, posy+height/4.7);
+                    break;
+            }
+      
+}
+
 void MenuPausa::MoveUp(){
-        switch(statemenu){
-        case 0:
+    switch(statemenu){
+       case 0:
             if(selectedItemIndex-1>=0){
                 menu[selectedItemIndex].setFillColor(sf::Color::Black);
                 selectedItemIndex--;
-                menu[selectedItemIndex].setFillColor(sf::Color::Red);
+                menu[selectedItemIndex].setFillColor(sf::Color::White);
+                muevepersonaje(selectedItemIndex);
+
             }
             break;
         case 1:
             if(selectedItemIndex2-1>=0){
                 menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
                 selectedItemIndex2--;
-                menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
+                muevepersonaje(selectedItemIndex2);
+
             }
             break;
-        }
+    }
 }
 
 void MenuPausa::MoveDown(){
      switch(statemenu){
-        case 0:
-            if(selectedItemIndex+1<MAX_NUMBER_OF_ITEMS){
+       case 0:
+            if(selectedItemIndex+1<NUMBER_OF_ITEMS){
                 menu[selectedItemIndex].setFillColor(sf::Color::Black);
                 selectedItemIndex++;
-                menu[selectedItemIndex].setFillColor(sf::Color::Red);
+                menu[selectedItemIndex].setFillColor(sf::Color::White);
+                muevepersonaje(selectedItemIndex);
+
             }
             break;
         case 1:
-            if(selectedItemIndex2+1<MAX_NUMBER_OF_ITEMS2){
+            if(selectedItemIndex2+1<NUMBER_OF_ITEMS2){
                 menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
                 selectedItemIndex2++;
-                menuop[selectedItemIndex2].setFillColor(sf::Color::Red);
+                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
+                muevepersonaje(selectedItemIndex2+1);
+
             }
             break;
      }
@@ -167,7 +218,7 @@ void MenuPausa::MoveDown(){
 
 void MenuPausa::PonInmortal(){
     for(int i=0; i<jugadores->size(); i++){
-      //jugadores[0][i]->hazInmortal();
+      jugadores[0][i]->hazInmortal();
     }
 }
 
@@ -219,10 +270,13 @@ void MenuPausa::Update(){
 
                                         case 1:
                                             statemenu=1;
-                                            //std::cout<<"Exit pressed"<< std::endl;
+                                            MoveUp();
+                                            personaje.setPosition(posx-width/11, posy-height/21);
+                                            //std::cout<<"Options pressed"<< std::endl;
                                             break;
 
                                         case 2:
+
                                             sfml->Instance().ChangeState(MenuInicio::Instance());
                                            // std::cout<<"Exit pressed"<< std::endl;
                                             break;
@@ -243,7 +297,9 @@ void MenuPausa::Update(){
                                             break;
 
                                         case 1:
+                                            personaje.setPosition(posx-width/11, posy-height/21);
                                             statemenu=0;
+                                            MoveUp();
                                             break;
                                     }
                                     break;
@@ -270,11 +326,23 @@ void MenuPausa::Handle(){
     posx = sfml->Instance().getViewCenter()[0];
     posy = sfml->Instance().getViewCenter()[1];
     
-    titulo.setPosition(sf::Vector2f(posx-width/30, posy-height/3));
-    menu[0].setPosition(posx-width/3, posy-height/5);
-    menu[1].setPosition(posx-width/3, posy);
-    menu[2].setPosition(posx-width/3, posy+height/5);
+    personaje.setPosition(posx-width/11, posy-height/21);
+
+    mancha[0].setPosition(posx-width/30, posy-height/15);
+    mancha[1].setPosition(posx+width/30, posy+height/15);
+    mancha[2].setPosition(posx-width/30, posy+height/5);
     
+    
+   titulo.setPosition(sf::Vector2f(posx-width/20, posy-height/3));    
+   menu[0].setPosition(posx-width/18, posy-height/15);
+   menu[1].setPosition(posx+width/50, posy+height/15);
+   menu[2].setPosition(posx-width/30, posy+height/5);
+   
+   
+    titulo2.setPosition(posx-width/30, posy-height/3);
+    menuop[0].setPosition(posx-width/15, posy-height/15);
+    menuop[1].setPosition(posx-width/30, posy+height/5);
+
     while (sfml->Instance().isOpen())
     {
         //Bucle de obtención de eventos

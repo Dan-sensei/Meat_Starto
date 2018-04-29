@@ -20,12 +20,12 @@
 #include <math.h>
 
 #define SCALE 65.f
-#define MAP_ITERATION 10
+#define MAP_ITERATION 18    // No poner menos de 14 por ahora
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
 #define nodoInicial 0
-
+#define BACKGROUND_VELOCITY 2
 
  Mapa::Mapa() {
     std::cout << "Creando mapa..." << std::endl;
@@ -87,7 +87,7 @@
     //TETRIS
     mj_t *tetris;
     tetris->Instance();     //INICIALIZO EL SINGLETON
-    m_tetris = false;
+    m_tetris = true;
     
     //BOSS
     boss *javi;
@@ -98,15 +98,21 @@
     
     //img_fondo.loadFromFIle("assets/fondo.PNG");
     //f1.t.loadFromImage(f1.img,*f1.ir);
-    x_view = -1;
-    y_view = -1;
-    text_fondo.loadFromFile("assets/fondo.PNG");
-
+    x_view = renderEngine::Instance().getViewCenter()[0];
+    y_view = renderEngine::Instance().getViewCenter()[1];
+    text_fondo = AssetManager::GetTexture("assets/fondo.PNG");
+    background1.setTexture(text_fondo);
+    background1.setPosition(-875, 200);
+    background2.setTexture(text_fondo);
+    background2.setPosition(-875, 200);
+    background1.setScale(2, 2);
+    background2.setScale(2, 2);
+    
     f1.setTexture(text_fondo);
-    f1.setSize(1920*BACKGROUND_SCALE,1080*BACKGROUND_SCALE);
+    f1.setSize(1920,1080);
     
     f2.setTexture(text_fondo);
-    f2.setSize(1920*BACKGROUND_SCALE,1080*BACKGROUND_SCALE);
+    f2.setSize(1920,1080);
     
     cameraDir = 0;
     direction = 0;
@@ -141,9 +147,25 @@
         
         MININODOS.push_back(n);
     }
+    
+    for(int i = 0; i < 11; ++i){
+        path = "tiles_definitivo/nodos/CAVE/";
+        std::string number = std::to_string(i);
+        path = path.operator +=(number);
+        path = path.operator +=(".tmx");
+        
+        Factory::NodeStruct n;
+        n = Factory::Instance().LeeNodo(path);
+        
+        CAVE.push_back(n);
+    }
+    
     UP = Factory::Instance().LeeNodo("tiles_definitivo/nodos/15.tmx");
     BOSS = Factory::Instance().LeeNodo("tiles_definitivo/nodos/fin.tmx");
+    SPECIAL = Factory::Instance().LeeNodo("tiles_definitivo/nodos/Up/Special_1.tmx");
     
+    secondPhase = false;
+    stopBackgroundMovement = true;
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -158,7 +180,7 @@ void Mapa::InitMatrix() {
 
     int aux[15][15] = {
         
-    /* ================================ NODOS ==============================  */
+    /* ================================ NODOS ============================== */
     /*        0   1   2   3   4   5   6   7   8   9   10  11  12  13  14     */
     /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|      */
     /*  0 */  0,  1,  1,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
@@ -182,6 +204,30 @@ void Mapa::InitMatrix() {
         for(int j = 0; j < 15; j++)
             if(aux[i][j] == 1)
                 matriz_v2[i].push_back(j);
+        
+    int aux2[11][11] = {
+        
+    /* ====================== NODOS =====================  */
+    /*        0   1   2   3   4   5   6   7   8   9   10  */
+    /*    ¯¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|   */
+    /*  0 */  0,  1,  0,  0,  0,  1,  0,  0,  1,  1,  1,
+    /*  1 */  0,  0,  1,  0,  1,  1,  0,  0,  1,  1,  0,
+    /*  2 */  0,  0,  0,  1,  0,  0,  1,  1,  0,  0,  0,    // Planta baja
+    /*  3 */  0,  0,  1,  0,  1,  1,  0,  0,  1,  1,  0,    // Doble
+    /*  4 */  0,  1,  0,  0,  1,  1,  0,  0,  1,  1,  1,    // Medio
+    /*  5 */  0,  0,  0,  1,  0,  0,  1,  1,  0,  0,  0,
+    /*  6 */  0,  0,  0,  1,  0,  0,  1,  1,  0,  0,  0,
+    /*  7 */  0,  1,  0,  0,  1,  1,  0,  0,  1,  1,  1,
+    /*  8 */  0,  0,  1,  0,  1,  1,  0,  0,  1,  1,  0,
+    /*  9 */  0,  0,  1,  0,  1,  1,  0,  0,  1,  1,  0,
+    /* 10 */  0,  1,  0,  0,  1,  1,  0,  0,  1,  1,  1
+
+    };
+    
+    for(int i = 0; i < 11; i++)
+        for(int j = 0; j < 11; j++)
+            if(aux2[i][j] == 1)
+                CAVE_MATRIX[i].push_back(j);
 }
 
 // CONSTRUYE EL NODO i DEL VECTOR "NODOS" QUE CONTIENE LA INFORMACIÓN NECESARIA PARA CREARLO
@@ -195,6 +241,7 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
     if(direction == 1)
         y_ -= nodo.map_height*nodo.tile_height;
     
+    lista.back().setSpriteSheet(ts1);
     lista.back().setRectVector(spriteSheetRects);
     
     // CARGO LAS TILES
@@ -265,6 +312,28 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
         y_ -= MININODOS[8].map_height*MININODOS[8].tile_height;
         y_ += 14*MININODOS[8].tile_height;
         x_ += MININODOS[8].map_width * MININODOS[8].tile_width - nodo.minijuego.width;
+        
+        std::vector<renderEngine::rSprite> superiorLayer;
+        for(int i = 0; i < SPECIAL.Tiles.size(); ++i){
+            renderEngine::rSprite sprite;
+            sprite.setTexture(AssetManager::GetTexture(ts1));
+            int x_special = x_ + nodo.map_width * nodo.tile_width - SPECIAL.map_width * SPECIAL.tile_width;
+            int y_special = y_;
+            sprite.setTextureRect(spriteSheetRects[SPECIAL.Tiles[i].id]);
+            sprite.setPosition(x_special + SPECIAL.Tiles[i].x, y_special + SPECIAL.Tiles[i].y);
+            superiorLayer.push_back(sprite);
+        }
+        transportation.setOutlineThickness(2);
+        transportation.setPosition(x_ + nodo.map_width * nodo.tile_width - 7*70, y_);
+        transportation.setSize(7*70, MININODOS[8].map_height*MININODOS[8].tile_height);
+        lista.back().addSuperiorLayer(superiorLayer);
+        superiorLayer.clear();
+        renderEngine::rSprite degradado;
+        degradado.setScale(2, 2);
+        degradado.setTexture(AssetManager::GetTexture("assets/Degradado.png"));
+        degradado.setPosition(x_ + nodo.map_width * nodo.tile_width - AssetManager::GetTexture("assets/Degradado.png").getXSize()*2, y_);
+        superiorLayer.push_back(degradado);
+        lista.back().addSuperiorLayer(superiorLayer);
     }
     
     if(direction == 0){
@@ -318,9 +387,7 @@ void Mapa::render(float tick_) {
     /*
     int y_min = y_2 -(alto*15);
     int y_max = y_2 +(alto*15);
-    */
-    
-
+    */   
 
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
        
@@ -354,15 +421,21 @@ void Mapa::render(float tick_) {
     
     //------------|  TETRIS  |------------//
     mj_t *tetris;            //std::cout << path << std::endl;
-
     tetris->Instance().render();
     
     //------------|  BOSS  |------------//
     boss *javi;
     javi->Instance().render();
     
-    for(int i = 0; i < debug.size(); ++i)
-        debug[i].draw();
+    
+    //JUGADORES 
+    for(int i=0; i< players->size(); i++){
+        (*players)[i]->draw();
+    }
+    
+    for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){ 
+        (*it).drawSuperiorLayer(ir);
+    }
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
@@ -391,14 +464,27 @@ void Mapa::CreaMapa() {
 
 void Mapa::leeRandom(){
     //GENERO EL NUMERO ALEATORIO
-    int r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
-    
-    int target = matriz_v2[nodo_actual][r];
+    int r;
+    int target;
+
     if(longitud == MAP_ITERATION/2){
         CargaNodo(hex_list, UP, x_max, y_max);
+        hex_list.pop_front();
+        ts1 = "tiles_definitivo/tilesheet2.png";
+        CargaNodo(hex_list, CAVE[0], x_max, y_max);
+        secondPhase = true;
+        target = 0;
     }
-    else
+    else if(!secondPhase){
+        r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
+        target = matriz_v2[nodo_actual][r];
         CargaNodo(hex_list, NODOS[target], x_max, y_max);
+    }
+    else{
+        r = physicsEngine::Instance().genIntRandom(0, CAVE_MATRIX[nodo_actual].size()-1);
+        target = CAVE_MATRIX[nodo_actual][r];
+        CargaNodo(hex_list, CAVE[target], x_max, y_max);
+    }
     
     longitud++;
 
@@ -434,7 +520,7 @@ void Mapa::updateMini() {
     boss *javi;
     
     //ACTUALIZO DEL FONDO
-    updateFondo();
+     updateFondo();
     
     if(pop){
         
@@ -462,16 +548,27 @@ void Mapa::update(){
         (*it).update();
     }
     handleCheckPoints();
+    for(int i = 0; i< players->size(); ++i) {
+        Player* ready = (*players)[i];
+        if(ready->getSprite().intersects(transportation)){
+            text_fondo = AssetManager::GetTexture("assets/Background2.png");
+            background1.setTexture(text_fondo);
+            background2.setTexture(text_fondo);
+            ready->transportToSecondPhase(transportation.getPosition()[0] + 27*70, transportation.getPosition()[1] + 20*70);
+        }
+    }
 }
 
 void Mapa::renderBackground() {
     //EMPIEZO A RENDERIZAR
-    f1.draw();
-    f2.draw();
+    
+    background1.draw();
+    background2.draw();
 }
 
 
 void Mapa::updateFondo() {
+
     renderEngine *sfml;
     float x,y;
     float mv = 2;
@@ -483,7 +580,7 @@ void Mapa::updateFondo() {
         x = x_view-70*27;
         y = y_view-70*15;
 
-        f1.setPosition(x,y);
+        background1.setPosition(x,y);
     }
     else if(x_view != sfml->Instance().getViewCenter()[0] && abs(x_view-sfml->Instance().getViewCenter()[0])>5){
         //SOLO SI SE MUEVE LA CAMARA SE ACTUALIZA LA POSICION
@@ -500,23 +597,24 @@ void Mapa::updateFondo() {
         y = y_view-70*15;
 
         //f1.rect.setPosition(x,y);
-        signo ? f1.move(-mv,0) : f1.move(mv,0);
+        signo ? background1.setPosition(-mv+background1.getPosition()[0], background1.getPosition()[1]) : background1.setPosition(mv + background1.getPosition()[0], background1.getPosition()[1]);
     }
     else if(y_view != sfml->Instance().getViewCenter()[1] && abs(y_view-sfml->Instance().getViewCenter()[1])>5){
         y_view = sfml->Instance().getViewCenter()[1];
         
-        x = x_view-70*27;
+        //x = x_view-70*27;
         y = y_view-70*15;
         
-        f1.setPosition(x,y);
+        background1.setPosition(background1.getPosition()[0],y);
+
     }
     
-    f2.setPosition(f1.getPosition()[0]+f1.getSize()[0],f1.getPosition()[1]);
+    background2.setPosition(background1.getPosition()[0]+text_fondo.getXSize()*2, background1.getPosition()[1]);
     
-    if(f1.getPosition()[0] <= (sfml->Instance().getViewCenter()[0]-70*26)-f1.getSize()[0]){
-        f1.setPosition(f2.getPosition()[0],f2.getPosition()[1]);
+    if(background1.getPosition()[0] <= (sfml->Instance().getViewCenter()[0]-70*26)-text_fondo.getXSize()*2){
+        background1.setPosition(background2.getPosition()[0],background2.getPosition()[1]);
     }
-    
+ 
 }
 
 void Mapa::preState(){
@@ -654,4 +752,12 @@ Factory::NodeStruct Mapa::getMINI(int i) {
 
 int Mapa::getYMax() {
     return y_max;
+}
+
+void Mapa::changeSpriteSheet(std::string path) {
+    ts1 = path;
+}
+
+void Mapa::stopBackground(bool flag) {
+    stopBackgroundMovement = flag;
 }

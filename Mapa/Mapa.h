@@ -35,12 +35,15 @@ public:
     void CreaMapa();
     void leeRandom();
     void render(float tick_);
+    
+    void stopBackground(bool flag);
     void renderBackground();
     void updateMini();
     void update();
     void preState();
     void newState();
     
+    void changeSpriteSheet(std::string path);
     void setPlayers(std::vector<Player*>* ready);
     void movePlayerToClosestCheckPoint(Player* ready);
     void changeDirection(int dir);
@@ -67,15 +70,17 @@ private:
     
     std::vector<Player*>* players;
     
-    
-    std::vector<Factory::NodeStruct> NODOS;
-    std::vector<Factory::NodeStruct> MININODOS;
-    Factory::NodeStruct UP;
-    Factory::NodeStruct BOSS;
-    
+    bool secondPhase;                               // Determina si ha empezado la segunda etapa
+    renderEngine::rRectangleShape transportation;   // Teletransporta al jugador a la segunda etapa
+    std::vector<Factory::NodeStruct> NODOS;         // Nodos de la primera etapa
+    std::vector<Factory::NodeStruct> CAVE;          // Nodos de la segunda etapa
+    std::vector<Factory::NodeStruct> MININODOS;     // Nodos de la transición
+    Factory::NodeStruct UP;                         // Nodo intermedio (Minijuego de subir)
+    Factory::NodeStruct BOSS;                       // Nodo del boss
+    Factory::NodeStruct SPECIAL;
     //----------------METODOS PRIVADOS
-    void InitMatrix();
     void updateFondo();
+    void InitMatrix();
     
     //----------------ATRIBUTOS
     //DOCUMENTO XML/TMX QUE TIENE LOS ATRIBUTOS DE LAS MAPAS
@@ -117,6 +122,7 @@ private:
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
     std::vector<int> matriz_v2[15];     // Guarda sólo los nodos a los que está conectada cada posición del array
+    std::vector<int> CAVE_MATRIX[11]; 
     int nodo_actual;
     
     //TETRIS
@@ -126,10 +132,14 @@ private:
     //FONDOS
     float x_view;
     float y_view;
+    renderEngine::rIntRect r1;
+    renderEngine::rIntRect r2;
     renderEngine::rTexture text_fondo;
+    renderEngine::rSprite background1;
+    renderEngine::rSprite background2;
     renderEngine::rRectangleShape f1;
     renderEngine::rRectangleShape f2;
-    
+    bool stopBackgroundMovement;
     std::vector<renderEngine::rRectangleShape> debug;
 };
 

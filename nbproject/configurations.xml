@@ -31,8 +31,6 @@
           <itemPath>Mapa/Nodo/NPCs/xPlotato.cpp</itemPath>
           <itemPath>Mapa/Nodo/NPCs/xPlotato.h</itemPath>
         </logicalFolder>
-        <itemPath>Mapa/Nodo/Ground.cpp</itemPath>
-        <itemPath>Mapa/Nodo/Ground.h</itemPath>
         <itemPath>Mapa/Nodo/Nodo.cpp</itemPath>
         <itemPath>Mapa/Nodo/Nodo.h</itemPath>
       </logicalFolder>
@@ -178,10 +176,6 @@
       </item>
       <item path="Mapa/Mapa.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Mapa/Nodo/Ground.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Mapa/Nodo/Ground.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Mapa/Nodo/Minijuegos/Minijuego.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Mapa/Nodo/Minijuegos/Minijuego.h" ex="false" tool="3" flavor2="0">
@@ -314,10 +308,6 @@
       <item path="Mapa/Mapa.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Mapa/Mapa.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Mapa/Nodo/Ground.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Mapa/Nodo/Ground.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Mapa/Nodo/Minijuegos/Minijuego.cpp" ex="false" tool="1" flavor2="0">
       </item>

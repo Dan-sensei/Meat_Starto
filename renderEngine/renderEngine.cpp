@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -69,6 +69,8 @@ std::array<float, 2> renderEngine::getViewCenter() {
     
     return v;
 }
+
+
 
 std::array<float, 2> renderEngine::getViewSize() {
     std::array<float,2> v;
@@ -134,7 +136,7 @@ sf::Sprite renderEngine::rSprite::getSprite(){return sprite;}
 
 //============================= VISTA =============================//
 renderEngine::rView::rView(float pos_x, float pos_y, float size_x, float size_y):
-view(sf::FloatRect(pos_x,pos_y,size_x,size_y)){}
+view(sf::FloatRect(pos_x,pos_y,size_x,size_y)){ hasTarget_ = false;}
 
 void renderEngine::rView::zoom      (float z)           {   view.zoom(z);           }
 void renderEngine::rView::setCenter (float x, float y)  {   view.setCenter(x,y);    }
@@ -142,6 +144,19 @@ void renderEngine::rView::move(float x, float y)        {   view.move(x,y);     
 void renderEngine::rView::setSize(float x, float y)     {   view.setSize(x, y);     }
 void renderEngine::rSprite::setColor(int r, int g, int b)   {   sprite.setColor(sf::Color(r, g, b));}
 void renderEngine::rSprite::setColor(int r, int g, int b, int alpha)   {   sprite.setColor(sf::Color(r, g, b, alpha));}
+void renderEngine::rView::setTarget(float x, float y) {
+    targetX = x;
+    targetY = y;
+}
+
+std::array<float, 2> renderEngine::rView::getTarget() {
+    return std::array<float, 2> {targetX, targetY};
+}
+
+bool renderEngine::rView::hasTarget() {
+    return hasTarget_;
+}
+
 
 sf::View                renderEngine::rView::getView    () {    return view;}
 std::array<float, 2>    renderEngine::rView::getCenter  () {
@@ -266,6 +281,11 @@ void renderEngine::rRectangleShape::setFillColor(char c) {
         case 'k':   rs.setFillColor(sf::Color::Black);          break;
         default:    break;
     }
+}
+
+void renderEngine::rRectangleShape::setFillRGBAColor(int r, int g, int b, int a) {
+    sf::Color color(r,g,b,a);
+    rs.setFillColor(color);
 }
 
 void renderEngine::rRectangleShape::setOutlineColor(char c) {

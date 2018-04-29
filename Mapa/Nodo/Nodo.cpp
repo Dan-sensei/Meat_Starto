@@ -36,9 +36,10 @@ Nodo::Nodo() {
     checkpoint.shape.setOutlineThickness(2);
     checkpoint.shape.setOutlineColor('r');
     checkpoint.shape.setFillColor('t');
-    maxXCheckPoint = 0;
     
+    spritesheet = AssetManager::GetTexture("tiles_definitivo/tilesheet.png");
     minijuego = nullptr;
+    img_powers.loadFromFIle("assets/powers/power.png");
 }
 
 Nodo::Nodo(const Nodo& orig) {
@@ -57,13 +58,9 @@ Nodo::Nodo(const Nodo& orig) {
     
     for(int i = 0; i < orig.pinchos.size(); i++)
         pinchos.push_back(orig.pinchos[i]);
-    
-    for(std::list<checkPoint>::const_iterator it = orig.checkpoints.begin(); it != orig.checkpoints.end(); ++it)
-        checkpoints.push_back(*it);
-    
+
     aux_pop = orig.aux_pop;
     
-    maxXCheckPoint = orig.maxXCheckPoint;
 }
 
 Nodo::~Nodo() {
@@ -73,6 +70,8 @@ Nodo::~Nodo() {
         npcs[i] = nullptr;
     }
     delete minijuego;
+    for(int i = 0; i < ground.size(); ++i)
+        physicsEngine::Instance().detroyBody(ground[i]);
 }
 
 
@@ -90,16 +89,9 @@ void Nodo::setRectVector(std::vector<renderEngine::rIntRect> rect_){
 
 
 void Nodo::addTile(int id, int x, int y){
-    std::string path;
-    if(Mapa::Instance().getTotalIterations()/2 > Mapa::Instance().getIterations()){
-        path = "tiles_definitivo/tilesheet.png";
-    }
-    else{
-        path = "tiles_definitivo/tilesheet2.png";
-    }
-    
+
     renderEngine::rSprite sprite;
-    sprite.setTexture(AssetManager::GetTexture(path));
+    sprite.setTexture(spritesheet);
     sprite.setTextureRect(tileRect[id]);
     sprite.setPosition(x,y);
     
@@ -152,19 +144,6 @@ void Nodo::addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max){
     npcs.push_back(new Skull(x_, y_, x_min, x_max, y_min, y_max));
 }
 
-void Nodo::addCheckPoint(int x, int y, int width, int height) {
-    
-    checkPoint checkpoint;
-    checkpoint.active = false;
-    checkpoint.shape.setSize(width, height);
-    checkpoint.shape.setPosition(x, y);
-    checkpoint.shape.setOutlineThickness(2);
-    checkpoint.shape.setOutlineColor('r');
-    checkpoint.shape.setFillColor('t');
-    
-    checkpoints.push_back(checkpoint);   
-}
-
 Minijuego* Nodo::addMinigame(int type, int x, int y, int width, int height, std::vector<int> IDs_mininodo) {
     if(type == 1)
         minijuego = new goingUp(x, y, width, height, IDs_mininodo);
@@ -172,19 +151,24 @@ Minijuego* Nodo::addMinigame(int type, int x, int y, int width, int height, std:
     return minijuego;
 }
 
+void Nodo::addSuperiorLayer(std::vector<renderEngine::rSprite> layer) {
+    superiorLayer.push_back(layer);
+}
+
+
 
 void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     power p;
     p.id = id;
-    
+
     std::string sprite[7];
-    sprite[0] = "assets/powerUp.png";       // Estrella
-    sprite[1] = "assets/powerUp.png";       // Café
-    sprite[2] = "assets/powerUp.png";       // Carne
-    sprite[3] = "assets/powerDown.png";     // Flan
-    sprite[4] = "assets/powerDown.png";     // Helado
-    sprite[5] = "assets/powerDown.png";     // Biberón
-    sprite[6] = "assets/powerDown.png";     // Pescado
+    sprite[0] = "assets/powers/cafe.png";       // Estrella
+    sprite[1] = "assets/powers/cafe.png";           // Café
+    sprite[2] = "assets/powers/carne.png";          // Carne
+    sprite[3] = "assets/powers/flan.png";           // Flan
+    sprite[4] = "assets/powers/helado.png";         // Helado
+    sprite[5] = "assets/powers/biberon.png";        // Biberón
+    sprite[6] = "assets/powers/pescado.png";        // Pescado
     
     std::string target = sprite[id];
     
@@ -194,6 +178,7 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     
     p.sprite.setTexture(AssetManager::GetTexture(target));
     p.sprite.setOrigin(sizeY, sizeX);
+    p.sprite.setScale(4,4);
     p.sprite.setPosition(newX, y_);
     powers.push_back(p);
 }
@@ -212,10 +197,6 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
-
-    
-    for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it)
-        (*it).shape.draw();
     
     for(int i = 0; i < powers.size(); i++)
         powers[i].sprite.draw();
@@ -224,6 +205,16 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
         minijuego->draw(tick_);
     
 }
+
+void Nodo::drawSuperiorLayer(renderEngine::rIntRect limit) {
+    for(int i = 0; i < superiorLayer.size(); ++i){
+        for(int j = 0; j < superiorLayer[i].size(); ++j){
+            superiorLayer[i][j].draw();
+            
+        }
+    }   
+}
+
 
 void Nodo::miniDraw(float tick_) {
     for(int i = 0; i < v_esprait.size(); i++)
@@ -234,9 +225,7 @@ void Nodo::miniDraw(float tick_) {
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
-    for(std::list<checkPoint>::iterator it = checkpoints.begin(); it != checkpoints.end(); ++it)
-        (*it).shape.draw();
-    
+
     for(int i = 0; i < powers.size(); i++)
         powers[i].sprite.draw();
 }
@@ -261,24 +250,6 @@ void Nodo::update(){
         
         Player* ready = (*players)[i];
         
-        std::list<checkPoint>::iterator it = checkpoints.begin();
-        while(it != checkpoints.end()){
-            if(ready->getXPosition() > (*it).shape.getPosition()[0]){
-                (*it).active = true;
-                (*it).shape.setOutlineColor('g');
-                maxXCheckPoint = (*it).shape.getPosition()[0];
-            }
-
-            ++it;
-        }
-        
-        it = checkpoints.begin();
-        while(it != checkpoints.end()){
-            if((*it).shape.getPosition()[0] < maxXCheckPoint)
-                checkpoints.erase(it++);
-            else
-                ++it;
-        }
 
         // EVENTOS
         if(!ready->isInmortal())
@@ -325,4 +296,8 @@ void Nodo::newState(){
     for(int i = 0; i < npcs.size(); i++){
         npcs[i]->newState();
     }
+}
+
+void Nodo::setSpriteSheet(std::string path) {
+    spritesheet = AssetManager::GetTexture(path);
 }

@@ -46,7 +46,9 @@ Juego::Juego() {
     view->zoom(target_zoom);
     renderEngine::Instance().setView(*view);
     
-    
+    backgroundView = new renderEngine::rView(0, 0, renderEngine::Instance().getSize()[0], renderEngine::Instance().getSize()[1]);
+    backgroundView->zoom(1);
+            
     view->setCenter(view->getCenter()[0], CAM_H);
     
     //INTERPOLACION
@@ -163,22 +165,23 @@ void Juego::HandleEvents(){
                         //std::cout << "BUTTON: " << event.getJoystickButton() << std::endl;
                         switch (i){
                             case 0:
-                                std::cout << "J1" << std::endl;
+                                //std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = true;
                                 break;
                             case 1:
-                                std::cout << "J2" << std::endl;
+                                //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
                                 break;
                             case 2:
-                                std::cout << "J3" << std::endl;
+                                //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
                                 break;
                             case 3:
-                                std::cout << "J4" << std::endl;
+                                //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
                                 break;
@@ -193,22 +196,23 @@ void Juego::HandleEvents(){
                         //std::cout << "BUTTON: " << event.getJoystickButton() << std::endl;
                         switch (i){
                             case 0:
-                                std::cout << "J1" << std::endl;
+                                //std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = false;
                                 break;
                             case 1:
-                                std::cout << "J2" << std::endl;
+                                //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
                                 break;
                             case 2:
-                                std::cout << "J3" << std::endl;
+                                //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
                                 break;
                             case 3:
-                                std::cout << "J4" << std::endl;
+                                //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
                                 break;
@@ -515,32 +519,42 @@ void Juego::Render(){
         //std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;
         
         //COMENTAR EL IF SI SE QUIERE QUE LA CAMARA VAYA HACIA ATRAS
+        float m;
+        float difference;
+        
         if(cameraDirection == 0){
-            if(readyPlayer[n]->getXPosition()>view->getCenter()[0])
-                view->setCenter(readyPlayer[n]->getXPosition(), view->getCenter()[1]);
+            difference = readyPlayer[n]->getXPosition() - view->getCenter()[0];
+            if( difference > 12 ){
+                m = difference;
+                view->move(abs(m) / 15, 0);
+            }
+
         }    
         else{
-            if(readyPlayer[n]->getYPosition()<view->getCenter()[1])
+            if(readyPlayer[n]->getYPosition()<view->getCenter()[1]){
                 view->setCenter(view->getCenter()[0], readyPlayer[n]->getYPosition());
+            }
         }
         
-        //view->setCenter(view->getCenter()[0]+20, Mapa::Instance().getYMax()+1400);        // <- Esta línea hace que recorra el mapa la camara
+        //view->setCenter(view->getCenter()[0]+12, Mapa::Instance().getYMax()+1400);        // <- Esta línea hace que recorra el mapa la camara
                                                                                             // Si solo ves nubes, es porque se ha generado el minijueg de subir, y la altura se ha puesto automáticamente ahí, np.
         
     }
 
+    
+    
     renderEngine::Instance().setView(*view);
 
     //ACTUALIÇAÇAO DEL MAPA
     Mapa::Instance().updateMini();
+    
     Mapa::Instance().renderBackground();
+    
+    renderEngine::Instance().setView(*view);
     minirain.draw(tick);
     rain.draw(tick);
     Mapa::Instance().render(tick);
-    for(int i=0; i< readyPlayer.size(); i++){
-        readyPlayer[i]->draw();
-    }
-    
+   
     hud->render();
 
     renderEngine::Instance().display();
@@ -559,6 +573,10 @@ Juego::~Juego() {
     
     delete[] keys;
     keys = nullptr;
+    delete view;
+    view = nullptr;
+    delete backgroundView;
+    backgroundView = nullptr;
     std::cout << "Destroying game==================================" << std::endl;
 }
 

@@ -66,6 +66,7 @@ private:
     double tick; //PARA LA INTERPOLACION
     
     renderEngine::rView *view;
+    renderEngine::rView *backgroundView;
     
     //FPS
     renderEngine::rClock cl_fps;

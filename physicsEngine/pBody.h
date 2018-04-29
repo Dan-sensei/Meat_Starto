@@ -23,7 +23,7 @@ class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo
 
         pBody();
         pBody(const pBody& orig);
-
+        
         void setLinealVelocicity(float vx_, float vy_);      // Ajusta la velocidad lineal del cuerpo
         void applyForceToCenter(float vx_, float vy_);       // Añade una fuerza al centro del cuerpo
         void applyLinearImpulse(float ix_, float iy_);

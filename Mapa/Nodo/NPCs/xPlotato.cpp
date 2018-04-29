@@ -36,7 +36,7 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     
     //body = world->Instance().createBody(width, height, x_, y_, 'K');
     body = physicsEngine::Instance().createBody(width, height, x_, y_, 'd', t);
-    
+
     body.setUserData(t);
     
 
