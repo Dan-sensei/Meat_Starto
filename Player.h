@@ -127,6 +127,29 @@ private:
     
     int muertes;
     int enemigos;
+    
+    renderEngine::rImage indicadores_power;
+    struct indicador{
+        renderEngine::rIntRect *ir;
+        renderEngine::rTexture t;
+        renderEngine::rSprite sprite;
+    };
+    indicador *invincible;
+    indicador *speed;
+    
+    indicador *expup;
+    renderEngine::rClock exp_clock;
+    
+    indicador *freeze;
+    bool freezed;
+    renderEngine::rClock frigoclock;
+    
+    indicador *controls;
+    renderEngine::rClock controls_clock;
+    bool inv_control;
+    
+    indicador *lvl1;
+    renderEngine::rClock baby_clock;
 };
 
 #endif /* PLAYER_H */

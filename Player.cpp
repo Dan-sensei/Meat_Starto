@@ -171,6 +171,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     
     inmortal = false;
+    freezed = false;
+    inv_control = false;
     exp_for_next_level = 500;
     exp = 0;
     
@@ -197,6 +199,14 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     stopJump = false;
     muertes=0;
     enemigos=0;
+    
+    indicadores_power.loadFromFIle("assets/powers/indicadores_power.png");
+    invincible = NULL;
+    speed = NULL;
+    expup = NULL;
+    freeze = NULL;
+    controls = NULL;
+    lvl1 = NULL;
 }
 
 Player::~Player() {
@@ -253,6 +263,25 @@ void Player::update(){
     }
     animator.Update(animationClock.restart());
     
+    
+    if(invincible){
+        invincible->sprite.setPosition(sprite.getPosition()[0]-135,sprite.getPosition()[1]+50);
+    }
+    if(speed){
+        speed->sprite.setPosition(sprite.getPosition()[0]-135,sprite.getPosition()[1]+50);
+    }
+    if(expup){
+        expup->sprite.setPosition(sprite.getPosition()[0]-135,sprite.getPosition()[1]+50);
+    }
+    if(freeze){
+        freeze->sprite.setPosition(sprite.getPosition()[0]-135,sprite.getPosition()[1]+50);
+    }
+    if(controls){
+        controls->sprite.setPosition(sprite.getPosition()[0]-120,sprite.getPosition()[1]-120);
+    }
+    if(lvl1){
+        lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
+    }
 }
 
 void Player::double_hit(bool b){
@@ -348,85 +377,153 @@ void Player::movement(){
     }
     
     preState();
-    //GOLPE
-    if(keys[key_hit]){
-        hit=true;
-        if(animator.GetCurrentAnimationName()== "a_rigth" || animator.GetCurrentAnimationName()== "a_base_r" || animator.GetCurrentAnimationName()== "a_jump_r"){
-            //Golpe hacia la derecha
-            mano.setScale(1,1);           
+    if(!freezed){
+        //GOLPE
+        if(keys[key_hit]){
+            hit=true;
+            if(animator.GetCurrentAnimationName()== "a_rigth" || animator.GetCurrentAnimationName()== "a_base_r" || animator.GetCurrentAnimationName()== "a_jump_r"){
+                //Golpe hacia la derecha
+                mano.setScale(1,1);           
+            }else{
+                //golpe a la izquierda
+                mano.setScale(-1,1);
+            }        
+
         }else{
-            //golpe a la izquierda
-            mano.setScale(-1,1);
-        }        
+            if(hit==true){
+                hit=false;
+            }      
+        }
+
+        // SALTO==========================================================================
+        if((keys[key_up]) && !isOnAir()){                                               //
+            body.applyForceToCenter(0, -jump);                                          //
+            moveUp();                                                                   //
+            stopJump = false;                                                           //
+        }else{                                                                          //
+            //IZQUIERDA===================================================================
+            if( keys[key_l])  {
+                if(!inv_control){
+                    if(body.getLinearXVelocity() > -MAXSPEED)                               
+                        body.applyForceToCenter(-force, 0);                                 
+                    else                                                                      
+                        body.setLinealVelocicity(-MAXSPEED, body.getLinearYVelocity());     
+                    if(!isOnAir()){                                                         
+                        moveLeft();                                                         
+                    }                                                                       
+                }
+                else{
+                    if(body.getLinearXVelocity() < MAXSPEED)                                   
+                        body.applyForceToCenter(force, 0);                                  
+                    else                                                                      
+                        body.setLinealVelocicity(MAXSPEED, body.getLinearYVelocity());         
+                    if(!isOnAir()){
+                        moveRigth();
+                    } 
+                }
+            }                                                                           
+            // ===========================================================================
+
+            // DERECHA==================================================================
+            if( keys[key_r]) { 
+                if(!inv_control){
+                    if(body.getLinearXVelocity() < MAXSPEED)                                   
+                        body.applyForceToCenter(force, 0);                                  
+                    else                                                                      
+                        body.setLinealVelocicity(MAXSPEED, body.getLinearYVelocity());         
+                    if(!isOnAir()){
+                        moveRigth();
+                    }                                                                       
+                }
+                else{
+                    if(body.getLinearXVelocity() > -MAXSPEED)                               
+                        body.applyForceToCenter(-force, 0);                                 
+                    else                                                                      
+                        body.setLinealVelocicity(-MAXSPEED, body.getLinearYVelocity());     
+                    if(!isOnAir()){                                                         
+                        moveLeft();                                                         
+                    } 
+                }
+            }                                                                           
+            // ===========================================================================
+
+        }           
+        //-30
+        //-13
+
+        if(isOnAir()){
+            if(!keys[key_up] && !stopJump){
+                if(body.getLinearYVelocity() < -minJumpVelocity){
+                    stopJump = true;
+                    body.setLinealVelocicity(body.getLinearXVelocity(), -minJumpVelocity);
+                } 
+            }
+        }
+        // =============================================================================//    
+
+        //STOP CON DESLIZAMIENTO FRENADO==========================================================================
+        if(!keys[key_l] && body.getLinearXVelocity() < -3){                                                     //
+            body.applyForceToCenter(force*stop_mult, 0);
+            //!inv_control? body.applyForceToCenter(force*stop_mult, 0) : body.applyForceToCenter(-force*stop_mult, 0);
+        }                                                                                                       //
+        else if(!keys[key_r] && body.getLinearXVelocity() > 3)                                                  //
+            body.applyForceToCenter(-force*stop_mult, 0);
+            //!inv_control? body.applyForceToCenter(-force*stop_mult, 0) : body.applyForceToCenter(force*stop_mult, 0);
+                                                                                                                // 
+        if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -3 && body.getLinearXVelocity() <= 3){  //
+            body.applyForceToCenter(0, 0);                                                                      //
+            body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
+        }                                                                                                       //
+        //  ======================================================================================================
         
-    }else{
-        if(hit==true){
-            hit=false;
-        }      
-    }
-    
-    // SALTO==========================================================================
-    if((keys[key_up]) && !isOnAir()){                                               //
-        body.applyForceToCenter(0, -jump);                                          //
-        moveUp();                                                                   //
-        stopJump = false;                                                           //
-    }else{                                                                          //
-        //IZQUIERDA===================================================================
-        if( keys[key_l])  {                                                         //
-            if(body.getLinearXVelocity() > -MAXSPEED)                               //
-                body.applyForceToCenter(-force, 0);                                 //
-            else                                                                    //  
-                body.setLinealVelocicity(-MAXSPEED, body.getLinearYVelocity());     //
-            if(!isOnAir()){                                                         //
-                moveLeft();                                                         //
-            }                                                                       //
-        }                                                                           //
-        // ===========================================================================
+        if(key_suicide != -1 && keys[key_suicide]){
+            std::cout << "BUM" << std::endl;
 
-        // DERECHA==================================================================
-        if( keys[key_r]) {                                                          //
-            if(body.getLinearXVelocity() < MAXSPEED)                                   //
-                body.applyForceToCenter(force, 0);                                  //
-            else                                                                    //  
-                body.setLinealVelocicity(MAXSPEED, body.getLinearYVelocity());         //
-            if(!isOnAir()){
-                moveRigth();
-            }                                                                       //
+            if(!inmortal){
+                Mapa::Instance().movePlayerToClosestCheckPoint(this);
+                lvlDown();           
+            }
 
-        }                                                                           //
-        // ===========================================================================
-        
-    }           
-    //-30
-    //-13
+            std::vector<Player*>* players = Juego::Instance().getPlayers();
+            for(int i=0 ; i<players->size() ; i++){
+                Player* ready = (*players)[i];
+                int x = ready->getXPosition()-sprite.getPosition()[0];
+                int y = ready->getYPosition()-sprite.getPosition()[1];
 
-    if(isOnAir()){
-        if(!keys[key_up] && !stopJump){
-            if(body.getLinearYVelocity() < -minJumpVelocity){
-                stopJump = true;
-                body.setLinealVelocicity(body.getLinearXVelocity(), -minJumpVelocity);
-            } 
+                if(sqrt(x*x+y*y)<150){
+                    Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                    ready->lvlDown();
+                }
+            }
+
+            keys[key_suicide] = false;
         }
     }
-    // =============================================================================//    
-
-    //STOP CON DESLIZAMIENTO FRENADO==========================================================================
-    if(!keys[key_l] && body.getLinearXVelocity() < -3){                                                     //
-        body.applyForceToCenter(force*stop_mult, 0);                                                        //
-    }                                                                                                       //
-    else if(!keys[key_r] && body.getLinearXVelocity() > 3)                                                  //
-        body.applyForceToCenter(-force*stop_mult, 0);                                                       //
-                                                                                                            // 
-    if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -3 && body.getLinearXVelocity() <= 3){  //
-        body.applyForceToCenter(0, 0);                                                                      //
-        body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
-    }                                                                                                       //
-    //  ======================================================================================================
+    
+    if(freezed && frigoclock.getElapsedTime().asSeconds()>0.5){
+        delete freeze;
+        freeze = NULL;
+        
+        freezed = false;
+    }
+    
+    if(inv_control && controls_clock.getElapsedTime().asSeconds()>1){
+        delete controls;
+    
+        controls = NULL;
+        
+        inv_control = false;
+    }
     
     if(inmortal){
         if(inmortalityClock.getElapsedTime().asSeconds() > inmortalityTime){
-            std::cout << "VUELVE A LA TIERRA CHATO" << std::endl;
+            //std::cout << "VUELVE A LA TIERRA CHATO" << std::endl;
             inmortal = false;
+            
+            if(invincible){
+                delete invincible;
+                invincible = NULL;
+            }
         }
     }
     
@@ -434,30 +531,12 @@ void Player::movement(){
         if(speedClock.getElapsedTime().asSeconds() > speedTime){
             std::cout << "SE ACABÓ EL GAS WE" << std::endl;
             MAXSPEED = constMaxSeed;
-        }
-    }
-    
-    if(key_suicide != -1 && keys[key_suicide]){
-        std::cout << "BUM" << std::endl;
-        
-        if(!inmortal){
-            Mapa::Instance().movePlayerToClosestCheckPoint(this);
-            lvlDown();           
-        }
-        
-        std::vector<Player*>* players = Juego::Instance().getPlayers();
-        for(int i=0 ; i<players->size() ; i++){
-            Player* ready = (*players)[i];
-            int x = ready->getXPosition()-sprite.getPosition()[0];
-            int y = ready->getYPosition()-sprite.getPosition()[1];
             
-            if(sqrt(x*x+y*y)<150){
-                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-                ready->lvlDown();
+            if(speed){
+                delete speed;
+                speed = NULL;
             }
         }
-        
-        keys[key_suicide] = false;
     }
     
     if(abs(body.getLinearYVelocity())>1){
@@ -475,7 +554,16 @@ void Player::movement(){
     //blood.howManyParticlesAre();
     //std::cout << blood.getXPosition() << ", " << blood.getYPosition() << std::endl;
     //blood.update();
+    
+    if(expup && exp_clock.getElapsedTime().asSeconds()>1){
+        delete expup;
+        expup = NULL;
+    }
    
+    if(lvl1 && baby_clock.getElapsedTime().asSeconds()>1){
+        delete lvl1;
+        lvl1 = NULL;
+    }
 }
 
 void Player::interpola(float tick_){
@@ -497,11 +585,32 @@ std::string Player::anima(){
 
 void Player::draw(){
     
+    
     if(hit==true){
         mano.draw();
     }
     sprite.draw();
     //blood.NoUsarEstedraw();
+    
+    
+    if(invincible){
+        invincible->sprite.draw();
+    }
+    if(speed){
+        speed->sprite.draw();
+    }
+    if(expup){
+        expup->sprite.draw();
+    }
+    if(freeze){
+        freeze->sprite.draw();
+    }
+    if(controls){
+        controls->sprite.draw();
+    }
+    if(lvl1){
+        lvl1->sprite.draw();
+    }
 }
 
 void Player::preState(){
@@ -536,12 +645,26 @@ void Player::setAir(int i){
 
 void Player::powerUpInmortalidad() {
     std::cout << "INMORTALIDAD!" << std::endl;
+    
+    invincible = new indicador;
+    invincible->ir = new renderEngine::rIntRect(0,88,135,44);
+    invincible->t.loadFromImage(indicadores_power,*invincible->ir);
+    invincible->sprite.setTexture(invincible->t);
+    invincible->sprite.setScale(2,2);
+    
     inmortal = true;
     inmortalityClock.restart();
 }
 
 void Player::powerUpSpeed() {
     std::cout << "SPEED!" << std::endl;
+    
+    speed = new indicador;
+    speed->ir = new renderEngine::rIntRect(0,0,135,44);
+    speed->t.loadFromImage(indicadores_power,*speed->ir);
+    speed->sprite.setTexture(speed->t);
+    speed->sprite.setScale(2,2);
+    
     MAXSPEED += 3;
     speedClock.restart();
 }
@@ -557,24 +680,94 @@ void Player::powerUpExperience() {
     else
         exp += newExp;
     
-}
-
-
-void Player::powerDownJump() {
-    std::cout << "JUMP!" << std::endl;
+    expup = new indicador;
+    expup->ir = new renderEngine::rIntRect(0,44,135,44);
+    expup->t.loadFromImage(indicadores_power,*expup->ir);
+    expup->sprite.setTexture(expup->t);
+    expup->sprite.setScale(2,2);
+    
+    exp_clock.restart();
+    
 }
 
 void Player::powerDownFreeze() {
     std::cout << "FREEZE!" << std::endl;
+    //UN CALIPPO DE FRESA POR FAVOR
+    
+    std::vector<Player*>* v_players = Juego::Instance().getPlayers();
+    
+    for(int i=0 ; i<v_players->size() ; i++){
+        if(i!=id){
+            Player* ready = (*v_players)[i];
+            
+            ready->freeze = new indicador;
+            ready->freeze->ir = new renderEngine::rIntRect(0,132,135,44);
+            ready->freeze->t.loadFromImage(indicadores_power,*ready->freeze->ir);
+            ready->freeze->sprite.setTexture(ready->freeze->t);
+            ready->freeze->sprite.setScale(2,2);
+            
+            ready->frigoclock.restart();
+            ready->freezed = true;
+            
+        }
+    }
+    
 
 }
 
+void Player::powerDownJump() {
+    std::cout << "JUMP!" << std::endl;
+    //FLANTASTICO
+    
+    std::vector<Player*>* v_players = Juego::Instance().getPlayers();
+    
+    for(int i=0 ; i<v_players->size() ; i++){
+        if(i!=id){
+            Player* ready = (*v_players)[i];
+            
+            ready->body.applyLinearImpulse(0,-25);
+        }
+    }
+    
+}
+
+
 void Player::powerDownLevelOne() {
     std::cout << "VUELVES AL LEVEL ONE" << std::endl;
+    if(level!=1){
+        lvl1 = new indicador;
+        lvl1->ir = new renderEngine::rIntRect(0,286,65,40);
+        lvl1->t.loadFromImage(indicadores_power,*lvl1->ir);
+        lvl1->sprite.setTexture(lvl1->t);
+        lvl1->sprite.setScale(2,2);
+
+        baby_clock.restart();
+        level = 1;
+    }
 }
 
 void Player::powerDownFish() {
     std::cout << "CONTROLES INVERTIDOS!" << std::endl;
+    
+    std::vector<Player*>* v_players = Juego::Instance().getPlayers();
+    
+    for(int i=0 ; i<v_players->size() ; i++){
+        if(i!=id){
+            Player* ready = (*v_players)[i];
+            
+            ready->controls = new indicador;
+            ready->controls->ir = new renderEngine::rIntRect(0,176,107,110);
+            ready->controls->t.loadFromImage(indicadores_power,*ready->controls->ir);
+            ready->controls->sprite.setTexture(ready->controls->t);
+            ready->controls->sprite.setScale(2,2);
+            
+            ready->controls_clock.restart();
+            ready->inv_control = true;
+            
+        }
+    }
+    
+    
 }
 
 

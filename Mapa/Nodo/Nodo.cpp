@@ -39,6 +39,7 @@ Nodo::Nodo() {
     maxXCheckPoint = 0;
     
     minijuego = nullptr;
+    img_powers.loadFromFIle("assets/powers/power.png");
 }
 
 Nodo::Nodo(const Nodo& orig) {
@@ -176,15 +177,15 @@ Minijuego* Nodo::addMinigame(int type, int x, int y, int width, int height, std:
 void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     power p;
     p.id = id;
-    
+
     std::string sprite[7];
-    sprite[0] = "assets/powerUp.png";       // Estrella
-    sprite[1] = "assets/powerUp.png";       // Café
-    sprite[2] = "assets/powerUp.png";       // Carne
-    sprite[3] = "assets/powerDown.png";     // Flan
-    sprite[4] = "assets/powerDown.png";     // Helado
-    sprite[5] = "assets/powerDown.png";     // Biberón
-    sprite[6] = "assets/powerDown.png";     // Pescado
+    sprite[0] = "assets/powers/cafe.png";       // Estrella
+    sprite[1] = "assets/powers/cafe.png";           // Café
+    sprite[2] = "assets/powers/carne.png";          // Carne
+    sprite[3] = "assets/powers/flan.png";           // Flan
+    sprite[4] = "assets/powers/helado.png";         // Helado
+    sprite[5] = "assets/powers/biberon.png";        // Biberón
+    sprite[6] = "assets/powers/pescado.png";        // Pescado
     
     std::string target = sprite[id];
     
@@ -194,6 +195,7 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     
     p.sprite.setTexture(AssetManager::GetTexture(target));
     p.sprite.setOrigin(sizeY, sizeX);
+    p.sprite.setScale(4,4);
     p.sprite.setPosition(newX, y_);
     powers.push_back(p);
 }
