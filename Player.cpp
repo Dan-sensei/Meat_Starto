@@ -51,7 +51,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, bottom);
 
     onAir = 0;
-    level=3;
+    level=1;
 
     hit=false;
     dead=false;
@@ -228,7 +228,18 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     controls = NULL;
     lvl1 = NULL;
     
-    //escudo = NULL;
+    escudo = false;
+    
+     /*escudo*/
+    std::string sprite_name1 = "assets/powers/indicador_escudo.png";
+    
+    int widthp = AssetManager::GetTexture(sprite_name1).getXSize();
+    int heightp = AssetManager::GetTexture(sprite_name1).getYSize();
+    
+    spescudo.setTexture(AssetManager::GetTexture(sprite_name1));
+    spescudo.setOrigin(widthp / 2, heightp / 2);
+    spescudo.setScale(1, 1);
+
 }
 
 Player::~Player() {
@@ -304,9 +315,7 @@ void Player::update(){
     if(lvl1){
         lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
     }
-   /* if(escudo){
-        escudo->sprite.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
-    }*/
+ 
 }
 
 void Player::double_hit(bool b){
@@ -490,7 +499,12 @@ void Player::movement(){
                     int y = ready->getYPosition()-sprite.getPosition()[1];
 
                     if(id != ready->getId() && sqrt(x*x+y*y)<150){
-                        Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                         if(ready->escudo==false){
+                            Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                            //ready->lvlDown();
+                        }else{
+                            ready->escudo=false;
+                        }
                     }
                 }
 
@@ -650,9 +664,7 @@ void Player::draw(){
     if(lvl1){
         lvl1->sprite.draw();
     }
-   /* if(escudo){
-        escudo->sprite.draw();
-    }*/
+ 
 }
 
 void Player::preState(){
@@ -836,14 +848,15 @@ bool Player::isInmortal() {
 }
 
 void Player::lvlDown() {
-    if(level>0 /*&& escudo==NULL*/){
+    if(level>0){
         level--;
         
          switch(level){
-          /* case 0:
+           /*case 0:
                 no puede explotar
                 break;*/
             case 1: 
+                escudo=false;
                 //pierde rango de golpeo
                 double_hit(false);
                 break;
@@ -851,11 +864,7 @@ void Player::lvlDown() {
                 //pierde velocidad
                 MAXSPEED-=3;
                 break;
-        }
-   /* }else if(escudo){
-            delete escudo;
-            escudo = NULL;*/
-            
+        }            
     }else if(level==0){
         //MUERE
     }
@@ -879,14 +888,8 @@ void Player::lvlUp() {
                 MAXSPEED+=3;
                 break;
             case 4:
-                 /*       std::cout << "subo: " << std::endl;
-
                 //poner escudo
-                escudo = new indicador;
-                escudo->ir = new renderEngine::rIntRect(0,176,107,110);
-                escudo->t.loadFromImage(indicador_escudo,*escudo->ir);
-                escudo->sprite.setTexture(escudo->t);
-                escudo->sprite.setScale(2,2);*/
+                escudo = true;                
                 break;
 
         }

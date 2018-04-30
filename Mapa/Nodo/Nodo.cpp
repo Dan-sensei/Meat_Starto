@@ -274,17 +274,24 @@ void Nodo::update(){
     
 }
 
+
 void Nodo::checkColisionsPinchos(Player* ready) {
     bool flag = false;
     //Colision con pinchos
     for(int j = 0; j < pinchos.size() && !flag; j++){
         if(ready->getSprite().intersects(pinchos[j])){
-            Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+            if(ready->escudo==false){
+
+                Mapa::Instance().movePlayerToClosestCheckPoint(ready); 
             //ready->lvlDown();
             flag = true;
+            }else{
+                ready->escudo=false;
+            }
         }
     }
 }
+
 
 void Nodo::preState(){
     for(int i = 0; i < npcs.size(); i++){

@@ -94,6 +94,8 @@ public:
     void transportToSecondPhase(float x, float y);
     std::string anima();
     
+    bool escudo;
+    
 private:
     int id;
     int level;
@@ -158,7 +160,8 @@ private:
     
     indicador *lvl1;
     renderEngine::rClock baby_clock;
-   // indicador *escudo;
+        renderEngine::rSprite spescudo;
+
 };
 
 #endif /* PLAYER_H */

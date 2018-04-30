@@ -88,7 +88,7 @@
     //TETRIS
     mj_t *tetris;
     tetris->Instance();     //INICIALIZO EL SINGLETON
-    m_tetris = true;
+    m_tetris = false;
     
     //BOSS
     boss *javi;
