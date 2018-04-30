@@ -51,7 +51,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, bottom);
 
     onAir = 0;
-    level=1;
+    level=3;
 
     hit=false;
     dead=false;
@@ -239,6 +239,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     spescudo.setTexture(AssetManager::GetTexture(sprite_name1));
     spescudo.setOrigin(widthp / 2, heightp / 2);
     spescudo.setScale(1, 1);
+    
+    lvlUp();
 
 }
 
@@ -314,6 +316,10 @@ void Player::update(){
     }
     if(lvl1){
         lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
+    }
+     if(escudo==true){
+        spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
+
     }
  
 }
@@ -664,6 +670,10 @@ void Player::draw(){
     if(lvl1){
         lvl1->sprite.draw();
     }
+    if(escudo==true){
+        spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
+        spescudo.draw();
+    }
  
 }
 
@@ -852,9 +862,7 @@ void Player::lvlDown() {
         level--;
         
          switch(level){
-           /*case 0:
-                no puede explotar
-                break;*/
+
             case 1: 
                 escudo=false;
                 //pierde rango de golpeo
@@ -876,9 +884,6 @@ void Player::lvlUp() {
         level++;
         
         switch(level){
-           /* case 1:
-                puede explotar
-               break;*/
             case 2:
                 //mayor rango de golpeo
                 double_hit(true);
