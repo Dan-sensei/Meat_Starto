@@ -21,7 +21,7 @@
 #include "Juego.h"
 #include "Player.h"
 
-#define NUMBER_OF_ITEMS 3
+#define NUMBER_OF_ITEMS 4
 #define NUMBER_OF_ITEMS2 2
 
 class MenuPausa: public State{
@@ -38,19 +38,20 @@ public:
     void Render();
     
     static MenuPausa* Instance();//Singleton
+    bool god_mode;
     
 private:
   int selectedItemIndex;
     int selectedItemIndex2;
 
     int statemenu;
-    sf::Font font;
-    sf::Text menu[NUMBER_OF_ITEMS];
-    sf::Text  titulo;
+    renderEngine::rFont font;
+    renderEngine::rText menu[NUMBER_OF_ITEMS];
+    renderEngine::rText  titulo;
     static MenuPausa* instance;
     
-    sf::Text  titulo2;
-    sf::Text menuhow;;
+    renderEngine::rText  titulo2;
+    renderEngine::rText menuhow;;
 
     float width;
     float height;

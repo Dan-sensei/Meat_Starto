@@ -31,8 +31,8 @@ public:
     
     
 private:
-    sf::Font font;
-    sf::Text menu[3];
+    renderEngine::rFont font;
+    renderEngine::rText menu[3];
     renderEngine::rSprite hudsprite;
     std::vector<Player*> players;
     

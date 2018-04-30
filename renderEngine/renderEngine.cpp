@@ -387,6 +387,7 @@ void renderEngine::rText::setFillColor(char c) {
         case 'b':   txt.setFillColor(sf::Color::Blue);           break;
         case 'y':   txt.setFillColor(sf::Color::Yellow);         break;
         case 'k':   txt.setFillColor(sf::Color::Black);          break;
+        case 'w':   txt.setFillColor(sf::Color::White);          break;
         default:    break;
     }
 }

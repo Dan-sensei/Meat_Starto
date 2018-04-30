@@ -51,18 +51,17 @@ private:
     int selectedItemIndex2;
     int selectedItemIndex3;
    // int selectedItemIndex4;
-    sf::Font font;
-    sf::Text menu[MAX_NUMBER_OF_ITEMS];
-    sf::Text menuop[MAX_NUMBER_OF_ITEMS2];
-    sf::Text menuplayer[MAX_NUMBER_OF_ITEMS3];
-    sf::Sprite fondo;
+    renderEngine::rFont font;
+    renderEngine::rText menu[MAX_NUMBER_OF_ITEMS];
+    renderEngine::rText menuop[MAX_NUMBER_OF_ITEMS2];
+    renderEngine::rText menuplayer[MAX_NUMBER_OF_ITEMS3];
+    renderEngine::rSprite fondo;
     int statemenu;
-    sf::Text  titulo;
-    sf::Text  titulo2;
-    sf::Text titulo3;
-    sf::Text titulo4;
-    sf::Text menuhow;
-    sf::RenderWindow* window;
+    renderEngine::rText  titulo;
+    renderEngine::rText  titulo2;
+    renderEngine::rText titulo3;
+    renderEngine::rText titulo4;
+    renderEngine::rText menuhow;
     static MenuInicio* instance;
     
     float width;

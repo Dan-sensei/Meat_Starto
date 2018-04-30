@@ -59,20 +59,16 @@ MPuntuaciones::MPuntuaciones() {
 
     
   
-    if (!font.loadFromFile("resources/fuente.ttf"))
-     {
-             std::cerr << "Error cargando la imagen sprite.png";
-             exit(0);	
-     }
+    font.loadFromFile("resources/fuente.ttf");
 
     titulo.setFont(font);
     titulo.setCharacterSize(56);
-    titulo.setFillColor(sf::Color::Black);
+    titulo.setFillColor('k');
     titulo.setString("Score");
 
     tsalir.setFont(font);
     tsalir.setCharacterSize(50);
-    tsalir.setFillColor(sf::Color::White);
+    tsalir.setFillColor('w');
     tsalir.setString("Exit");
 
     titulo.setPosition(posx-width/15, posy-height/2.75);   
@@ -82,9 +78,9 @@ MPuntuaciones::MPuntuaciones() {
     jugadores= Juego::Instance().getPlayers();
     
 
-    menu= new sf::Text*[MenuInicio::Instance()->numplayers];
+    menu= new renderEngine::rText*[MenuInicio::Instance()->numplayers];
     for(int i=0; i<MenuInicio::Instance()->numplayers; i++){
-        menu[i]= new sf::Text[5];
+        menu[i]= new renderEngine::rText[5];
     }
     sprite=new renderEngine::rSprite[MenuInicio::Instance()->numplayers];
     
@@ -94,8 +90,8 @@ MPuntuaciones::MPuntuaciones() {
         for(int j=0; j<5; j++){
       //imprime el numero de player
         menu[i][j].setFont(font);
-        menu[i][j].setCharacterSize(30);
-        menu[i][j].setFillColor(sf::Color::Black);
+        menu[i][j].setCharacterSize(40);
+        menu[i][j].setFillColor('k');
 
         }
         switch(MenuInicio::Instance()->numplayers){
@@ -212,19 +208,19 @@ MPuntuaciones::~MPuntuaciones() {
 
 void MPuntuaciones::Render(){
 
-    sfml->Instance().clear('k');
+    renderEngine::Instance().clear('k');
     f1.draw();
     mancha.draw();
     personaje.draw();
     for(int i=0; i<MenuInicio::Instance()->numplayers; i++){
         sprite[i].draw();
         for(int j=0; j<5; j++){
-            sfml->Instance().getWindow()->draw(menu[i][j]);
+            menu[i][j].draw();
         }
     }
-    sfml->Instance().getWindow()->draw(titulo);
-    sfml->Instance().getWindow()->draw(tsalir);
-    sfml->Instance().getWindow()->display();
+    titulo.draw();
+    tsalir.draw();
+    renderEngine::Instance().display();
     
 }
 
