@@ -33,6 +33,8 @@ private:
     bool xplotar;
     int pj;
     renderEngine::rClock xclock;
+    renderEngine::rClock animationClock;
+    Animator animator;
     
     physicsEngine::type* t;
     int x_begin;

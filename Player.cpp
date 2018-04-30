@@ -51,7 +51,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
 
     onAir = 0;
     level=1;
-
+    hit=false;
     
     
     sprite.setOrigin(48/2, 40/2+4);
@@ -60,40 +60,49 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     //Asigna la textura con su color dependiendo del id del jugador
         case 0:
                 texture="assets/player0a.png";
+                texture2= "assets/player0explosion.png";
                 //KeyCode                
                 key_r=3;
                 key_l=0;
                 key_up=22;
                 key_hit=4;
-                key_suicide=28;
+                //key_suicide=28;
+                key_suicide=57;
+                
         break;
         case 1:
                 texture="assets/player1a.png";
+                texture2= "assets/player1explosion.png";
                 //KeyCode                
                 key_r=72;
                 key_l=71;
                 key_up=73;
                 key_hit=4;
-                key_suicide=-1;
+                //key_suicide=-1;
+                key_suicide=57;
                 //sprite.setPosition(x_, y_);
         break;
         case 2:
                 texture="assets/player2a.png"; 
+                texture2= "assets/player2explosion.png";
                 //KeyCode                
                 key_r=-1;
                 key_l=10;
                 key_up=14;
                 key_hit=4;    
-                key_suicide=-1;
+                //key_suicide=-1;
+                key_suicide=57;
         break;
         case 3:
                 texture="assets/player3a.png"; 
+                texture2= "assets/player3explosion.png";
                 //KeyCode                
                 key_r=13;
                 key_l=21;
                 key_up=6;
                 key_hit=4;                       
-                key_suicide=-1;
+                //key_suicide=-1;
+                key_suicide=57;
         break;                           
     }
    /*MANO*/
@@ -161,6 +170,12 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     a_fall_l->AddFrames(sf::Vector2i(0,120), spriteSize ,3);
     Animator::Animation*  a_fall_r = &animator.CreateAnimation("a_fall_r",texture, renderEngine::rTime(0.5), false);
     a_fall_r->AddFrames(sf::Vector2i(180,120), spriteSize ,3);
+    
+    //Para suicidio
+    Animator::Animation*  xplota = &animator.CreateAnimation("xplota",texture2, renderEngine::rTime(0.5), false);
+    xplota->AddFrames(sf::Vector2i(0,0), sf::Vector2i(225,140) ,4);
+    xplota->AddFrames(sf::Vector2i(0,140), sf::Vector2i(225,140) ,4);
+    xplota->AddFrames(sf::Vector2i(0,280), sf::Vector2i(225,140) ,3);
    
     previous.x = actual.x = body.getXPosition();
     previous.y = actual.y = body.getYPosition();
@@ -478,6 +493,10 @@ void Player::movement(){
         
         if(key_suicide != -1 && keys[key_suicide]){
             std::cout << "BUM" << std::endl;
+            if(animator.GetCurrentAnimationName() != "xplota"){
+                sprite.setOrigin(90+48/2 , 100 + 40/2+4);
+                animator.SwitchAnimation("xplota"); 
+            }
 
             if(!inmortal){
                 Mapa::Instance().movePlayerToClosestCheckPoint(this);

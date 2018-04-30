@@ -97,6 +97,7 @@ private:
     int level;
     std::string name; 
     std::string texture;
+    std::string texture2;
     renderEngine::rSprite sprite;
     renderEngine::rSprite mano;    
     bool hit;

@@ -18,15 +18,24 @@
 
 #define velocity 2.f
 
-xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
+xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) : animator(sprite) {
     //std::cout << "Creando xPlotato" << std::endl;
 
-    std::string sprite_name = "assets/kawaii_potato.png";
+    std::string sprite_name = "assets/potatoboy1.png";
+    /*ANIMACIONES*/
+    Animator::Animation*  base = &animator.CreateAnimation("base","assets/potatoboy1.png", renderEngine::rTime(1), false);
+    base->AddFrames(sf::Vector2i(0,420), sf::Vector2i(65,65) ,1);
+    animator.SwitchAnimation("base");
     
-    int width = AssetManager::GetTexture(sprite_name).getXSize();
-    int height = AssetManager::GetTexture(sprite_name).getYSize();
+    
+    Animator::Animation*  xplota = &animator.CreateAnimation("xplota","assets/potatoboy1.png", renderEngine::rTime(0.5), false);
+    xplota->AddFrames(sf::Vector2i(0,0), sf::Vector2i(225,140) ,4);
+    xplota->AddFrames(sf::Vector2i(0,140), sf::Vector2i(225,140) ,5);    
+    
+    int width = 65;
+    int height = 65;
 
-    sprite.setTexture(AssetManager::GetTexture(sprite_name));
+
     sprite.setOrigin(width / 2, height / 2);
     sprite.setPosition(x_, y_);
     
@@ -58,7 +67,7 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) {
     xplosion = NULL;
 }
 
-xPlotato::xPlotato(const xPlotato& orig) {
+xPlotato::xPlotato(const xPlotato& orig): animator(sprite) {
     t = orig.t;
     x_begin = orig.x_begin;
     x_end = orig.x_end;
@@ -104,10 +113,17 @@ void xPlotato::update(){
         //std::cout << xclock.getElapsedTime().asSeconds() << std::endl;
         if(xclock.getElapsedTime().asSeconds() > 2.8){
             if(!xplosion){
+                sprite.setOrigin(112,120);
+                if(animator.GetCurrentAnimationName()!="xplota"){
+                    animator.SwitchAnimation("xplota");
+                }
+                
+                /*
                 xplosion = new renderEngine::rCircleShape(140,30);
                 xplosion->setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
                 xplosion->setFillColor('r');
                 xplosion->setOrigin(140,140);
+                 */
             }
         }
         if(xclock.getElapsedTime().asSeconds() > 3){
@@ -120,25 +136,29 @@ void xPlotato::update(){
         
         if(abs(body.getLinearXVelocity()) < 1){
             body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            sprite.setScale(-1, 1);
+            //sprite.setScale(-1, 1);
         }
 
         if(target == x_begin && body.getXPosition() <= target ){
             target = x_end;
             body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-            sprite.setScale(1, 1);
+            //sprite.setScale(1, 1);
 
         }
         else if(target == x_end && body.getXPosition() >= target){
             target = x_begin;
             body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            sprite.setScale(-1, 1);
+            //sprite.setScale(-1, 1);
         }
     }
     
     if(xplosion){
         xplosion->setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
+        if(animator.GetCurrentAnimationName()!="xplota"){
+                    animator.SwitchAnimation("xplota");
+            }
     }
+    animator.Update(animationClock.restart());
     
 }
 
@@ -161,11 +181,11 @@ void xPlotato::persigue() {
 void xPlotato::direccion() {
     if(sprite.getPosition()[0] > Juego::Instance().getPlayers()[0][pj]->getXPosition()){
         body.setLinealVelocicity(-4.f,body.getLinearYVelocity());
-        sprite.setScale(-1, 1);
+        //sprite.setScale(-1, 1);
     }
     else{
         body.setLinealVelocicity(4.f,body.getLinearYVelocity());
-        sprite.setScale(1, 1);
+        //sprite.setScale(1, 1);
     }
 }
 
