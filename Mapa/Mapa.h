@@ -73,9 +73,7 @@ private:
     bool secondPhase;                               // Determina si ha empezado la segunda etapa
     renderEngine::rRectangleShape transportation;   // Teletransporta al jugador a la segunda etapa
     std::vector<Factory::NodeStruct> NODOS;         // Nodos de la primera etapa
-    std::vector<Factory::NodeStruct> CAVE;          // Nodos de la segunda etapa
     std::vector<Factory::NodeStruct> MININODOS;     // Nodos de la transición
-    Factory::NodeStruct UP;                         // Nodo intermedio (Minijuego de subir)
     Factory::NodeStruct BOSS;                       // Nodo del boss
     Factory::NodeStruct SPECIAL;
     //----------------METODOS PRIVADOS
@@ -121,8 +119,7 @@ private:
 
     bool pop;       //TRUE: HAY QUE HACER POP DE lista_casillas
     
-    std::vector<int> matriz_v2[15];     // Guarda sólo los nodos a los que está conectada cada posición del array
-    std::vector<int> CAVE_MATRIX[11]; 
+    std::vector<int> matriz_v2[27];     // Guarda sólo los nodos a los que está conectada cada posición del array
     int nodo_actual;
     
     //TETRIS
