@@ -67,7 +67,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_up=22;
                 key_hit=4;
                 //key_suicide=28;
-                key_suicide=57;
+                key_suicide=37;
                 
         break;
         case 1:
@@ -79,7 +79,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_up=73;
                 key_hit=4;
                 //key_suicide=-1;
-                key_suicide=57;
+                key_suicide=42;
                 //sprite.setPosition(x_, y_);
         break;
         case 2:
@@ -91,7 +91,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_up=14;
                 key_hit=4;    
                 //key_suicide=-1;
-                key_suicide=57;
+                key_suicide=15;
         break;
         case 3:
                 texture="assets/player3a.png"; 
@@ -102,7 +102,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_up=6;
                 key_hit=4;                       
                 //key_suicide=-1;
-                key_suicide=57;
+                key_suicide=9;
         break;                           
     }
    /*MANO*/
@@ -461,63 +461,66 @@ void Player::movement(){
                 }
             }                                                                           
             // ===========================================================================
-
-        }           
-        //-30
-        //-13
-
-        if(isOnAir()){
-            if(!keys[key_up] && !stopJump){
-                if(body.getLinearYVelocity() < -minJumpVelocity){
-                    stopJump = true;
-                    body.setLinealVelocicity(body.getLinearXVelocity(), -minJumpVelocity);
-                } 
-            }
-        }
-        // =============================================================================//    
-
-        //STOP CON DESLIZAMIENTO FRENADO==========================================================================
-        if(!keys[key_l] && body.getLinearXVelocity() < -3){                                                     //
-            body.applyForceToCenter(force*stop_mult, 0);
-            //!inv_control? body.applyForceToCenter(force*stop_mult, 0) : body.applyForceToCenter(-force*stop_mult, 0);
-        }                                                                                                       //
-        else if(!keys[key_r] && body.getLinearXVelocity() > 3)                                                  //
-            body.applyForceToCenter(-force*stop_mult, 0);
-            //!inv_control? body.applyForceToCenter(-force*stop_mult, 0) : body.applyForceToCenter(force*stop_mult, 0);
-                                                                                                                // 
-        if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -3 && body.getLinearXVelocity() <= 3){  //
-            body.applyForceToCenter(0, 0);                                                                      //
-            body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
-        }                                                                                                       //
-        //  ======================================================================================================
-        
-        if(key_suicide != -1 && keys[key_suicide]){
-            std::cout << "BUM" << std::endl;
-            if(animator.GetCurrentAnimationName() != "xplota"){
-                sprite.setOrigin(90+48/2 , 100 + 40/2+4);
-                animator.SwitchAnimation("xplota"); 
-            }
-
-            if(!inmortal){
-                Mapa::Instance().movePlayerToClosestCheckPoint(this);
-                lvlDown();           
-            }
-
-            std::vector<Player*>* players = Juego::Instance().getPlayers();
-            for(int i=0 ; i<players->size() ; i++){
-                Player* ready = (*players)[i];
-                int x = ready->getXPosition()-sprite.getPosition()[0];
-                int y = ready->getYPosition()-sprite.getPosition()[1];
-
-                if(sqrt(x*x+y*y)<150){
-                    Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-                    ready->lvlDown();
+            if(key_suicide != -1 && keys[key_suicide]){
+                std::cout << "BUM" << std::endl;
+                if(animator.GetCurrentAnimationName() != "xplota"){
+                    sprite.setOrigin(90+48/2 , 100 + 40/2+4);
+                    animator.SwitchAnimation("xplota"); 
                 }
-            }
 
-            keys[key_suicide] = false;
+                if(!inmortal){
+                    Mapa::Instance().movePlayerToClosestCheckPoint(this);
+                    lvlDown();           
+                }
+
+                std::vector<Player*>* players = Juego::Instance().getPlayers();
+                for(int i=0 ; i<players->size() ; i++){
+                    Player* ready = (*players)[i];
+                    int x = ready->getXPosition()-sprite.getPosition()[0];
+                    int y = ready->getYPosition()-sprite.getPosition()[1];
+
+                    if(sqrt(x*x+y*y)<150){
+                        Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                        ready->lvlDown();
+                    }
+                }
+
+                keys[key_suicide] = false;
+            }
+            else if(!keys[key_suicide] && animator.GetCurrentAnimationName() == "xplota"){
+                animator.SwitchAnimation("a_base_l");
+                sprite.setOrigin(48/2, 40/2+4);
+            }
         }
     }
+    //-30
+    //-13
+
+    if(isOnAir()){
+        if(!keys[key_up] && !stopJump){
+            if(body.getLinearYVelocity() < -minJumpVelocity){
+                stopJump = true;
+                body.setLinealVelocicity(body.getLinearXVelocity(), -minJumpVelocity);
+            } 
+        }
+    }
+    // =============================================================================//    
+
+    //STOP CON DESLIZAMIENTO FRENADO==========================================================================
+    if(!keys[key_l] && body.getLinearXVelocity() < -3){                                                     //
+        body.applyForceToCenter(force*stop_mult, 0);
+        //!inv_control? body.applyForceToCenter(force*stop_mult, 0) : body.applyForceToCenter(-force*stop_mult, 0);
+    }                                                                                                       //
+    else if(!keys[key_r] && body.getLinearXVelocity() > 3)                                                  //
+        body.applyForceToCenter(-force*stop_mult, 0);
+        //!inv_control? body.applyForceToCenter(-force*stop_mult, 0) : body.applyForceToCenter(force*stop_mult, 0);
+                                                                                                            // 
+    if(!keys[key_l] && !keys[key_r] && body.getLinearXVelocity() >= -3 && body.getLinearXVelocity() <= 3){  //
+        body.applyForceToCenter(0, 0);                                                                      //
+        body.setLinealVelocicity(0, body.getLinearYVelocity());                                             //
+    }                                                                                                       //
+    //  ======================================================================================================
+        
     
     if(freezed && frigoclock.getElapsedTime().asSeconds()>0.5){
         delete freeze;

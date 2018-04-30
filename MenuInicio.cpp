@@ -189,7 +189,10 @@ MenuInicio::MenuInicio() {
    
    primero=true;
    
-
+    //PARA LOS MANDOS
+    m_Up = false;
+    m_Down = false;
+    controller_move = false;
 }
 
 MenuInicio::MenuInicio(const MenuInicio& orig) {
@@ -343,10 +346,10 @@ void MenuInicio::muevepersonaje(int selec){
 
 void MenuInicio::Update(){
     renderEngine::rEvent event;
-
+    
     f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
     f1.setPosition(((sfml->Instance().getViewCenter()[0])-(sfml->Instance().getViewSize()[0])/2), (sfml->Instance().getViewCenter()[1])-(sfml->Instance().getViewSize()[1])/2);
-
+    
        while (sfml->Instance().pollEvent(event))
         {
             
@@ -355,6 +358,59 @@ void MenuInicio::Update(){
                 //Si se recibe el evento de cerrar la ventana la cierro
                 case sf::Event::Closed:
                     sfml->Instance().close();
+                    break;
+                    
+                case renderEngine::rEvent::EventType::JoystickMoved:
+                    if(event.getJoystickMovePosition()<20 && event.getJoystickMoveAxis()==1){
+                        if(!controller_move){
+                            controller_move = true;
+                            MoveUp();
+                            //std::cout << "ARRIBA TRUE" << std::endl;
+                        }
+                        else{
+                            controller_move = false;
+                            //std::cout << "ARRIBA FALSE" << std::endl;
+                        }
+                    }
+                    if(event.getJoystickMovePosition()>20 && event.getJoystickMoveAxis()==1){ 
+                        if(!controller_move){
+                            controller_move = true;
+                            MoveDown();
+                            //std::cout << "ABAJO TRUE" << std::endl;
+                        }
+                        else{
+                            controller_move = false;
+                            //std::cout << "ABAJO FALSE" << std::endl;
+                        }
+                    }
+                    if(event.getJoystickMovePosition()>20 && event.getJoystickMoveAxis()==0){ 
+                        if(!controller_move){
+                            controller_move = true;
+                            if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
+                                numplayers++;
+                                menuplayer[1].setString("Players "  + std::to_string(numplayers));
+                            }
+                        }
+                        else{
+                            controller_move = false;
+                        }
+                    }
+                    if(event.getJoystickMovePosition()<20 && event.getJoystickMoveAxis()==0){ 
+                        if(!controller_move){
+                            controller_move = true;
+                            if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
+                                numplayers--;
+                                menuplayer[1].setString("Players "  + std::to_string(numplayers));
+                            }
+                        }
+                        else{
+                            controller_move = false;
+                        }
+                    }
+                    break;
+                    
+                case renderEngine::rEvent::EventType::JoystickButtonPressed:
+                    if(event.getJoystickButton()==0) stateMenu();
                     break;
                     
                 //Se pulsó una tecla, imprimo su codigo
@@ -377,87 +433,7 @@ void MenuInicio::Update(){
                         break;
                         
                         case sf::Keyboard::Return:
-                            switch(statemenu){
-                                case 0:
-                                    switch(selectedItemIndex){
-                                        case 0:
-                                            statemenu=2;
-                                           // std::cout<<"Play pressed"<< std::endl;
-                                            break;
-
-                                        case 1:
-                                            statemenu=1;
-                                          //  std::cout<<"Option pressed"<< std::endl;
-                                            personaje.setPosition(posx-width/11, posy-height/21);
-
-                                            break;
-
-                                        case 2:
-                                            statemenu=3;
-                                         //   std::cout<<"how to play pressed"<< std::endl;
-                                            break;
-
-                                        case 3:
-                                         //   std::cout<<"Exit pressed"<< std::endl;
-                                            sfml->Instance().close();
-                                            break;                                            
-
-                                    }
-                                    break;
-                                    
-                                case 1:
-                                    switch(selectedItemIndex2){
-                                        case 0:
-                                           // std::cout<<"Sound pressed"<< std::endl;
-                                            break;
-
-                                        case 1:
-                                            MoveUp();
-                                            statemenu=0;
-                                            selectedItemIndex2=0;
-                                            personaje.setPosition(posx-width/11, posy-height/21);
-                                            MoveUp();
-
-                                          //  std::cout<<"Exit pressed"<< std::endl;
-
-                                            break;
-                                    }
-                                    break;
-                                case 2:
-                                    switch(selectedItemIndex3){
-                                       
-                                        case 0:
-                                            //cambiar estado a Motor
-                                            statemenu=2;
-                                            sfml->Instance().ChangeState(&Juego::Instance());
-                                          //  std::cout<<"Play pressed"<< std::endl;
-                                            break;
-                                            
-                                        case 1:
-                                            sfml->Instance().ChangeState(&Juego::Instance());
-                                          //  std::cout<<"Players pressed"<< std::endl;
-                                            break;
-
-                                        case 2:
-                                            MoveUp();
-                                            MoveUp();
-                                            statemenu=0;
-                                            selectedItemIndex=0;
-                                            personaje.setPosition(posx-width/11, posy-height/21);
-                                          // std::cout<<"Exit pressed"<< std::endl;
-
-                                            break;
-                                    }
-                                    break;
-                                case 3:
-                                    statemenu=0;
-                                    break;
-                                case 4:
-                                    statemenu=0;
-                                    break;
-                                    
-                            }         
-                       
+                            stateMenu();
                             break;
                          case sf::Keyboard::Right:
                             if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
@@ -482,6 +458,90 @@ void MenuInicio::Update(){
             }
          
         }  
+}
+
+void MenuInicio::stateMenu() {
+    switch(statemenu){
+        case 0:
+            switch(selectedItemIndex){
+                case 0:
+                    statemenu=2;
+                   // std::cout<<"Play pressed"<< std::endl;
+                    break;
+
+                case 1:
+                    statemenu=1;
+                  //  std::cout<<"Option pressed"<< std::endl;
+                    personaje.setPosition(posx-width/11, posy-height/21);
+
+                    break;
+
+                case 2:
+                    statemenu=3;
+                 //   std::cout<<"how to play pressed"<< std::endl;
+                    break;
+
+                case 3:
+                 //   std::cout<<"Exit pressed"<< std::endl;
+                    sfml->Instance().close();
+                    break;                                            
+
+            }
+            break;
+
+        case 1:
+            switch(selectedItemIndex2){
+                case 0:
+                   // std::cout<<"Sound pressed"<< std::endl;
+                    break;
+
+                case 1:
+                    MoveUp();
+                    statemenu=0;
+                    selectedItemIndex2=0;
+                    personaje.setPosition(posx-width/11, posy-height/21);
+                    MoveUp();
+
+                  //  std::cout<<"Exit pressed"<< std::endl;
+
+                    break;
+            }
+            break;
+        case 2:
+            switch(selectedItemIndex3){
+
+                case 0:
+                    //cambiar estado a Motor
+                    statemenu=2;
+                    sfml->Instance().ChangeState(&Juego::Instance());
+                  //  std::cout<<"Play pressed"<< std::endl;
+                    break;
+
+                case 1:
+                    sfml->Instance().ChangeState(&Juego::Instance());
+                  //  std::cout<<"Players pressed"<< std::endl;
+                    break;
+
+                case 2:
+                    MoveUp();
+                    MoveUp();
+                    statemenu=0;
+                    selectedItemIndex=0;
+                    personaje.setPosition(posx-width/11, posy-height/21);
+                  // std::cout<<"Exit pressed"<< std::endl;
+
+                    break;
+            }
+            break;
+        case 3:
+            statemenu=0;
+            break;
+        case 4:
+            statemenu=0;
+            break;
+
+    }         
+                       
 }
 
 void MenuInicio::Handle(){    

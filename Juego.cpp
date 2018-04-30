@@ -168,22 +168,25 @@ void Juego::HandleEvents(){
                                 //std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[37] = true;
                                 break;
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[42] = true;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[15] = true;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[9] = true;
                                 break;
                         }
                     }
@@ -199,22 +202,25 @@ void Juego::HandleEvents(){
                                 //std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[37] = false;
                                 break;
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[42] = false;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[15] = false;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[9] = false;
                                 break;
                         }
                     }

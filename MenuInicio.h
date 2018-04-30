@@ -45,6 +45,8 @@ public:
     int numplayers;
     
 private:
+    void stateMenu();
+    
      int selectedItemIndex;
     int selectedItemIndex2;
     int selectedItemIndex3;
@@ -87,7 +89,10 @@ private:
     void muevepersonaje(int selec);
     renderEngine::rTime reloj;
 
-
+    //PARA LOS MANDOS
+    bool m_Up;
+    bool m_Down;
+    bool controller_move;
 };
 
 #endif /* MENUINICIO_H */

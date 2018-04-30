@@ -32,7 +32,7 @@ void NPC::update(){
 
 void NPC::draw(){
     sprite.draw();
-    if(xplosion) xplosion->draw();
+    //if(xplosion) xplosion->draw();
 }
 
 void NPC::preState(){
