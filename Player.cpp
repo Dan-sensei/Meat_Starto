@@ -50,7 +50,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, bottom);
 
     onAir = 0;
-    level=1;
+    level=3;
+    lvlUp();
     hit=false;
     dead=false;
     
@@ -225,6 +226,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     freeze = NULL;
     controls = NULL;
     lvl1 = NULL;
+    
+    //escudo = NULL;
 }
 
 Player::~Player() {
@@ -300,6 +303,9 @@ void Player::update(){
     if(lvl1){
         lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
     }
+   /* if(escudo){
+        escudo->sprite.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
+    }*/
 }
 
 void Player::double_hit(bool b){
@@ -645,6 +651,9 @@ void Player::draw(){
     if(lvl1){
         lvl1->sprite.draw();
     }
+   /* if(escudo){
+        escudo->sprite.draw();
+    }*/
 }
 
 void Player::preState(){
@@ -828,9 +837,8 @@ bool Player::isInmortal() {
 }
 
 void Player::lvlDown() {
-    if(level>0){
+    if(level>0 /*&& escudo==NULL*/){
         level--;
-        muertes++;
         
          switch(level){
           /* case 0:
@@ -844,19 +852,19 @@ void Player::lvlDown() {
                 //pierde velocidad
                 MAXSPEED-=3;
                 break;
-            /*case 3:
-                //pierde el escudo//ya lo ha perdido si baja de nivel
-                break;*/
         }
-    }
-    else if(level==0){
-        muertes++;
+   /* }else if(escudo){
+            delete escudo;
+            escudo = NULL;*/
+            
+    }else if(level==0){
         //MUERE
     }
+    muertes++;
 }
 
 void Player::lvlUp() {
-    if(level<=6){
+    if(level<=4){
         level++;
         
         switch(level){
@@ -872,7 +880,14 @@ void Player::lvlUp() {
                 MAXSPEED+=3;
                 break;
             case 4:
+                 /*       std::cout << "subo: " << std::endl;
+
                 //poner escudo
+                escudo = new indicador;
+                escudo->ir = new renderEngine::rIntRect(0,176,107,110);
+                escudo->t.loadFromImage(indicador_escudo,*escudo->ir);
+                escudo->sprite.setTexture(escudo->t);
+                escudo->sprite.setScale(2,2);*/
                 break;
 
         }

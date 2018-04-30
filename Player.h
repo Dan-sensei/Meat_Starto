@@ -131,6 +131,8 @@ private:
     
     int muertes;
     int enemigos;
+  //  renderEngine::rImage indicador_escudo;
+
     
     renderEngine::rImage indicadores_power;
     struct indicador{
@@ -154,6 +156,7 @@ private:
     
     indicador *lvl1;
     renderEngine::rClock baby_clock;
+   // indicador *escudo;
 };
 
 #endif /* PLAYER_H */

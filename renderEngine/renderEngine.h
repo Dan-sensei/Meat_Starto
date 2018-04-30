@@ -264,6 +264,7 @@ public:
             void setString(std::string str);
             void setCharacterSize(int s);
             void setFont(rFont &font);
+            sf::Color getFillColor();
             
         private:
             sf::Text txt;

@@ -392,6 +392,8 @@ void renderEngine::rText::setFillColor(char c) {
     }
 }
 
+sf::Color renderEngine::rText::getFillColor() {return txt.getFillColor();};
+
 //============================= FONT =============================//
 renderEngine::rFont::rFont() {}
 void renderEngine::rFont::loadFromFile  (std::string str)   {   font.loadFromFile(str);}

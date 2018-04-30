@@ -399,10 +399,10 @@ void MenuInicio::Update(){
                     if(event.getJoystickMovePosition()>20 && event.getJoystickMoveAxis()==0){ 
                         if(!controller_move){
                             controller_move = true;
-                           // if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
+                            if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
                                 numplayers++;
                                 menuplayer[1].setString("Players "  + std::to_string(numplayers));
-                           // }
+                            }
                         }
                         else{
                             controller_move = false;
@@ -411,10 +411,10 @@ void MenuInicio::Update(){
                     if(event.getJoystickMovePosition()<20 && event.getJoystickMoveAxis()==0){ 
                         if(!controller_move){
                             controller_move = true;
-                            //if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
+                            if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
                                 numplayers--;
                                 menuplayer[1].setString("Players "  + std::to_string(numplayers));
-                           // }
+                            }
                         }
                         else{
                             controller_move = false;
@@ -449,17 +449,17 @@ void MenuInicio::Update(){
                             stateMenu();
                             break;
                          case sf::Keyboard::Right:
-//                            if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
+                            if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
                                 numplayers++;
                                 menuplayer[1].setString("Players "  + std::to_string(numplayers));
-                           // }
+                            }
                             break;
                             
                         case sf::Keyboard::Left:
-                           // if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
+                            if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
                                 numplayers--;
                                 menuplayer[1].setString("Players "  + std::to_string(numplayers));
-                           // }
+                            }
                             
                         //Cualquier tecla desconocida se imprime por pantalla su código
                         default:
