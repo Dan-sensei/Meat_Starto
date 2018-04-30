@@ -52,6 +52,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     onAir = 0;
     level=1;
     hit=false;
+    dead=false;
+    
     
     
     sprite.setOrigin(48/2, 40/2+4);
@@ -78,8 +80,9 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=71;
                 key_up=73;
                 key_hit=4;
-                //key_suicide=-1;
-                key_suicide=42;
+                key_suicide=57;
+                //key_suicide=42;
+                
                 //sprite.setPosition(x_, y_);
         break;
         case 2:
@@ -468,11 +471,12 @@ void Player::movement(){
                     animator.SwitchAnimation("xplota"); 
                 }
 
-                if(!inmortal){
-                    Mapa::Instance().movePlayerToClosestCheckPoint(this);
+                if(!inmortal && dead==false){
+                    dead=true;
+                    deadClock.restart();               
+                    //Mapa::Instance().movePlayerToClosestCheckPoint(this);
                     lvlDown();           
                 }
-
                 std::vector<Player*>* players = Juego::Instance().getPlayers();
                 for(int i=0 ; i<players->size() ; i++){
                     Player* ready = (*players)[i];
@@ -487,10 +491,11 @@ void Player::movement(){
 
                 keys[key_suicide] = false;
             }
+            /*
             else if(!keys[key_suicide] && animator.GetCurrentAnimationName() == "xplota"){
                 animator.SwitchAnimation("a_base_l");
                 sprite.setOrigin(48/2, 40/2+4);
-            }
+            }*/
         }
     }
     //-30
@@ -521,7 +526,14 @@ void Player::movement(){
     }                                                                                                       //
     //  ======================================================================================================
         
-    
+     if(dead==true && deadClock.getElapsedTime().asSeconds()>1){
+        sprite.setOrigin(48/2 ,40/2+4);
+        animator.SwitchAnimation("a_base");
+        Mapa::Instance().movePlayerToClosestCheckPoint(this);
+        std::cout<<"reinicio player"<<std::endl;
+        deadClock.restart();        
+        dead=false;
+    }
     if(freezed && frigoclock.getElapsedTime().asSeconds()>0.5){
         delete freeze;
         freeze = NULL;

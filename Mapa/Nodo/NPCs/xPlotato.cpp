@@ -136,19 +136,21 @@ void xPlotato::update(){
         
         if(abs(body.getLinearXVelocity()) < 1){
             body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            //sprite.setScale(-1, 1);
+            sprite.setScale(-1, 1);
+            //sprite.rotate(10);
+            //std::cout<< sprite.getRotation()<< std::endl;
         }
 
         if(target == x_begin && body.getXPosition() <= target ){
             target = x_end;
             body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-            //sprite.setScale(1, 1);
+            sprite.setScale(1, 1);
 
         }
         else if(target == x_end && body.getXPosition() >= target){
             target = x_begin;
             body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            //sprite.setScale(-1, 1);
+            sprite.setScale(-1, 1);
         }
     }
     

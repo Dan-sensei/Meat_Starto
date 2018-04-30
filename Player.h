@@ -101,6 +101,7 @@ private:
     renderEngine::rSprite sprite;
     renderEngine::rSprite mano;    
     bool hit;
+    bool dead;
     int hand_length;
     Animator animator;
     int key_r,key_l,key_up,key_hit,key_suicide;
@@ -116,6 +117,7 @@ private:
     bool doublehit;
     renderEngine::rClock inmortalityClock;
     renderEngine::rClock speedClock;
+    renderEngine::rClock deadClock;
     
     renderEngine::rClock respawnTimeClock;
     bool spawned;
