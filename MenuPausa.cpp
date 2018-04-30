@@ -84,7 +84,7 @@ MenuPausa::MenuPausa() {
    menu[1].setFont(font);
    menu[1].setCharacterSize(48);
    menu[1].setFillColor(sf::Color::Black);
-   menu[1].setString("Opciones");
+   menu[1].setString("Controles");
    
    menu[2].setFont(font);
    menu[2].setCharacterSize(48);
@@ -95,17 +95,28 @@ MenuPausa::MenuPausa() {
    titulo2.setFont(font);
    titulo2.setCharacterSize(56);
    titulo2.setFillColor(sf::Color::Black);
-   titulo2.setString("Options");
+   titulo2.setString("Controles");
    
-   menuop[0].setFont(font);
-   menuop[0].setCharacterSize(40);
-   menuop[0].setFillColor(sf::Color::White);
-   menuop[0].setString("Inmortal OFF");
+   menuhow.setFont(font);
+   menuhow.setCharacterSize(48);
+   menuhow.setFillColor(sf::Color::White);
+   menuhow.setString("Exit");
+   menuhow.setPosition(posx-width/3, posy-height/6);
    
-   menuop[1].setFont(font);
-   menuop[1].setCharacterSize(44);
-   menuop[1].setFillColor(sf::Color::Black);
-   menuop[1].setString("Exit");
+    /*Imagen Controles*/
+    std::string sprite_namec = "assets/controles.png";
+    
+    int widthc = AssetManager::GetTexture(sprite_namec).getXSize();
+    int heightc = AssetManager::GetTexture(sprite_namec).getYSize();
+    
+    controles.setTexture(AssetManager::GetTexture(sprite_namec));
+    controles.setOrigin(widthc / 2, heightc / 2);
+    controles.setScale(1.65,1.65);
+    controles.setPosition(posx, posy+height/3);
+   
+    manchahtp.setTexture(AssetManager::GetTexture(sprite_name));
+    manchahtp.setOrigin(widths / 2, heights / 2.1);
+    manchahtp.setScale(1.65, 1.65);
    
    selectedItemIndex=0;
    selectedItemIndex2=0;
@@ -137,13 +148,9 @@ void MenuPausa::Render(){
             break;
         case 1:
             sfml->Instance().getWindow()->draw(titulo2);
-            mancha[0].draw();
-            mancha[2].draw();
-            
-            for(int i=NUMBER_OF_ITEMS2-1; i>=0 ;i--){
-                sfml->Instance().getWindow()->draw(menuop[i]);
-                personaje.draw();
-            }
+            manchahtp.draw();
+            sfml->Instance().getWindow()->draw(menuhow);
+            controles.draw();
             break;
     }
 
@@ -179,16 +186,7 @@ void MenuPausa::MoveUp(){
                 muevepersonaje(selectedItemIndex);
 
             }
-            break;
-        case 1:
-            if(selectedItemIndex2-1>=0){
-                menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
-                selectedItemIndex2--;
-                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
-                muevepersonaje(selectedItemIndex2);
-
-            }
-            break;
+           
     }
 }
 
@@ -203,24 +201,15 @@ void MenuPausa::MoveDown(){
 
             }
             break;
-        case 1:
-            if(selectedItemIndex2+1<NUMBER_OF_ITEMS2){
-                menuop[selectedItemIndex2].setFillColor(sf::Color::Black);
-                selectedItemIndex2++;
-                menuop[selectedItemIndex2].setFillColor(sf::Color::White);
-                muevepersonaje(selectedItemIndex2+1);
-
-            }
-            break;
      }
 }
 
 
-void MenuPausa::PonInmortal(){
+/*void MenuPausa::PonInmortal(){
     for(int i=0; i<jugadores->size(); i++){
       jugadores[0][i]->hazInmortal();
     }
-}
+}*/
 
 void MenuPausa::Update(){
     renderEngine::rEvent event;
@@ -284,24 +273,7 @@ void MenuPausa::Update(){
                                     break;
                                     
                                 case 1:
-                                    switch(selectedItemIndex2){
-                                        case 0:
-                                            if(InmortalOn==true){
-                                                menuop[0].setString("Inmortal OFF");
-                                                InmortalOn=false;
-                                            }else{
-                                                menuop[0].setString("Inmortal ON");
-                                                InmortalOn=true;
-                                            }
-                                            PonInmortal();
-                                            break;
-
-                                        case 1:
-                                            personaje.setPosition(posx-width/11, posy-height/21);
-                                            statemenu=0;
-                                            MoveUp();
-                                            break;
-                                    }
+                                   statemenu=0;
                                     break;
                              }
                                                   
@@ -335,13 +307,14 @@ void MenuPausa::Handle(){
     
    titulo.setPosition(sf::Vector2f(posx-width/20, posy-height/3));    
    menu[0].setPosition(posx-width/18, posy-height/15);
-   menu[1].setPosition(posx+width/50, posy+height/15);
+   menu[1].setPosition(posx, posy+height/15);
    menu[2].setPosition(posx-width/30, posy+height/5);
    
    
-    titulo2.setPosition(posx-width/30, posy-height/3);
-    menuop[0].setPosition(posx-width/15, posy-height/15);
-    menuop[1].setPosition(posx-width/30, posy+height/5);
+   titulo2.setPosition(posx-width/15, posy-height/2.5);
+   menuhow.setPosition(posx+width/40, posy+height/2.5);
+   manchahtp.setPosition(posx+width/40, posy+height/2.5);
+   controles.setPosition(posx, posy+height/3.9);
 
     while (sfml->Instance().isOpen())
     {

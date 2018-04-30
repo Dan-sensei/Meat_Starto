@@ -65,7 +65,7 @@ MenuInicio::MenuInicio() {
     personaje.setScale(0.05, 0.05);
     personaje.setPosition(posx-width/11, posy-height/21);
 
-    
+
     
     /*MANCHAS DEL MENU*/
     std::string sprite_name = "assets/mancha1.png";
@@ -79,6 +79,9 @@ MenuInicio::MenuInicio() {
         mancha[i].setScale(0.55, 0.55);
     }
     
+    manchahtp.setTexture(AssetManager::GetTexture(sprite_name));
+    manchahtp.setOrigin(widths / 2, heights / 2.1);
+    manchahtp.setScale(0.45, 0.45);
     
     /*letras del menu*/
   
@@ -171,13 +174,24 @@ MenuInicio::MenuInicio() {
    titulo4.setCharacterSize(22);
    titulo4.setFillColor(sf::Color::Black);
    titulo4.setString("How to play");
-   titulo4.setPosition(posx-width/25, posy-height/3);
+   titulo4.setPosition(posx-width/25, posy-height/2.5);
    
    menuhow.setFont(font);
    menuhow.setCharacterSize(16);
    menuhow.setFillColor(sf::Color::White);
    menuhow.setString("Exit");
    menuhow.setPosition(posx-width/3, posy-height/6);
+   
+    /*Imagen Controles*/
+    std::string sprite_namec = "assets/controles.png";
+    
+    int widthc = AssetManager::GetTexture(sprite_namec).getXSize();
+    int heightc = AssetManager::GetTexture(sprite_namec).getYSize();
+    
+    controles.setTexture(AssetManager::GetTexture(sprite_namec));
+    controles.setOrigin(widthc / 2, heightc / 2);
+    controles.setScale(0.6, 0.6);
+    controles.setPosition(posx, posy+height/3);
    
    
    
@@ -239,8 +253,9 @@ void MenuInicio::Render(){
             break;
         case 3:
             sfml->Instance().getWindow()->draw(titulo4);
-            mancha[3].draw();
+            manchahtp.draw();
             sfml->Instance().getWindow()->draw(menuhow);
+            controles.draw();
             break;
         case 4:
            sfml->Instance().getWindow()->draw(titulo);
@@ -558,6 +573,8 @@ void MenuInicio::Handle(){
             }
             personaje.setScale(0.15, 0.15);
             logo.setScale(1.2, 1.2);
+            controles.setScale(1.65, 1.65);
+            manchahtp.setScale(1.65, 1.65);
 
 
 
@@ -622,8 +639,10 @@ void MenuInicio::Handle(){
    
 
    /*How to play*/
-   titulo4.setPosition(posx-width/15, posy-height/3);
-   menuhow.setPosition(posx+width/30, posy+height/3);
+   titulo4.setPosition(posx-width/15, posy-height/2.5);
+   menuhow.setPosition(posx+width/30, posy+height/2.5);
+   manchahtp.setPosition(posx+width/40, posy+height/2.5);
+   controles.setPosition(posx, posy+height/3.9);
    
     primero=false;
     

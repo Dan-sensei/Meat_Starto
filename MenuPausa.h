@@ -50,7 +50,7 @@ private:
     static MenuPausa* instance;
     
     sf::Text  titulo2;
-    sf::Text menuop[NUMBER_OF_ITEMS2];
+    sf::Text menuhow;;
 
     float width;
     float height;
@@ -63,6 +63,8 @@ private:
     renderEngine::rRectangleShape f1;
     renderEngine::rSprite personaje;
     renderEngine::rSprite mancha[NUMBER_OF_ITEMS];
+    renderEngine::rSprite manchahtp;
+    renderEngine::rSprite controles;
     
     void muevepersonaje(int selec);
     

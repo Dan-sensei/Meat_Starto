@@ -80,9 +80,9 @@ private:
     renderEngine::rSprite logo;
     renderEngine::rSprite logo1;
     renderEngine::rSprite personaje;
+    renderEngine::rSprite controles;
     renderEngine::rSprite mancha[MAX_NUMBER_OF_ITEMS];
-    renderEngine::rSprite mancha2[MAX_NUMBER_OF_ITEMS2];
-    renderEngine::rSprite mancha3[MAX_NUMBER_OF_ITEMS3];
+    renderEngine::rSprite manchahtp;
     
     float tam;
     

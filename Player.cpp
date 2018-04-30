@@ -66,8 +66,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_l=0;
                 key_up=22;
                 key_hit=4;
-                //key_suicide=28;
-                key_suicide=37;
+                key_suicide=28;
+                //key_suicide=37;
                 
         break;
         case 1:
@@ -461,7 +461,7 @@ void Player::movement(){
                 }
             }                                                                           
             // ===========================================================================
-            if(key_suicide != -1 && keys[key_suicide]){
+            if(key_suicide != -1 && keys[key_suicide] && level>0 ){
                 std::cout << "BUM" << std::endl;
                 if(animator.GetCurrentAnimationName() != "xplota"){
                     sprite.setOrigin(90+48/2 , 100 + 40/2+4);
@@ -819,6 +819,23 @@ void Player::lvlDown() {
     if(level>0){
         level--;
         muertes++;
+        
+         switch(level){
+          /* case 0:
+                no puede explotar
+                break;*/
+            case 1: 
+                //pierde rango de golpeo
+                double_hit(false);
+                break;
+            case 2:
+                //pierde velocidad
+                MAXSPEED-=3;
+                break;
+            /*case 3:
+                //pierde el escudo//ya lo ha perdido si baja de nivel
+                break;*/
+        }
     }
     else if(level==0){
         muertes++;
@@ -829,6 +846,24 @@ void Player::lvlDown() {
 void Player::lvlUp() {
     if(level<=6){
         level++;
+        
+        switch(level){
+           /* case 1:
+                puede explotar
+               break;*/
+            case 2:
+                //mayor rango de golpeo
+                double_hit(true);
+                break;
+            case 3:
+                //mas velocidad
+                MAXSPEED+=3;
+                break;
+            case 4:
+                //poner escudo
+                break;
+
+        }
     }
 }
 
