@@ -15,6 +15,7 @@
 #include <random>
 
 #include "Skull.h"
+#include "../../../AssetManager.h"
 
 #define velocity 6.f
 

@@ -16,7 +16,7 @@
 
 #include "contactListener.h"
 
-#include "Player.h"
+#include "../Player.h"
 #include "../Mapa/Nodo/NPCs/xPlotato.h"
 
 void contactListener::BeginContact(b2Contact* contact){

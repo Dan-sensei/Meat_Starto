@@ -16,6 +16,8 @@
 
 
 #include "math.h"
+#include "../../../renderEngine/renderEngine.h"
+#include "../../../physicsEngine/physicsEngine.h"
 
 class NPC {
 public:

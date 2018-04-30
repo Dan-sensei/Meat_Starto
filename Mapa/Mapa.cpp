@@ -18,6 +18,7 @@
 #include "Mapa.h"
 #include "Nodo/Minijuegos/goingUp.h"
 #include <math.h>
+#include "../AssetManager.h"
 
 #define SCALE 65.f
 #define MAP_ITERATION 5

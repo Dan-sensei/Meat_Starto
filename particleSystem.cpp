@@ -14,6 +14,8 @@
 #include <complex>
 
 #include "particleSystem.h"
+#include "physicsEngine/physicsEngine.h"
+#include "AssetManager.h"
 
 particleSystem::particleSystem() {
     

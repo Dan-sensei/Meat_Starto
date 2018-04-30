@@ -16,8 +16,8 @@
 #include "Nodo.h"
 #include "NPCs/xPlotato.h"
 #include "NPCs/Skull.h"
-#include "Juego.h"
-
+#include "../../Juego.h"
+#include "../../AssetManager.h"
 
 Nodo::Nodo() {
     

@@ -17,6 +17,8 @@
 #include <string>
 #include "Animator.h"
 #include "renderEngine/renderEngine.h"
+#include "physicsEngine/pBody.h"
+#include "physicsEngine/physicsEngine.h"
 #include "particleSystem.h"
 
 class Player {

@@ -17,7 +17,7 @@
 #include "tinyxml2.h"
 #include <array>
 #include <vector>
-
+#include <map>
 
 class Factory {
 private:

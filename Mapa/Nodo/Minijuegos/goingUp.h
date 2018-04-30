@@ -14,9 +14,9 @@
 #ifndef GOINGUP_H
 #define GOINGUP_H
 
-#include "renderEngine/renderEngine.h"
+#include "../../../renderEngine/renderEngine.h"
 #include "Minijuego.h"
-
+#include <list>
 
 class Nodo;
 

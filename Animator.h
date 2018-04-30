@@ -21,6 +21,8 @@
 #include <string>
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
+#include "renderEngine/renderEngine.h"
+#include "Animator.h"
 
 class Animator {
 public:

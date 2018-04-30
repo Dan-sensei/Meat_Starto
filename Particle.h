@@ -14,6 +14,7 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
+#include "renderEngine/renderEngine.h"
 
 class Particle {
 public:

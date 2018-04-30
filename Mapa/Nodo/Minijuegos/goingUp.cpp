@@ -12,7 +12,7 @@
  */
 
 #include "goingUp.h"
-#include "Juego.h"
+#include "../../../Juego.h"
 
 #define OFFSET 70*20
 

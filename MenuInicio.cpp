@@ -11,6 +11,7 @@
  * Created on 22 de marzo de 2018, 20:38
  */
 #include "MenuInicio.h"
+#include "AssetManager.h"
 
 //Patron Singleton
 MenuInicio* MenuInicio::instance=NULL;

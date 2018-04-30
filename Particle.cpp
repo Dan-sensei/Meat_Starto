@@ -12,6 +12,7 @@
  */
 
 #include "Particle.h"
+#include "math.h"
 
 #define tick 0.0666666666667f
 

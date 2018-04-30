@@ -14,7 +14,7 @@
 #include <random>
 
 #include "physicsEngine.h"
-#include "Mapa/Nodo/Nodo.h"
+#include "../Mapa/Nodo/Nodo.h"
 
 
 physicsEngine::physicsEngine():world(b2Vec2(0.f, 40.f)) {

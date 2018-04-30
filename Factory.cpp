@@ -13,6 +13,7 @@
 
 #include "Factory.h"
 #include "physicsEngine/physicsEngine.h"
+#include "AssetManager.h"
 
 Factory::Factory() {
     //MAPA DE PUNTEROS A FUNCION

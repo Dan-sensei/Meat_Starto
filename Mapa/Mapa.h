@@ -22,7 +22,7 @@
 #include "../mj_t.h"
 #include "../boss.h"
 #include "Nodo/Nodo.h"
-#include "Factory.h"
+#include "../Factory.h"
 
 class Mapa {
 public:

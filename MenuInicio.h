@@ -20,6 +20,7 @@
 #include "State.h" 
 #include "MenuPausa.h"
 #include "Juego.h"
+#include "renderEngine/renderEngine.h"
 
 
 #define MAX_NUMBER_OF_ITEMS 4

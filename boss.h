@@ -18,6 +18,8 @@
 #include <math.h>
 
 #include "renderEngine/renderEngine.h"
+#include "physicsEngine/pBody.h"
+#include "physicsEngine/physicsEngine.h"
 
 
 class boss {

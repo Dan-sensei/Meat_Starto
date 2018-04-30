@@ -12,6 +12,7 @@
  */
 
 #include "MPuntuaciones.h"
+#include "AssetManager.h"
 
 MPuntuaciones* MPuntuaciones::instance=NULL;
 MPuntuaciones* MPuntuaciones::Instance(){

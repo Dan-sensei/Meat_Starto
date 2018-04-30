@@ -16,6 +16,7 @@
 
 #include <map>
 #include "renderEngine/rSoundBuffer.h"
+#include "renderEngine/renderEngine.h"
 
 class AssetManager{
     public:

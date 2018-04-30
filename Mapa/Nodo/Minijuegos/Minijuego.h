@@ -13,6 +13,7 @@
 
 #ifndef MINIJUEGO_H
 #define MINIJUEGO_H
+#include <iostream>
 
 class Minijuego {
 public:

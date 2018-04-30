@@ -19,6 +19,7 @@
 #include "Animator.h"
 #include "Mapa/Mapa.h"
 #include "Juego.h"
+#include "AssetManager.h"
 
 #define FRAMERATE 60.f
 #define UPDATE_STEP 15.f
@@ -51,7 +52,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
 
     onAir = 0;
     level=3;
-    lvlUp();
+
     hit=false;
     dead=false;
     
@@ -481,7 +482,6 @@ void Player::movement(){
                     dead=true;
                     deadClock.restart();               
                     //Mapa::Instance().movePlayerToClosestCheckPoint(this);
-                    lvlDown();           
                 }
                 std::vector<Player*>* players = Juego::Instance().getPlayers();
                 for(int i=0 ; i<players->size() ; i++){
@@ -489,9 +489,8 @@ void Player::movement(){
                     int x = ready->getXPosition()-sprite.getPosition()[0];
                     int y = ready->getYPosition()-sprite.getPosition()[1];
 
-                    if(sqrt(x*x+y*y)<150){
+                    if(id != ready->getId() && sqrt(x*x+y*y)<150){
                         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-                        ready->lvlDown();
                     }
                 }
 

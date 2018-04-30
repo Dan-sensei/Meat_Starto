@@ -12,6 +12,7 @@
  */
 
 #include "MenuPausa.h"
+#include "AssetManager.h"
 
 //Patron Singleton
 MenuPausa* MenuPausa::instance=NULL;
