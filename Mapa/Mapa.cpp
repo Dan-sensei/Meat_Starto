@@ -21,7 +21,7 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 5
+#define MAP_ITERATION 10
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -682,32 +682,30 @@ void Mapa::handleCheckPoints() {
 }
 
 void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
-    if(!ready->isInmortal()){
-        std::list<checkPoint>::iterator it = active_points.begin();
+    std::list<checkPoint>::iterator it = active_points.begin();
 
-        float minX = active_points.front().shape.getPosition()[0];
-        float minY = active_points.front().shape.getPosition()[1];
+    float minX = active_points.front().shape.getPosition()[0];
+    float minY = active_points.front().shape.getPosition()[1];
 
-        float distX = minX - ready->getXPosition();
-        float distY = minY - ready->getYPosition();
-        float distance = sqrt(distX*distX + distY*distY);
-        float aux_d;
+    float distX = minX - ready->getXPosition();
+    float distY = minY - ready->getYPosition();
+    float distance = sqrt(distX*distX + distY*distY);
+    float aux_d;
 
-        while(it != active_points.end()){
-            if((*it).active){
-                distX = (*it).shape.getPosition()[0] - ready->getXPosition();
-                distY = (*it).shape.getPosition()[1] - ready->getYPosition();
-                aux_d = sqrt(distX*distX + distY*distY);
-                if (aux_d < distance){
-                    distance = aux_d;
-                    minX = (*it).shape.getPosition()[0];
-                    minY = (*it).shape.getPosition()[1];
-                }
+    while(it != active_points.end()){
+        if((*it).active){
+            distX = (*it).shape.getPosition()[0] - ready->getXPosition();
+            distY = (*it).shape.getPosition()[1] - ready->getYPosition();
+            aux_d = sqrt(distX*distX + distY*distY);
+            if (aux_d < distance){
+                distance = aux_d;
+                minX = (*it).shape.getPosition()[0];
+                minY = (*it).shape.getPosition()[1];
             }
-            ++it;
         }
-        ready->setPosition(minX+35, minY+35);
+        ++it;
     }
+    ready->setPosition(minX+35, minY+35);
 }
 
 void Mapa::checkOutOfMap(Player* ready) {
