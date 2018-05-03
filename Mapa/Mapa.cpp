@@ -166,6 +166,32 @@
     
     secondPhase = false;
     stopBackgroundMovement = true;
+    
+    //INICIO DEL JUEGO
+    bInit = false;
+    initClock.restart();
+    initBloques = new bloque;
+    
+    t = new physicsEngine::type;
+    t->id = 1;
+    t->data = this;
+    
+    float x_b = 70*8;
+    float y_b = 70*15;
+    float w_b = 70*27;
+    float h_b = 70;
+    
+    initBloques->rs.setPosition(x_b,y_b);
+    initBloques->rs.setSize(w_b,h_b);
+    initBloques->rs.setFillRGBAColor(72,60,72);
+    
+    initBloques->body = physicsEngine::Instance().createBody(w_b,h_b,x_b+(w_b/2),y_b+(h_b/2),'k',t);
+    
+    initFont.loadFromFile("resources/fuente.ttf");
+    initText = new renderEngine::rText;
+    initText->setFont(initFont);
+    initText->setCharacterSize(200);
+    initText->setFillColor('k');
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -393,6 +419,9 @@ void Mapa::render(float tick_) {
         iterator++;
     }
 
+    //------------|  BLOQUE DE INICIO |------------//
+    if(initBloques) initBloques->rs.draw();
+    
     //------------|  CHECKPOINTS - DEBUG  |------------//
     std::list<checkPoint>::iterator it = active_points.begin();
     while(it != active_points.end()){
@@ -429,6 +458,9 @@ void Mapa::render(float tick_) {
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){ 
         (*it).drawSuperiorLayer(ir);
     }
+    
+    //------------|  TEXTO DE INICIO  |------------//
+    if(initText) initText->draw();
 }
 
 //LEE LA MATRIZ DE ADYACENCIA
@@ -505,8 +537,11 @@ void Mapa::updateMini() {
     mj_t *tetris;
     boss *javi;
     
+    //UPDATE DEL INICIO DEL JUEGO
+    updateInit();
+    
     //ACTUALIZO DEL FONDO
-     updateFondo();
+    updateFondo();
     
     if(pop){
         
@@ -526,6 +561,42 @@ void Mapa::updateMini() {
     
     tetris->Instance().update();
     javi->Instance().update();
+}
+
+void Mapa::updateInit() {
+    if(!bInit){
+        float x_text = renderEngine::Instance().getViewCenter()[0];
+        float y_text = renderEngine::Instance().getViewCenter()[1];
+        initText->setPosition(x_text,y_text);
+        
+        float time = initClock.getElapsedTime().asSeconds();
+        if(time < 5){
+            initText->setString("Get ready!");
+        }
+        else if(time > 5 && time < 8){
+            //PARA QUE LA CUENTA ATRAS SALGA COMO 3,2,1
+            initText->setString(std::to_string(static_cast<int>(-(time-9))));
+        }
+        else if(time > 8 && time < 8.5){
+            initText->setString("MEAT");
+        }
+        else if(time > 8.5 && time < 9){
+            initText->setString("MEAT STARTO!");
+        }
+        else if(time > 9){
+            //std::cout << "MEAT STARTO!" << std::endl;
+            bInit = true;
+            
+            //ELIMINAR TODO LO DEL INIT
+            physicsEngine::Instance().detroyBody(initBloques->body);
+            delete initBloques;
+            initBloques = NULL;
+            delete initText;
+            initText = NULL;
+        }
+        
+        if(initText) initText->setOrigin(initText->getSize()[0]/2,initText->getSize()[1]/2);
+    }
 }
 
 void Mapa::update(){
@@ -743,4 +814,8 @@ void Mapa::changeSpriteSheet(std::string path) {
 
 void Mapa::stopBackground(bool flag) {
     stopBackgroundMovement = flag;
+}
+
+bool Mapa::getInit() {
+    return bInit;
 }

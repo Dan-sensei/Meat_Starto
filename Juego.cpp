@@ -49,7 +49,6 @@ Juego::Juego() {
     backgroundView = new renderEngine::rView(0, 0, renderEngine::Instance().getSize()[0], renderEngine::Instance().getSize()[1]);
     backgroundView->zoom(1);
             
-    view->setCenter(view->getCenter()[0], CAM_H);
     
     //INTERPOLACION
     accumulator = 0.0f;
@@ -62,14 +61,23 @@ Juego::Juego() {
     
     //JUGADORES
 
-    int i = 0;
+    float x_arr[4] = {2240,1750,1260,770};
 
+    int i = 0;
     do {
         
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, 1200, 1200, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, x_arr[i], 800, 'D', keys));
         ++i;
         
     }while( i < MenuInicio::Instance()->numplayers );
+    
+    float xmax = 0;
+    for(int j=0 ; j<readyPlayer.size() ; j++){
+        if(readyPlayer[j]->getXPosition() > xmax){
+            xmax = readyPlayer[j]->getXPosition();
+        }
+    }
+    view->setCenter(xmax, CAM_H);
     
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
@@ -515,7 +523,13 @@ void Juego::Render(){
     
     
     //ACTUALIÇAÇAO DE LA CAMARA
-    if(!mj_t::Instance().isTetrisOn() && !boss::Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
+    if(!Mapa::Instance().getInit()){
+        //LA CAMARA SE MUEVE DEPENDIENDO DE LA ALTURA DE LOS JUGADORES
+        if(readyPlayer[0]->getYPosition()>view->getCenter()[1]){
+            view->setCenter(readyPlayer[0]->getXPosition(), readyPlayer[0]->getYPosition());
+        }
+    }
+    else if(!mj_t::Instance().isTetrisOn() && !boss::Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
         int n=0;
         for(int i=0; i< readyPlayer.size(); i++){
             if(cameraDirection == 0){

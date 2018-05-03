@@ -278,8 +278,7 @@ void Factory::leePorwerUps(tinyxml2::XMLElement* obj, NodeStruct& node) {
         
         int random = physicsEngine::Instance().genIntRandom(0, 6);
         
-        //power.id = random;
-        power.id = 1;
+        power.id = random;
         power.xMin = x;
         power.xMax = x + width;
         power.y = y + 35;
