@@ -55,6 +55,7 @@ public:
     int getTotalIterations();
     void CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, int &x_, int &y_);
     Factory::NodeStruct getMINI(int i);
+    bool getInit();
     
     virtual ~Mapa();
     
@@ -77,6 +78,7 @@ private:
     Factory::NodeStruct BOSS;                       // Nodo del boss
     Factory::NodeStruct SPECIAL;
     //----------------METODOS PRIVADOS
+    void updateInit();
     void updateFondo();
     void InitMatrix();
     
@@ -139,6 +141,18 @@ private:
     renderEngine::rRectangleShape f2;
     bool stopBackgroundMovement;
     std::vector<renderEngine::rRectangleShape> debug;
+    
+    //INICIO DEL JUEGO
+    bool bInit;
+    renderEngine::rClock initClock;
+    renderEngine::rFont initFont;
+    renderEngine::rText *initText;
+    struct bloque{
+        pBody body;
+        renderEngine::rRectangleShape rs;
+    };
+    bloque *initBloques;
+    physicsEngine::type* t;
 };
 
 #endif /* MAPA_H */

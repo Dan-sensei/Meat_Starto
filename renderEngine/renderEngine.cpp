@@ -378,6 +378,16 @@ void renderEngine::rText::setScale          (float fx, float fy)    {   txt.setS
 void renderEngine::rText::setString         (std::string str)       {   txt.setString(str);}
 void renderEngine::rText::setCharacterSize  (int s)                 {   txt.setCharacterSize(s);}
 void renderEngine::rText::setFont           (rFont &font)           {   txt.setFont(*font.getFont());}
+void renderEngine::rText::setOrigin         (float x, float y)      {   txt.setOrigin(x,y);}
+
+std::array<float, 2> renderEngine::rText::getSize() {
+    std::array<float,2> ret;
+    
+    ret[0] = txt.getGlobalBounds().width;
+    ret[1] = txt.getGlobalBounds().height;
+    
+    return ret;
+}
 
 void renderEngine::rText::setFillColor(char c) {
     switch(c){

@@ -49,7 +49,6 @@ Juego::Juego() {
     backgroundView = new renderEngine::rView(0, 0, renderEngine::Instance().getSize()[0], renderEngine::Instance().getSize()[1]);
     backgroundView->zoom(1);
             
-    view->setCenter(view->getCenter()[0], CAM_H);
     
     //INTERPOLACION
     accumulator = 0.0f;
@@ -62,14 +61,23 @@ Juego::Juego() {
     
     //JUGADORES
 
-    int i = 0;
+    float x_arr[4] = {2240,1750,1260,770};
 
+    int i = 0;
     do {
         
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, 1200, 1200, 'D', keys));
+        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, x_arr[i], 800, 'D', keys));
         ++i;
         
     }while( i < MenuInicio::Instance()->numplayers );
+    
+    float xmax = 0;
+    for(int j=0 ; j<readyPlayer.size() ; j++){
+        if(readyPlayer[j]->getXPosition() > xmax){
+            xmax = readyPlayer[j]->getXPosition();
+        }
+    }
+    view->setCenter(xmax, CAM_H);
     
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
@@ -168,19 +176,19 @@ void Juego::HandleEvents(){
                                 //std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[37] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = true;
                                 break;
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[42] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[57] = true;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = true;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[15] = true;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[8] = true;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
@@ -202,19 +210,19 @@ void Juego::HandleEvents(){
                                 //std::cout << "J1" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[22] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[37] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[28] = false;
                                 break;
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[42] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[57] = false;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = false;
                                 if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
-                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[15] = false;
+                                if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[8] = false;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
@@ -515,11 +523,26 @@ void Juego::Render(){
     
     
     //ACTUALIÇAÇAO DE LA CAMARA
-    if(!mj_t::Instance().isTetrisOn() && !boss::Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
+    if(!Mapa::Instance().getInit()){
+        //LA CAMARA SE MUEVE DEPENDIENDO DE LA ALTURA DE LOS JUGADORES
+        if(readyPlayer[0]->getYPosition()>view->getCenter()[1]){
+            view->setCenter(readyPlayer[0]->getXPosition(), readyPlayer[0]->getYPosition());
+        }
+    }
+    else if(!mj_t::Instance().isTetrisOn() && !boss::Instance().isBossOn()){    //TRUE: SE MUEVE LA CAMARA
         int n=0;
         for(int i=0; i< readyPlayer.size(); i++){
-            if(readyPlayer[i]->getXPosition() > readyPlayer[n]->getXPosition()){
-                n=i;
+            if(cameraDirection == 0){
+                
+                if(readyPlayer[i]->getXPosition() > readyPlayer[n]->getXPosition()){
+                    n=i;
+                }
+            }
+            else{
+                
+                if(readyPlayer[i]->getYPosition() < readyPlayer[n]->getYPosition()){
+                    n=i;
+                }
             }
         }
         //std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;

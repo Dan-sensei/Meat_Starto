@@ -96,7 +96,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_up=14;
                 key_hit=4;    
                 //key_suicide=-1;
-                key_suicide=15;
+                key_suicide=8;
         break;
         case 3:
                 texture="assets/player3a.png"; 
@@ -586,10 +586,15 @@ void Player::movement(){
         }
     }
     
-    if(MAXSPEED > constMaxSeed){
+    if(speed){
         if(speedClock.getElapsedTime().asSeconds() > speedTime){
             std::cout << "SE ACABÓ EL GAS WE" << std::endl;
-            MAXSPEED = constMaxSeed;
+            if(level >= 3){
+                MAXSPEED = constMaxSeed+3;
+            }
+            else{
+                MAXSPEED = constMaxSeed;
+            }
             
             if(speed){
                 delete speed;
@@ -842,6 +847,21 @@ void Player::setPosition(float x, float y) {
     spawned = true;
     lvlDown();
     onAir = 0;
+    
+    if(speed){
+        delete speed;
+        speed = NULL;
+        if(level >= 3){
+            MAXSPEED = constMaxSeed+3;
+        }
+        else{
+            MAXSPEED = constMaxSeed;
+        }
+    }
+    if(invincible){
+        delete invincible;
+        invincible = NULL;
+    }
 }
 
 void Player::transportToSecondPhase(float x, float y) {
@@ -862,16 +882,23 @@ void Player::lvlDown() {
         level--;
         
          switch(level){
-
+            case 0: 
             case 1: 
-                escudo=false;
-                //pierde rango de golpeo
+                escudo = false;
                 double_hit(false);
+                MAXSPEED = constMaxSeed;
                 break;
             case 2:
-                //pierde velocidad
-                MAXSPEED-=3;
+                escudo = false;
+                double_hit(true);
+                MAXSPEED = constMaxSeed;
                 break;
+            case 3:
+                escudo = false;
+                double_hit(true);
+                MAXSPEED = constMaxSeed+3;
+                break;
+                
         }            
     }else if(level==0){
         //MUERE
@@ -884,17 +911,29 @@ void Player::lvlUp() {
         level++;
         
         switch(level){
+            case 0:
+            case 1:
+                escudo = false;
+                double_hit(false);
+                MAXSPEED = constMaxSeed;
+                break;
             case 2:
                 //mayor rango de golpeo
+                escudo = false;
                 double_hit(true);
+                MAXSPEED = constMaxSeed;
                 break;
             case 3:
                 //mas velocidad
-                MAXSPEED+=3;
+                escudo = false;
+                double_hit(true);
+                MAXSPEED = constMaxSeed+3;
                 break;
             case 4:
                 //poner escudo
                 escudo = true;                
+                double_hit(true);
+                MAXSPEED = constMaxSeed+3;
                 break;
 
         }

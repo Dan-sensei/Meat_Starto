@@ -264,11 +264,12 @@ public:
             void setString(std::string str);
             void setCharacterSize(int s);
             void setFont(rFont &font);
+            void setOrigin(float x, float y);
+            std::array<float,2> getSize();
             sf::Color getFillColor();
             
         private:
             sf::Text txt;
-            
     };
     
     //METODOS PUBLICOS
