@@ -319,7 +319,7 @@ void Factory::leeCheckPoints(tinyxml2::XMLElement* obj, NodeStruct& node) {
                 aux[j+1] = tmp;
             }    
     
-    for (int i=1; i < aux.size(); i++)
+    for (int i=0; i < aux.size(); i++)
         node.Checkpoints.push_back(aux[i]);
 }
 

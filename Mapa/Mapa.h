@@ -105,9 +105,10 @@ private:
     
     std::list<Nodo> hex_list;
     std::vector<renderEngine::rIntRect> spriteSheetRects;
-    float maxPoint;
+
     std::list<checkPoint> active_points;
     std::list<checkPoint> every_points;
+    float finisher;
     int direction;
     int cameraDir;
     void handleCheckPoints();
