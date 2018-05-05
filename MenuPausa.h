@@ -41,7 +41,9 @@ public:
     bool god_mode;
     
 private:
-  int selectedItemIndex;
+    void stateMenu();
+    
+    int selectedItemIndex;
     int selectedItemIndex2;
 
     int statemenu;
@@ -73,6 +75,10 @@ private:
     
     void PonInmortal();
     bool InmortalOn;
+    
+    //MANDO
+    bool controller_move_u;
+    bool controller_move_d;
 };
 
 #endif /* MENUPAUSA_H */

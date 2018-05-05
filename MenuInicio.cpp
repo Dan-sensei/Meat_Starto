@@ -204,7 +204,10 @@ MenuInicio::MenuInicio() {
     //PARA LOS MANDOS
     m_Up = false;
     m_Down = false;
-    controller_move = false;
+    controller_move_u = false;
+    controller_move_d = false;
+    controller_move_r = false;
+    controller_move_l = false;
 
 }
 
@@ -359,6 +362,7 @@ void MenuInicio::muevepersonaje(int selec){
 }
 
 void MenuInicio::Update(){
+    int c_sens = 90;
     renderEngine::rEvent event;
     
     f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
@@ -375,56 +379,74 @@ void MenuInicio::Update(){
                     break;
                     
                 case renderEngine::rEvent::EventType::JoystickMoved:
-                    if(event.getJoystickMovePosition()<20 && event.getJoystickMoveAxis()==1){
-                        if(!controller_move){
-                            controller_move = true;
-                            MoveUp();
-                            //std::cout << "ARRIBA TRUE" << std::endl;
-                        }
-                        else{
-                            controller_move = false;
-                            //std::cout << "ARRIBA FALSE" << std::endl;
-                        }
+                    /*
+                    if(event.getJoystickMovePosition()>c_sens){
+                        std::cout << "AXIS:" << event.getJoystickMoveAxis() << std::endl;
+                        std::cout << "POSITION:" << event.getJoystickMovePosition() << std::endl;
                     }
-                    if(event.getJoystickMovePosition()>20 && event.getJoystickMoveAxis()==1){ 
-                        if(!controller_move){
-                            controller_move = true;
-                            MoveDown();
-                            //std::cout << "ABAJO TRUE" << std::endl;
-                        }
-                        else{
-                            controller_move = false;
-                            //std::cout << "ABAJO FALSE" << std::endl;
-                        }
-                    }
-                    if(event.getJoystickMovePosition()>20 && event.getJoystickMoveAxis()==0){ 
-                        if(!controller_move){
-                            controller_move = true;
-                            if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
-                                numplayers++;
-                                menuplayer[1].setString("Players "  + std::to_string(numplayers));
+                     */
+                    if(abs(event.getJoystickMovePosition())>c_sens){
+                        if(event.getJoystickMovePosition()<0 && event.getJoystickMoveAxis()==1){
+                            if(!controller_move_u){
+                                MoveUp();
+                                controller_move_u = true;
+                                if(controller_move_d) controller_move_d = false;
                             }
                         }
-                        else{
-                            controller_move = false;
-                        }
-                    }
-                    if(event.getJoystickMovePosition()<20 && event.getJoystickMoveAxis()==0){ 
-                        if(!controller_move){
-                            controller_move = true;
-                            if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
-                                numplayers--;
-                                menuplayer[1].setString("Players "  + std::to_string(numplayers));
+                        if(event.getJoystickMovePosition()>0 && event.getJoystickMoveAxis()==1){ 
+                            if(!controller_move_d){
+                                MoveDown();
+                                controller_move_d = true;
+
+                                if(controller_move_u) controller_move_u = false;
                             }
                         }
-                        else{
-                            controller_move = false;
+
+                        if(event.getJoystickMovePosition()>0 && event.getJoystickMoveAxis()==0){ 
+                            if(!controller_move_r){
+                                controller_move_r = true;
+
+                                if(controller_move_l) controller_move_l = false;
+
+                                if(statemenu==2 && numplayers<4 && menuplayer[1].getFillColor()==sf::Color::White){
+                                    numplayers++;
+                                    menuplayer[1].setString("Players "  + std::to_string(numplayers));
+                                }
+                            }
+                        }
+                        if(event.getJoystickMovePosition()<0 && event.getJoystickMoveAxis()==0){ 
+                            if(!controller_move_l){
+                                controller_move_l = true;
+
+                                if(controller_move_d) controller_move_d = false;
+
+                                if(statemenu==2 && numplayers>1 && menuplayer[1].getFillColor()==sf::Color::White){
+                                    numplayers--;
+                                    menuplayer[1].setString("Players "  + std::to_string(numplayers));
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        if(event.getJoystickMoveAxis()==1 && controller_move_u){
+                            controller_move_u = false;
+                        }
+                        if(event.getJoystickMoveAxis()==1 && controller_move_d){
+                            controller_move_d = false;
+                        }
+                        if(event.getJoystickMoveAxis()==1 && controller_move_r){
+                            controller_move_r = false;
+                        }
+                        if(event.getJoystickMoveAxis()==1 && controller_move_l){
+                            controller_move_l = false;
                         }
                     }
                     break;
                     
                 case renderEngine::rEvent::EventType::JoystickButtonPressed:
-                    if(event.getJoystickButton()==0) stateMenu();
+                    //std::cout << event.getJoystickButton() << std::endl;
+                    if(event.getJoystickButton()==6) sfml->Instance().close();
+                    if(event.getJoystickButton()==0 || event.getJoystickButton()==7) stateMenu();
                     break;
                     
                 //Se pulsó una tecla, imprimo su codigo

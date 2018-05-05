@@ -65,45 +65,45 @@ MenuPausa::MenuPausa() {
     InmortalOn=false;
   
   
-   font.loadFromFile("resources/fuente.ttf");
-    
-   titulo.setFont(font);
-   titulo.setCharacterSize(56);
-   titulo.setFillColor('k');
-   titulo.setString("Pause");  
-  
-   
-   menu[0].setFont(font);
-   menu[0].setCharacterSize(48);
-   menu[0].setFillColor('w');
-   menu[0].setString("Continue");
-   
-   menu[1].setFont(font);
-   menu[1].setCharacterSize(48);
-   menu[1].setFillColor('k');
-   menu[1].setString("Controls");
-   
-   menu[2].setFont(font);
-   menu[2].setCharacterSize(44);
-   menu[2].setFillColor('k');
-   menu[2].setString("God Mode OFF");
-   
-   menu[3].setFont(font);
-   menu[3].setCharacterSize(48);
-   menu[3].setFillColor('k');
-   menu[3].setString("Exit");
-   
-   /*MENU DE OPCIONES*/
-   titulo2.setFont(font);
-   titulo2.setCharacterSize(56);
-   titulo2.setFillColor('k');
-   titulo2.setString("Controls");
-   
-   menuhow.setFont(font);
-   menuhow.setCharacterSize(48);
-   menuhow.setFillColor('w');
-   menuhow.setString("Exit");
-   menuhow.setPosition(posx-width/3, posy-height/6);
+    font.loadFromFile("resources/fuente.ttf");
+
+    titulo.setFont(font);
+    titulo.setCharacterSize(56);
+    titulo.setFillColor('k');
+    titulo.setString("Pause");  
+
+
+    menu[0].setFont(font);
+    menu[0].setCharacterSize(48);
+    menu[0].setFillColor('w');
+    menu[0].setString("Continue");
+
+    menu[1].setFont(font);
+    menu[1].setCharacterSize(48);
+    menu[1].setFillColor('k');
+    menu[1].setString("Controls");
+
+    menu[2].setFont(font);
+    menu[2].setCharacterSize(44);
+    menu[2].setFillColor('k');
+    menu[2].setString("God Mode OFF");
+
+    menu[3].setFont(font);
+    menu[3].setCharacterSize(48);
+    menu[3].setFillColor('k');
+    menu[3].setString("Exit");
+
+    /*MENU DE OPCIONES*/
+    titulo2.setFont(font);
+    titulo2.setCharacterSize(56);
+    titulo2.setFillColor('k');
+    titulo2.setString("Controls");
+
+    menuhow.setFont(font);
+    menuhow.setCharacterSize(48);
+    menuhow.setFillColor('w');
+    menuhow.setString("Exit");
+    menuhow.setPosition(posx-width/3, posy-height/6);
    
     /*Imagen Controles*/
     std::string sprite_namec = "assets/controles.png";
@@ -120,13 +120,16 @@ MenuPausa::MenuPausa() {
     manchahtp.setOrigin(widths / 2, heights / 2.1);
     manchahtp.setScale(1.65, 1.65);
    
-   selectedItemIndex=0;
-   selectedItemIndex2=0;
-   statemenu=0;
-   
-   jugadores= Juego::Instance().getPlayers();
+    selectedItemIndex=0;
+    selectedItemIndex2=0;
+    statemenu=0;
+
+    jugadores= Juego::Instance().getPlayers();
        
     god_mode=false;
+    
+    controller_move_u = false;
+    controller_move_d = false;
 }
 
 
@@ -216,6 +219,7 @@ void MenuPausa::MoveDown(){
 }*/
 
 void MenuPausa::Update(){
+    int c_sens = 90;
     renderEngine::rEvent event;
   
     f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
@@ -226,7 +230,46 @@ void MenuPausa::Update(){
         {
             
             switch(event.sfType()){
-                
+                case renderEngine::rEvent::EventType::JoystickMoved:
+                    /*
+                    if(event.getJoystickMovePosition()>c_sens){
+                        std::cout << "AXIS:" << event.getJoystickMoveAxis() << std::endl;
+                        std::cout << "POSITION:" << event.getJoystickMovePosition() << std::endl;
+                    }
+                     */
+                    if(abs(event.getJoystickMovePosition())>c_sens){
+                        if(event.getJoystickMovePosition()<0 && event.getJoystickMoveAxis()==1){
+                            if(!controller_move_u){
+                                MoveUp();
+                                controller_move_u = true;
+                                if(controller_move_d) controller_move_d = false;
+                            }
+                        }
+                        if(event.getJoystickMovePosition()>0 && event.getJoystickMoveAxis()==1){ 
+                            if(!controller_move_d){
+                                MoveDown();
+                                controller_move_d = true;
+
+                                if(controller_move_u) controller_move_u = false;
+                            }
+                        }
+                    }
+                    else{
+                        if(event.getJoystickMoveAxis()==1 && controller_move_u){
+                            controller_move_u = false;
+                        }
+                        if(event.getJoystickMoveAxis()==1 && controller_move_d){
+                            controller_move_d = false;
+                        }
+                    }
+                    break;
+                    
+                case renderEngine::rEvent::EventType::JoystickButtonPressed:
+                    //std::cout << event.getJoystickButton() << std::endl;
+                    if(event.getJoystickButton()==6) sfml->Instance().close();
+                    if(event.getJoystickButton()==0 || event.getJoystickButton()==7) stateMenu();
+                    break;
+                    
                 //Si se recibe el evento de cerrar la ventana la cierro
                 case sf::Event::Closed:
                     sfml->Instance().close();
@@ -252,45 +295,8 @@ void MenuPausa::Update(){
                         break;
                         
                         case sf::Keyboard::Return:
-                            
-                             switch(statemenu){
-                                case 0:
-                                   switch(selectedItemIndex){
-                                        case 0:
-                                           //std::cout<<"Continue pressed"<< std::endl;
-                                            sfml->Instance().ChangeState(&Juego::Instance());
-                                            break;
-
-                                        case 1:
-                                            statemenu=1;
-                                            MoveUp();
-                                            personaje.setPosition(posx-width/11, posy-height/21);
-                                            //std::cout<<"Controls pressed"<< std::endl;
-                                            break;
-                                       case 2:
-                                           //GOD MODE
-                                           if(god_mode==false){
-                                           menu[2].setString("God Mode ON");     
-                                            god_mode=true;
-                                           }else{
-                                            menu[2].setString("God Mode OFF");     
-                                            god_mode=false; 
-                                           }
-                                           break;
-                                           
-                                        case 3:
-
-                                            sfml->Instance().ChangeState(MenuInicio::Instance());
-                                           // std::cout<<"Exit pressed"<< std::endl;
-                                            break;
-                                    }
-                                    break;
-                                    
-                                case 1:
-                                   statemenu=0;
-                                   MoveUp();
-                                    break;
-                             }
+                            stateMenu();
+                             
                                                   
                             break;
                         //Cualquier tecla desconocida se imprime por pantalla su código
@@ -303,6 +309,48 @@ void MenuPausa::Update(){
             }
          
         }  
+}
+
+void MenuPausa::stateMenu() {
+    switch(statemenu){
+        case 0:
+            switch(selectedItemIndex){
+                case 0:
+                    //std::cout<<"Continue pressed"<< std::endl;
+                    sfml->Instance().ChangeState(&Juego::Instance());
+                    break;
+
+                case 1:
+                    statemenu=1;
+                    MoveUp();
+                    personaje.setPosition(posx-width/11, posy-height/21);
+                    //std::cout<<"Controls pressed"<< std::endl;
+                    break;
+                case 2:
+                    
+                    //GOD MODE
+                    if(god_mode==false){
+                        menu[2].setString("God Mode ON");
+                        god_mode=true;
+                    }
+                    else{
+                        menu[2].setString("God Mode OFF");     
+                        god_mode=false; 
+                    }
+                    break;
+
+                case 3:
+                    sfml->Instance().ChangeState(MenuInicio::Instance());
+                    // std::cout<<"Exit pressed"<< std::endl;
+                    break;
+            }
+            break;
+
+        case 1:
+            statemenu=0;
+            MoveUp();
+            break;
+    }
 }
 
 void MenuPausa::Handle(){

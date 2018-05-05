@@ -255,6 +255,10 @@ void MPuntuaciones::Update(){
                     sfml->Instance().close();
                     break;
                     
+                case renderEngine::rEvent::EventType::JoystickButtonPressed:
+                    if(event.getJoystickButton()==6) sfml->Instance().close();
+                    if(event.getJoystickButton()==0) sfml->Instance().ChangeState(MenuInicio::Instance());
+                    break;
                 //Se pulsó una tecla, imprimo su codigo
                 case sf::Event::KeyPressed:
                     
@@ -278,7 +282,7 @@ void MPuntuaciones::Update(){
              
                         //Cualquier tecla desconocida se imprime por pantalla su código
                         default:
-                            std::cout << event.getKeyCode() << std::endl;
+                            //std::cout << event.getKeyCode() << std::endl;
                         break;
                               
                     }

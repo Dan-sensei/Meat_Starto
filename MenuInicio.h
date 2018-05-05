@@ -92,7 +92,10 @@ private:
     //PARA LOS MANDOS
     bool m_Up;
     bool m_Down;
-    bool controller_move;
+    bool controller_move_u;
+    bool controller_move_d;
+    bool controller_move_r;
+    bool controller_move_l;
 };
 
 #endif /* MENUINICIO_H */
