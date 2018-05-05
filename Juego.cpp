@@ -168,6 +168,8 @@ void Juego::HandleEvents(){
         
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::JoystickButtonPressed :
+                if(event.getJoystickButton()==6) renderEngine::Instance().close();
+                if(event.getJoystickButton()==7) renderEngine::Instance().ChangeState(MenuPausa::Instance());
                 for(int i=0 ; i<getPlayers()->size() ; i++){
                     if(renderEngine::Instance().isJoystickConnected(i)){
                         //std::cout << "BUTTON: " << event.getJoystickButton() << std::endl;
@@ -427,7 +429,7 @@ void Juego::HandleEvents(){
 
     if(keys[15]){   
         keys[15]=false;
-        sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
+        //sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
     } 
 }
 

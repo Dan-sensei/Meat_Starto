@@ -444,7 +444,9 @@ void MenuInicio::Update(){
                     break;
                     
                 case renderEngine::rEvent::EventType::JoystickButtonPressed:
-                    if(event.getJoystickButton()==0) stateMenu();
+                    //std::cout << event.getJoystickButton() << std::endl;
+                    if(event.getJoystickButton()==6) sfml->Instance().close();
+                    if(event.getJoystickButton()==0 || event.getJoystickButton()==7) stateMenu();
                     break;
                     
                 //Se pulsó una tecla, imprimo su codigo
