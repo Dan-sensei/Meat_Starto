@@ -36,7 +36,7 @@ Juego::Juego() {
 
     keys = new bool [256];
     for(int i = 0; i<256; i++) keys[i]=false;
-    
+   
     //SINGLETON MUNDO
     Mapa::Instance().CreaMapa();
     
@@ -560,8 +560,12 @@ void Juego::Render(){
 
         }    
         else{
-            if(readyPlayer[n]->getYPosition()<view->getCenter()[1]){
-                view->setCenter(view->getCenter()[0], readyPlayer[n]->getYPosition());
+
+            difference = readyPlayer[n]->getYPosition()-280 - view->getCenter()[1];
+            
+            if(difference < -12){
+                m = difference;
+                view->move(0, -abs(m) / 15);
             }
         }
         
@@ -616,4 +620,9 @@ std::vector<Player*>* Juego::getPlayers() {
 void Juego::switchCameradirection() {
     cameraDirection = (cameraDirection == 0) ? 1 : 0;
     Mapa::Instance().setCameraDirection(cameraDirection);
+}
+
+void Juego::trimCamera() {
+    if(static_cast<int>(view->getCenter()[1]) % 2 != 0)
+        view->move(0, 1);
 }
