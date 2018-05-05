@@ -55,7 +55,6 @@ Skull::Skull(int x_, int y_, int x_b, int x_e, int y_b, int y_e) {
     previous.r = actual.r = body.getRotation();
     
     alive = true;
-    xplosion = NULL;
 }
 
 Skull::Skull(const Skull& orig) {

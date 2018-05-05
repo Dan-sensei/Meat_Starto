@@ -40,6 +40,8 @@ private:
     int x_begin;
     int x_end;
     int target;
+    
+    bool readyToDie;
 };
 
 #endif /* XPLOTATO_H */

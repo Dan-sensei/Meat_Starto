@@ -64,7 +64,6 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) : animator(sprite) {
     xplotar = false;
     alive = true;
     
-    xplosion = NULL;
 }
 
 xPlotato::xPlotato(const xPlotato& orig): animator(sprite) {
@@ -87,80 +86,83 @@ xPlotato::~xPlotato() {
 }
 
 void xPlotato::update(){
-    
-    //PROXIMIDAD POR PERSONAJE
-    std::vector<Player*>* players = Juego::Instance().getPlayers();
-
-    for(int i=0 ; i<players->size() ; i++){
-        Player* ready = (*players)[i];
+    if(!readyToDie){
         
-        if(ready->getSprite().intersects(sprite)){
-            Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-            alive = false;
-        }
-        if(xplosion){
-            float x_ = ready->getXPosition()-xplosion->getPosition()[0];
-            float y_ = ready->getYPosition()-xplosion->getPosition()[1];
+        //PROXIMIDAD POR PERSONAJE
+        std::vector<Player*>* players = Juego::Instance().getPlayers();
 
-            if(sqrt((x_*x_)+(y_*y_)) < 70*2.5){   
-                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-            }
-        }
-    }
-    
-    if(xplotar){
-        direccion();
-        //std::cout << xclock.getElapsedTime().asSeconds() << std::endl;
-        if(xclock.getElapsedTime().asSeconds() > 2.8){
-            if(!xplosion){
+        for(int i=0 ; i<players->size() ; i++){
+            Player* ready = (*players)[i];
+
+            if(ready->getSprite().intersects(sprite)){
                 sprite.setOrigin(112,120);
+                sprite.setRotation(0);
+                sprite.setScale(2.5, 2.5);
+                body.setLinealVelocicity(0, body.getLinearYVelocity());
                 if(animator.GetCurrentAnimationName()!="xplota"){
                     animator.SwitchAnimation("xplota");
                 }
-                
-                /*
-                xplosion = new renderEngine::rCircleShape(140,30);
-                xplosion->setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
-                xplosion->setFillColor('r');
-                xplosion->setOrigin(140,140);
-                 */
+                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                readyToDie = true;
+                xclock.restart();
             }
         }
-        if(xclock.getElapsedTime().asSeconds() > 3){
-            alive = false;
-        }
-    }
-    
-    if(!xplotar){
-        persigue();
-        
-        if(abs(body.getLinearXVelocity()) < 1){
-            body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            sprite.setScale(-1, 1);
-            //sprite.rotate(10);
-            //std::cout<< sprite.getRotation()<< std::endl;
-        }
 
-        if(target == x_begin && body.getXPosition() <= target ){
-            target = x_end;
-            body.setLinealVelocicity(velocity, body.getLinearYVelocity());
-            sprite.setScale(1, 1);
-
-        }
-        else if(target == x_end && body.getXPosition() >= target){
-            target = x_begin;
-            body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
-            sprite.setScale(-1, 1);
-        }
-    }
-    
-    if(xplosion){
-        xplosion->setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
-        if(animator.GetCurrentAnimationName()!="xplota"){
+        if(xplotar && !readyToDie){
+            direccion();
+            //std::cout << xclock.getElapsedTime().asSeconds() << std::endl;
+            if(xclock.getElapsedTime().asSeconds() > 2.8){
+                sprite.setOrigin(112,120);
+                sprite.setRotation(0);
+                sprite.setScale(2.5, 2.5);
+                body.setLinealVelocicity(0, body.getLinearYVelocity());
+                if(animator.GetCurrentAnimationName()!="xplota"){
                     animator.SwitchAnimation("xplota");
+                }
+                readyToDie = true;
+                xclock.restart();
             }
+            else{
+                if(body.getLinearXVelocity() > 0)
+                    sprite.rotate(17);
+                else
+                    sprite.rotate(-17);
+            }
+
+        }
+
+        if(!xplotar && !readyToDie){
+            persigue();
+
+            if(abs(body.getLinearXVelocity()) < 1){
+                body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+                sprite.setScale(-1, 1);
+            }
+
+            if(target == x_begin && body.getXPosition() <= target ){
+                target = x_end;
+                body.setLinealVelocicity(velocity, body.getLinearYVelocity());
+                sprite.setScale(1, 1);
+
+            }
+            else if(target == x_end && body.getXPosition() >= target){
+                target = x_begin;
+                body.setLinealVelocicity(-velocity, body.getLinearYVelocity());
+                sprite.setScale(-1, 1);
+            }
+
+            if(body.getLinearXVelocity() > 0)
+                sprite.rotate(10);
+            else
+                sprite.rotate(-10);
+        }
+    
     }
+    if(readyToDie && xclock.getElapsedTime().asSeconds() > 0.4)
+        alive = false;
+    
     animator.Update(animationClock.restart());
+    
     
 }
 
