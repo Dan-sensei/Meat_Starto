@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   Juego.cpp
  * Author: alba
- * 
+ *
  * Created on 15 de marzo de 2018, 22:20
  */
 
@@ -29,27 +29,27 @@
 
 #define target_zoom 2
 
-Juego::Juego() { 
-    
+Juego::Juego() {
+
     physicsEngine::Instance().setGravity(0.f, 100.f);
-    
+
 
     keys = new bool [256];
     for(int i = 0; i<256; i++) keys[i]=false;
-    
+
     //SINGLETON MUNDO
     Mapa::Instance().CreaMapa();
-    
+
     //VISTA
     view = new renderEngine::rView(0, 0, renderEngine::Instance().getSize()[0], renderEngine::Instance().getSize()[1]);
     //ZUMO
     view->zoom(target_zoom);
     renderEngine::Instance().setView(*view);
-    
+
     backgroundView = new renderEngine::rView(0, 0, renderEngine::Instance().getSize()[0], renderEngine::Instance().getSize()[1]);
     backgroundView->zoom(1);
-            
-    
+
+
     //INTERPOLACION
     accumulator = 0.0f;
     masterClock.restart();
@@ -57,20 +57,20 @@ Juego::Juego() {
 
     //FPS
     lastTime = 0;
-    
-    
+
+
     //JUGADORES
 
     float x_arr[4] = {2240,1750,1260,770};
 
     int i = 0;
     do {
-        
+
         readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, x_arr[i], 800, 'D', keys));
         ++i;
-        
+
     }while( i < MenuInicio::Instance()->numplayers );
-    
+
     float xmax = 0;
     for(int j=0 ; j<readyPlayer.size() ; j++){
         if(readyPlayer[j]->getXPosition() > xmax){
@@ -78,7 +78,7 @@ Juego::Juego() {
         }
     }
     view->setCenter(xmax, CAM_H);
-    
+
     // MUSICA
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
@@ -95,21 +95,21 @@ Juego::Juego() {
     rain.alignToDirection(true);                    // Alinea las partículas a la dirección del movimiento, por defecto es false, si está a true, se ingora la rotación inicial
     rain.setSprite("assets/THE_WATER_DROP.png");    // Cambia el sprite
     rain.setSpriteSize(1, 0.8);                     // Cambia el tamaño del sprite
-    
-    minirain.setPosition(1500, 200);                    
-    minirain.setType(1);                               
-    minirain.setParticleSpeed(300);                     
-    minirain.setMaxParticleAmout(1000);                  
-    minirain.setGenerationTimer(2);                  
+
+    minirain.setPosition(1500, 200);
+    minirain.setType(1);
+    minirain.setParticleSpeed(300);
+    minirain.setMaxParticleAmout(1000);
+    minirain.setGenerationTimer(2);
     minirain.setParticleLifeTime(1);
     minirain.setParticleDirection(-0.1, 1);
-    minirain.setRectangle(4000, 200);                  
-    minirain.alignToDirection(true);                   
-    minirain.setSprite("assets/THE_WATER_DROP.png");    
-    minirain.setSpriteSize(0.7, 0.4); 
-    
+    minirain.setRectangle(4000, 200);
+    minirain.alignToDirection(true);
+    minirain.setSprite("assets/THE_WATER_DROP.png");
+    minirain.setSpriteSize(0.7, 0.4);
+
     hud= new Hud(readyPlayer);
-    
+
     Mapa::Instance().setPlayers(&readyPlayer);
     cameraDirection = 0;
 }
@@ -118,7 +118,7 @@ Juego::Juego() {
 void Juego::Handle(){
     //BUCLE DEL JUEGO
     renderEngine *sfml;
-    
+
     while(sfml->Instance().isOpen()){
         //<FPS>
         currentTime = cl_fps.restart().asSeconds();
@@ -127,14 +127,14 @@ void Juego::Handle(){
         lastTime = currentTime;
         //std::cout << "FPS: " << fps << std::endl;
         //</FPS>
-        
+
         //EVENTOS
         HandleEvents();
-        
+
         //UPDATE
         Update();
             //std::cout << "EVENTOS" << std::endl;
-        
+
         //RENDER
         Render();
             //std::cout << "RENDER" << std::endl;
@@ -144,17 +144,17 @@ void Juego::Handle(){
 
 void Juego::HandleEvents(){
     renderEngine    *sfml;
-    
+
     renderEngine::rEvent event;
         //0x7fff11e212f0
-    
+
     int jAxis;
     float jPosition;
     int der;
     int izq;
-    
+
     while(sfml->Instance().pollEvent(event)){
-        
+
         /* CODIGOS DE LOS MANDOS:
          * ----------------------
          * XBOX:        biba la plei
@@ -165,7 +165,7 @@ void Juego::HandleEvents(){
          *  LB: 4
          *  RB: 5
          */
-        
+
         switch(event.sfType()){
             case renderEngine::rEvent::EventType::JoystickButtonPressed :
                 if(event.getJoystickButton()==6) renderEngine::Instance().close();
@@ -239,7 +239,7 @@ void Juego::HandleEvents(){
             case renderEngine::rEvent::EventType::JoystickMoved :
                     jAxis = event.getJoystickMoveAxis();
                     jPosition = event.getJoystickMovePosition();
-                    
+
                     for(int i=0 ; i<getPlayers()->size(); i++){
                         if(renderEngine::Instance().isJoystickConnected(i) && abs(event.getJoystickMovePosition())>20){
                             switch(event.getJoystickId()){
@@ -340,20 +340,20 @@ void Juego::HandleEvents(){
                         }
                     }
                 break;
-            
+
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
                 //    std::cout << "Tecla " << event.getKeyCode() << std::endl;
-                
+
                 break;
-                
+
             case renderEngine::rEvent::EventType::KeyReleased :
-                keys[event.getKeyCode()] = false;     
-                
+                keys[event.getKeyCode()] = false;
+
                 switch(event.getKeyCode()) {
-                    
+
                     //JUGADOR 2
-                    
+
                     case 71:
                         if(readyPlayer.size()>=2){
                             readyPlayer[1]->moveLeft_b();
@@ -365,21 +365,21 @@ void Juego::HandleEvents(){
                             readyPlayer[1]->moveRigth_b();
                         }
                     break;
-                   //JUGADOR 1                    
+                   //JUGADOR 1
                     case 0:
                         if(readyPlayer.size()>=1){
                             readyPlayer[0]->moveLeft_b();
                         }
                     break;
-                    
+
                     case 3:
                         if(readyPlayer.size()>=1){
                             readyPlayer[0]->moveRigth_b();
                         }
-                    break; 
-                    
+                    break;
+
                     //JUGADOR 3
-                    
+
                     case 10:
                         if(readyPlayer.size()>=3){
                             readyPlayer[2]->moveLeft_b();
@@ -391,9 +391,9 @@ void Juego::HandleEvents(){
                             readyPlayer[2]->moveRigth_b();
                         }
                     break;
-                    
+
                     //JUGADOR 4
-                    
+
                     case 21:
                         if(readyPlayer.size()>=4){
                             readyPlayer[3]->moveLeft_b();
@@ -409,11 +409,11 @@ void Juego::HandleEvents(){
                        /*ESPACIO PARA CAMBIAR DE PUNYO CORTO A LARGO*/
                         std::cout<<"CAMBIO"<<std::endl;
                         readyPlayer[0]->double_hit(true);
-                        
+
                     break;
                 }
                 break;
-             
+
 
             default:
                 break;
@@ -422,19 +422,19 @@ void Juego::HandleEvents(){
     }
     if(keys[16])    sfml->Instance().close();                                   //Q
 
-    if(keys[36]){   
+    if(keys[36]){
         keys[36]=false;                                                         //ESC
-        sfml->Instance().ChangeState(MenuPausa::Instance());    
-    }   
+        sfml->Instance().ChangeState(MenuPausa::Instance());
+    }
 
-    if(keys[15]){   
+    if(keys[15]){
         keys[15]=false;
         //sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
-    } 
+    }
 }
 
 void Juego::Update(){
-    
+
     // FIXED TIME STEP UPDATE
     dt = masterClock.restart().asSeconds();
 
@@ -445,13 +445,13 @@ void Juego::Update(){
     /*
 
             FRAMERATE A 60
-               UPDATE A 15 
+               UPDATE A 15
             STEP BOX2D = FRAMERATE
 
             0    5    10   15   20   25   30   35   40   45   50   55   60
-            |----|----|----|----|----|----|----|----|----|----|----|----| 
+            |----|----|----|----|----|----|----|----|----|----|----|----|
                 |                                                       Al cabo de un segundo_
-             FRAME 4                                                    RENDER [ 60 VECES ] 
+             FRAME 4                                                    RENDER [ 60 VECES ]
                 |                                                       UPDATE [ 15 VECES ]     --> 60 / 15 = CADA 4
                 |                                                       STEP DE BOX2D [ 60 VECES ]
                 x1 UPDATE
@@ -471,15 +471,15 @@ void Juego::Update(){
     accumulator += dt;
     while(accumulator >= 1/UPDATE_STEP){
         //std::cout << "UPDATE-- " << accumulator << std::endl;
-        
+
         float window_width = static_cast<float>(renderEngine::Instance().getSize()[0]);
-        float window_height = static_cast<float>(renderEngine::Instance().getSize()[1]);  
+        float window_height = static_cast<float>(renderEngine::Instance().getSize()[1]);
         float zoom = (1005*target_zoom)/window_height;
 
         view->setSize(window_width, window_height);
         view->zoom(zoom);
         renderEngine::Instance().setView(*view);
-        
+
         rain.setPosition(view->getCenter()[0], rain.getYPosition());
         minirain.setPosition(view->getCenter()[0], rain.getYPosition());
 
@@ -487,7 +487,7 @@ void Juego::Update(){
         for(int i=0; i< readyPlayer.size(); i++){
             readyPlayer[i]->movement();
         }
-        
+
         Mapa::Instance().update();
         rain.update();
         minirain.update();
@@ -502,7 +502,7 @@ void Juego::Update(){
         // ACTUALIZO EL ESTADO ACTUAL
         for(int i=0; i< readyPlayer.size(); i++){
             readyPlayer[i]->newState();
-        }        
+        }
         Mapa::Instance().newState();
         rain.newState();
         minirain.newState();
@@ -511,19 +511,19 @@ void Juego::Update(){
 
 void Juego::Render(){
     //std::cout << "RENDER == " << tick << std::endl;
-    
+
     renderEngine::Instance().clear('k');
-        
+
     // TICK PARA LA INTERPOLAÇAO
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
-    
+
     //ACTUALIÇAÇAO DEL PERSONAJE
     for(int i=0; i< readyPlayer.size(); i++){
         readyPlayer[i]->update();
         readyPlayer[i]->interpola(tick);
     }
-    
-    
+
+
     //ACTUALIÇAÇAO DE LA CAMARA
     if(!Mapa::Instance().getInit()){
         //LA CAMARA SE MUEVE DEPENDIENDO DE LA ALTURA DE LOS JUGADORES
@@ -535,24 +535,24 @@ void Juego::Render(){
         int n=0;
         for(int i=0; i< readyPlayer.size(); i++){
             if(cameraDirection == 0){
-                
+
                 if(readyPlayer[i]->getXPosition() > readyPlayer[n]->getXPosition()){
                     n=i;
                 }
             }
             else{
-                
+
                 if(readyPlayer[i]->getYPosition() < readyPlayer[n]->getYPosition()){
                     n=i;
                 }
             }
         }
         //std::cout << readyPlayer[0]->getXPosition() << ", " << readyPlayer[0]->getYPosition() << std::endl;
-        
+
         //COMENTAR EL IF SI SE QUIERE QUE LA CAMARA VAYA HACIA ATRAS
         float m;
         float difference;
-        
+
         if(cameraDirection == 0){
             difference = readyPlayer[n]->getXPosition() - view->getCenter()[0];
             if( difference > 12 ){
@@ -560,32 +560,36 @@ void Juego::Render(){
                 view->move(abs(m) / 15, 0);
             }
 
-        }    
+        }
         else{
-            if(readyPlayer[n]->getYPosition()<view->getCenter()[1]){
-                view->setCenter(view->getCenter()[0], readyPlayer[n]->getYPosition());
+
+            difference = readyPlayer[n]->getYPosition()-280 - view->getCenter()[1];
+
+            if(difference < -12){
+                m = difference;
+                view->move(0, -abs(m) / 15);
             }
         }
-        
+
         //view->setCenter(view->getCenter()[0]+12, Mapa::Instance().getYMax()+1400);        // <- Esta línea hace que recorra el mapa la camara
                                                                                             // Si solo ves nubes, es porque se ha generado el minijueg de subir, y la altura se ha puesto automáticamente ahí, np.
-        
+
     }
 
-    
-    
+
+
     renderEngine::Instance().setView(*view);
 
     //ACTUALIÇAÇAO DEL MAPA
     Mapa::Instance().updateMini();
-    
+
     Mapa::Instance().renderBackground();
-    
+
     renderEngine::Instance().setView(*view);
     minirain.draw(tick);
     rain.draw(tick);
     Mapa::Instance().render(tick);
-   
+
     hud->render();
 
     renderEngine::Instance().display();
@@ -593,15 +597,15 @@ void Juego::Render(){
 
 std::array<float, 2> Juego::getPlayerPosition() {
     std::array<float,2> ret;
-    
+
     ret[0] = readyPlayer[0]->getXPosition();
     ret[1] = readyPlayer[0]->getYPosition();
-    
+
     return ret;
 }
 
 Juego::~Juego() {
-    
+
     delete[] keys;
     keys = nullptr;
     delete view;
@@ -620,6 +624,7 @@ void Juego::switchCameradirection() {
     Mapa::Instance().setCameraDirection(cameraDirection);
 }
 
-renderEngine::rView* Juego::getPrincipalView() {
-    return view;
+void Juego::trimCamera() {
+    if(static_cast<int>(view->getCenter()[1]) % 2 != 0)
+        view->move(0, 1);
 }

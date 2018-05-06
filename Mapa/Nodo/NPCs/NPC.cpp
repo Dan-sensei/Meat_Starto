@@ -52,11 +52,11 @@ void NPC::interpola(float tick_){
     float x = previous.x *(1-tick_) + actual.x*tick_;
     float y = previous.y *(1-tick_) + actual.y*tick_;
         // Para las rotaciones es mejor interpolar los senos y cosenos, ya que si no, al calcular el ángulo entre 350 y 10, no nos devolvería 20, que sería lo correcto
-    float s = sin(previous.r * M_PI/180) * (1-tick_) + sin(actual.r * M_PI/180)*tick_;
-    float c = cos(previous.r * M_PI/180) * (1-tick_) + cos(actual.r * M_PI/180)*tick_;
+    //float s = sin(previous.r * M_PI/180) * (1-tick_) + sin(actual.r * M_PI/180)*tick_;
+    //float c = cos(previous.r * M_PI/180) * (1-tick_) + cos(actual.r * M_PI/180)*tick_;
     
     sprite.setPosition(x, y);
-    sprite.setRotation(atan2(s,c)*180/M_PI);
+    //sprite.setRotation(atan2(s,c)*180/M_PI);
 }
 
 int NPC::getXPosition(){

@@ -50,8 +50,7 @@ protected:
     state actual;
     
     bool alive;
-    renderEngine::rCircleShape *xplosion;
-    
+
 private:
     
 

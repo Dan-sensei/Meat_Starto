@@ -46,6 +46,7 @@ public:
     void Update();  
     virtual void Handle();
     
+    void trimCamera();
     void switchCameradirection();
     std::vector<Player*>* getPlayers();
     renderEngine::rView* getPrincipalView();
