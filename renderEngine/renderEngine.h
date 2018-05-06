@@ -280,6 +280,7 @@ public:
 
     bool isJoystickConnected(int j);                //TRUE: SI EL JOYSTICK J ESTA CONECTADO
     void setView(rView v);                          //ESTABLECER UNA VISTA
+    void moveView(float x, float y);
     bool pollEvent(rEvent &e);                      //PARA CONTROLAR LOS EVENTOS
     void ChangeState(State* pState);                //CAMBIO DE ESTADO
     

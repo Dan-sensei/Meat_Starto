@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -37,6 +37,10 @@ bool                renderEngine::isOpen    ()          {   return window.isOpen
 sf::RenderWindow*   renderEngine::getWindow ()          {   return &window;}   
 bool                renderEngine::pollEvent (rEvent &e) {   return window.pollEvent(*e.getEvent());}
 bool renderEngine::isJoystickConnected      (int j)     {   sf::Joystick::isConnected(j);}
+void renderEngine::moveView(float x, float y) {
+    const sf::View *view = &(window.getView());
+    //FALTA IMPLEMENTACION
+}
 
 void renderEngine::ChangeState(State* pState) {
     _state = pState;

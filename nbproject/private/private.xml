@@ -7,20 +7,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/boss.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/physicsEngine/pBody.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Nodo.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/physicsEngine/pBody.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Nodo.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Mapa.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Player.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Factory.h</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Mapa/Nodo/Minijuegos/goingUp.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/main.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/boss.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Juego.cpp</file>
-            <file>file:/home/dan/NetBeansProjects/MEAT_STARTO/Player.h</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Factory.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Hud.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/main.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Mapa/Mapa.h</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Mapa/Nodo/Nodo.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Mapa/Mapa.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/boss.h</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/renderEngine/renderEngine.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/boss.cpp</file>
+            <file>file:/home/pablomanez/Documentos/GitHub/Meat_Starto/Juego.cpp</file>
         </group>
     </open-files>
 </project-private>

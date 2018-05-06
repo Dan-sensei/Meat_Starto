@@ -16,6 +16,7 @@
 
 #include <random>
 #include <math.h>
+#include <string>
 
 #include "renderEngine/renderEngine.h"
 #include "physicsEngine/pBody.h"
@@ -49,6 +50,7 @@ private:
     void crearProyectilTele();
     void updateJavi();
     void fasesBoss();
+    void trembleView();
     renderEngine::rIntRect getIntRect();
     
     //float getVX_BP(); //DEVUELVE LA COMPONENTE X DEL VECTOR VELOCIDAD DEL 
@@ -112,6 +114,23 @@ private:
     renderEngine::rText time_text;
     renderEngine::rFont time_font;
     
+    //--------- ANIMACION BOSS ---------//
+    bool initBoss;
+    bool restartInitClock;
+    bool view_mv;
+    bool quoteFin;
+    
+    renderEngine::rRectangleShape *sansJavi;
+    renderEngine::rText *dialogo;
+    std::string *str_dialogo;
+    int s_count;
+    int c_count;
+    renderEngine::rRectangleShape *caja_dialogo;
+    
+    renderEngine::rClock dialogueClock;
+    renderEngine::rClock dtDialogue;
+    renderEngine::rClock initClock;
+    renderEngine::rClock trembleClock;
 };
 
 #endif /* BOSS_H */
