@@ -29,9 +29,12 @@ window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
     
 }
 
+
 void                renderEngine::display   ()          {   window.display();}
 void                renderEngine::setView   (rView v)   {   window.setView(v.getView());}
-void                renderEngine::close     ()          {   window.close();}
+void                renderEngine::close     ()          {   window.close();
+}
+
 
 bool                renderEngine::isOpen    ()          {   return window.isOpen();}   //TRUE SI LA VENTANA ESTA ABIERTA
 sf::RenderWindow*   renderEngine::getWindow ()          {   return &window;}   

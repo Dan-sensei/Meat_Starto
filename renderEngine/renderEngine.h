@@ -277,7 +277,7 @@ public:
     std::array<float,2> getSize();                  //DEVUELVE LAS DIMENSIONES DE LA VENTANA
     std::array<float,2> getViewCenter();            //DEVUELVE EL CENTRO DE LA VENTANA
     std::array<float,2> getViewSize();              //DEVUELVE EL CENTRO DE LA VENTANA
-
+    
     bool isJoystickConnected(int j);                //TRUE: SI EL JOYSTICK J ESTA CONECTADO
     void setView(rView v);                          //ESTABLECER UNA VISTA
     void moveView(float x, float y);

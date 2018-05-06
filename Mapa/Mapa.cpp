@@ -21,10 +21,10 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 20
+#define MAP_ITERATION 5
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
-#define altura_minijuego 7
+#define altura_minijuego 9
 #define nodoInicial 0
 #define BACKGROUND_VELOCITY 2
 
@@ -310,6 +310,11 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
         checkpoint.shape.setOutlineColor('r');
         checkpoint.shape.setFillColor('t');
         every_points.push_back(checkpoint);
+    }
+
+    // CARGO LAS LUCES
+    for(int i = 0; i < nodo.Lights.size(); ++i){
+        lista.back().addLight(x_ + nodo.Lights[i].x, y_ + nodo.Lights[i].y);
     }
 
     // MINIJUEGO
@@ -780,7 +785,7 @@ void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
 }
 
 void Mapa::checkOutOfMap(Player* ready) {
-    if(ready->getYPosition() > renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+250)
+    if(ready->getYPosition() > renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+50)
         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
 }
 
