@@ -70,11 +70,11 @@ private:
     renderEngine::rTexture spritesheet;
     
     // Objetos que contiene el nodo
-    std::vector<std::array<int, 2>> lights;
     std::vector<NPC*> npcs;
     std::vector<pBody> ground;
     std::vector<renderEngine::rRectangleShape> pinchos;
     std::vector<renderEngine::rSprite> v_esprait;
+    std::vector<renderEngine::rSprite> LIGHTS;
     std::vector< std::vector<renderEngine::rSprite> > superiorLayer;
     Minijuego* minijuego;
 

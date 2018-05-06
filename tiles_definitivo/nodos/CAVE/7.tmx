@@ -47,8 +47,7 @@
  </layer>
  <objectgroup color="#aaffff" name="light">
   <object id="85" x="490" y="1120" width="70" height="70"/>
-  <object id="86" x="1330" y="2030" width="70" height="70"/>
-  <object id="87" x="2520" y="1050" width="70" height="70"/>
+  <object id="86" x="1750" y="2100" width="70" height="70"/>
  </objectgroup>
  <objectgroup name="colision">
   <object id="64" x="0" y="2730">

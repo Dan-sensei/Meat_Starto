@@ -82,10 +82,8 @@
   <object id="67" x="350" y="980" width="910" height="770"/>
  </objectgroup>
  <objectgroup color="#aaffff" name="light">
-  <object id="68" x="1400" y="1050" width="70" height="70"/>
-  <object id="69" x="490" y="2170" width="70" height="70"/>
-  <object id="70" x="2310" y="2170" width="70" height="70"/>
-  <object id="71" x="2730" y="1470" width="70" height="70"/>
+  <object id="68" x="1610" y="2310" width="70" height="70"/>
+  <object id="71" x="2940" y="1960" width="70" height="70"/>
  </objectgroup>
  <objectgroup color="#0000ff" name="checkpoint">
   <object id="57" x="350" y="1750" width="70" height="70"/>

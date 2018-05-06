@@ -55,7 +55,6 @@
   <object id="55" x="2520" y="1680" width="70" height="70"/>
  </objectgroup>
  <objectgroup color="#aaffff" name="light">
-  <object id="50" x="2100" y="2030" width="70" height="70"/>
-  <object id="51" x="1680" y="840" width="70" height="70"/>
+  <object id="50" x="2170" y="2030" width="70" height="70"/>
  </objectgroup>
 </map>

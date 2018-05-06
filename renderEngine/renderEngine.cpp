@@ -124,6 +124,7 @@ void renderEngine::rSprite::draw() {
     renderEngine* sfml;
     sfml->Instance().getWindow()->draw(sprite);
 }
+
 bool renderEngine::rSprite::intersects(renderEngine::rRectangleShape rs) {
     return sprite.getGlobalBounds().intersects(rs.getRectShape().getGlobalBounds());
 }

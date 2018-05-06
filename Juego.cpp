@@ -95,7 +95,8 @@ Juego::Juego() {
     rain.alignToDirection(true);                    // Alinea las partículas a la dirección del movimiento, por defecto es false, si está a true, se ingora la rotación inicial
     rain.setSprite("assets/THE_WATER_DROP.png");    // Cambia el sprite
     rain.setSpriteSize(1, 0.8);                     // Cambia el tamaño del sprite
-
+    rain.drawGenerationArea(true);
+    
     minirain.setPosition(1500, 200);                    
     minirain.setType(1);                               
     minirain.setParticleSpeed(300);                     
@@ -480,8 +481,8 @@ void Juego::Update(){
         view->zoom(zoom);
         renderEngine::Instance().setView(*view);
 
-        rain.setPosition(view->getCenter()[0], rain.getYPosition());
-        minirain.setPosition(view->getCenter()[0], rain.getYPosition());
+        rain.setPosition(view->getCenter()[0], view->getCenter()[1]-renderEngine::Instance().getViewSize()[1]/2 -120);
+        minirain.setPosition(view->getCenter()[0], view->getCenter()[1]-renderEngine::Instance().getViewSize()[1]/2 -120);
 
         // LÓGICA DE LOS NPC Y JUGADORES
         for(int i=0; i< readyPlayer.size(); i++){
@@ -567,6 +568,7 @@ void Juego::Render(){
                 m = difference;
                 view->move(0, -abs(m) / 15);
             }
+            trimCamera();
         }
 
         //view->setCenter(view->getCenter()[0]+12, Mapa::Instance().getYMax()+1400);        // <- Esta línea hace que recorra el mapa la camara
@@ -627,6 +629,19 @@ void Juego::switchCameradirection() {
 }
 
 void Juego::trimCamera() {
+    view->setCenter(view->getCenter()[0], static_cast<int>(view->getCenter()[1]));
     if(static_cast<int>(view->getCenter()[1]) % 2 != 0)
         view->move(0, 1);
+}
+
+void Juego::changeRain() {
+    rain.setParticleSpeed(220);                     // Velocidad lineal de las partículas
+    rain.setGenerationTimer(200);                     // Tiempo (ms) de delay entre la generación de partículas (En este caso se genera una partícula cada 4 ms)
+    rain.setParticleLifeTime(2);                    // Tiempo de vida en segundos, de vida d elas partículas
+    rain.setParticleDirection(0, 1);             // Dirección de las partículas, debe ser un número entre 0 y 1
+          
+    minirain.setParticleSpeed(200);                                  
+    minirain.setGenerationTimer(150);                  
+    minirain.setParticleLifeTime(2);
+    minirain.setParticleDirection(0, 1);
 }

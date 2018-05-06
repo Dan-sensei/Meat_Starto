@@ -347,8 +347,7 @@ void Factory::leeLuces(tinyxml2::XMLElement* obj, NodeStruct& node) {
     LightStruct lus;
     
     obj = obj->FirstChildElement("object");
-    
-    std::vector<CheckpointStruct> aux;
+
     int width, height;
     while (obj) {
         obj->QueryIntAttribute("x", &(lus.x));
@@ -358,7 +357,7 @@ void Factory::leeLuces(tinyxml2::XMLElement* obj, NodeStruct& node) {
         
         lus.x += width/2;
         lus.y += height/2;
-        
+
         node.Lights.push_back(lus);
         
         obj = obj->NextSiblingElement("object");

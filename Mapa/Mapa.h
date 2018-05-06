@@ -139,6 +139,7 @@ private:
     renderEngine::rSprite background2;
     renderEngine::rRectangleShape f1;
     renderEngine::rRectangleShape f2;
+
     bool stopBackgroundMovement;
     std::vector<renderEngine::rRectangleShape> debug;
     

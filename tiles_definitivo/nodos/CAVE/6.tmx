@@ -78,9 +78,7 @@
   <object id="87" x="2380" y="2170" width="210" height="70"/>
  </objectgroup>
  <objectgroup color="#aaffff" name="light">
-  <object id="91" x="630" y="1820" width="70" height="70"/>
-  <object id="92" x="840" y="980" width="70" height="70"/>
-  <object id="93" x="2310" y="2450" width="70" height="70"/>
-  <object id="94" x="2730" y="1190" width="70" height="70"/>
+  <object id="92" x="1330" y="1890" width="70" height="70"/>
+  <object id="94" x="3010" y="1400" width="70" height="70"/>
  </objectgroup>
 </map>

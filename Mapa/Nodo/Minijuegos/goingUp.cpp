@@ -77,6 +77,7 @@ void goingUp::update() {
                 if(ready->getSprite().intersects(endArea)){
                     Juego::Instance().switchCameradirection();
                     END = true;
+                    std::cout << "VIEW CENTER: " << renderEngine::Instance().getViewCenter()[0] << ", " << renderEngine::Instance().getViewCenter()[1] << std::endl;
                 }
             }
         }

@@ -185,7 +185,11 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
 }
 
 void Nodo::addLight(int x_, int y_) {
-    lights.push_back(std::array<int, 2>{x_, y_});
+    renderEngine::rSprite lus;
+    lus.setTexture(AssetManager::GetTexture("assets/LUS.png"));
+    lus.setOrigin(AssetManager::GetTexture("assets/LUS.png").getXSize()/2, AssetManager::GetTexture("assets/LUS.png").getYSize()/2);
+    lus.setPosition(x_, y_);
+    LIGHTS.push_back(lus);
 }
 
 
@@ -199,7 +203,7 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
     
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < npcs.size(); j++)
-        if(npcs[j] && npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
+        if(npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
@@ -210,11 +214,8 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
     if(minijuego != nullptr)
         minijuego->draw(tick_);
 
-    for(int i = 0; i <lights.size(); ++i){
-        
-       
-    }
-    
+    for(int i = 0; i <LIGHTS.size(); ++i)
+        LIGHTS[i].draw();
 }
 
 void Nodo::drawSuperiorLayer(renderEngine::rIntRect limit) {

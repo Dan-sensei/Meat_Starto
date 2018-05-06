@@ -121,8 +121,6 @@
 
     //LeeNodo("tiles_definitivo/nodos/0.tmx");
 
-    Factory::Instance().LeeNodo("tiles_definitivo/nodos/15.tmx");
-
     std::string path;
     for(int i = 0; i < 16; ++i){
         path = "tiles_definitivo/nodos/";
@@ -615,17 +613,17 @@ void Mapa::update(){
     for(int i = 0; i< players->size(); ++i) {
         Player* ready = (*players)[i];
         if(ready->getSprite().intersects(transportation)){
-            text_fondo = AssetManager::GetTexture("assets/Background2.png");
+            text_fondo = AssetManager::GetTexture("assets/bg.jpg");
             background1.setTexture(text_fondo);
             background2.setTexture(text_fondo);
             ready->transportToSecondPhase(transportation.getPosition()[0] + 27*70, transportation.getPosition()[1] + 20*70);
+            Juego::Instance().changeRain();
         }
     }
 }
 
 void Mapa::renderBackground() {
     //EMPIEZO A RENDERIZAR
-
     background1.draw();
     background2.draw();
 }

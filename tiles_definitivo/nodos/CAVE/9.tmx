@@ -124,9 +124,7 @@
   <object id="108" x="2520" y="1890" width="70" height="70"/>
  </objectgroup>
  <objectgroup color="#aaffff" name="light">
-  <object id="111" x="1680" y="1610" width="70" height="70"/>
-  <object id="113" x="1190" y="2100" width="70" height="70"/>
-  <object id="114" x="490" y="1260" width="70" height="70"/>
-  <object id="115" x="2940" y="1470" width="70" height="70"/>
+  <object id="114" x="1330" y="1400" width="70" height="70"/>
+  <object id="115" x="3010" y="1330" width="70" height="70"/>
  </objectgroup>
 </map>

@@ -47,6 +47,7 @@ public:
     virtual void Handle();
     
     void trimCamera();
+    void changeRain();
     void switchCameradirection();
     std::vector<Player*>* getPlayers();
     renderEngine::rView* getPrincipalView();
