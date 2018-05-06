@@ -159,9 +159,6 @@ public:
             std::array<float,2> getCenter();            //CENTRO DE LA VISTA
             void move(float x, float y);                //MOVER LA VISTA  
             void setSize(float x, float y);
-            void setTarget(float x, float y);
-            std::array<float,2> getTarget();
-            bool hasTarget();
             
         private:
             bool hasTarget_;

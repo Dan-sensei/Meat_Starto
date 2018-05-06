@@ -64,9 +64,9 @@
   </object>
  </objectgroup>
  <objectgroup name="spawn">
-  <object id="6" x="490" y="1820" width="350" height="70"/>
-  <object id="7" x="1470" y="1540" width="420" height="70"/>
-  <object id="8" x="2450" y="1960" width="210" height="70"/>
+  <object id="6" x="420" y="1820" width="350" height="70"/>
+  <object id="7" x="1400" y="1540" width="420" height="70"/>
+  <object id="8" x="2380" y="1960" width="210" height="70"/>
   <object id="9" x="2590" y="1190" width="420" height="70"/>
  </objectgroup>
  <objectgroup name="skull">

@@ -72,10 +72,10 @@
   </object>
  </objectgroup>
  <objectgroup name="spawn">
-  <object id="5" x="770" y="1610" width="280" height="70"/>
-  <object id="6" x="2380" y="1960" width="210" height="70"/>
-  <object id="7" x="2660" y="1960" width="420" height="70"/>
-  <object id="8" x="2520" y="1190" width="280" height="70"/>
-  <object id="9" x="3150" y="1470" width="140" height="70"/>
+  <object id="5" x="799.333" y="1610" width="221.333" height="70"/>
+  <object id="6" x="2404" y="1960" width="162" height="70"/>
+  <object id="7" x="2686" y="1960" width="368" height="70"/>
+  <object id="8" x="2545.33" y="1190" width="229.333" height="70"/>
+  <object id="9" x="3160" y="1470" width="120" height="70"/>
  </objectgroup>
 </map>

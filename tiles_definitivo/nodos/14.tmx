@@ -74,6 +74,6 @@
   </object>
  </objectgroup>
  <objectgroup name="spawn">
-  <object id="6" x="560" y="1470" width="490" height="70"/>
+  <object id="6" x="594.667" y="1470" width="420.667" height="70"/>
  </objectgroup>
 </map>

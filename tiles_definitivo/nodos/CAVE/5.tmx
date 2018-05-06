@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="70" tileheight="70" infinite="0" nextobjectid="79">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="44" height="40" tilewidth="70" tileheight="70" infinite="0" nextobjectid="84">
  <tileset firstgid="1" source="../../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="44" height="40">
   <data encoding="csv">
@@ -64,5 +64,13 @@
   <object id="73" x="910" y="1400" width="70" height="70"/>
   <object id="75" x="1330" y="1400" width="70" height="70"/>
   <object id="76" x="1750" y="1190" width="70" height="70"/>
+  <object id="79" x="2730" y="2380" width="70" height="70"/>
+ </objectgroup>
+ <objectgroup name="skull">
+  <object id="81" x="140" y="1190" width="910" height="420"/>
+  <object id="82" x="1540" y="1680" width="420" height="350"/>
+ </objectgroup>
+ <objectgroup name="power">
+  <object id="83" x="1750" y="1330" width="70" height="70"/>
  </objectgroup>
 </map>

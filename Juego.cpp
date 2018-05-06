@@ -99,8 +99,8 @@ Juego::Juego() {
     minirain.setPosition(1500, 200);                    
     minirain.setType(1);                               
     minirain.setParticleSpeed(300);                     
-    minirain.setMaxParticleAmout(1000);                  
-    minirain.setGenerationTimer(2);                  
+    minirain.setMaxParticleAmout(750);                  
+    minirain.setGenerationTimer(3);                  
     minirain.setParticleLifeTime(1);
     minirain.setParticleDirection(-0.1, 1);
     minirain.setRectangle(4000, 200);                  
@@ -563,7 +563,7 @@ void Juego::Render(){
         }    
         else{
 
-            difference = readyPlayer[n]->getYPosition()-280 - view->getCenter()[1];
+            difference = readyPlayer[n]->getYPosition()-210 - view->getCenter()[1];
             
             if(difference < -12){
                 m = difference;

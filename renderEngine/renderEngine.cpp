@@ -144,18 +144,6 @@ void renderEngine::rView::move(float x, float y)        {   view.move(x,y);     
 void renderEngine::rView::setSize(float x, float y)     {   view.setSize(x, y);     }
 void renderEngine::rSprite::setColor(int r, int g, int b)   {   sprite.setColor(sf::Color(r, g, b));}
 void renderEngine::rSprite::setColor(int r, int g, int b, int alpha)   {   sprite.setColor(sf::Color(r, g, b, alpha));}
-void renderEngine::rView::setTarget(float x, float y) {
-    targetX = x;
-    targetY = y;
-}
-
-std::array<float, 2> renderEngine::rView::getTarget() {
-    return std::array<float, 2> {targetX, targetY};
-}
-
-bool renderEngine::rView::hasTarget() {
-    return hasTarget_;
-}
 
 
 sf::View                renderEngine::rView::getView    () {    return view;}
