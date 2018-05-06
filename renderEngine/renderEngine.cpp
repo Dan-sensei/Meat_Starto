@@ -20,7 +20,7 @@
 #define FRAMERATE 60
 
 renderEngine::renderEngine():
-window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
+window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Default)
 //window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"Carga de mapa",sf::Style::Default)
 {
     window.setFramerateLimit(FRAMERATE);
@@ -29,9 +29,12 @@ window(sf::VideoMode(1920,1080),"Meat STARTO!",sf::Style::Fullscreen)
     
 }
 
+
 void                renderEngine::display   ()          {   window.display();}
 void                renderEngine::setView   (rView v)   {   window.setView(v.getView());}
-void                renderEngine::close     ()          {   window.close();}
+void                renderEngine::close     ()          {   window.close();
+}
+
 
 bool                renderEngine::isOpen    ()          {   return window.isOpen();}   //TRUE SI LA VENTANA ESTA ABIERTA
 sf::RenderWindow*   renderEngine::getWindow ()          {   return &window;}   

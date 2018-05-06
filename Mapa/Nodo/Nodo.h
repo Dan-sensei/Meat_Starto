@@ -44,6 +44,7 @@ public:
     void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     void addPower(int id, int xMin, int xMax, int y_);
     void addSuperiorLayer(std::vector<renderEngine::rSprite> layer);
+    void addLight(int x_, int y_);
     Minijuego* addMinigame(int type, int x, int y, int width, int height, std::vector<int> IDs_mininodo);
     
     //Eventos
@@ -69,20 +70,19 @@ private:
     renderEngine::rTexture spritesheet;
     
     // Objetos que contiene el nodo
+    std::vector<std::array<int, 2>> lights;
     std::vector<NPC*> npcs;
     std::vector<pBody> ground;
     std::vector<renderEngine::rRectangleShape> pinchos;
     std::vector<renderEngine::rSprite> v_esprait;
     std::vector< std::vector<renderEngine::rSprite> > superiorLayer;
     Minijuego* minijuego;
-    
+
     typedef void (Player::*pFunc)(void);
     pFunc array_funciones[7];
     
-    
     renderEngine::rImage img_powers;
     std::vector<power> powers;
-    
     int aux_pop;
     
 };

@@ -162,7 +162,7 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     p.id = id;
 
     std::string sprite[7];
-    sprite[0] = "assets/powers/cafe.png";       // Estrella
+    sprite[0] = "assets/powers/star.png";           // Estrella
     sprite[1] = "assets/powers/cafe.png";           // Café
     sprite[2] = "assets/powers/carne.png";          // Carne
     sprite[3] = "assets/powers/flan.png";           // Flan
@@ -170,6 +170,7 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     sprite[5] = "assets/powers/biberon.png";        // Biberón
     sprite[6] = "assets/powers/pescado.png";        // Pescado
     
+    std::cout << "TARGET " << id << std::endl;
     std::string target = sprite[id];
     
     int sizeY = AssetManager::GetTexture(target).getYSize();
@@ -182,6 +183,11 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     p.sprite.setPosition(newX, y_);
     powers.push_back(p);
 }
+
+void Nodo::addLight(int x_, int y_) {
+    lights.push_back(std::array<int, 2>{x_, y_});
+}
+
 
 void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 
@@ -203,6 +209,11 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
     
     if(minijuego != nullptr)
         minijuego->draw(tick_);
+
+    for(int i = 0; i <lights.size(); ++i){
+        
+       
+    }
     
 }
 

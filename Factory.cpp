@@ -23,6 +23,7 @@ Factory::Factory() {
     mapa_funciones.insert(std::make_pair("power", &Factory::leePorwerUps));
     mapa_funciones.insert(std::make_pair("checkpoint", &Factory::leeCheckPoints));
     mapa_funciones.insert(std::make_pair("minijuego", &Factory::leeMinijuego));
+    mapa_funciones.insert(std::make_pair("light", &Factory::leeLuces));
 }
 
 
@@ -324,9 +325,7 @@ void Factory::leeCheckPoints(tinyxml2::XMLElement* obj, NodeStruct& node) {
 }
 
 void Factory::leeMinijuego(tinyxml2::XMLElement* obj, NodeStruct& node) {
-    
-    std::cout << "MINIJUEGO"<< std::endl;
-    
+
     MinijuegoStruct mini;
     
     tinyxml2::XMLElement* property;
@@ -342,4 +341,28 @@ void Factory::leeMinijuego(tinyxml2::XMLElement* obj, NodeStruct& node) {
     obj->QueryIntAttribute("height", &(mini.height));
     
     node.minijuego = mini;
+}
+
+void Factory::leeLuces(tinyxml2::XMLElement* obj, NodeStruct& node) {
+    LightStruct lus;
+    
+    obj = obj->FirstChildElement("object");
+    
+    std::vector<CheckpointStruct> aux;
+    int width, height;
+    while (obj) {
+        obj->QueryIntAttribute("x", &(lus.x));
+        obj->QueryIntAttribute("y", &(lus.y));
+        obj->QueryIntAttribute("width", &width);
+        obj->QueryIntAttribute("height", &height);
+        
+        lus.x += width/2;
+        lus.y += height/2;
+        
+        node.Lights.push_back(lus);
+        
+        obj = obj->NextSiblingElement("object");
+    }
+    
+
 }

@@ -56,6 +56,11 @@ private:
         int y;
     };
     
+    struct LightStruct{
+        int x;
+        int y;
+    };
+    
     struct GroundStruct{
         std::vector<std::array<int, 2>> coords;
     };
@@ -91,6 +96,7 @@ public:
         std::vector<CheckpointStruct> Checkpoints;
         std::vector<PowerStruct> Powers;
         std::vector<GroundStruct> Grounds;
+        std::vector<LightStruct> Lights;
         MinijuegoStruct minijuego;
     };
     
@@ -113,6 +119,7 @@ private:
     void leePorwerUps(tinyxml2::XMLElement *obj, NodeStruct &node);
     void leeCheckPoints(tinyxml2::XMLElement *obj, NodeStruct &node);
     void leeMinijuego(tinyxml2::XMLElement *obj, NodeStruct &node);
+    void leeLuces(tinyxml2::XMLElement *obj, NodeStruct &node);
 
 };
 
