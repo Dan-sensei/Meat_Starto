@@ -619,6 +619,10 @@ std::vector<Player*>* Juego::getPlayers() {
     return &readyPlayer;
 }
 
+renderEngine::rView* Juego::getPrincipalView() {
+    return view;
+}
+
 void Juego::switchCameradirection() {
     cameraDirection = (cameraDirection == 0) ? 1 : 0;
     Mapa::Instance().setCameraDirection(cameraDirection);
