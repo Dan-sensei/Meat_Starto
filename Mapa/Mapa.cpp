@@ -21,10 +21,10 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 12
+#define MAP_ITERATION 20
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
-#define altura_minijuego 9
+#define altura_minijuego 7
 #define nodoInicial 0
 #define BACKGROUND_VELOCITY 2
 

@@ -57,6 +57,8 @@ public:
     void draw();
     
     bool isInmortal();
+    bool getEscudo();
+    void setEscudo(bool b);
     
     struct state{
         float x;     // Posicion X
@@ -94,7 +96,6 @@ public:
     void transportToSecondPhase(float x, float y);
     std::string anima();
     
-    bool escudo;
     
 private:
     int id;
@@ -122,6 +123,9 @@ private:
     renderEngine::rClock inmortalityClock;
     renderEngine::rClock speedClock;
     renderEngine::rClock deadClock;
+    
+    renderEngine::rClock inmortalRespawnClock;
+    bool inmortalRespawn;
     
     renderEngine::rClock respawnTimeClock;
     bool spawned;
@@ -161,6 +165,7 @@ private:
     indicador *lvl1;
     renderEngine::rClock baby_clock;
         renderEngine::rSprite spescudo;
+    bool escudo;
 
 };
 

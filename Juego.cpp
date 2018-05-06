@@ -512,7 +512,7 @@ void Juego::Update(){
 void Juego::Render(){
     //std::cout << "RENDER == " << tick << std::endl;
 
-    renderEngine::Instance().clear('k');
+    renderEngine::Instance().clear('w');
 
     // TICK PARA LA INTERPOLAÇAO
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));

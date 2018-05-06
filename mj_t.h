@@ -16,6 +16,9 @@
 #include "renderEngine/renderEngine.h"
 #include "physicsEngine/pBody.h"
 #include "physicsEngine/physicsEngine.h"
+#include "Player.h"
+#include "Mapa/Mapa.h"
+#include "Juego.h"
 
 class mj_t {
 public:
