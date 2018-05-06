@@ -37,6 +37,10 @@ bool                renderEngine::isOpen    ()          {   return window.isOpen
 sf::RenderWindow*   renderEngine::getWindow ()          {   return &window;}   
 bool                renderEngine::pollEvent (rEvent &e) {   return window.pollEvent(*e.getEvent());}
 bool renderEngine::isJoystickConnected      (int j)     {   sf::Joystick::isConnected(j);}
+void renderEngine::moveView(float x, float y) {
+    const sf::View *view = &(window.getView());
+    //FALTA IMPLEMENTACION
+}
 
 void renderEngine::ChangeState(State* pState) {
     _state = pState;

@@ -97,7 +97,7 @@ void Hud::cambiarHud(Player* player){
 }
 
 void Hud::render(){
-    
+
     for(int i=0; i<players.size(); i++){
 
         cambiarHud(players[i]);

@@ -512,7 +512,7 @@ void Juego::Update(){
 void Juego::Render(){
     //std::cout << "RENDER == " << tick << std::endl;
     
-    renderEngine::Instance().clear('w');
+    renderEngine::Instance().clear('k');
         
     // TICK PARA LA INTERPOLAÇAO
     tick = std::min(1.f, static_cast<float>( accumulator/(1/UPDATE_STEP) ));
@@ -618,4 +618,8 @@ std::vector<Player*>* Juego::getPlayers() {
 void Juego::switchCameradirection() {
     cameraDirection = (cameraDirection == 0) ? 1 : 0;
     Mapa::Instance().setCameraDirection(cameraDirection);
+}
+
+renderEngine::rView* Juego::getPrincipalView() {
+    return view;
 }

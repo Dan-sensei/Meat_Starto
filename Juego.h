@@ -48,6 +48,7 @@ public:
     
     void switchCameradirection();
     std::vector<Player*>* getPlayers();
+    renderEngine::rView* getPrincipalView();
 
     std::array<float,2> getPlayerPosition(); //DEBERIA DE DEVOLVER TODAS LAS POSICIONES DE TODOS LOS PERSONAJES
 private:

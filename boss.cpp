@@ -37,8 +37,9 @@ void boss::init(int x_,int y_) {
     
     //BOSS
     javi.r.setSize(70,70);
-    javi.r.setPosition(x_min+(a*5),y_min+560);
-    javi.r.setFillColor('r');
+    javi.r.setPosition((x_max-x_min)/2+x_min-a*2,y_min/*+560*/);
+    //javi.r.setFillColor('r');
+    javi.r.setTexture(AssetManager::Instance().GetTexture("assets/boss/javi.png"));
     javi.x_f = -1;
     javi.y_f = -1;
     javi.x_v = 0;
@@ -90,11 +91,57 @@ void boss::init(int x_,int y_) {
     time_text.setCharacterSize(50);
     time_text.setFillColor('k');
     
+    //ANIMACION BOSS
+    initBoss = false;
+    restartInitClock = false;
+    view_mv = false;
+    
+    dialogo = new renderEngine::rText[6]();
+    for(int i=0 ; i<6 ; i++){
+        dialogo[i].setFont(time_font);
+        dialogo[i].setCharacterSize(50);
+        dialogo[i].setFillColor('w');
+    }
+    
+    str_dialogo = new std::string[6];
+    str_dialogo[0] = "* I see you have come here";
+    str_dialogo[1] = "* Prepare yourself for this grill";
+    str_dialogo[2] = "* You have passed a lot of traps";
+    str_dialogo[3] = "* But this will be the last";
+    str_dialogo[4] = "* I wont be so kind";
+    str_dialogo[5] = "* ...!";
+
+    s_count = 0;
+    c_count = 1;
+    quoteFin = false;
+    
+    caja_dialogo = new renderEngine::rRectangleShape();
+    caja_dialogo->setSize(renderEngine::Instance().getViewSize()[0]*1.2,800);
+    caja_dialogo->setFillColor('k');
+    caja_dialogo->setOutlineThickness(15);
+    caja_dialogo->setOutlineColor('w');
+    caja_dialogo->setOrigin(caja_dialogo->getSize()[0]/2,caja_dialogo->getSize()[1]/2);
+    
+    sansJavi = new renderEngine::rRectangleShape();
+    float w = 300;
+    float h = 300;
+    sansJavi->setSize(w,h);
+    sansJavi->setTexture(AssetManager::Instance().GetTexture("assets/boss/javi.png"));
+    sansJavi->setOrigin(w/2,h/2);
+}
+
+void boss::trembleView() {
+    if(trembleClock.getElapsedTime().asSeconds() > 0.04){
+        float mv = 20;
+        view_mv ? Juego::Instance().getPrincipalView()->move(mv,0) : Juego::Instance().getPrincipalView()->move(-mv,0) ;
+        view_mv? view_mv=false : view_mv=true;
+
+        trembleClock.restart();
+    }
 }
 
 void boss::update() {
     renderEngine *sfml;
-    
     float x_m = sfml->Instance().getViewCenter()[0];
     
     //x_ MARCA LA POSICION CENTRAL DE LA VISTA
@@ -102,83 +149,153 @@ void boss::update() {
     if(x_m> (x_min+(70*20)) && x_m < x_max){
         //std::cout << y_min << std::endl;
         //COMIENZA LA BATALLA FINAL
-        on = true;        
-        if(!restart){
-            //std::cout << " | ----------- Restart" << std::endl;
-            //AQUI SOLO ENTRA UNA VEZ
-            //CREO LAS COLISIONES DE LA PUERTA 
-            for(int i=0 ; i<12 ; i++){
-                float x = puerta[i].r.getPosition()[0];
-                float y = puerta[i].r.getPosition()[1]-DES;
-                puerta[i].r.setPosition(x,y);
+        on = true;
+        
+        if(!initBoss){
+            if(!restartInitClock){
+                initClock.restart();
+                trembleClock.restart();
+                dtDialogue.restart();
+                
+                restartInitClock = true;
+            }
+            
+            //TIEMBLA LA VISTA
+            float time = initClock.getElapsedTime().asSeconds();
+            if(time<=5) trembleView();
+            if(time>5 && time<=6){
+                caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0],renderEngine::Instance().getViewCenter()[1]-500);
+                sansJavi->setPosition(renderEngine::Instance().getViewCenter()[0]-1100,renderEngine::Instance().getViewCenter()[1]-500);
+            }
+            if(time>6 && time<=35){
+                float x = renderEngine::Instance().getViewCenter()[0]-500;
+                float y = renderEngine::Instance().getViewCenter()[1]-800+(s_count*100);
+                dialogo[s_count].setPosition(x,y);
+            
+                //ACTUALIZO EL STRING
+                if(dtDialogue.getElapsedTime().asSeconds()>0.1){
+                    
+                    if(!quoteFin || dialogueClock.getElapsedTime().asSeconds()>2){
+                        if(s_count==6){
+                            //SE TERMINA EL DIALOGO
+                        }
+                        else if(str_dialogo[s_count].length()==c_count){
+                            s_count++;
+                            c_count = 1;
 
-                float w = puerta[i].r.getSize()[0];
-                float h = puerta[i].r.getSize()[1];
-                x = puerta[i].r.getPosition()[0]+(w/2);
-                y = puerta[i].r.getPosition()[1]+(h/2);
-                
-                t = new physicsEngine::type;
-                t->id = 1;
-                t->data = this;
-                
-                puerta[i].b = world->Instance().createBody(w, h ,x , y, 'k', t);
+                            dialogueClock.restart();
+                            quoteFin = true;
+                        }
+                        else{
+                            std::string str_aux = "";
+                            str_aux += str_dialogo[s_count].substr(0,c_count+1);
+                            dialogo[s_count].setString(str_aux);
+
+                            c_count++;
+                            quoteFin = false;
+                        }
+                    }
+
+                    dtDialogue.restart();
+                }
+            }
+            if(time>31.5 && time<=36){
+                if(caja_dialogo){
+                    delete caja_dialogo;
+                    caja_dialogo = NULL;
+                }
+                for(int i=0 ; i<6 ; i++){
+                    dialogo[i].setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
+                }
+                if(sansJavi){
+                    delete sansJavi;
+                    sansJavi = NULL;
+                }
+                trembleView();
+                javi.r.move(0,5);
+            }
+            if(time>36){
+                initBoss=true;
+            }
+        }
+        else{
+            if(!restart){
+                //std::cout << " | ----------- Restart" << std::endl;
+                //AQUI SOLO ENTRA UNA VEZ
+                //CREO LAS COLISIONES DE LA PUERTA 
+                for(int i=0 ; i<12 ; i++){
+                    float x = puerta[i].r.getPosition()[0];
+                    float y = puerta[i].r.getPosition()[1]-DES;
+                    puerta[i].r.setPosition(x,y);
+
+                    float w = puerta[i].r.getSize()[0];
+                    float h = puerta[i].r.getSize()[1];
+                    x = puerta[i].r.getPosition()[0]+(w/2);
+                    y = puerta[i].r.getPosition()[1]+(h/2);
+
+                    t = new physicsEngine::type;
+                    t->id = 1;
+                    t->data = this;
+
+                    puerta[i].b = world->Instance().createBody(w, h ,x , y, 'k', t);
+                }
+
+                clock_boss.restart();   //BOSS MASTER CLOCK
+                dt_boss.restart();      //HABILIDADES
+                dt_fan.restart();       //ABANICO PROYECTILES
+                restart = true;
+
+                time_text.setPosition(renderEngine::Instance().getViewCenter()[0]-70*22,renderEngine::Instance().getViewCenter()[1]-70*5);
+
             }
 
-            clock_boss.restart();   //REINICIO LOS RELOJES
-            dt_boss.restart();
-            dt_fan.restart();
-            restart = true;
-            
-            time_text.setPosition(renderEngine::Instance().getViewCenter()[0]-70*22,renderEngine::Instance().getViewCenter()[1]-70*5);
+            //HACER UNA ESPECIE DE ANIMACION
 
-        }
-        
-        //HACER UNA ESPECIE DE ANIMACION
-        
-        //UPDATE DE JAVI
-        //std::cout << " | ----------- Update de Javi" << std::endl;
-        updateJavi();
-        
-        //std::cout << " | ----------- Fases del Boss" << std::endl;
-        fasesBoss();
-            
-        //std::cout << " | ----------- Habilidades especiales" << std::endl;
-        if(dt_fan.getElapsedTime().asSeconds()>0.2){
-            //GENERO EL NUMERO ALEATORIO
-            int rand = physicsEngine::Instance().genIntRandom(0, 100);
-            if(rand>97)    crearAbanicoProyectiles();
-            //if(distribution(gen)>40)    crearProyectilTele();
-            
-            dt_fan.restart();
-        }
+            //UPDATE DE JAVI
+            //std::cout << " | ----------- Update de Javi" << std::endl;
+            updateJavi();
 
-        //std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
-        //MOVIMIENTO DE LOS PROYECTILES
-        for(int i=0 ; i<javi.proy.size() ; i++){
-            float vx = javi.proy[i]->v_x;
-            float vy = javi.proy[i]->v_y;
+            //std::cout << " | ----------- Fases del Boss" << std::endl;
+            fasesBoss();
 
-            javi.proy[i]->r.move(vx,vy);
-            
-            //MILAGROSAMENTE FUNCIONA
-            if( javi.proy[i]->r.getPosition()[1]>y_min+2600    || javi.proy[i]->r.getPosition()[1]<y_min || 
-                javi.proy[i]->r.getPosition()[0]>x_max+(70*5)   || javi.proy[i]->r.getPosition()[0]<x_min-(70*5)){
-                    //std::cout << "Soy un proyectil y me destruyo" << std::endl;
-                
-                delete javi.proy[i];
-                javi.proy[i] = NULL;
-                
-                javi.proy.erase(javi.proy.begin()+i); 
-                if(i+1==javi.proy.size())   javi.proy.shrink_to_fit();
+            //std::cout << " | ----------- Habilidades especiales" << std::endl;
+            if(dt_fan.getElapsedTime().asSeconds()>0.2){
+                //GENERO EL NUMERO ALEATORIO
+                int rand = physicsEngine::Instance().genIntRandom(0, 100);
+                if(rand>97)    crearAbanicoProyectiles();
+                //if(distribution(gen)>40)    crearProyectilTele();
+
+                dt_fan.restart();
             }
+
+            //std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
+            //MOVIMIENTO DE LOS PROYECTILES
+            for(int i=0 ; i<javi.proy.size() ; i++){
+                float vx = javi.proy[i]->v_x;
+                float vy = javi.proy[i]->v_y;
+
+                javi.proy[i]->r.move(vx,vy);
+
+                //MILAGROSAMENTE FUNCIONA
+                if( javi.proy[i]->r.getPosition()[1]>y_min+2600    || javi.proy[i]->r.getPosition()[1]<y_min || 
+                    javi.proy[i]->r.getPosition()[0]>x_max+(70*5)   || javi.proy[i]->r.getPosition()[0]<x_min-(70*5)){
+                        //std::cout << "Soy un proyectil y me destruyo" << std::endl;
+
+                    delete javi.proy[i];
+                    javi.proy[i] = NULL;
+
+                    javi.proy.erase(javi.proy.begin()+i); 
+                    if(i+1==javi.proy.size())   javi.proy.shrink_to_fit();
+                }
+            }
+
+            if(clock_boss.getElapsedTime().asSeconds()>40){
+                //std::cout << "SE HA ACABADO EL BOSS" << std::endl;
+                sfml->Instance().ChangeState(MPuntuaciones::Instance());
+            }
+
+            time_text.setString(std::to_string(40-static_cast<int>(clock_boss.getElapsedTime().asSeconds())));
         }
-        
-        if(clock_boss.getElapsedTime().asSeconds()>40){
-            //std::cout << "SE HA ACABADO EL BOSS" << std::endl;
-            sfml->Instance().ChangeState(MPuntuaciones::Instance());
-        }
-    
-        time_text.setString(std::to_string(40-static_cast<int>(clock_boss.getElapsedTime().asSeconds())));
     }
     else{
         on = false;
@@ -432,21 +549,32 @@ void boss::crearProyectil(float x_, float y_) {
 void boss::render() {
     
     if(on){
-        //<DEBUG>
-        /*
-        r_aux.draw();
-        ir_aux.draw();
-        //*/
-        //</DEBUG>
-        
-        for(int i=0 ; i<12 ; i++){
-            puerta[i].r.draw();
+        if(!initBoss){
+            if(caja_dialogo) caja_dialogo->draw();
+            if(dialogo){
+                for(int i=0 ; i<6 ; i++){
+                    dialogo[i].draw();
+                }
+            }
+            if(sansJavi) sansJavi->draw();
         }
-        for(int i=0 ; i<javi.proy.size() ; i++){
-            javi.proy[i]->r.draw();
+        else{
+            //<DEBUG>
+            /*
+            r_aux.draw();
+            ir_aux.draw();
+            //*/
+            //</DEBUG>
+
+            for(int i=0 ; i<12 ; i++){
+                puerta[i].r.draw();
+            }
+            for(int i=0 ; i<javi.proy.size() ; i++){
+                javi.proy[i]->r.draw();
+            }
+            time_text.draw();
         }
         javi.r.draw();
-        time_text.draw();
     }
 }
 
