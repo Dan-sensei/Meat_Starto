@@ -241,6 +241,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     spescudo.setScale(1, 1);
     
     lvlUp();
+    inmortalRespawn = false;
 
 }
 
@@ -317,7 +318,7 @@ void Player::update(){
     if(lvl1){
         lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
     }
-     if(escudo==true){
+    if(escudo==true){
         spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
 
     }
@@ -411,9 +412,14 @@ void Player::moveDown(){
 void Player::movement(){
     //blood.setActive(false);
     
-    if(spawned && respawnTimeClock.getElapsedTime().asSeconds() > 0.25){
+    if(spawned && respawnTimeClock.getElapsedTime().asSeconds() > 0.50){
         body.setActive(true);
         spawned = false;
+    }
+    
+    if(inmortalRespawn && inmortalRespawnClock.getElapsedTime().asSeconds() > 1){
+        inmortalRespawn = false;
+        inmortal = false;
     }
     
     preState();
@@ -551,7 +557,7 @@ void Player::movement(){
     }                                                                                                       //
     //  ======================================================================================================
         
-     if(dead==true && deadClock.getElapsedTime().asSeconds()>1){
+    if(dead==true && deadClock.getElapsedTime().asSeconds()>1){
         sprite.setOrigin(48/2 ,40/2+4);
         animator.SwitchAnimation("a_base");
         Mapa::Instance().movePlayerToClosestCheckPoint(this);
@@ -574,7 +580,7 @@ void Player::movement(){
         inv_control = false;
     }
     
-    if(inmortal){
+    if(inmortal && !inmortalRespawn){
         if(inmortalityClock.getElapsedTime().asSeconds() > inmortalityTime){
             //std::cout << "VUELVE A LA TIERRA CHATO" << std::endl;
             inmortal = false;
@@ -841,12 +847,19 @@ void Player::powerDownFish() {
 
 
 void Player::setPosition(float x, float y) {
+    lvlDown();
+    
     body.setPosition(x,y);
     body.setActive(false);
-    respawnTimeClock.restart();
+    
+    inmortalRespawnClock.restart();
+    
     spawned = true;
-    lvlDown();
     onAir = 0;
+    
+    respawnTimeClock.restart();
+    inmortalRespawn = true;    //PARA QUE NO CAIGA EN BUCLE INFINITO EN EL BOSS
+    inmortal = true;
     
     if(speed){
         delete speed;
@@ -947,3 +960,12 @@ int Player::getMuertes(){
 int Player::getEnemigos(){
     return enemigos;
 }
+
+bool Player::getEscudo() {
+    return escudo;
+}
+
+void Player::setEscudo(bool b) {
+    escudo = b;
+}
+

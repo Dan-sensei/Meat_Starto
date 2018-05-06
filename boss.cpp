@@ -107,8 +107,8 @@ void boss::init(int x_,int y_) {
     str_dialogo[0] = "* I see you have come here";
     str_dialogo[1] = "* Prepare yourself for this grill";
     str_dialogo[2] = "* You have passed a lot of traps";
-    str_dialogo[3] = "* But this will be the last";
-    str_dialogo[4] = "* I wont be so kind";
+    str_dialogo[3] = "* I wont be so kind";
+    str_dialogo[4] = "* And THIS, will be the LAST";
     str_dialogo[5] = "* ...!";
 
     s_count = 0;
@@ -116,7 +116,7 @@ void boss::init(int x_,int y_) {
     quoteFin = false;
     
     caja_dialogo = new renderEngine::rRectangleShape();
-    caja_dialogo->setSize(renderEngine::Instance().getViewSize()[0]*1.2,800);
+    caja_dialogo->setSize(2732*1.2,800);
     caja_dialogo->setFillColor('k');
     caja_dialogo->setOutlineThickness(15);
     caja_dialogo->setOutlineColor('w');
@@ -270,12 +270,23 @@ void boss::update() {
 
             //std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
             //MOVIMIENTO DE LOS PROYECTILES
+            std::vector<Player*>* players = Juego::Instance().getPlayers();
             for(int i=0 ; i<javi.proy.size() ; i++){
                 float vx = javi.proy[i]->v_x;
                 float vy = javi.proy[i]->v_y;
 
                 javi.proy[i]->r.move(vx,vy);
-
+                
+                for(int j=0 ; j<players->size() ; j++){
+                    Player* ready = (*players)[j];
+                    if(ready->getEscudo()){
+                        ready->setEscudo(false);
+                    }
+                    else if(!ready->isInmortal() && ready->getSprite().intersects(javi.proy[i]->r)){
+                        Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                    }
+                }
+                
                 //MILAGROSAMENTE FUNCIONA
                 if( javi.proy[i]->r.getPosition()[1]>y_min+2600    || javi.proy[i]->r.getPosition()[1]<y_min || 
                     javi.proy[i]->r.getPosition()[0]>x_max+(70*5)   || javi.proy[i]->r.getPosition()[0]<x_min-(70*5)){

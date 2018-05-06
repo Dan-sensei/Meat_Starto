@@ -292,14 +292,6 @@ void mj_t::update() {
             }
             
             //MUEVO LOS MUROS (BOX2D+SFML)
-            /*
-            if(m1.rect.getPosition()[1]<y_min+210){
-                m1.rect.move(0,5);
-                float w = m2.rect.getSize()[0];
-                float h = m2.rect.getSize()[1];
-                m1.pb.setPosition(m1.rect.getPosition()[0]+(w/2),m1.rect.getPosition()[1]+(h/2));
-            }
-             */
             if(m2.rect.getPosition()[1]<y_min+140){
                 m2.rect.move(0,5);
                 float w = m2.rect.getSize()[0];
@@ -318,7 +310,8 @@ void mj_t::update() {
             int fin_pieza = y_min+5000;
             float v = 0.5f;
             bool elim = true;
-
+            std::vector<Player*>* players = Juego::Instance().getPlayers();
+            
             for(int i = 0 ; i<v_piezas.size() ; i++){
                 elim = true;
                 for(int j=0 ; j<4 ; j++){
@@ -336,6 +329,16 @@ void mj_t::update() {
                             v_piezas[i].r[j].move(0,v_piezas[i].vel+(v*10));
                         }
                         elim = false;
+                        
+                        for(int k=0 ; k<players->size() ; k++){
+                            Player* ready = (*players)[k];
+                            if(ready->getEscudo()){
+                                ready->setEscudo(false);
+                            }
+                            else if(!ready->isInmortal() && ready->getSprite().intersects(v_piezas[i].r[k])){
+                                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                            }
+                        }
                     }
                 }
                 if(elim){

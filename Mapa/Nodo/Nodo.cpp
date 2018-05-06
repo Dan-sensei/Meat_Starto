@@ -199,7 +199,7 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
     
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < npcs.size(); j++)
-        if(npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
+        if(npcs[j] && npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
@@ -291,13 +291,13 @@ void Nodo::checkColisionsPinchos(Player* ready) {
     //Colision con pinchos
     for(int j = 0; j < pinchos.size() && !flag; j++){
         if(ready->getSprite().intersects(pinchos[j])){
-            if(ready->escudo==false){
-
+            if(!ready->getEscudo()){
                 Mapa::Instance().movePlayerToClosestCheckPoint(ready); 
-            //ready->lvlDown();
-            flag = true;
-            }else{
-                ready->escudo=false;
+                //ready->lvlDown();
+                flag = true;
+            }
+            else{
+                ready->setEscudo(false);
             }
         }
     }
