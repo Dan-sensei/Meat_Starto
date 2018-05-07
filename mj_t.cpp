@@ -293,14 +293,14 @@ void mj_t::update() {
             
             //MUEVO LOS MUROS (BOX2D+SFML)
             if(m2.rect.getPosition()[1]<y_min+140){
-                m2.rect.move(0,5);
+                m2.rect.move(0,20);
                 float w = m2.rect.getSize()[0];
                 float h = m2.rect.getSize()[1];
                 m2.pb.setPosition(m2.rect.getPosition()[0]+(w/2),m2.rect.getPosition()[1]+(h/2));
             }
             
             //CREO LAS PIEZAS
-            if(dt.getElapsedTime().asSeconds() >= 0.2 && clock.getElapsedTime().asSeconds() < 55){
+            if(dt.getElapsedTime().asSeconds() >= 0.2 && clock.getElapsedTime().asSeconds() < 30){
                 //std::cout << "CREO PIEZA: " << clock.getElapsedTime().asSeconds() << std::endl;
                 dt.restart();
                 crearPieza();
@@ -348,7 +348,7 @@ void mj_t::update() {
             }
             
             //DETECTA EL FIN DEL MINIJUEGO
-            if(clock.getElapsedTime().asSeconds() > 60){
+            if(clock.getElapsedTime().asSeconds() > 35){
                 fin = true;
                 on = false;
                 

@@ -944,7 +944,7 @@ void Player::lvlUp() {
                 break;
             case 4:
                 //poner escudo
-                escudo = true;                
+                escudo = true;
                 double_hit(true);
                 MAXSPEED = constMaxSeed+3;
                 break;

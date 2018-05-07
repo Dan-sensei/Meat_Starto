@@ -94,18 +94,26 @@ void xPlotato::update(){
 
         for(int i=0 ; i<players->size() ; i++){
             Player* ready = (*players)[i];
-
-            if(ready->getSprite().intersects(sprite)){
-                sprite.setOrigin(112,120);
-                sprite.setRotation(0);
-                sprite.setScale(2.5, 2.5);
-                body.setLinealVelocicity(0, body.getLinearYVelocity());
-                if(animator.GetCurrentAnimationName()!="xplota"){
-                    animator.SwitchAnimation("xplota");
+            
+            if(!ready->getEscudo()){
+                if(ready->getSprite().intersects(sprite)){
+                    sprite.setOrigin(112,120);
+                    sprite.setRotation(0);
+                    sprite.setScale(2.5, 2.5);
+                    body.setLinealVelocicity(0, body.getLinearYVelocity());
+                    if(animator.GetCurrentAnimationName()!="xplota"){
+                        animator.SwitchAnimation("xplota");
+                    }
+                    
+                    if(!ready->isInmortal())
+                        Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+                    
+                    readyToDie = true;
+                    xclock.restart();
                 }
-                Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-                readyToDie = true;
-                xclock.restart();
+            }
+            else{
+                ready->setEscudo(false);
             }
         }
 
