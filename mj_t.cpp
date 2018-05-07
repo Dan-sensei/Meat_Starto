@@ -335,7 +335,7 @@ void mj_t::update() {
                             if(ready->getEscudo()){
                                 ready->setEscudo(false);
                             }
-                            else if(!ready->isInmortal() && ready->getSprite().intersects(v_piezas[i].r[k])){
+                            else if(!ready->isInmortal() && ready->getSprite().intersects(v_piezas[i].r[j])){
                                 Mapa::Instance().movePlayerToClosestCheckPoint(ready);
                             }
                         }

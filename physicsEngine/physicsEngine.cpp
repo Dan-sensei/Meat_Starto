@@ -136,7 +136,9 @@ pBody physicsEngine::createGround(std::vector<std::array<int, 2>> vertex_, type*
 }
 
 void physicsEngine::detroyBody(pBody body){
-    world.DestroyBody(body.getBody());
+    if(body.getBody()){
+        world.DestroyBody(body.getBody());
+    }
 }
 
 int physicsEngine::getBodyListSize(){
