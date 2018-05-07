@@ -51,7 +51,7 @@ Hud::Hud(std::vector<Player*> jugadores) {//cambiar y pasar array de jugadores
     
     cuadrado.setTexture(AssetManager::GetTexture(sprite_name1));
     cuadrado.setOrigin(widthp / 4, heightp / 2.4);
-    cuadrado.setScale(0.55, 0.5);
+    cuadrado.setScale(0.7, 0.5);
 
 
        
