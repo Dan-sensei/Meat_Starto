@@ -77,6 +77,8 @@ private:
     std::vector<renderEngine::rSprite> LIGHTS;
     std::vector< std::vector<renderEngine::rSprite> > superiorLayer;
     Minijuego* minijuego;
+    
+    std::vector<renderEngine::rRectangleShape> debug;
 
     typedef void (Player::*pFunc)(void);
     pFunc array_funciones[7];

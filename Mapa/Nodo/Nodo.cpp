@@ -137,6 +137,15 @@ void Nodo::addGround(std::vector<std::array<int,2> > coords){
 }
 
 void Nodo::addxPlotato(int x_, int y_, int x_min, int x_max) {
+    renderEngine::rRectangleShape d;
+    
+    d.setSize(x_max - x_min, 70);
+    d.setPosition(x_, y_ );
+    d.setOutlineThickness(2);
+    d.setOutlineColor('b');
+    d.setFillColor('t');
+    
+    debug.push_back(d);
     npcs.push_back(new xPlotato(x_, y_, x_min, x_max));
 }
 
@@ -200,10 +209,10 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
             v_esprait[i].draw();
         }
     }   
-    
+   
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < npcs.size(); j++)
-        if(npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
+        if(npcs[j] && npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
@@ -216,6 +225,7 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
 
     for(int i = 0; i <LIGHTS.size(); ++i)
         LIGHTS[i].draw();
+    
 }
 
 void Nodo::drawSuperiorLayer(renderEngine::rIntRect limit) {

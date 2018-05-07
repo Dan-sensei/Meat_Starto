@@ -63,6 +63,7 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) : animator(sprite) {
     
     xplotar = false;
     alive = true;
+    readyToDie = false;
     
 }
 
@@ -158,8 +159,10 @@ void xPlotato::update(){
         }
     
     }
-    if(readyToDie && xclock.getElapsedTime().asSeconds() > 0.4)
+    if(readyToDie && xclock.getElapsedTime().asSeconds() > 0.4){
+        std::cout << "DYING " << std::endl;
         alive = false;
+    }
     
     animator.Update(animationClock.restart());
     

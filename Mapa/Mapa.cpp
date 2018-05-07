@@ -88,7 +88,7 @@
     //TETRIS
     mj_t *tetris;
     tetris->Instance();     //INICIALIZO EL SINGLETON
-    m_tetris = false;
+    m_tetris = true;
 
     //BOSS
     boss *javi;
@@ -280,12 +280,6 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
         newCoords.clear();
     }
 
-    // CARGO LAS XPLOTATOS
-    for(int i = 0; i < nodo.xPlotatos.size(); ++i){
-        randomX = physicsEngine::Instance().genIntRandom(nodo.xPlotatos[i].xMin, nodo.xPlotatos[i].xMax);
-        lista.back().addxPlotato(x_ + randomX, y_ + nodo.xPlotatos[i].y, x_ + nodo.xPlotatos[i].xMin, x_ + nodo.xPlotatos[i].xMax);
-    }
-
     // CARGO LOS SKULLS
     for(int i = 0; i < nodo.Skulls.size(); ++i){
         randomX = physicsEngine::Instance().genIntRandom(nodo.Skulls[i].xMin, nodo.Skulls[i].xMax);
@@ -296,6 +290,13 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
     // CARGO LOS POWERS
     for(int i = 0; i < nodo.Powers.size(); ++i){
         lista.back().addPower(nodo.Powers[i].id, x_ + nodo.Powers[i].xMin, x_ + nodo.Powers[i].xMax, y_ + nodo.Powers[i].y);
+    }
+    
+    // CARGO LAS XPLOTATOS
+    //std::cout << "XP " << nodo.xPlotatos.size() << std::endl;
+    for(int i = 0; i < nodo.xPlotatos.size(); ++i){
+        randomX = physicsEngine::Instance().genIntRandom(nodo.xPlotatos[i].xMin, nodo.xPlotatos[i].xMax);
+        lista.back().addxPlotato(x_ + randomX, y_ + nodo.xPlotatos[i].y, x_ + nodo.xPlotatos[i].xMin, x_ + nodo.xPlotatos[i].xMax);
     }
 
     // CARGO LOS PUNTOS DE CONTROL
@@ -428,6 +429,8 @@ void Mapa::render(float tick_) {
     //------------|  BLOQUE DE INICIO |------------//
     if(initBloques) initBloques->rs.draw();
 
+    
+    /*
     //------------|  CHECKPOINTS - DEBUG  |------------//
     std::list<checkPoint>::iterator it = active_points.begin();
     while(it != active_points.end()){
@@ -440,6 +443,10 @@ void Mapa::render(float tick_) {
         (*it).shape.draw();
         ++it;
     }
+     */
+    
+    for(int i = 0; i < debug.size(); ++i)
+        debug[i].draw();
 
 
     //------------|  TETRIS  |------------//
