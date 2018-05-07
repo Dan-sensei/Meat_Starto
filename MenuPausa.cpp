@@ -45,7 +45,7 @@ MenuPausa::MenuPausa() {
     
     personaje.setTexture(AssetManager::GetTexture(sprite_name1));
     personaje.setOrigin(widthp / 2, heightp / 2.1);
-    personaje.setScale(0.15, 0.15);
+    personaje.setScale(0.12, 0.12);
     personaje.setPosition(posx-width/11, posy-height/21);
 
     
@@ -59,7 +59,7 @@ MenuPausa::MenuPausa() {
     for(int i=0; i<NUMBER_OF_ITEMS; i++){
         mancha[i].setTexture(AssetManager::GetTexture(sprite_name));
         mancha[i].setOrigin(widths / 2, heights / 2.1);
-        mancha[i].setScale(1.65, 1.65);
+        mancha[i].setScale(1.45, 1.45);
     }
     
     InmortalOn=false;

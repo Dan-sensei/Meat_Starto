@@ -42,6 +42,19 @@ Hud::Hud(std::vector<Player*> jugadores) {//cambiar y pasar array de jugadores
        menu[2].setCharacterSize(30);
        menu[2].setFillColor('k');
        
+       
+           /*PERSONAJE*/
+    std::string sprite_name1 = "assets/cuadrado2.png";
+    
+    int widthp = AssetManager::GetTexture(sprite_name1).getXSize();
+    int heightp = AssetManager::GetTexture(sprite_name1).getYSize();
+    
+    cuadrado.setTexture(AssetManager::GetTexture(sprite_name1));
+    cuadrado.setOrigin(widthp / 4, heightp / 2.4);
+    cuadrado.setScale(0.55, 0.5);
+
+
+       
 }
 
 Hud::Hud(const Hud& orig) {
@@ -73,24 +86,31 @@ void Hud::cambiarHud(Player* player){
                menu[0].setPosition(posx-5.5*(width/12),posy-height/2.4);
                menu[1].setPosition(posx-5.5*(width/12),posy-height/2.6);
                menu[2].setPosition(posx-5.5*(width/12),posy-height/2.8);
+               cuadrado.setPosition(posx-5.5*(width/12),posy-height/2.4);
+
                break;
            case 1:
                hudsprite.setPosition(posx-2*width/12,posy-height/2.2);
                menu[0].setPosition(posx-2.5*width/12,posy-height/2.4);
                menu[1].setPosition(posx-2.5*width/12,posy-height/2.6);
                menu[2].setPosition(posx-2.5*width/12,posy-height/2.8);
+               cuadrado.setPosition(posx-2.5*(width/12),posy-height/2.4);
+
                break;
              case 2:
                hudsprite.setPosition(posx+1.5*width/12,posy-height/2.2);
                menu[0].setPosition(posx+width/12,posy-height/2.4);
                menu[1].setPosition(posx+width/12,posy-height/2.6);
                menu[2].setPosition(posx+width/12,posy-height/2.8);
+               cuadrado.setPosition(posx+(width/12),posy-height/2.4);
                break;
            case 3:
                hudsprite.setPosition(posx+4.5*(width/12),posy-height/2.2);
                menu[0].setPosition(posx+4*(width/12),posy-height/2.4);
                menu[1].setPosition(posx+4*(width/12),posy-height/2.6);
                menu[2].setPosition(posx+4*(width/12),posy-height/2.8);
+               cuadrado.setPosition(posx+4*(width/12),posy-height/2.4);
+
                break;
        }
     
@@ -101,6 +121,7 @@ void Hud::render(){
     for(int i=0; i<players.size(); i++){
 
         cambiarHud(players[i]);
+        cuadrado.draw();
         hudsprite.draw();
         for(int i=0; i<3; i++){
             menu[i].draw();

@@ -46,7 +46,7 @@ MenuInicio::MenuInicio() {
     
     logo.setTexture(AssetManager::GetTexture(logo_name));
     logo.setOrigin(widthl / 2, heightl / 2);
-    logo.setScale(0.4,0.4);
+    logo.setScale(0.6,0.6);
     logo.setPosition(posx, posy+height/3);
     
     tam=0.05;
@@ -63,8 +63,8 @@ MenuInicio::MenuInicio() {
     
     personaje.setTexture(AssetManager::GetTexture(sprite_name1));
     personaje.setOrigin(widthp / 2, heightp / 2.1);
-    personaje.setScale(0.05, 0.05);
-    personaje.setPosition(posx-width/11, posy-height/21);
+    personaje.setScale(0.06, 0.06);
+    personaje.setPosition(posx-width/20, posy-height/21);
 
 
     
@@ -77,7 +77,7 @@ MenuInicio::MenuInicio() {
     for(int i=0; i<MAX_NUMBER_OF_ITEMS; i++){
         mancha[i].setTexture(AssetManager::GetTexture(sprite_name));
         mancha[i].setOrigin(widths / 2, heights / 2.1);
-        mancha[i].setScale(0.55, 0.55);
+        mancha[i].setScale(0.65, 0.65);
     }
     
     manchahtp.setTexture(AssetManager::GetTexture(sprite_name));
@@ -343,19 +343,19 @@ void MenuInicio::muevepersonaje(int selec){
 
     switch(selec){
         case 0:
-            personaje.setPosition(posx-width/11, posy-height/21);
+            personaje.setPosition(posx-width/12, posy-height/19);
             break;
 
         case 1:
-            personaje.setPosition(posx-width/40, posy+height/12);
+            personaje.setPosition(posx-width/70, posy+height/13);
             break;
 
         case 2:
-            personaje.setPosition(posx-width/11, posy+height/4.7);
+            personaje.setPosition(posx-width/12, posy+height/4.7);
             break;
 
         case 3:
-            personaje.setPosition(posx-width/40, posy+height/2.9);
+            personaje.setPosition(posx-width/70, posy+height/2.9);
             break;
     }
       
@@ -563,7 +563,7 @@ void MenuInicio::stateMenu() {
                     MoveUp();
                     statemenu=0;
                     selectedItemIndex=0;
-                    personaje.setPosition(posx-width/11, posy-height/21);
+                     personaje.setPosition(posx-width/12, posy-height/19);
                   // std::cout<<"Exit pressed"<< std::endl;
 
                     break;
@@ -590,12 +590,12 @@ void MenuInicio::Handle(){
             menu[3].setCharacterSize(48);
             
             for(int i=0; i<MAX_NUMBER_OF_ITEMS; i++){
-                mancha[i].setScale(1.6, 1.6);
+                mancha[i].setScale(1.45, 1.45);
             }
-            personaje.setScale(0.15, 0.15);
+            personaje.setScale(0.12, 0.12);
             logo.setScale(1.2, 1.2);
             controles.setScale(1.65, 1.65);
-            manchahtp.setScale(1.65, 1.65);
+            manchahtp.setScale(1.45, 1.45);
 
 
 
@@ -627,7 +627,7 @@ void MenuInicio::Handle(){
     posx = sfml->Instance().getViewCenter()[0];
     posy = sfml->Instance().getViewCenter()[1];
         
-    personaje.setPosition(posx-width/11, posy-height/21);
+    personaje.setPosition(posx-width/13, posy-height/19);
     logo.setPosition(posx-width/40, posy-height/6);
 
 
@@ -655,7 +655,7 @@ void MenuInicio::Handle(){
    /*Menu players*/
    titulo3.setPosition(posx-width/15, posy-height/3);
    menuplayer[0].setPosition(posx-width/30, posy-height/15);
-   menuplayer[1].setPosition(posx, posy+height/15);
+   menuplayer[1].setPosition(posx+width/50, posy+height/15);
    menuplayer[2].setPosition(posx-width/20, posy+height/5);
    
 

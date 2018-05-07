@@ -35,6 +35,8 @@ private:
     renderEngine::rText menu[3];
     renderEngine::rSprite hudsprite;
     std::vector<Player*> players;
+    renderEngine::rSprite cuadrado;
+
     
     float width;
     float height;
