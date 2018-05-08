@@ -90,7 +90,7 @@ void goingUp::draw(float tick_) {
     for(std::list<Nodo>::iterator it=ascension.begin(); it!=ascension.end(); ++it){
         (*it).miniDraw(tick_);
     }
-    endArea.draw();
+    //endArea.draw();
 }
 
 

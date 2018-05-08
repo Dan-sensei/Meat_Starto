@@ -114,6 +114,7 @@ private:
 
     std::list<checkPoint> active_points;
     std::list<checkPoint> every_points;
+    std::vector<renderEngine::rSprite> LIGHTS;
     float finisher;
     int direction;
     int cameraDir;

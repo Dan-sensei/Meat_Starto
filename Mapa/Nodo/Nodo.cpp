@@ -193,13 +193,6 @@ void Nodo::addPower(int id, int xMin, int xMax, int y_) {
     powers.push_back(p);
 }
 
-void Nodo::addLight(int x_, int y_) {
-    renderEngine::rSprite lus;
-    lus.setTexture(AssetManager::GetTexture("assets/LUS.png"));
-    lus.setOrigin(AssetManager::GetTexture("assets/LUS.png").getXSize()/2, AssetManager::GetTexture("assets/LUS.png").getYSize()/2);
-    lus.setPosition(x_, y_);
-    LIGHTS.push_back(lus);
-}
 
 
 void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
@@ -245,6 +238,7 @@ void Nodo::miniDraw(float tick_) {
     
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < npcs.size(); j++){
+        if(npcs[j]->isAlive())
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
@@ -258,12 +252,8 @@ void Nodo::update(){
 
     bool flag = false;
     for(int i = 0; i < npcs.size(); i++){
-        npcs[i]->update();
-        
-        if(!npcs[i]->isAlive()){
-            delete npcs[i];
-            npcs[i] = NULL;
-            npcs.erase(npcs.begin()+i);
+        if(npcs[i]->isAlive()){
+            npcs[i]->update();
         }
     }
     

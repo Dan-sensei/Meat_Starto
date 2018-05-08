@@ -21,10 +21,10 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 5
+#define MAP_ITERATION 20
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
-#define altura_minijuego 1
+#define altura_minijuego 9
 #define nodoInicial 0
 #define BACKGROUND_VELOCITY 2
 
@@ -321,7 +321,12 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
 
     // CARGO LAS LUCES
     for(int i = 0; i < nodo.Lights.size(); ++i){
-        lista.back().addLight(x_ + nodo.Lights[i].x, y_ + nodo.Lights[i].y);
+        renderEngine::rSprite lus;
+        lus.setTexture(AssetManager::GetTexture("assets/LUS.png"));
+        lus.setOrigin(AssetManager::GetTexture("assets/LUS.png").getXSize()/2, AssetManager::GetTexture("assets/LUS.png").getYSize()/2);
+        lus.setPosition(x_ + nodo.Lights[i].x, y_ + nodo.Lights[i].y);
+        LIGHTS.push_back(lus);
+        //lista.back().addLight(x_ + nodo.Lights[i].x, y_ + nodo.Lights[i].y);
     }
 
     // MINIJUEGO
@@ -666,8 +671,20 @@ void Mapa::update(){
 
 void Mapa::renderBackground() {
     //EMPIEZO A RENDERIZAR
+    
     background1.draw();
     background2.draw();
+    
+    float viewCenterX = renderEngine::Instance().getViewCenter()[0];
+    float viewWidth = renderEngine::Instance().getViewSize()[0]/2;
+    float textureXSize = AssetManager::GetTexture("assets/LUS.png").getXSize();
+
+    for(int i= 0; i < LIGHTS.size(); ++i){
+        
+        if(LIGHTS[i].getPosition()[0] + textureXSize/2 > viewCenterX - viewWidth  && LIGHTS[i].getPosition()[0] - textureXSize/2 < viewCenterX + viewWidth  ){
+            LIGHTS[i].draw();
+        }
+    }
 }
 
 
@@ -885,9 +902,9 @@ void Mapa::stopCurrentSong() {
 
 void Mapa::getThatVolumenDown() {
     if(currentSong->getVolume() > 0)
-        currentSong->setVolume(currentSong->getVolume()-5);
+        currentSong->setVolume(currentSong->getVolume()-10);
     
-    if( currentSong->getVolume() <= 5){
+    if( currentSong->getVolume() <= 10){
         currentSong->pause();
         currentSong->setVolume(0);
     }

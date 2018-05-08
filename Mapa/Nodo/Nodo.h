@@ -44,7 +44,6 @@ public:
     void addSkull(int x_, int y_, int x_min, int x_max, int y_min, int y_max);
     void addPower(int id, int xMin, int xMax, int y_);
     void addSuperiorLayer(std::vector<renderEngine::rSprite> layer);
-    void addLight(int x_, int y_);
     Minijuego* addMinigame(int type, int x, int y, int width, int height, std::vector<int> IDs_mininodo);
     
     //Eventos
