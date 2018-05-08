@@ -34,6 +34,8 @@ public:
     void setName(std::string n);
     std::string getName();
     renderEngine::rSprite getSprite();
+    renderEngine::rSprite getMano();
+    bool enemigosMasMas();
     
     int getExp();
     int getExp_levelup();

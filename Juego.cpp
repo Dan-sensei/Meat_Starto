@@ -62,11 +62,11 @@ Juego::Juego() {
     //JUGADORES
 
     float x_arr[4] = {2240,1750,1260,770};
+    std::string names[4] = {"Jack","Amy","Ike","Violet"};
 
     int i = 0;
     do {
-
-        readyPlayer.push_back(new Player(i, "Jugador " + std::to_string(i+1), 60.f, 50.f, x_arr[i], 800, 'D', keys));
+        readyPlayer.push_back(new Player(i, names[i], 60.f, 50.f, x_arr[i], 800, 'D', keys));
         ++i;
 
     }while( i < MenuInicio::Instance()->numplayers );
