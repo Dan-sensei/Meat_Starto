@@ -128,6 +128,9 @@ void boss::init(int x_,int y_) {
     sansJavi->setSize(w,h);
     sansJavi->setTexture(AssetManager::Instance().GetTexture("assets/boss/javi.png"));
     sansJavi->setOrigin(w/2,h/2);
+    
+    SANS_TALK_SOUND.openFromFile("assets/Sounds/SANS_TALK.ogg");
+    MEGALOVANIA.openFromFile("assets/Sounds/MEGALOVANIA.ogg");
 }
 
 void boss::trembleView() {
@@ -176,6 +179,7 @@ void boss::update() {
                 dtDialogue.restart();
                 
                 restartInitClock = true;
+                SANS_TALK_SOUND.play();
             }
             
             //TIEMBLA LA VISTA
@@ -229,6 +233,7 @@ void boss::update() {
             }
             if(time>36){
                 initBoss=true;
+                MEGALOVANIA.play();
             }
         }
         else{
@@ -304,6 +309,7 @@ void boss::update() {
         }
     }
     else{
+        MEGALOVANIA.stop();
         on = false;
     }
 }

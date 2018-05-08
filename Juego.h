@@ -85,7 +85,6 @@ private:
     
     int cameraDirection;
     
-    rMusic THE_ARID_FLATS;
     particleSystem rain;
     particleSystem minirain;
     Hud *hud;

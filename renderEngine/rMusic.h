@@ -35,6 +35,7 @@ public:
     bool getLoop();
     float getVolume();
     
+    
 private:
     sf::Music music;
     

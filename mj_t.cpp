@@ -74,6 +74,10 @@ void mj_t::init(int x_,int y_) {
     
     //m1.text.loadFromFile("assets/tetris/t_tetris.png");
     //m2.text.loadFromFile("assets/tetris/t_tetris.png");
+    TETRIS.openFromFile("assets/Sounds/TETRIS.ogg");
+    std::cout << "TETRIS - " << &TETRIS << std::endl;
+
+    
 }
 
 void mj_t::crearPieza() {
@@ -275,6 +279,12 @@ void mj_t::update() {
     
     if(!fin){
         if(x_ > x_min && x_ < x_max){
+            
+            if(!on){
+                Mapa::Instance().changeNextSong(&TETRIS);
+                TETRIS.setVolume(0);
+                TETRIS.play();
+            }
             //ACTUALIZO EL MINIJUEGO
                 //std::cout << "Estoy dentro del tetris wey" << std::endl;
             on = true;
@@ -351,7 +361,8 @@ void mj_t::update() {
             if(clock.getElapsedTime().asSeconds() > 35){
                 fin = true;
                 on = false;
-                
+                std::cout << "SWITCH TO ORIGINAL" << std::endl;
+                Mapa::Instance().changeNextSong();
                 v_piezas.clear();
                 //m1.pb.setPosition(m1.rect.getPosition()[0]+(70/2),m1.rect.getPosition()[1]);
             }

@@ -24,6 +24,7 @@ public:
     virtual ~rSoundBuffer();
     
     bool loadFromFile(std::string const& filename);
+    sf::SoundBuffer* getBuffer();
     
 private:
     

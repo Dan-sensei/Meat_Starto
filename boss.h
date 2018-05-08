@@ -21,6 +21,7 @@
 #include "renderEngine/renderEngine.h"
 #include "physicsEngine/pBody.h"
 #include "physicsEngine/physicsEngine.h"
+#include "renderEngine/rMusic.h"
 
 
 class boss {
@@ -131,6 +132,8 @@ private:
     renderEngine::rClock dtDialogue;
     renderEngine::rClock initClock;
     renderEngine::rClock trembleClock;
+    rMusic SANS_TALK_SOUND;
+    rMusic MEGALOVANIA;
 };
 
 #endif /* BOSS_H */

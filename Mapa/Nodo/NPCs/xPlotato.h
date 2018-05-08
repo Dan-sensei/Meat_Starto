@@ -15,7 +15,8 @@
 #define XPLOTATO_H
 
 #include "NPC.h"
-
+#include "../../../renderEngine/rSoundBuffer.h"
+#include "../../../renderEngine/rSound.h"
 
 class xPlotato : public NPC {
 public:
@@ -42,6 +43,9 @@ private:
     int target;
     
     bool readyToDie;
+
+    rSound xPlosion1;
+    rSound xPlosion2;
 };
 
 #endif /* XPLOTATO_H */
