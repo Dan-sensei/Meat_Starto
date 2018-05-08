@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="49" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="28">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="49" height="41" tilewidth="70" tileheight="70" infinite="0" nextobjectid="33">
  <tileset firstgid="1" source="../tiles_fv.tsx"/>
  <layer name="Capa de Patrones 1" width="49" height="41">
   <data encoding="csv">
@@ -72,10 +72,14 @@
   </object>
  </objectgroup>
  <objectgroup name="spawn">
-  <object id="5" x="799.333" y="1610" width="221.333" height="70"/>
-  <object id="6" x="2404" y="1960" width="162" height="70"/>
   <object id="7" x="2686" y="1960" width="368" height="70"/>
   <object id="8" x="2545.33" y="1190" width="229.333" height="70"/>
-  <object id="9" x="3160" y="1470" width="120" height="70"/>
+ </objectgroup>
+ <objectgroup name="power">
+  <object id="28" x="840" y="1610" width="140" height="70"/>
+  <object id="29" x="1680" y="1610" width="210" height="70"/>
+  <object id="30" x="2240" y="1190" width="70" height="70"/>
+  <object id="31" x="3220" y="1470" width="70" height="70"/>
+  <object id="32" x="3150" y="2030" width="140" height="70"/>
  </objectgroup>
 </map>
