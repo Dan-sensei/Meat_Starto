@@ -43,7 +43,7 @@ Nodo::Nodo() {
 }
 
 Nodo::Nodo(const Nodo& orig) {
-
+    std::cout << "COPIANDO NODO" << std::endl;
     for(int i = 0; i < orig.v_esprait.size(); i++)
         v_esprait.push_back(orig.v_esprait[i]);
     
@@ -58,6 +58,10 @@ Nodo::Nodo(const Nodo& orig) {
     
     for(int i = 0; i < orig.pinchos.size(); i++)
         pinchos.push_back(orig.pinchos[i]);
+    
+    for(std::list<power>::const_iterator it = orig.powers.begin(); it != orig.powers.end(); ++it){
+        powers.push_back(*it);
+    }
 
     aux_pop = orig.aux_pop;
     
@@ -213,8 +217,9 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
             }
         }
     
-    for(int i = 0; i < powers.size(); i++)
-        powers[i].sprite.draw();
+    for(std::list<power>::iterator it = powers.begin(); it != powers.end(); ++it){
+        (*it).sprite.draw();
+    }
     
     if(minijuego != nullptr)
         minijuego->draw(tick_);
@@ -236,18 +241,20 @@ void Nodo::drawSuperiorLayer(renderEngine::rIntRect limit) {
 
 void Nodo::miniDraw(float tick_) {
     for(int i = 0; i < v_esprait.size(); i++)
-            v_esprait[i].draw();
+        v_esprait[i].draw();
     
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < npcs.size(); j++){
-        if(npcs[j]->isAlive()){
+        if(npcs[j] && npcs[j]->isAlive()){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
     }
 
-    for(int i = 0; i < powers.size(); i++)
-        powers[i].sprite.draw();
+    for(std::list<power>::iterator it = powers.begin(); it != powers.end(); ++it){
+        (*it).sprite.draw();
+    }
+
 }
 
 
@@ -273,15 +280,19 @@ void Nodo::update(){
         
         
         //Colision con powerups
-        for(int j = 0; j < powers.size(); j++){
-            if(ready->getSprite().intersects(powers[j].sprite)){
+        std::list<power>::iterator it = powers.begin();
+        while(it!=powers.end()){
+            if(ready->getSprite().intersects((*it).sprite)){
                 //Puntero a funcion
-                pFunc funcion = array_funciones[powers[j].id];   
+                pFunc funcion = array_funciones[(*it).id];   
                 if(funcion != nullptr) (ready->*funcion)();
-                powers.erase(powers.begin()+j);
+                powers.erase(it++);
                 flag = true;
             }
-        }  
+            else
+                ++it;
+        }
+        
     }
     
     if(minijuego != nullptr){
@@ -313,13 +324,15 @@ void Nodo::checkColisionsPinchos(Player* ready) {
 
 void Nodo::preState(){
     for(int i = 0; i < npcs.size(); i++){
-        npcs[i]->preState();
+        if(npcs[i])
+            npcs[i]->preState();
     }
 }
 
 void Nodo::newState(){
     for(int i = 0; i < npcs.size(); i++){
-        npcs[i]->newState();
+        if(npcs[i])
+            npcs[i]->newState();
     }
 }
 

@@ -83,7 +83,7 @@ private:
     pFunc array_funciones[7];
     
     renderEngine::rImage img_powers;
-    std::vector<power> powers;
+    std::list<power> powers;
     int aux_pop;
     
 };

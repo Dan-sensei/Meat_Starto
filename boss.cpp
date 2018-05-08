@@ -86,19 +86,20 @@ void boss::init(int x_,int y_) {
     proy_boss.loadFromFIle(path);
 
     //TEXTOS
-    time_font.loadFromFile("resources/fuente.ttf");
+    time_font.loadFromFile("assets/fonts/ninjagarden.ttf");
     time_text.setFont(time_font);
-    time_text.setCharacterSize(50);
-    time_text.setFillColor('k');
+    time_text.setCharacterSize(90);
+    time_text.setFillColor('w');
     
     //ANIMACION BOSS
     initBoss = false;
     restartInitClock = false;
     view_mv = false;
     
+    sans_font.loadFromFile("resources/fuente.ttf");
     dialogo = new renderEngine::rText[6]();
     for(int i=0 ; i<6 ; i++){
-        dialogo[i].setFont(time_font);
+        dialogo[i].setFont(sans_font);
         dialogo[i].setCharacterSize(50);
         dialogo[i].setFillColor('w');
     }

@@ -114,6 +114,7 @@ private:
     renderEngine::rImage proy_boss;
     renderEngine::rText time_text;
     renderEngine::rFont time_font;
+    renderEngine::rFont sans_font;
     
     //--------- ANIMACION BOSS ---------//
     bool initBoss;

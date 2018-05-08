@@ -180,10 +180,10 @@
 
     initBloques->body = physicsEngine::Instance().createBody(w_b,h_b,x_b+(w_b/2),y_b+(h_b/2),'k',t);
 
-    initFont.loadFromFile("resources/fuente.ttf");
+    initFont.loadFromFile("assets/fonts/ninjagarden.ttf");
     initText = new renderEngine::rText;
     initText->setFont(initFont);
-    initText->setCharacterSize(200);
+    initText->setCharacterSize(250);
     initText->setFillColor('k');
     
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
@@ -519,8 +519,13 @@ void Mapa::leeRandom(){
         target = 15;
     }
     else {
-        r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
-        target = matriz_v2[nodo_actual][r];
+        if(longitud == 3 ){
+            target = 6;
+        }
+        else{    
+            r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
+            target = matriz_v2[nodo_actual][r];
+        }
         CargaNodo(hex_list, NODOS[target], x_max, y_max);
     }
 
@@ -842,7 +847,7 @@ void Mapa::movePlayerToClosestCheckPoint(Player* ready) {
 }
 
 void Mapa::checkOutOfMap(Player* ready) {
-    if(ready->getYPosition() > renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+50)
+    if(ready->getYPosition() > renderEngine::Instance().getViewCenter()[1] + renderEngine::Instance().getViewSize()[1]/2+50 || ready->getXPosition() < renderEngine::Instance().getViewCenter()[0] - renderEngine::Instance().getViewSize()[0]/2 - 60)
         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
 }
 

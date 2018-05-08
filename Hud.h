@@ -36,6 +36,8 @@ private:
     renderEngine::rSprite hudsprite;
     std::vector<Player*> players;
     renderEngine::rSprite cuadrado;
+    
+    std::vector<renderEngine::rSprite> NEWHUD;
 
     
     float width;
