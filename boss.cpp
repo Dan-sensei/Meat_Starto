@@ -162,6 +162,7 @@ void boss::update() {
                 
                 restartInitClock = true;
                 SANS_TALK_SOUND.play();
+                Mapa::Instance().stopCurrentSong();
             }
             
             //TIEMBLA LA VISTA
@@ -306,6 +307,7 @@ void boss::update() {
             }
 
             if(clock_boss.getElapsedTime().asSeconds()>40){
+                MEGALOVANIA.stop();
                 //std::cout << "SE HA ACABADO EL BOSS" << std::endl;
                 sfml->Instance().ChangeState(MPuntuaciones::Instance());
             }
@@ -314,7 +316,6 @@ void boss::update() {
         }
     }
     else{
-        MEGALOVANIA.stop();
         on = false;
     }
 }

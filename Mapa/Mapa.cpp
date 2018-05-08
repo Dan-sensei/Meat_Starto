@@ -21,7 +21,7 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 15
+#define MAP_ITERATION 5
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -564,6 +564,8 @@ void Mapa::updateMini() {
             nextSong->setVolume(nextSong->getVolume()+5);
         if(nextSong->getVolume() >= 95){
             switchSong = false;
+            currentSong->setVolume(0);
+            currentSong->pause();
             nextSong->setVolume(100);
             currentSong = nextSong;
         }
@@ -865,11 +867,15 @@ bool Mapa::getInit() {
 
 void Mapa::changeNextSong(rMusic* target) {
     nextSong = target;
+    nextSong->play();
+    nextSong->setVolume(0);
     switchSong = true;
 }
 
 void Mapa::changeNextSong() {
     nextSong = &THE_ARID_FLATS;
+    nextSong->play();
+    nextSong->setVolume(0);
     switchSong = true;
 }
 
@@ -880,7 +886,8 @@ void Mapa::stopCurrentSong() {
 void Mapa::getThatVolumenDown() {
     if(currentSong->getVolume() > 0)
         currentSong->setVolume(currentSong->getVolume()-5);
-    else if( currentSong->getVolume() <= 5){
+    
+    if( currentSong->getVolume() <= 5){
         currentSong->pause();
         currentSong->setVolume(0);
     }
