@@ -45,7 +45,7 @@ MenuPausa::MenuPausa() {
     
     personaje.setTexture(AssetManager::GetTexture(sprite_name1));
     personaje.setOrigin(widthp / 2, heightp / 2.1);
-    personaje.setScale(0.12, 0.12);
+    personaje.setScale(0.13, 0.13);
     personaje.setPosition(posx-width/11, posy-height/21);
 
     
@@ -74,22 +74,22 @@ MenuPausa::MenuPausa() {
 
 
     menu[0].setFont(font);
-    menu[0].setCharacterSize(48);
+    menu[0].setCharacterSize(40);
     menu[0].setFillColor('w');
     menu[0].setString("Continue");
 
     menu[1].setFont(font);
-    menu[1].setCharacterSize(48);
+    menu[1].setCharacterSize(40);
     menu[1].setFillColor('k');
     menu[1].setString("Controls");
 
     menu[2].setFont(font);
-    menu[2].setCharacterSize(44);
+    menu[2].setCharacterSize(40);
     menu[2].setFillColor('k');
     menu[2].setString("God Mode OFF");
 
     menu[3].setFont(font);
-    menu[3].setCharacterSize(48);
+    menu[3].setCharacterSize(40);
     menu[3].setFillColor('k');
     menu[3].setString("Exit");
 
@@ -100,7 +100,7 @@ MenuPausa::MenuPausa() {
     titulo2.setString("Controls");
 
     menuhow.setFont(font);
-    menuhow.setCharacterSize(48);
+    menuhow.setCharacterSize(40);
     menuhow.setFillColor('w');
     menuhow.setString("Exit");
     menuhow.setPosition(posx-width/3, posy-height/6);
@@ -166,25 +166,28 @@ void MenuPausa::Render(){
 }
 
 void MenuPausa::muevepersonaje(int selec){
-   
-            switch(selec){
-                case 0:
-                    personaje.setPosition(posx-width/11, posy-height/21);
-                    break;
+    
 
-                case 1:
-                    personaje.setPosition(posx-width/40, posy+height/12);
-                    break;
+    switch(selec){
+        case 0:
+            personaje.setPosition(posx-width/11.5, posy-height/19);
+            break;
 
-                case 2:
-                    personaje.setPosition(posx-width/11, posy+height/4.7);
-                    break;
-                case 3:
-                     personaje.setPosition(posx-width/40, posy+height/2.9);
-                break;
-            }
+        case 1:
+            personaje.setPosition(posx-width/55, posy+height/13);
+            break;
+
+        case 2:
+            personaje.setPosition(posx-width/11.5, posy+height/4.7);
+            break;
+
+        case 3:
+            personaje.setPosition(posx-width/55, posy+height/2.9);
+            break;
+    }
       
 }
+
 
 void MenuPausa::MoveUp(){
     if(statemenu==0){
@@ -361,7 +364,7 @@ void MenuPausa::Handle(){
     posx = sfml->Instance().getViewCenter()[0];
     posy = sfml->Instance().getViewCenter()[1];
     
-    personaje.setPosition(posx-width/11, posy-height/21);
+    personaje.setPosition(posx-width/11.5, posy-height/19);
 
     mancha[0].setPosition(posx-width/30, posy-height/15);
     mancha[1].setPosition(posx+width/30, posy+height/15);

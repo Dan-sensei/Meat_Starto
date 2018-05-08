@@ -26,6 +26,7 @@ MenuInicio::MenuInicio() {
     
     width =  sfml->Instance().getViewSize()[0];
     height = sfml->Instance().getViewSize()[1];
+
     
     posx = sfml->Instance().getViewCenter()[0];
     posy = sfml->Instance().getViewCenter()[1];
@@ -36,7 +37,7 @@ MenuInicio::MenuInicio() {
     text_fondo.loadFromFile("assets/fondo.PNG");
     
     f1.setTexture(text_fondo);
-    f1.setSize(sfml->Instance().getViewSize()[0], sfml->Instance().getViewSize()[1]);
+    f1.setSize(width, height);
     
         /*LOGO*/
     std::string logo_name = "assets/Logo.png";
@@ -46,8 +47,8 @@ MenuInicio::MenuInicio() {
     
     logo.setTexture(AssetManager::GetTexture(logo_name));
     logo.setOrigin(widthl / 2, heightl / 2);
-    logo.setScale(0.6,0.6);
-    logo.setPosition(posx, posy+height/3);
+    logo.setScale(0.00037*width,0.00037*width);
+    logo.setPosition(posx, posy-height/4);
     
     tam=0.05;
     logo1.setTexture(AssetManager::GetTexture(logo_name));
@@ -63,8 +64,8 @@ MenuInicio::MenuInicio() {
     
     personaje.setTexture(AssetManager::GetTexture(sprite_name1));
     personaje.setOrigin(widthp / 2, heightp / 2.1);
-    personaje.setScale(0.06, 0.06);
-    personaje.setPosition(posx-width/20, posy-height/21);
+    personaje.setScale(0.000035*width, 0.000035*width);
+    personaje.setPosition(posx-width/11.5, posy-height/21);
 
 
     
@@ -77,12 +78,12 @@ MenuInicio::MenuInicio() {
     for(int i=0; i<MAX_NUMBER_OF_ITEMS; i++){
         mancha[i].setTexture(AssetManager::GetTexture(sprite_name));
         mancha[i].setOrigin(widths / 2, heights / 2.1);
-        mancha[i].setScale(0.65, 0.65);
+        mancha[i].setScale(0.00037*width, 0.00037*width);
     }
     
     manchahtp.setTexture(AssetManager::GetTexture(sprite_name));
     manchahtp.setOrigin(widths / 2, heights / 2.1);
-    manchahtp.setScale(0.45, 0.45);
+    manchahtp.setScale(0.00037*width, 0.00037*width);
     
     /*letras del menu*/
   
@@ -97,13 +98,13 @@ MenuInicio::MenuInicio() {
   
    
    menu[0].setFont(font);
-   menu[0].setCharacterSize(16);
+   menu[0].setCharacterSize(18);
    menu[0].setFillColor('w');
    menu[0].setString("Play");
    menu[0].setPosition(posx-width/2, posy-height/5);
    
    menu[1].setFont(font);
-   menu[1].setCharacterSize(16);
+   menu[1].setCharacterSize(18);
    menu[1].setFillColor('k');
    menu[1].setString("Options");
    menu[1].setPosition(posx-width/2, posy-height/10);
@@ -115,7 +116,7 @@ MenuInicio::MenuInicio() {
    menu[2].setPosition(posx-width/2, posy+height/10);
    
    menu[3].setFont(font);
-   menu[3].setCharacterSize(16);
+   menu[3].setCharacterSize(18);
    menu[3].setFillColor('k');
    menu[3].setString("Exit");
    menu[3].setPosition(posx-width/2, posy+height/5);
@@ -129,13 +130,13 @@ MenuInicio::MenuInicio() {
    titulo2.setPosition(posx-width/25, posy-height/3);
    
    menuop[0].setFont(font);
-   menuop[0].setCharacterSize(16);
+   menuop[0].setCharacterSize(18);
    menuop[0].setFillColor('w');
    menuop[0].setString("Sound");
    menuop[0].setPosition(posx-width/2, posy-height/6);
    
    menuop[1].setFont(font);
-   menuop[1].setCharacterSize(16);
+   menuop[1].setCharacterSize(18);
    menuop[1].setFillColor('k');
    menuop[1].setString("Exit");
    menuop[1].setPosition(posx-width/2, posy+height/10);
@@ -149,19 +150,19 @@ MenuInicio::MenuInicio() {
    titulo3.setPosition(posx-width/25, posy-height/3);
    
    menuplayer[0].setFont(font);
-   menuplayer[0].setCharacterSize(16);
+   menuplayer[0].setCharacterSize(18);
    menuplayer[0].setFillColor('w');
    menuplayer[0].setString("Play" );
    menuplayer[0].setPosition(posx-width/2, posy-height/6);
    
    menuplayer[1].setFont(font);
-   menuplayer[1].setCharacterSize(16);
+   menuplayer[1].setCharacterSize(18);
    menuplayer[1].setFillColor('k');
    menuplayer[1].setString("Players "  + std::to_string(numplayers));
    menuplayer[1].setPosition(posx-width/2, posy+height/10);
    
    menuplayer[2].setFont(font);
-   menuplayer[2].setCharacterSize(16);
+   menuplayer[2].setCharacterSize(18);
    menuplayer[2].setFillColor('k');
    menuplayer[2].setString("Exit");
    menuplayer[2].setPosition(posx-width/2, posy+height/8);
@@ -175,7 +176,7 @@ MenuInicio::MenuInicio() {
    titulo4.setPosition(posx-width/25, posy-height/2.5);
    
    menuhow.setFont(font);
-   menuhow.setCharacterSize(16);
+   menuhow.setCharacterSize(18);
    menuhow.setFillColor('w');
    menuhow.setString("Exit");
    menuhow.setPosition(posx-width/3, posy-height/6);
@@ -343,19 +344,19 @@ void MenuInicio::muevepersonaje(int selec){
 
     switch(selec){
         case 0:
-            personaje.setPosition(posx-width/12, posy-height/19);
+            personaje.setPosition(posx-width/11.5, posy-height/19);
             break;
 
         case 1:
-            personaje.setPosition(posx-width/70, posy+height/13);
+            personaje.setPosition(posx-width/55, posy+height/13);
             break;
 
         case 2:
-            personaje.setPosition(posx-width/12, posy+height/4.7);
+            personaje.setPosition(posx-width/11.5, posy+height/4.7);
             break;
 
         case 3:
-            personaje.setPosition(posx-width/70, posy+height/2.9);
+            personaje.setPosition(posx-width/55, posy+height/2.9);
             break;
     }
       
@@ -508,7 +509,7 @@ void MenuInicio::stateMenu() {
                 case 1:
                     statemenu=1;
                   //  std::cout<<"Option pressed"<< std::endl;
-                    personaje.setPosition(posx-width/11, posy-height/21);
+                    personaje.setPosition(posx-width/11.5, posy-height/21);
 
                     break;
 
@@ -535,7 +536,7 @@ void MenuInicio::stateMenu() {
                     MoveUp();
                     statemenu=0;
                     selectedItemIndex2=0;
-                    personaje.setPosition(posx-width/11, posy-height/21);
+                    personaje.setPosition(posx-width/11.5, posy-height/21);
                     MoveUp();
 
                   //  std::cout<<"Exit pressed"<< std::endl;
@@ -563,7 +564,7 @@ void MenuInicio::stateMenu() {
                     MoveUp();
                     statemenu=0;
                     selectedItemIndex=0;
-                     personaje.setPosition(posx-width/12, posy-height/19);
+                     personaje.setPosition(posx-width/11.5, posy-height/19);
                   // std::cout<<"Exit pressed"<< std::endl;
 
                     break;
@@ -584,10 +585,10 @@ void MenuInicio::Handle(){
     if(primero==false){
         statemenu=0;
            titulo.setCharacterSize(60);
-            menu[0].setCharacterSize(48);
-            menu[1].setCharacterSize(48);
-            menu[2].setCharacterSize(48);
-            menu[3].setCharacterSize(48);
+            menu[0].setCharacterSize(40);
+            menu[1].setCharacterSize(40);
+            menu[2].setCharacterSize(40);
+            menu[3].setCharacterSize(40);
             
             for(int i=0; i<MAX_NUMBER_OF_ITEMS; i++){
                 mancha[i].setScale(1.45, 1.45);
@@ -601,20 +602,20 @@ void MenuInicio::Handle(){
 
             /*MENU DE OPCIONES*/
             titulo2.setCharacterSize(60);
-            menuop[0].setCharacterSize(50);
-            menuop[1].setCharacterSize(50);
+            menuop[0].setCharacterSize(40);
+            menuop[1].setCharacterSize(40);
           
 
             /*Menu players*/
             titulo3.setCharacterSize(60);
-            menuplayer[0].setCharacterSize(50);
-            menuplayer[1].setCharacterSize(50);
-            menuplayer[2].setCharacterSize(50);
+            menuplayer[0].setCharacterSize(40);
+            menuplayer[1].setCharacterSize(40);
+            menuplayer[2].setCharacterSize(40);
 
 
             /*How to play*/
             titulo4.setCharacterSize(60);
-            menuhow.setCharacterSize(50);
+            menuhow.setCharacterSize(40);
             
             
     }
@@ -627,8 +628,8 @@ void MenuInicio::Handle(){
     posx = sfml->Instance().getViewCenter()[0];
     posy = sfml->Instance().getViewCenter()[1];
         
-    personaje.setPosition(posx-width/13, posy-height/19);
-    logo.setPosition(posx-width/40, posy-height/6);
+    personaje.setPosition(posx-width/11.5, posy-height/19);
+    logo.setPosition(posx-width/40, posy-height/9);
 
 
                 
@@ -655,7 +656,7 @@ void MenuInicio::Handle(){
    /*Menu players*/
    titulo3.setPosition(posx-width/15, posy-height/3);
    menuplayer[0].setPosition(posx-width/30, posy-height/15);
-   menuplayer[1].setPosition(posx+width/50, posy+height/15);
+   menuplayer[1].setPosition(posx, posy+height/15);
    menuplayer[2].setPosition(posx-width/20, posy+height/5);
    
 
