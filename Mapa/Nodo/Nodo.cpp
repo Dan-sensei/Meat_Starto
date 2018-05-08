@@ -207,8 +207,10 @@ void Nodo::draw(float tick_, renderEngine::rIntRect limit, int min, int max){
     for(int j = 0; j < npcs.size(); j++)
         //if(npcs[j] && npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
         if(npcs[j] && npcs[j]->getXPosition() > min-250 && npcs[j]->getXPosition() < max+250){
-            npcs[j]->interpola(tick_);
-            npcs[j]->draw();
+            if(npcs[j]->isAlive()){
+                npcs[j]->interpola(tick_);
+                npcs[j]->draw();
+            }
         }
     
     for(int i = 0; i < powers.size(); i++)
@@ -238,10 +240,11 @@ void Nodo::miniDraw(float tick_) {
     
     //------------|  ENEMIGOS  |------------//
     for(int j = 0; j < npcs.size(); j++){
-        if(npcs[j]->isAlive())
+        if(npcs[j]->isAlive()){
             npcs[j]->interpola(tick_);
             npcs[j]->draw();
         }
+    }
 
     for(int i = 0; i < powers.size(); i++)
         powers[i].sprite.draw();

@@ -92,42 +92,49 @@ xPlotato::~xPlotato() {
 void xPlotato::update(){
     if(!readyToDie){
         std::vector<Player*>* players = Juego::Instance().getPlayers();
+        
         //GOLPEO DEL PERSONAJE
         for(int i=0 ; i<players->size() ; i++){
             Player* ready = (*players)[i];
             
             if(ready->getMano().intersects(sprite)){
-                alive = !ready->enemigosMasMas();
+                if(ready->enemigosMasMas()){
+                    readyToDie = true;
+                    alive = false;
+                    physicsEngine::Instance().detroyBody(body);
+                }
             }
         }
         
         //PROXIMIDAD POR PERSONAJE
-
-        for(int i=0 ; i<players->size() ; i++){
-            Player* ready = (*players)[i];
+        if(!readyToDie){
             
-            if(!ready->getEscudo()){
-                if(ready->getSprite().intersects(sprite)){
-                    sprite.setOrigin(112,120);
-                    sprite.setRotation(0);
-                    sprite.setScale(2.5, 2.5);
-                    body.setLinealVelocicity(0, body.getLinearYVelocity());
-                    if(animator.GetCurrentAnimationName()!="xplota"){
-                        animator.SwitchAnimation("xplota");
+            for(int i=0 ; i<players->size() ; i++){
+                Player* ready = (*players)[i];
+
+                if(!ready->getEscudo()){
+                    if(ready->getSprite().intersects(sprite)){
+                        sprite.setOrigin(112,120);
+                        sprite.setRotation(0);
+                        sprite.setScale(2.5, 2.5);
+                        body.setLinealVelocicity(0, body.getLinearYVelocity());
+                        if(animator.GetCurrentAnimationName()!="xplota"){
+                            animator.SwitchAnimation("xplota");
+                        }
+
+                        if(!ready->isInmortal())
+                            Mapa::Instance().movePlayerToClosestCheckPoint(ready);
+
+                        int randomSound = physicsEngine::Instance().genIntRandom(0, 1);
+                        (randomSound == 0) ? xPlosion1.play() : xPlosion2.play();
+                        readyToDie = true;
+                        physicsEngine::Instance().detroyBody(body);
+                        xclock.restart();
                     }
-                    
-                    if(!ready->isInmortal())
-                        Mapa::Instance().movePlayerToClosestCheckPoint(ready);
-                    
-                    int randomSound = physicsEngine::Instance().genIntRandom(0, 1);
-                    (randomSound == 0) ? xPlosion1.play() : xPlosion2.play();
-                    readyToDie = true;
-                    physicsEngine::Instance().detroyBody(body);
-                    xclock.restart();
                 }
-            }
-            else{
-                ready->setEscudo(false);
+                else{
+                    ready->setEscudo(false);
+                }
             }
         }
 
