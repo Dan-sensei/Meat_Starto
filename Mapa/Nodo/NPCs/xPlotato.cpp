@@ -91,9 +91,17 @@ xPlotato::~xPlotato() {
 
 void xPlotato::update(){
     if(!readyToDie){
+        std::vector<Player*>* players = Juego::Instance().getPlayers();
+        //GOLPEO DEL PERSONAJE
+        for(int i=0 ; i<players->size() ; i++){
+            Player* ready = (*players)[i];
+            
+            if(ready->getMano().intersects(sprite)){
+                alive = !ready->enemigosMasMas();
+            }
+        }
         
         //PROXIMIDAD POR PERSONAJE
-        std::vector<Player*>* players = Juego::Instance().getPlayers();
 
         for(int i=0 ; i<players->size() ; i++){
             Player* ready = (*players)[i];

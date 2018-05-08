@@ -66,7 +66,7 @@ void boss::init(int x_,int y_) {
         if(i != 0){
             puerta[i].r.setSize(a,a);
         }
-        puerta[i].r.setFillRGBAColor(28,58,104);
+        puerta[i].r.setFillRGBAColor(0,5,11);
     }
     
     //---DEBUG
@@ -156,6 +156,24 @@ void boss::update() {
         
         if(!initBoss){
             if(!restartInitClock){
+                //CREO LAS COLISIONES DE LA PUERTA 
+                for(int i=0 ; i<12 ; i++){
+                    float x = puerta[i].r.getPosition()[0];
+                    float y = puerta[i].r.getPosition()[1]-DES;
+                    puerta[i].r.setPosition(x,y);
+
+                    float w = puerta[i].r.getSize()[0];
+                    float h = puerta[i].r.getSize()[1];
+                    x = puerta[i].r.getPosition()[0]+(w/2);
+                    y = puerta[i].r.getPosition()[1]+(h/2);
+
+                    t = new physicsEngine::type;
+                    t->id = 1;
+                    t->data = this;
+
+                    puerta[i].b = world->Instance().createBody(w, h ,x , y, 'k', t);
+                }
+                
                 initClock.restart();
                 trembleClock.restart();
                 dtDialogue.restart();
@@ -169,12 +187,12 @@ void boss::update() {
             float time = initClock.getElapsedTime().asSeconds();
             if(time<=5) trembleView();
             if(time>5 && time<=6){
-                caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0],renderEngine::Instance().getViewCenter()[1]-500);
-                sansJavi->setPosition(renderEngine::Instance().getViewCenter()[0]-1100,renderEngine::Instance().getViewCenter()[1]-500);
+                caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0],renderEngine::Instance().getViewCenter()[1]-200);
+                sansJavi->setPosition(renderEngine::Instance().getViewCenter()[0]-1100,renderEngine::Instance().getViewCenter()[1]-200);
             }
             if(time>6 && time<=35){
                 float x = renderEngine::Instance().getViewCenter()[0]-500;
-                float y = renderEngine::Instance().getViewCenter()[1]-800+(s_count*100);
+                float y = renderEngine::Instance().getViewCenter()[1]-500+(s_count*100);
                 dialogo[s_count].setPosition(x,y);
             
                 //ACTUALIZO EL STRING
@@ -205,17 +223,12 @@ void boss::update() {
                 }
             }
             if(time>31.5 && time<=36){
-                if(caja_dialogo){
-                    delete caja_dialogo;
-                    caja_dialogo = NULL;
-                }
+                caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
                 for(int i=0 ; i<6 ; i++){
                     dialogo[i].setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
                 }
-                if(sansJavi){
-                    delete sansJavi;
-                    sansJavi = NULL;
-                }
+                sansJavi->setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
+
                 trembleView();
                 javi.r.move(0,5);
             }
@@ -228,24 +241,6 @@ void boss::update() {
             if(!restart){
                 //std::cout << " | ----------- Restart" << std::endl;
                 //AQUI SOLO ENTRA UNA VEZ
-                //CREO LAS COLISIONES DE LA PUERTA 
-                for(int i=0 ; i<12 ; i++){
-                    float x = puerta[i].r.getPosition()[0];
-                    float y = puerta[i].r.getPosition()[1]-DES;
-                    puerta[i].r.setPosition(x,y);
-
-                    float w = puerta[i].r.getSize()[0];
-                    float h = puerta[i].r.getSize()[1];
-                    x = puerta[i].r.getPosition()[0]+(w/2);
-                    y = puerta[i].r.getPosition()[1]+(h/2);
-
-                    t = new physicsEngine::type;
-                    t->id = 1;
-                    t->data = this;
-
-                    puerta[i].b = world->Instance().createBody(w, h ,x , y, 'k', t);
-                }
-
                 clock_boss.restart();   //BOSS MASTER CLOCK
                 dt_boss.restart();      //HABILIDADES
                 dt_fan.restart();       //ABANICO PROYECTILES
@@ -376,7 +371,7 @@ void boss::updateJavi() {
         
         //factor_v = dv(gen);
         javi.x_f = physicsEngine::Instance().genIntRandom(x_min+(70*3),x_min+(70*34));
-        javi.y_f = physicsEngine::Instance().genIntRandom(y_min+70*7, y_min+70*15);
+        javi.y_f = physicsEngine::Instance().genIntRandom(y_min+70*9, y_min+70*15);
         /*
         float x_d = javi.r.getPosition()[0] - javi.x_f;
         float y_d = javi.r.getPosition()[1] - javi.y_f;
@@ -575,6 +570,7 @@ void boss::render() {
                 }
             }
             if(sansJavi) sansJavi->draw();
+            
         }
         else{
             //<DEBUG>
@@ -584,13 +580,13 @@ void boss::render() {
             //*/
             //</DEBUG>
 
-            for(int i=0 ; i<12 ; i++){
-                puerta[i].r.draw();
-            }
             for(int i=0 ; i<javi.proy.size() ; i++){
                 javi.proy[i]->r.draw();
             }
             time_text.draw();
+        }
+        for(int i=0 ; i<12 ; i++){
+            puerta[i].r.draw();
         }
         javi.r.draw();
     }

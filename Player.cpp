@@ -271,6 +271,10 @@ renderEngine::rSprite Player::getSprite(){
     return sprite;
 }
 
+renderEngine::rSprite Player::getMano() {
+    return mano;
+}
+
 int Player::getExp() {
     return exp;
 }
@@ -292,10 +296,11 @@ void Player::hazInmortal(){
 
 
 void Player::update(){
-    if(exp>exp_for_next_level){
+    if(exp>=exp_for_next_level && level<4){
+        std::cout << "Subo nivel con exp" << std::endl;
         lvlUp();
         exp = exp-exp_for_next_level;
-        exp_for_next_level+=100;
+        //exp_for_next_level+=100;
     }
     animator.Update(animationClock.restart());
     
@@ -419,7 +424,9 @@ void Player::movement(){
     
     if(inmortalRespawn && inmortalRespawnClock.getElapsedTime().asSeconds() > 1){
         inmortalRespawn = false;
-        inmortal = false;
+        if(!invincible){
+            inmortal = false;
+        }
     }
     
     preState();
@@ -429,7 +436,7 @@ void Player::movement(){
             hit=true;
             if(animator.GetCurrentAnimationName()== "a_rigth" || animator.GetCurrentAnimationName()== "a_base_r" || animator.GetCurrentAnimationName()== "a_jump_r"){
                 //Golpe hacia la derecha
-                mano.setScale(1,1);           
+                mano.setScale(1,1);
             }else{
                 //golpe a la izquierda
                 mano.setScale(-1,1);
@@ -746,14 +753,10 @@ void Player::powerUpSpeed() {
 
 void Player::powerUpExperience() {
     std::cout << "+" << meatEXP << " EXPERIENCIA!" << std::endl;
-    float newExp = exp + meatEXP;
-    if(newExp > exp_for_next_level){
-        level++;
-        newExp -= exp_for_next_level;
-        exp = newExp;
+
+    if(level!=4){
+        exp += 250;
     }
-    else
-        exp += newExp;
     
     expup = new indicador;
     expup->ir = new renderEngine::rIntRect(0,44,135,44);
@@ -920,7 +923,7 @@ void Player::lvlDown() {
 }
 
 void Player::lvlUp() {
-    if(level<=4){
+    if(level<4){
         level++;
         
         switch(level){
@@ -967,5 +970,19 @@ bool Player::getEscudo() {
 
 void Player::setEscudo(bool b) {
     escudo = b;
+}
+
+bool Player::enemigosMasMas() {
+    if(hit){
+        enemigos++;
+        if(level!=4){
+            exp+=250;
+        }
+        
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
