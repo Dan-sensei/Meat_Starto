@@ -12,7 +12,10 @@ build/Debug/GNU-Linux/physicsEngine/contactListener.o: \
  physicsEngine/../Mapa/Nodo/NPCs/xPlotato.h \
  physicsEngine/../Mapa/Nodo/NPCs/NPC.h \
  physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h \
- physicsEngine/../Mapa/Nodo/NPCs/../../../physicsEngine/physicsEngine.h
+ physicsEngine/../Mapa/Nodo/NPCs/../../../physicsEngine/physicsEngine.h \
+ physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h \
+ physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/rSound.h \
+ physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h
 
 /usr/include/tinyxml2.h:
 
@@ -57,3 +60,9 @@ physicsEngine/../Mapa/Nodo/NPCs/NPC.h:
 physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h:
 
 physicsEngine/../Mapa/Nodo/NPCs/../../../physicsEngine/physicsEngine.h:
+
+physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h:
+
+physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/rSound.h:
+
+physicsEngine/../Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h:

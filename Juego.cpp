@@ -79,10 +79,6 @@ Juego::Juego() {
     }
     view->setCenter(xmax, CAM_H);
 
-    // MUSICA
-    THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
-    THE_ARID_FLATS.setLoop(true);
-    //THE_ARID_FLATS.play();
 
     rain.setPosition(1500, 200);                    // Posicion del sistema de partículas
     rain.setType(1);                                // Tipo: Determina el área de generado | 0 = Círculo - 1 = Rectángulo (Por defecto tienen tamaño 0 y emitirán hacia el exterior aleatoriamente)
@@ -140,7 +136,6 @@ void Juego::Handle(){
         Render();
             //std::cout << "RENDER" << std::endl;
     }
-    THE_ARID_FLATS.stop();
 }
 
 void Juego::HandleEvents(){

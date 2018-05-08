@@ -21,7 +21,7 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 25
+#define MAP_ITERATION 15
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -109,11 +109,6 @@
     background1.setScale(2, 2);
     background2.setScale(2, 2);
 
-    f1.setTexture(text_fondo);
-    f1.setSize(1920,1080);
-
-    f2.setTexture(text_fondo);
-    f2.setSize(1920,1080);
 
     cameraDir = 0;
     direction = 0;
@@ -158,7 +153,7 @@
 
         NODOS.push_back(n);
     }
-    std::cout << "NODOS " << NODOS.size() << std::endl;
+
     BOSS = Factory::Instance().LeeNodo("tiles_definitivo/nodos/fin.tmx");
     SPECIAL = Factory::Instance().LeeNodo("tiles_definitivo/nodos/Up/Special_1.tmx");
 
@@ -190,6 +185,19 @@
     initText->setFont(initFont);
     initText->setCharacterSize(200);
     initText->setFillColor('k');
+    
+    THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
+    THE_ARID_FLATS.setLoop(true);
+    THE_ARID_FLATS.play();
+    
+    DISCO_DESCENT.openFromFile("assets/Sounds/DISCO_DESCENT.ogg");
+    currentSong = &THE_ARID_FLATS;
+    nextSong = &DISCO_DESCENT;
+    
+    std::cout << "THE_ARID_FLATS - " << &THE_ARID_FLATS << std::endl;
+    std::cout << "DISCO DESCENT - " << &DISCO_DESCENT << std::endl;
+    switchSong = false;
+    stopCurrentSongBool = false;
 }
 
 //INICIALIZAR LA MATRIZ DE ADYACENCIA
@@ -324,7 +332,7 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
             IDs_mininodo.push_back(physicsEngine::Instance().genIntRandom(0, 7));
         }
 
-        Minijuego* mini = lista.back().addMinigame(nodo.minijuego.type, x_ + nodo.minijuego.x, y_ + nodo.minijuego.y, nodo.minijuego.width, nodo.minijuego.height, IDs_mininodo);
+        lista.back().addMinigame(nodo.minijuego.type, x_ + nodo.minijuego.x, y_ + nodo.minijuego.y, nodo.minijuego.width, nodo.minijuego.height, IDs_mininodo);
 
         y_ += nodo.minijuego.y;
         y_ += nodo.minijuego.height;
@@ -429,7 +437,6 @@ void Mapa::render(float tick_) {
     //------------|  BLOQUE DE INICIO |------------//
     if(initBloques) initBloques->rs.draw();
 
-    
     /*
     //------------|  CHECKPOINTS - DEBUG  |------------//
     std::list<checkPoint>::iterator it = active_points.begin();
@@ -444,10 +451,6 @@ void Mapa::render(float tick_) {
         ++it;
     }
      */
-    
-    for(int i = 0; i < debug.size(); ++i)
-        debug[i].draw();
-
 
     //------------|  TETRIS  |------------//
     for(int i=0 ; i<power.size() ; i++){
@@ -549,6 +552,23 @@ void Mapa::updateMini() {
     mj_t *tetris;
     boss *javi;
 
+    // MÚSICA
+    if(stopCurrentSongBool){
+        getThatVolumenDown();
+    }
+    
+    if(switchSong){
+        getThatVolumenDown();
+        
+        if(nextSong->getVolume() < 100)
+            nextSong->setVolume(nextSong->getVolume()+5);
+        if(nextSong->getVolume() >= 95){
+            switchSong = false;
+            nextSong->setVolume(100);
+            currentSong = nextSong;
+        }
+    }
+    
     //UPDATE DEL INICIO DEL JUEGO
     updateInit();
 
@@ -612,6 +632,7 @@ void Mapa::updateInit() {
 }
 
 void Mapa::update(){
+    bool TRANSPORT_STARTO = false;
     for(std::list<Nodo>::iterator it=hex_list.begin(); it!=hex_list.end(); ++it){
         (*it).preState();
         (*it).update();
@@ -623,10 +644,22 @@ void Mapa::update(){
             text_fondo = AssetManager::GetTexture("assets/bg.jpg");
             background1.setTexture(text_fondo);
             background2.setTexture(text_fondo);
-            ready->transportToSecondPhase(transportation.getPosition()[0] + 27*70, transportation.getPosition()[1] + 20*70);
+            TRANSPORT_STARTO = true;
             Juego::Instance().changeRain();
+            nextSong = &DISCO_DESCENT;
+            nextSong->play();
+            nextSong->setVolume(0);
+            switchSong = true;
         }
     }
+    
+    if(TRANSPORT_STARTO){
+        for(int i = 0; i< players->size(); ++i) {
+            Player* ready = (*players)[i];
+            ready->transportToSecondPhase(transportation.getPosition()[0] + 27*70, transportation.getPosition()[1] + 20*70);
+        }
+    }
+        
 }
 
 void Mapa::renderBackground() {
@@ -828,4 +861,27 @@ void Mapa::stopBackground(bool flag) {
 
 bool Mapa::getInit() {
     return bInit;
+}
+
+void Mapa::changeNextSong(rMusic* target) {
+    nextSong = target;
+    switchSong = true;
+}
+
+void Mapa::changeNextSong() {
+    nextSong = &THE_ARID_FLATS;
+    switchSong = true;
+}
+
+void Mapa::stopCurrentSong() {
+    stopCurrentSongBool = true;
+}
+
+void Mapa::getThatVolumenDown() {
+    if(currentSong->getVolume() > 0)
+        currentSong->setVolume(currentSong->getVolume()-5);
+    else if( currentSong->getVolume() <= 5){
+        currentSong->pause();
+        currentSong->setVolume(0);
+    }
 }

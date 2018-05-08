@@ -19,6 +19,10 @@ build/Debug/GNU-Linux/Mapa/Nodo/NPCs/xPlotato.o: \
  Mapa/Nodo/NPCs/../../../Mapa/../renderEngine/renderEngine.h \
  Mapa/Nodo/NPCs/../../../Mapa/../physicsEngine/pBody.h \
  Mapa/Nodo/NPCs/../../../Mapa/../physicsEngine/physicsEngine.h \
+ Mapa/Nodo/NPCs/../../../Mapa/../Player.h \
+ Mapa/Nodo/NPCs/../../../Mapa/../Mapa/Mapa.h \
+ Mapa/Nodo/NPCs/../../../Mapa/../Juego.h \
+ Mapa/Nodo/NPCs/../../../Mapa/../renderEngine/rMusic.h \
  Mapa/Nodo/NPCs/../../../Mapa/../boss.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/Nodo.h \
  Mapa/Nodo/NPCs/../../../Mapa/Nodo/NPCs/NPC.h \
@@ -32,7 +36,9 @@ build/Debug/GNU-Linux/Mapa/Nodo/NPCs/xPlotato.o: \
  Mapa/Nodo/NPCs/../../../Mapa/../Factory.h Mapa/Nodo/NPCs/../../../mj_t.h \
  Mapa/Nodo/NPCs/../../../boss.h \
  Mapa/Nodo/NPCs/../../../renderEngine/rMusic.h Mapa/Nodo/NPCs/xPlotato.h \
- Mapa/Nodo/NPCs/NPC.h
+ Mapa/Nodo/NPCs/NPC.h Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h \
+ Mapa/Nodo/NPCs/../../../renderEngine/rSound.h \
+ Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h
 
 /usr/include/tinyxml2.h:
 
@@ -92,6 +98,14 @@ Mapa/Nodo/NPCs/../../../Mapa/../physicsEngine/pBody.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/../physicsEngine/physicsEngine.h:
 
+Mapa/Nodo/NPCs/../../../Mapa/../Player.h:
+
+Mapa/Nodo/NPCs/../../../Mapa/../Mapa/Mapa.h:
+
+Mapa/Nodo/NPCs/../../../Mapa/../Juego.h:
+
+Mapa/Nodo/NPCs/../../../Mapa/../renderEngine/rMusic.h:
+
 Mapa/Nodo/NPCs/../../../Mapa/../boss.h:
 
 Mapa/Nodo/NPCs/../../../Mapa/Nodo/Nodo.h:
@@ -123,3 +137,9 @@ Mapa/Nodo/NPCs/../../../renderEngine/rMusic.h:
 Mapa/Nodo/NPCs/xPlotato.h:
 
 Mapa/Nodo/NPCs/NPC.h:
+
+Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h:
+
+Mapa/Nodo/NPCs/../../../renderEngine/rSound.h:
+
+Mapa/Nodo/NPCs/../../../renderEngine/rSoundBuffer.h:

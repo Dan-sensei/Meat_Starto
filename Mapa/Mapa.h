@@ -43,6 +43,10 @@ public:
     void preState();
     void newState();
     
+    void stopCurrentSong();
+    void changeNextSong();
+    void changeNextSong(rMusic* target);
+    
     void changeSpriteSheet(std::string path);
     void setPlayers(std::vector<Player*>* ready);
     void movePlayerToClosestCheckPoint(Player* ready);
@@ -73,7 +77,7 @@ private:
     
     bool secondPhase;                               // Determina si ha empezado la segunda etapa
     renderEngine::rRectangleShape transportation;   // Teletransporta al jugador a la segunda etapa
-    std::vector<Factory::NodeStruct> NODOS;         // Nodos de la primera etapa
+    std::vector<Factory::NodeStruct> NODOS;         // Nodos principales
     std::vector<Factory::NodeStruct> MININODOS;     // Nodos de la transición
     Factory::NodeStruct BOSS;                       // Nodo del boss
     Factory::NodeStruct SPECIAL;
@@ -132,13 +136,9 @@ private:
     //FONDOS
     float x_view;
     float y_view;
-    renderEngine::rIntRect r1;
-    renderEngine::rIntRect r2;
     renderEngine::rTexture text_fondo;
     renderEngine::rSprite background1;
     renderEngine::rSprite background2;
-    renderEngine::rRectangleShape f1;
-    renderEngine::rRectangleShape f2;
 
     bool stopBackgroundMovement;
     std::vector<renderEngine::rRectangleShape> debug;
@@ -154,6 +154,15 @@ private:
     };
     bloque *initBloques;
     physicsEngine::type* t;
+    
+    // MÚSICA
+    bool switchSong;
+    bool stopCurrentSongBool;
+    rMusic* currentSong;
+    rMusic* nextSong;
+    rMusic THE_ARID_FLATS;
+    rMusic DISCO_DESCENT;
+    void getThatVolumenDown();
 };
 
 #endif /* MAPA_H */

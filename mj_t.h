@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Mapa/Mapa.h"
 #include "Juego.h"
+#include "renderEngine/rMusic.h"
 
 class mj_t {
 public:
@@ -71,6 +72,7 @@ private:
     bool fin;                       //TRUE: SE HA ACABADO EL MINIJUEGO
     
     physicsEngine::type* t;
+    rMusic TETRIS;
 };
 
 #endif /* MJ_T_H */

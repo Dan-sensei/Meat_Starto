@@ -65,6 +65,9 @@ xPlotato::xPlotato(int x_, int y_, int x_b, int x_e) : animator(sprite) {
     alive = true;
     readyToDie = false;
     
+ 
+    xPlosion1.setBuffer(AssetManager::GetSoundBuffer("assets/Sounds/Explosion1.ogg"));
+    xPlosion2.setBuffer(AssetManager::GetSoundBuffer("assets/Sounds/Explosion2.ogg"));
 }
 
 xPlotato::xPlotato(const xPlotato& orig): animator(sprite) {
@@ -108,7 +111,10 @@ void xPlotato::update(){
                     if(!ready->isInmortal())
                         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
                     
+                    int randomSound = physicsEngine::Instance().genIntRandom(0, 1);
+                    (randomSound == 0) ? xPlosion1.play() : xPlosion2.play();
                     readyToDie = true;
+                    physicsEngine::Instance().detroyBody(body);
                     xclock.restart();
                 }
             }
@@ -129,6 +135,9 @@ void xPlotato::update(){
                     animator.SwitchAnimation("xplota");
                 }
                 readyToDie = true;
+                int randomSound = physicsEngine::Instance().genIntRandom(0, 1);
+                (randomSound == 0) ? xPlosion1.play() : xPlosion2.play();
+                physicsEngine::Instance().detroyBody(body);
                 xclock.restart();
             }
             else{
@@ -167,8 +176,7 @@ void xPlotato::update(){
         }
     
     }
-    if(readyToDie && xclock.getElapsedTime().asSeconds() > 0.4){
-        std::cout << "DYING " << std::endl;
+    if(readyToDie && xclock.getElapsedTime().asSeconds() > 2){
         alive = false;
     }
     

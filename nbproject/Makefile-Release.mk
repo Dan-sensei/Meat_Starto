@@ -61,6 +61,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/physicsEngine/pConverter.o \
 	${OBJECTDIR}/physicsEngine/physicsEngine.o \
 	${OBJECTDIR}/renderEngine/rMusic.o \
+	${OBJECTDIR}/renderEngine/rSound.o \
 	${OBJECTDIR}/renderEngine/rSoundBuffer.o \
 	${OBJECTDIR}/renderEngine/renderEngine.o
 
@@ -218,6 +219,11 @@ ${OBJECTDIR}/renderEngine/rMusic.o: renderEngine/rMusic.cpp
 	${MKDIR} -p ${OBJECTDIR}/renderEngine
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine/rMusic.o renderEngine/rMusic.cpp
+
+${OBJECTDIR}/renderEngine/rSound.o: renderEngine/rSound.cpp
+	${MKDIR} -p ${OBJECTDIR}/renderEngine
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/renderEngine/rSound.o renderEngine/rSound.cpp
 
 ${OBJECTDIR}/renderEngine/rSoundBuffer.o: renderEngine/rSoundBuffer.cpp
 	${MKDIR} -p ${OBJECTDIR}/renderEngine

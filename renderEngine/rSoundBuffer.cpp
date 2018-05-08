@@ -25,3 +25,7 @@ rSoundBuffer::~rSoundBuffer() {
 bool rSoundBuffer::loadFromFile(const std::string& filename) {
     return soundBuffer.loadFromFile(filename);
 }
+
+sf::SoundBuffer* rSoundBuffer::getBuffer() {
+    return &soundBuffer;
+}

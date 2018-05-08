@@ -8,8 +8,9 @@ build/Debug/GNU-Linux/Juego.o: Juego.cpp /usr/include/tinyxml2.h \
  particleSystem.h Particle.h MPuntuaciones.h Hud.h Mapa/Mapa.h \
  Mapa/../mj_t.h Mapa/../renderEngine/renderEngine.h \
  Mapa/../physicsEngine/pBody.h Mapa/../physicsEngine/physicsEngine.h \
- Mapa/../boss.h Mapa/Nodo/Nodo.h Mapa/Nodo/NPCs/NPC.h \
- Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h \
+ Mapa/../Player.h Mapa/../Mapa/Mapa.h Mapa/../Juego.h \
+ Mapa/../renderEngine/rMusic.h Mapa/../boss.h Mapa/Nodo/Nodo.h \
+ Mapa/Nodo/NPCs/NPC.h Mapa/Nodo/NPCs/../../../renderEngine/renderEngine.h \
  Mapa/Nodo/NPCs/../../../physicsEngine/physicsEngine.h \
  Mapa/Nodo/../../Player.h Mapa/Nodo/Minijuegos/Minijuego.h \
  Mapa/Nodo/Minijuegos/goingUp.h \
@@ -72,6 +73,14 @@ Mapa/../renderEngine/renderEngine.h:
 Mapa/../physicsEngine/pBody.h:
 
 Mapa/../physicsEngine/physicsEngine.h:
+
+Mapa/../Player.h:
+
+Mapa/../Mapa/Mapa.h:
+
+Mapa/../Juego.h:
+
+Mapa/../renderEngine/rMusic.h:
 
 Mapa/../boss.h:
 

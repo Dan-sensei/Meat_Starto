@@ -78,6 +78,8 @@ Skull::~Skull() {
     //std::cout << "Destruyendo Skull..." << std::endl;
     delete t;
     t = nullptr;
+    if(body.getBody() != nullptr)
+        physicsEngine::Instance().detroyBody(body);
 }
 
 void Skull::update(){
