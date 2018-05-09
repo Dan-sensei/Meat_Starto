@@ -223,7 +223,7 @@ void boss::update() {
                     dtDialogue.restart();
                 }
             }
-            if(time>31.5 && time<=36){
+            if(time>35.5 && time<=41){
                 caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
                 for(int i=0 ; i<6 ; i++){
                     dialogo[i].setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
@@ -233,7 +233,7 @@ void boss::update() {
                 trembleView();
                 javi.r.move(0,5);
             }
-            if(time>36){
+            if(time>41){
                 initBoss=true;
                 MEGALOVANIA.play();
             }
