@@ -21,7 +21,7 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 20
+#define MAP_ITERATION 25
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -519,13 +519,10 @@ void Mapa::leeRandom(){
         target = 15;
     }
     else {
-        if(longitud == 3 ){
-            target = 6;
-        }
-        else{    
+   
             r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
             target = matriz_v2[nodo_actual][r];
-        }
+        
         CargaNodo(hex_list, NODOS[target], x_max, y_max);
     }
 
@@ -612,7 +609,12 @@ void Mapa::updateInit() {
         float x_text = renderEngine::Instance().getViewCenter()[0];
         float y_text = renderEngine::Instance().getViewCenter()[1];
         initText->setPosition(x_text,y_text);
-
+        
+        for(int i = 0; i < players->size(); ++i){
+            Player* ready = (*players)[i];
+            ready->setActive(true);
+        }
+        
         float time = initClock.getElapsedTime().asSeconds();
         if(time < 5){
             initText->setString("Get ready!");

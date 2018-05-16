@@ -92,7 +92,7 @@ public:
     void lvlUp();
     
     void hazInmortal();
-    void setTouchingWall(bool flag);
+    void setActive(bool flag);
     
     void setPosition(float x, float y);
     void transportToSecondPhase(float x, float y);

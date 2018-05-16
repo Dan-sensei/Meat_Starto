@@ -986,3 +986,6 @@ bool Player::enemigosMasMas() {
     }
 }
 
+void Player::setActive(bool flag) {
+    body.setActive(flag);
+}

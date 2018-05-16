@@ -67,6 +67,7 @@ Juego::Juego() {
     int i = 0;
     do {
         readyPlayer.push_back(new Player(i, names[i], 60.f, 50.f, x_arr[i], 800, 'D', keys));
+        readyPlayer.back()->setActive(false);
         ++i;
 
     }while( i < MenuInicio::Instance()->numplayers );
