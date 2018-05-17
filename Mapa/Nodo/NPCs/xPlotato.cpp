@@ -108,12 +108,11 @@ void xPlotato::update(){
         
         //PROXIMIDAD POR PERSONAJE
         if(!readyToDie){
-            
             for(int i=0 ; i<players->size() ; i++){
                 Player* ready = (*players)[i];
 
-                if(!ready->getEscudo()){
-                    if(ready->getSprite().intersects(sprite)){
+                if(ready->getSprite().intersects(sprite)){
+                    if(!ready->getEscudo()){
                         sprite.setOrigin(112,120);
                         sprite.setRotation(0);
                         sprite.setScale(2.5, 2.5);
@@ -131,9 +130,9 @@ void xPlotato::update(){
                         physicsEngine::Instance().detroyBody(body);
                         xclock.restart();
                     }
-                }
-                else{
-                    ready->setEscudo(false);
+                    else{
+                        ready->setEscudo(false);
+                    }
                 }
             }
         }

@@ -51,7 +51,6 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, bottom);
 
     onAir = 0;
-    level=3;
 
     hit=false;
     dead=false;
@@ -228,19 +227,17 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     controls = NULL;
     lvl1 = NULL;
     
-    escudo = false;
+    level = 3;
+    escudo = true;
+    lvlUp();
     
-     /*escudo*/
-    std::string sprite_name1 = "assets/powers/indicador_escudo.png";
+    int widthp = AssetManager::GetTexture("assets/powers/indicador_escudo.png").getXSize();
+    int heightp = AssetManager::GetTexture("assets/powers/indicador_escudo.png").getYSize();
     
-    int widthp = AssetManager::GetTexture(sprite_name1).getXSize();
-    int heightp = AssetManager::GetTexture(sprite_name1).getYSize();
-    
-    spescudo.setTexture(AssetManager::GetTexture(sprite_name1));
+    spescudo.setTexture(AssetManager::GetTexture("assets/powers/indicador_escudo.png"));
     spescudo.setOrigin(widthp / 2, heightp / 2);
     spescudo.setScale(1, 1);
     
-    lvlUp();
     inmortalRespawn = false;
 
 }
@@ -323,10 +320,7 @@ void Player::update(){
     if(lvl1){
         lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
     }
-    if(escudo==true){
-        spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
-
-    }
+    
  
 }
 
@@ -499,7 +493,7 @@ void Player::movement(){
                 }
             }                                                                           
             // ===========================================================================
-            if(key_suicide != -1 && keys[key_suicide] && level>0 ){
+            if(key_suicide != -1 && keys[key_suicide] && level>0 && Mapa::Instance().getInit()){
                 std::cout << "BUM" << std::endl;
                 if(animator.GetCurrentAnimationName() != "xplota"){
                     sprite.setOrigin(90+48/2 , 100 + 40/2+4);
@@ -688,6 +682,7 @@ void Player::draw(){
     if(lvl1){
         lvl1->sprite.draw();
     }
+    
     if(escudo==true){
         spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
         spescudo.draw();
@@ -895,6 +890,7 @@ bool Player::isInmortal() {
 
 void Player::lvlDown() {
     if(level>0){
+        std::cout << "SOY NIVEL" << level << ": LVL DOWN..." << std::endl;
         level--;
         
          switch(level){
@@ -924,6 +920,7 @@ void Player::lvlDown() {
 
 void Player::lvlUp() {
     if(level<4){
+        std::cout << "SOY NIVEL" << level << ": LVL UP!" << std::endl;
         level++;
         
         switch(level){
