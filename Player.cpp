@@ -81,7 +81,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_r=72;
                 key_l=71;
                 key_up=73;
-                key_hit=4;
+                key_hit=42;
                 key_suicide=57;
                 //key_suicide=42;
                 
@@ -94,7 +94,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_r=-1;
                 key_l=10;
                 key_up=14;
-                key_hit=4;    
+                key_hit=15;
                 //key_suicide=-1;
                 key_suicide=8;
         break;
@@ -105,7 +105,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 key_r=13;
                 key_l=21;
                 key_up=6;
-                key_hit=4;                       
+                key_hit=7;                       
                 //key_suicide=-1;
                 key_suicide=9;
         break;                           

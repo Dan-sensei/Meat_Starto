@@ -340,7 +340,7 @@ void Juego::HandleEvents(){
 
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
-                //    std::cout << "Tecla " << event.getKeyCode() << std::endl;
+                    std::cout << "Tecla " << event.getKeyCode() << std::endl;
 
                 break;
 
@@ -424,10 +424,10 @@ void Juego::HandleEvents(){
         sfml->Instance().ChangeState(MenuPausa::Instance());
     }
 
-    if(keys[15]){
-        keys[15]=false;
+    //if(keys[15]){
+        //keys[15]=false;
         //sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
-    }
+    //}
 }
 
 void Juego::Update(){
