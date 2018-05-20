@@ -132,7 +132,7 @@ MenuInicio::MenuInicio() {
    menuop[0].setFont(font);
    menuop[0].setCharacterSize(18);
    menuop[0].setFillColor('w');
-   menuop[0].setString("Sound");
+   menuop[0].setString("Sound ON");
    menuop[0].setPosition(posx-width/2, posy-height/6);
    
    menuop[1].setFont(font);
@@ -189,7 +189,7 @@ MenuInicio::MenuInicio() {
     
     controles.setTexture(AssetManager::GetTexture(sprite_namec));
     controles.setOrigin(widthc / 2, heightc / 2);
-    controles.setScale(0.6, 0.6);
+    controles.setScale(0.00037*width, 0.00037*width);
     controles.setPosition(posx, posy+height/3);
    
    
@@ -209,6 +209,7 @@ MenuInicio::MenuInicio() {
     controller_move_d = false;
     controller_move_r = false;
     controller_move_l = false;
+    sonido=true;
 
 }
 
@@ -529,7 +530,15 @@ void MenuInicio::stateMenu() {
         case 1:
             switch(selectedItemIndex2){
                 case 0:
-                   // std::cout<<"Sound pressed"<< std::endl;
+                     //sonido
+                    if(sonido==false){
+                        menuop[0].setString("Sound ON");
+                        sonido=true;
+                    }
+                    else{
+                        menuop[0].setString("Sound OFF");     
+                        sonido=false; 
+                    }
                     break;
 
                 case 1:
@@ -649,7 +658,7 @@ void MenuInicio::Handle(){
     
    /*MENU DE OPCIONES*/
    titulo2.setPosition(posx-width/15, posy-height/3);
-   menuop[0].setPosition(posx-width/30, posy-height/15);
+   menuop[0].setPosition(posx-width/25, posy-height/15);
    menuop[1].setPosition(posx-width/30, posy+height/5);
    
    
@@ -664,7 +673,7 @@ void MenuInicio::Handle(){
    titulo4.setPosition(posx-width/15, posy-height/2.5);
    menuhow.setPosition(posx, posy+height/2.5);
    manchahtp.setPosition(posx+width/40, posy+height/2.5);
-   controles.setPosition(posx, posy+height/3.9);
+   controles.setPosition(posx, posy+height/5);
    
     primero=false;
     

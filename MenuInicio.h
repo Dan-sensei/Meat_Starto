@@ -44,6 +44,7 @@ public:
     static MenuInicio* Instance();//Singleton
     
     int numplayers;
+    bool sonido;
     
 private:
     void stateMenu();
@@ -96,6 +97,8 @@ private:
     bool controller_move_d;
     bool controller_move_r;
     bool controller_move_l;
+    
+    
 };
 
 #endif /* MENUINICIO_H */

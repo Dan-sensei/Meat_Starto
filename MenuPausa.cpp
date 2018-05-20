@@ -335,10 +335,12 @@ void MenuPausa::stateMenu() {
                     if(god_mode==false){
                         menu[2].setString("God Mode ON");
                         god_mode=true;
+                       // PonInmortal();
                     }
                     else{
                         menu[2].setString("God Mode OFF");     
                         god_mode=false; 
+                        //PonInmortal();
                     }
                     break;
 
