@@ -66,7 +66,7 @@ Juego::Juego() {
 
     int i = 0;
     do {
-        readyPlayer.push_back(new Player(i, names[i], 60.f, 50.f, x_arr[i], 800, 'D', keys));
+        readyPlayer.push_back(new Player(i, names[i], 60.f, 50.f, x_arr[i], 800, keys));
         readyPlayer.back()->setActive(false);
         ++i;
 

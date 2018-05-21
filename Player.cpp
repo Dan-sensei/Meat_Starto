@@ -34,10 +34,10 @@
 #define constMaxSeed 14.f
 #define meatEXP 250.f
 
-Player::Player(int id, std::string name, float width_, float height_, float x_, float y_, char type_, bool *keys_) : animator(sprite) {
-    setId(id);
-    setName(name);
+Player::Player(int id_, std::string name_, float width_, float height_, float x_, float y_, bool *keys_) : animator(sprite) {
     
+    id = id_;
+    name = name_;
     keys = keys_;
     
     t = new physicsEngine::type;
@@ -55,61 +55,27 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
 
     hit=false;
     dead=false;
+
+    std::string texture = "assets/player"+std::to_string(id)+"a.png";
+    std::string texture2 = "assets/player"+std::to_string(id)+"explosion.png";
     
+    int keyCodes[4][5] = 
+    //   R      L       UP    HIT     /KILL
+    {    3,     0,      22,     4,      28,
+        72,     71,     73,     4,      57,
+        -1,     10,     14,     4,       8,
+        13,     21,      6,     4,       9
+    };
     
+    key_r       =   keyCodes[id][0];
+    key_l       =   keyCodes[id][1];
+    key_up      =   keyCodes[id][2];
+    key_hit     =   keyCodes[id][3];
+    key_suicide =   keyCodes[id][4];
     
     sprite.setOrigin(48/2, 40/2+4);
     sprite.setScale(1.4f, 1.6f);
-    switch(id){
-    //Asigna la textura con su color dependiendo del id del jugador
-        case 0:
-                texture="assets/player0a.png";
-                texture2= "assets/player0explosion.png";
-                //KeyCode                
-                key_r=3;
-                key_l=0;
-                key_up=22;
-                key_hit=4;
-                key_suicide=28;
-                //key_suicide=37;
-                
-        break;
-        case 1:
-                texture="assets/player1a.png";
-                texture2= "assets/player1explosion.png";
-                //KeyCode                
-                key_r=72;
-                key_l=71;
-                key_up=73;
-                key_hit=4;
-                key_suicide=57;
-                //key_suicide=42;
-                
-                //sprite.setPosition(x_, y_);
-        break;
-        case 2:
-                texture="assets/player2a.png"; 
-                texture2= "assets/player2explosion.png";
-                //KeyCode                
-                key_r=-1;
-                key_l=10;
-                key_up=14;
-                key_hit=4;    
-                //key_suicide=-1;
-                key_suicide=8;
-        break;
-        case 3:
-                texture="assets/player3a.png"; 
-                texture2= "assets/player3explosion.png";
-                //KeyCode                
-                key_r=13;
-                key_l=21;
-                key_up=6;
-                key_hit=4;                       
-                //key_suicide=-1;
-                key_suicide=9;
-        break;                           
-    }
+    
    /*MANO*/
     
     int width = AssetManager::GetTexture(texture).getXSize();
@@ -125,23 +91,23 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     /*ANIMACIONES*/
     //sf::Vector2i spriteSize(60,60);
     sf::Vector2i spriteSize(48,40);
-    Animator::Animation* anim = &animator.CreateAnimation("a_bas",texture, renderEngine::rTime(3), false);
+    Animator::Animation* anim = &animator.CreateAnimation("a_bas", texture, renderEngine::rTime(3), false);
     anim->AddFrames(sf::Vector2i(0,0), sf::Vector2i(48,40), 1);
     animator.SwitchAnimation("a_bas");
     
-    Animator::Animation* a_base = &animator.CreateAnimation("a_base",texture, renderEngine::rTime(3), false);
+    Animator::Animation* a_base = &animator.CreateAnimation("a_base", texture, renderEngine::rTime(3), false);
     a_base->AddFrames(sf::Vector2i(0,0), spriteSize ,1);
     
     //Giro Derecha
-    Animator::Animation* a_rigth = &animator.CreateAnimation("a_rigth",texture, renderEngine::rTime(0.3), false);
+    Animator::Animation* a_rigth = &animator.CreateAnimation("a_rigth", texture, renderEngine::rTime(0.3), false);
     a_rigth->AddFrames(sf::Vector2i(240,0), spriteSize , 3);
-    Animator::Animation* a_base_r = &animator.CreateAnimation("a_base_r",texture, renderEngine::rTime(0.2), false);
+    Animator::Animation* a_base_r = &animator.CreateAnimation("a_base_r", texture, renderEngine::rTime(0.2), false);
     a_base_r->AddFrames(sf::Vector2i(384,0), spriteSize , 2);
     
     //Giro Izquierda
-    Animator::Animation* a_left = &animator.CreateAnimation("a_left",texture, renderEngine::rTime(0.3), false);
+    Animator::Animation* a_left = &animator.CreateAnimation("a_left", texture, renderEngine::rTime(0.3), false);
     a_left->AddFrames(sf::Vector2i(0,0), spriteSize , 3);
-    Animator::Animation* a_base_l = &animator.CreateAnimation("a_base_l",texture, renderEngine::rTime(0.2), false);
+    Animator::Animation* a_base_l = &animator.CreateAnimation("a_base_l", texture, renderEngine::rTime(0.2), false);
     a_base_l->AddFrames(sf::Vector2i(144,0), spriteSize , 2);
     
     /*
@@ -161,23 +127,23 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     */
     //Prueba de salto
     //Salto izquierda
-    Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l",texture, renderEngine::rTime(0.7), false);
+    Animator::Animation* a_jump_l = &animator.CreateAnimation("a_jump_l", texture, renderEngine::rTime(0.7), false);
     a_jump_l->AddFrames(sf::Vector2i(0,40), spriteSize ,9);  
     a_jump_l->AddFrames(sf::Vector2i(48,80), spriteSize ,2);
     
     //Salto derecha
-    Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r",texture, renderEngine::rTime(0.7), false);
+    Animator::Animation*  a_jump_r = &animator.CreateAnimation("a_jump_r", texture, renderEngine::rTime(0.7), false);
     a_jump_r->AddFrames(sf::Vector2i(0,120), spriteSize ,9); 
     a_jump_r->AddFrames(sf::Vector2i(192,80), spriteSize ,2);  
     
     //Para colision
-    Animator::Animation*  a_fall_l = &animator.CreateAnimation("a_fall_l",texture, renderEngine::rTime(0.5), false);
+    Animator::Animation*  a_fall_l = &animator.CreateAnimation("a_fall_l", texture, renderEngine::rTime(0.5), false);
     a_fall_l->AddFrames(sf::Vector2i(0,120), spriteSize ,3);
-    Animator::Animation*  a_fall_r = &animator.CreateAnimation("a_fall_r",texture, renderEngine::rTime(0.5), false);
+    Animator::Animation*  a_fall_r = &animator.CreateAnimation("a_fall_r", texture, renderEngine::rTime(0.5), false);
     a_fall_r->AddFrames(sf::Vector2i(180,120), spriteSize ,3);
     
     //Para suicidio
-    Animator::Animation*  xplota = &animator.CreateAnimation("xplota",texture2, renderEngine::rTime(0.5), false);
+    Animator::Animation*  xplota = &animator.CreateAnimation("xplota", texture2, renderEngine::rTime(0.5), false);
     xplota->AddFrames(sf::Vector2i(0,0), sf::Vector2i(225,140) ,4);
     xplota->AddFrames(sf::Vector2i(0,140), sf::Vector2i(225,140) ,4);
     xplota->AddFrames(sf::Vector2i(0,280), sf::Vector2i(225,140) ,3);
@@ -200,6 +166,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     spawned = false;
     
+    /*
     blood.setPosition(x_, y_);                    // Posicion del sistema de partículas
     blood.setType(1);                                // Tipo: Determina el área de generado | 0 = Círculo - 1 = Rectángulo (Por defecto tienen tamaño 0 y emitirán hacia el exterior aleatoriamente)
     blood.setParticleSpeed(0);                     // Velocidad lineal de las partículas
@@ -214,6 +181,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     blood.setSpriteSize(1, 1);                     // Cambia el tamaño del sprite
     blood.setParticleAngularVelocityRandomBetween(-10, -15);
     //blood.drawGenerationArea(true);
+    */
     
     touchingWall = false;
     stopJump = false;
@@ -250,40 +218,6 @@ Player::~Player() {
     t = nullptr;
 }
 
-void Player::setId(int i){
-    id = i;
-}
-int Player::getId(){
-    return id;
-}
-int Player::getLevel(){
-    return level;
-}
-
-void Player::setName(std::string n){
-    name=n;
-}
-std::string Player::getName(){
-    return name;
-}
-
-renderEngine::rSprite Player::getSprite(){
-    return sprite;
-}
-
-renderEngine::rSprite Player::getMano() {
-    return mano;
-}
-
-int Player::getExp() {
-    return exp;
-}
-
-
-int Player::getExp_levelup() {
-    return exp_for_next_level;
-}
-
 
 void Player::hazInmortal(){
     if (inmortal==false){
@@ -293,7 +227,6 @@ void Player::hazInmortal(){
 
     }
 }
-
 
 void Player::update(){
     if(exp>=exp_for_next_level && level<4){
@@ -354,7 +287,6 @@ void Player::moveRigth_b(){
     //if(animator.GetCurrentAnimationName() != "a_base_r"){
         animator.SwitchAnimation("a_base_r");
     //}
-       
 }
 
 void Player::moveLeft(){
@@ -362,20 +294,16 @@ void Player::moveLeft(){
         animator.SwitchAnimation("a_left");
     }
     //std::cout<<"izquierda"<<id;
-                                                                         
-
 }
 
 void Player::moveLeft_b(){
     //if(animator.GetCurrentAnimationName() != "a_base_l"){
         animator.SwitchAnimation("a_base_l");
     //}
-
 }
 
 void Player::moveUp(){
-    if(!isOnAir()){
-        
+    if(!isOnAir()){       
         if(animator.GetCurrentAnimationName() == "a_left" || animator.GetCurrentAnimationName() == "a_jump_l"){
             animator.SwitchAnimation("a_jump_l");
         }
@@ -384,6 +312,7 @@ void Player::moveUp(){
         }
     }
 }
+
 void Player::moveUp_r(){
     if(animator.GetCurrentAnimationName() != "a_jump_r"){
         animator.SwitchAnimation("a_jump_r");
@@ -415,7 +344,8 @@ void Player::moveDown(){
 
 //MOVIMIENTO
 void Player::movement(){
-    //blood.setActive(false);
+    
+    preState();
     
     if(spawned && respawnTimeClock.getElapsedTime().asSeconds() > 0.50){
         body.setActive(true);
@@ -429,7 +359,6 @@ void Player::movement(){
         }
     }
     
-    preState();
     if(!freezed){
         //GOLPE
         if(keys[key_hit]){
@@ -529,11 +458,6 @@ void Player::movement(){
 
                 keys[key_suicide] = false;
             }
-            /*
-            else if(!keys[key_suicide] && animator.GetCurrentAnimationName() == "xplota"){
-                animator.SwitchAnimation("a_base_l");
-                sprite.setOrigin(48/2, 40/2+4);
-            }*/
         }
     }
     //-30
@@ -601,7 +525,7 @@ void Player::movement(){
     
     if(speed){
         if(speedClock.getElapsedTime().asSeconds() > speedTime){
-            std::cout << "SE ACABÓ EL GAS WE" << std::endl;
+            //std::cout << "SE ACABÓ EL GAS WE" << std::endl;
             if(level >= 3){
                 MAXSPEED = constMaxSeed+3;
             }
@@ -616,21 +540,6 @@ void Player::movement(){
         }
     }
     
-    if(abs(body.getLinearYVelocity())>1){
-        blood.setRectangle(60,60);
-        blood.setPosition(body.getXPosition(), body.getYPosition());
-    }
-    else{
-        blood.setRectangle(60, 25);
-        blood.setPosition(body.getXPosition(), body.getYPosition()+24);
-    }
-    
-    if(body.getLinearXVelocity() != 0 || body.getLinearYVelocity() != 0)
-        blood.setActive(true);
-    
-    //blood.howManyParticlesAre();
-    //std::cout << blood.getXPosition() << ", " << blood.getYPosition() << std::endl;
-    //blood.update();
     
     if(expup && exp_clock.getElapsedTime().asSeconds()>1){
         delete expup;
@@ -703,7 +612,7 @@ void Player::newState(){
     actual.x = body.getXPosition();
     actual.y = body.getYPosition();
     actual.r = body.getRotation();
-    blood.newState();
+    //blood.newState();
 }
 
 float Player::getXPosition(){
@@ -715,8 +624,7 @@ float Player::getYPosition() {
 }
 
 
-bool Player::isOnAir(){
-    
+bool Player::isOnAir(){ 
     return (onAir > 0) ? false : true;
 }
 void Player::setAir(int i){
@@ -726,8 +634,6 @@ void Player::setAir(int i){
 // POWERS! =================================================================
 
 void Player::powerUpInmortalidad() {
-    std::cout << "INMORTALIDAD!" << std::endl;
-    
     invincible = new indicador;
     invincible->ir = new renderEngine::rIntRect(0,88,135,44);
     invincible->t.loadFromImage(indicadores_power,*invincible->ir);
@@ -739,8 +645,6 @@ void Player::powerUpInmortalidad() {
 }
 
 void Player::powerUpSpeed() {
-    std::cout << "SPEED!" << std::endl;
-    
     speed = new indicador;
     speed->ir = new renderEngine::rIntRect(0,0,135,44);
     speed->t.loadFromImage(indicadores_power,*speed->ir);
@@ -752,8 +656,6 @@ void Player::powerUpSpeed() {
 }
 
 void Player::powerUpExperience() {
-    std::cout << "+" << meatEXP << " EXPERIENCIA!" << std::endl;
-
     if(level!=4){
         exp += 250;
     }
@@ -769,7 +671,6 @@ void Player::powerUpExperience() {
 }
 
 void Player::powerDownFreeze() {
-    std::cout << "FREEZE!" << std::endl;
     //UN CALIPPO DE FRESA POR FAVOR
     
     std::vector<Player*>* v_players = Juego::Instance().getPlayers();
@@ -789,12 +690,9 @@ void Player::powerDownFreeze() {
             
         }
     }
-    
-
 }
 
 void Player::powerDownJump() {
-    std::cout << "JUMP!" << std::endl;
     //FLANTASTICO
     
     std::vector<Player*>* v_players = Juego::Instance().getPlayers();
@@ -806,12 +704,10 @@ void Player::powerDownJump() {
             ready->body.applyLinearImpulse(0,-25);
         }
     }
-    
 }
 
 
 void Player::powerDownLevelOne() {
-    std::cout << "VUELVES AL LEVEL ONE" << std::endl;
     if(level!=1){
         lvl1 = new indicador;
         lvl1->ir = new renderEngine::rIntRect(0,286,65,40);
@@ -825,8 +721,7 @@ void Player::powerDownLevelOne() {
 }
 
 void Player::powerDownFish() {
-    std::cout << "CONTROLES INVERTIDOS!" << std::endl;
-    
+    // ESTÁS BORRACHO WEY
     std::vector<Player*>* v_players = Juego::Instance().getPlayers();
     
     for(int i=0 ; i<v_players->size() ; i++){
@@ -844,8 +739,6 @@ void Player::powerDownFish() {
             
         }
     }
-    
-    
 }
 
 
@@ -882,15 +775,6 @@ void Player::setPosition(float x, float y) {
 
 void Player::transportToSecondPhase(float x, float y) {
     body.setPosition(x,y);
-}
-
-
-int Player::getAir() {
-    return onAir;
-}
-
-bool Player::isInmortal() {
-    return inmortal;
 }
 
 void Player::lvlDown() {
@@ -956,29 +840,29 @@ void Player::lvlUp() {
     }
 }
 
-int Player::getMuertes(){
-    return muertes;
-}
+// GETTERS
+int Player::getId()             {   return id;          }
+int Player::getLevel()          {   return level;       }
+int Player::getExp()            {   return exp;         }
+std::string Player::getName()   {   return name;        }
+int Player::getMuertes()        {   return muertes;     }
+int Player::getEnemigos()       {   return enemigos;    }
+bool Player::getEscudo()        {   return escudo;      }
+int Player::getAir()            {   return onAir;       }
+bool Player::isInmortal()       {   return inmortal;    }
+int Player::getExp_levelup()    {   return exp_for_next_level;  }
+renderEngine::rSprite Player::getSprite()   {   return sprite;  }
+renderEngine::rSprite Player::getMano()     {   return mano;    }
 
-int Player::getEnemigos(){
-    return enemigos;
-}
-
-bool Player::getEscudo() {
-    return escudo;
-}
-
-void Player::setEscudo(bool b) {
-    escudo = b;
-}
+void Player::setEscudo(bool b) {       escudo = b;  }
+void Player::setActive(bool flag) {    body.setActive(flag);    }
 
 bool Player::enemigosMasMas() {
     if(hit){
         enemigos++;
         if(level!=4){
             exp+=250;
-        }
-        
+        } 
         return true;
     }
     else{
@@ -986,6 +870,3 @@ bool Player::enemigosMasMas() {
     }
 }
 
-void Player::setActive(bool flag) {
-    body.setActive(flag);
-}

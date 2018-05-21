@@ -23,15 +23,13 @@
 
 class Player {
 public:
-    Player(int id, std::string name, float width_, float height_, float x_, float y_, char type_, bool *keys_);
+    Player(int id_, std::string name_, float width_, float height_, float x_, float y_, bool *keys_);
     Player(const Player& orig);
     virtual ~Player();
-    void setId(int i);
     int getId();
     float getXPosition();
     float getYPosition();
     int getLevel();
-    void setName(std::string n);
     std::string getName();
     renderEngine::rSprite getSprite();
     renderEngine::rSprite getMano();
@@ -102,9 +100,7 @@ public:
 private:
     int id;
     int level;
-    std::string name; 
-    std::string texture;
-    std::string texture2;
+    std::string name;
     renderEngine::rSprite sprite;
     renderEngine::rSprite mano;    
     bool hit;
@@ -137,8 +133,6 @@ private:
     physicsEngine::type* t;
     physicsEngine::type* bottom;
     
-    particleSystem blood;
-    
     int muertes;
     int enemigos;
   //  renderEngine::rImage indicador_escudo;
@@ -152,7 +146,6 @@ private:
     };
     indicador *invincible;
     indicador *speed;
-    
     indicador *expup;
     renderEngine::rClock exp_clock;
     
