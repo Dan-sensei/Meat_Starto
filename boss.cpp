@@ -273,33 +273,37 @@ void boss::update() {
             //std::cout << " | ----------- Movimiento de proyectiles" << std::endl << std::endl;
             //MOVIMIENTO DE LOS PROYECTILES
             std::vector<Player*>* players = Juego::Instance().getPlayers();
-            for(int i=0 ; i<javi.proy.size() ; i++){
-                float vx = javi.proy[i]->v_x;
-                float vy = javi.proy[i]->v_y;
+            
+            std::list<proyectil*>::iterator it = javi.proy.begin();
+            while(it != javi.proy.end()){
+                float vx = (*it)->v_x;
+                float vy = (*it)->v_y;
 
-                javi.proy[i]->r.move(vx,vy);
+                (*it)->r.move(vx,vy);
                 
                 for(int j=0 ; j<players->size() ; j++){
                     Player* ready = (*players)[j];
                     if(ready->getEscudo()){
                         ready->setEscudo(false);
                     }
-                    else if(!ready->isInmortal() && ready->getSprite().intersects(javi.proy[i]->r)){
+                    else if(!ready->isInmortal() && ready->getSprite().intersects((*it)->r)){
                         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
                     }
                 }
                 
                 //MILAGROSAMENTE FUNCIONA
-                if( javi.proy[i]->r.getPosition()[1]>y_min+2600    || javi.proy[i]->r.getPosition()[1]<y_min || 
-                    javi.proy[i]->r.getPosition()[0]>x_max+(70*5)   || javi.proy[i]->r.getPosition()[0]<x_min-(70*5)){
+                if( (*it)->r.getPosition()[1]>y_min+2600    || (*it)->r.getPosition()[1]<y_min || 
+                    (*it)->r.getPosition()[0]>x_max+(70*5)   || (*it)->r.getPosition()[0]<x_min-(70*5)){
                         //std::cout << "Soy un proyectil y me destruyo" << std::endl;
 
-                    delete javi.proy[i];
-                    javi.proy[i] = NULL;
+                    delete (*it);
+                    (*it) = nullptr;
 
-                    javi.proy.erase(javi.proy.begin()+i); 
-                    if(i+1==javi.proy.size())   javi.proy.shrink_to_fit();
+                    javi.proy.erase(it++); 
+                    //if(i+1==javi.proy.size())   javi.proy.shrink_to_fit();
                 }
+                else
+                    ++it;
             }
 
             if(clock_boss.getElapsedTime().asSeconds()>40){
@@ -581,8 +585,9 @@ void boss::render() {
             //*/
             //</DEBUG>
 
-            for(int i=0 ; i<javi.proy.size() ; i++){
-                javi.proy[i]->r.draw();
+            
+            for(std::list<proyectil*>::iterator it = javi.proy.begin() ; it != javi.proy.end() ; ++it){
+                (*it)->r.draw();
             }
             time_text.draw();
         }
@@ -593,7 +598,7 @@ void boss::render() {
     }
 }
 
-bool boss::isBossOn() { return on;}
+bool boss::isBossOn() { return on; }
 
 
 

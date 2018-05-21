@@ -83,8 +83,8 @@ private:
     };
     struct jefe{
         renderEngine::rRectangleShape r;            //EL BOSS FINAL
-        std::vector<proyectil*> proy;               //VECTOR DE PROYECTILES
-        std::vector<proyectilT*> proyT;             //VECTOR DE PROYECTILES T
+        std::list<proyectil*> proy;               //VECTOR DE PROYECTILES
+        std::list<proyectilT*> proyT;             //VECTOR DE PROYECTILES T
         
         //LOS VALORES DE x_f E y_f CAMBIAN
         float x_v;              //X DEL VECTOR VELOCIDAD

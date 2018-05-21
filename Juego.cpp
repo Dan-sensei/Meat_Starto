@@ -608,7 +608,7 @@ Juego::~Juego() {
     view = nullptr;
     delete backgroundView;
     backgroundView = nullptr;
-     */
+    */
     std::cout << "Destroying game==================================" << std::endl;
 }
 
