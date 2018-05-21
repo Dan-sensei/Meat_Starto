@@ -601,14 +601,14 @@ std::array<float, 2> Juego::getPlayerPosition() {
 }
 
 Juego::~Juego() {
-    /*
+    
     delete[] keys;
     keys = nullptr;
     delete view;
     view = nullptr;
     delete backgroundView;
     backgroundView = nullptr;
-    */
+    
     std::cout << "Destroying game==================================" << std::endl;
 }
 

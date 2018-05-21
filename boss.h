@@ -65,7 +65,6 @@ private:
         renderEngine::rRectangleShape r;
         float v_x;  //COMPONENTE X DEL VECTOR DE MOVIMIENTO
         float v_y;  //COMPONENTE Y DEL VECTOR DE MOVIMIENTO
-        renderEngine::rTexture t;
     };
     struct proyectilT: proyectil{
         float a;            //AMPLITUD
@@ -81,10 +80,12 @@ private:
         
         
     };
+    
+    std::string projectilPath;
     struct jefe{
         renderEngine::rRectangleShape r;            //EL BOSS FINAL
-        std::list<proyectil*> proy;               //VECTOR DE PROYECTILES
-        std::list<proyectilT*> proyT;             //VECTOR DE PROYECTILES T
+        std::list<proyectil> proy;               //VECTOR DE PROYECTILES
+        std::list<proyectilT> proyT;             //VECTOR DE PROYECTILES T
         
         //LOS VALORES DE x_f E y_f CAMBIAN
         float x_v;              //X DEL VECTOR VELOCIDAD
@@ -94,6 +95,7 @@ private:
         bool llegada;           //TRUE: HA LLEGADO A LA POSICION FINAL Y BUSCA UNA NUEVA
         renderEngine::rIntRect *ir;
     };
+    
     renderEngine::rRectangleShape r_aux;    //DEBUG
     renderEngine::rRectangleShape ir_aux;   //DEBUG
     t_muro puerta[12];
@@ -122,12 +124,12 @@ private:
     bool view_mv;
     bool quoteFin;
     
-    renderEngine::rRectangleShape *sansJavi;
-    renderEngine::rText *dialogo;
-    std::string *str_dialogo;
+    renderEngine::rRectangleShape sansJavi;
+    renderEngine::rText dialogo[6];
+    std::string str_dialogo[6];
     int s_count;
     int c_count;
-    renderEngine::rRectangleShape *caja_dialogo;
+    renderEngine::rRectangleShape caja_dialogo;
     
     renderEngine::rClock dialogueClock;
     renderEngine::rClock dtDialogue;

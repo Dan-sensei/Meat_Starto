@@ -82,8 +82,8 @@ void boss::init(int x_,int y_) {
     ir_aux.setOutlineThickness(5);
     
     //std::string path = "assets/boss/fire_boss_ad.png";        //COMIDA    128x128
-    std::string path = "assets/boss/fire1.png";                 //FUEGO     72x48
-    proy_boss.loadFromFIle(path);
+    projectilPath = "assets/boss/fire1.png";                 //FUEGO     72x48
+    proy_boss.loadFromFIle(projectilPath);
 
     //TEXTOS
     time_font.loadFromFile("assets/fonts/ninjagarden.ttf");
@@ -97,14 +97,13 @@ void boss::init(int x_,int y_) {
     view_mv = false;
     
     sans_font.loadFromFile("resources/fuente.ttf");
-    dialogo = new renderEngine::rText[6]();
+
     for(int i=0 ; i<6 ; i++){
         dialogo[i].setFont(sans_font);
         dialogo[i].setCharacterSize(50);
         dialogo[i].setFillColor('w');
     }
     
-    str_dialogo = new std::string[6];
     str_dialogo[0] = "* I see you have come here";
     str_dialogo[1] = "* Prepare yourself for this grill";
     str_dialogo[2] = "* You have passed a lot of traps";
@@ -116,19 +115,18 @@ void boss::init(int x_,int y_) {
     c_count = 1;
     quoteFin = false;
     
-    caja_dialogo = new renderEngine::rRectangleShape();
-    caja_dialogo->setSize(2732*1.2,800);
-    caja_dialogo->setFillColor('k');
-    caja_dialogo->setOutlineThickness(15);
-    caja_dialogo->setOutlineColor('w');
-    caja_dialogo->setOrigin(caja_dialogo->getSize()[0]/2,caja_dialogo->getSize()[1]/2);
+    caja_dialogo.setSize(2732*1.2,800);
+    caja_dialogo.setFillColor('k');
+    caja_dialogo.setOutlineThickness(15);
+    caja_dialogo.setOutlineColor('w');
+    caja_dialogo.setOrigin(caja_dialogo.getSize()[0]/2,caja_dialogo.getSize()[1]/2);
     
-    sansJavi = new renderEngine::rRectangleShape();
+
     float w = 300;
     float h = 300;
-    sansJavi->setSize(w,h);
-    sansJavi->setTexture(AssetManager::Instance().GetTexture("assets/boss/javi.png"));
-    sansJavi->setOrigin(w/2,h/2);
+    sansJavi.setSize(w,h);
+    sansJavi.setTexture(AssetManager::Instance().GetTexture("assets/boss/javi.png"));
+    sansJavi.setOrigin(w/2,h/2);
     
     SANS_TALK_SOUND.openFromFile("assets/Sounds/SANS_TALK.ogg");
     MEGALOVANIA.openFromFile("assets/Sounds/MEGALOVANIA.ogg");
@@ -188,8 +186,8 @@ void boss::update() {
             float time = initClock.getElapsedTime().asSeconds();
             if(time<=5) trembleView();
             if(time>5 && time<=6){
-                caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0],renderEngine::Instance().getViewCenter()[1]-200);
-                sansJavi->setPosition(renderEngine::Instance().getViewCenter()[0]-1100,renderEngine::Instance().getViewCenter()[1]-200);
+                caja_dialogo.setPosition(renderEngine::Instance().getViewCenter()[0],renderEngine::Instance().getViewCenter()[1]-200);
+                sansJavi.setPosition(renderEngine::Instance().getViewCenter()[0]-1100,renderEngine::Instance().getViewCenter()[1]-200);
             }
             if(time>6 && time<=35){
                 float x = renderEngine::Instance().getViewCenter()[0]-500;
@@ -224,11 +222,11 @@ void boss::update() {
                 }
             }
             if(time>35.5 && time<=41){
-                caja_dialogo->setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
+                caja_dialogo.setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
                 for(int i=0 ; i<6 ; i++){
                     dialogo[i].setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
                 }
-                sansJavi->setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
+                sansJavi.setPosition(renderEngine::Instance().getViewCenter()[0]-500,renderEngine::Instance().getViewCenter()[1]-8000);
 
                 trembleView();
                 javi.r.move(0,5);
@@ -274,30 +272,28 @@ void boss::update() {
             //MOVIMIENTO DE LOS PROYECTILES
             std::vector<Player*>* players = Juego::Instance().getPlayers();
             
-            std::list<proyectil*>::iterator it = javi.proy.begin();
+            std::list<proyectil>::iterator it = javi.proy.begin();
             while(it != javi.proy.end()){
-                float vx = (*it)->v_x;
-                float vy = (*it)->v_y;
+                float vx = (*it).v_x;
+                float vy = (*it).v_y;
 
-                (*it)->r.move(vx,vy);
+                
+                (*it).r.move(vx,vy);
                 
                 for(int j=0 ; j<players->size() ; j++){
                     Player* ready = (*players)[j];
                     if(ready->getEscudo()){
                         ready->setEscudo(false);
                     }
-                    else if(!ready->isInmortal() && ready->getSprite().intersects((*it)->r)){
+                    else if(!ready->isInmortal() && ready->getSprite().intersects((*it).r)){
                         Mapa::Instance().movePlayerToClosestCheckPoint(ready);
                     }
                 }
                 
                 //MILAGROSAMENTE FUNCIONA
-                if( (*it)->r.getPosition()[1]>y_min+2600    || (*it)->r.getPosition()[1]<y_min || 
-                    (*it)->r.getPosition()[0]>x_max+(70*5)   || (*it)->r.getPosition()[0]<x_min-(70*5)){
+                if( (*it).r.getPosition()[1]>y_min+2600    || (*it).r.getPosition()[1]<y_min || 
+                    (*it).r.getPosition()[0]>x_max+(70*5)   || (*it).r.getPosition()[0]<x_min-(70*5)){
                         //std::cout << "Soy un proyectil y me destruyo" << std::endl;
-
-                    delete (*it);
-                    (*it) = nullptr;
 
                     javi.proy.erase(it++); 
                     //if(i+1==javi.proy.size())   javi.proy.shrink_to_fit();
@@ -435,16 +431,16 @@ void boss::crearProyectilTele() {
     // ------------ EN PRUEBAS ------------ //
     
     // x=y²/4, SE DEBE APLICAR UN OFFSET A LOS LADOS
-    proyectilT *aux = new proyectilT;
+    proyectilT aux;
     
-    aux->r.setFillColor('b');
-    aux->r.setSize(20,20);
-    aux->angle = 45;
+    aux.r.setFillColor('b');
+    aux.r.setSize(20,20);
+    aux.angle = 45;
     
-    aux->x_ini = javi.r.getPosition()[0];
-    aux->y_ini = javi.r.getPosition()[1];
-    aux->r.setPosition(aux->x_ini,aux->y_ini);
-    aux->r.rotate(aux->angle);
+    aux.x_ini = javi.r.getPosition()[0];
+    aux.y_ini = javi.r.getPosition()[1];
+    aux.r.setPosition(aux.x_ini,aux.y_ini);
+    aux.r.rotate(aux.angle);
     
     /*
     aux->a = 50;
@@ -475,8 +471,6 @@ void boss::crearAbanicoProyectiles(){
                 
             float w = 18*s_factor;
             float h = 48*s_factor;
-            float w_ir = 18;
-            float h_ir = 48;
 
             float s_x = sin(M_PI/180*(90*i_a));
             float s_y = cos(M_PI/180*(90*i_a));
@@ -485,22 +479,20 @@ void boss::crearAbanicoProyectiles(){
                 //std::cout << "Y-> cos(" << 90*i << ") : " << s_y << std::endl; //Y
                 //std::cout << std::endl;
 
-            proyectil *p_aux = new proyectil;
-            p_aux->v_x = s_x*factor;
-            p_aux->v_y = s_y*factor;
+            proyectil p_aux;
+            p_aux.v_x = s_x*factor;
+            p_aux.v_y = s_y*factor;
 
-            p_aux->r.setSize(w,h);
-            p_aux->r.setPosition(javi.r.getPosition()[0],javi.r.getPosition()[1]);
-            //p_aux->r.setFillRGBAColor(160,196,255);
-            //p_aux->r.setFillColor('b');
+            p_aux.r.setSize(w,h);
+            p_aux.r.setPosition(javi.r.getPosition()[0],javi.r.getPosition()[1]);
+            //p_aux.r.setFillRGBAColor(160,196,255);
+            //p_aux.r.setFillColor('b');
             
             //TEXTURA DE FUEGO
-            renderEngine::rIntRect ir(0,0,w_ir,h_ir);
-            p_aux->t.loadFromImage(proy_boss,ir);
-            p_aux->r.setTexture(p_aux->t);
+            p_aux.r.setTexture(AssetManager::GetTexture(projectilPath));
             
             float angle = atan2(s_y,s_x);
-            p_aux->r.rotate((angle/M_PI*180)+90);
+            p_aux.r.rotate((angle/M_PI*180)+90);
 
             
             
@@ -528,23 +520,19 @@ void boss::crearProyectil(float x_, float y_) {
     
     float w = 18*s_factor;
     float h = 48*s_factor;
-    float w_ir = 18;
-    float h_ir = 48;
     
     float x = javi.r.getPosition()[0];
     float y = javi.r.getPosition()[1];
 
     //std::cout << "CREO BALA EN (" << x_ << "," << y_ << ")" << std::endl;
     
-    proyectil *aux = new proyectil;
-    aux->r.setSize(w,h);
-    aux->r.setPosition(x+(a/2),y+(a/2));
-    //aux->r.setFillColor('k');
+    proyectil aux;
+    aux.r.setSize(w,h);
+    aux.r.setPosition(x+(a/2),y+(a/2));
+    //aux.r.setFillColor('k');
     
     //TEXTURA DEL PROYECTIL
-    renderEngine::rIntRect ir(0,0,w_ir,h_ir);
-    aux->t.loadFromImage(proy_boss,ir);
-    aux->r.setTexture(aux->t);
+    aux.r.setTexture(AssetManager::GetTexture(projectilPath));
     
     //AQUI SE DEBERIAN DE CONSEGUIR LAS POSICIONES DE LOS PERSONAJES
     //HE TENIDO QUE PASARLAS A TRAVES DE 3 FUNCIONES
@@ -555,10 +543,10 @@ void boss::crearProyectil(float x_, float y_) {
     
     float angle = atan2(y_dist,x_dist);
     //std::cout << "angle: " << angle/M_PI*180 << std::endl;
-    aux->r.rotate((angle/M_PI*180)+90);
+    aux.r.rotate((angle/M_PI*180)+90);
     
-    aux->v_x = cos(angle)*factor;
-    aux->v_y = sin(angle)*factor;
+    aux.v_x = cos(angle)*factor;
+    aux.v_y = sin(angle)*factor;
         //std::cout << "V (" << aux.v_x << "," << aux.v_y << ")" << std::endl;
     
     javi.proy.push_back(aux);
@@ -568,14 +556,13 @@ void boss::render() {
     
     if(on){
         if(!initBoss){
-            if(caja_dialogo) caja_dialogo->draw();
+            caja_dialogo.draw();
             if(dialogo){
                 for(int i=0 ; i<6 ; i++){
                     dialogo[i].draw();
                 }
             }
-            if(sansJavi) sansJavi->draw();
-            
+            sansJavi.draw();
         }
         else{
             //<DEBUG>
@@ -586,8 +573,8 @@ void boss::render() {
             //</DEBUG>
 
             
-            for(std::list<proyectil*>::iterator it = javi.proy.begin() ; it != javi.proy.end() ; ++it){
-                (*it)->r.draw();
+            for(std::list<proyectil>::iterator it = javi.proy.begin() ; it != javi.proy.end() ; ++it){
+                (*it).r.draw();
             }
             time_text.draw();
         }
