@@ -98,6 +98,8 @@ public:
     void transportToSecondPhase(float x, float y);
     std::string anima();
     
+    void setGod();
+    bool getGod();
     
 private:
     int id;
@@ -169,6 +171,7 @@ private:
         renderEngine::rSprite spescudo;
     bool escudo;
 
+    bool god;
 };
 
 #endif /* PLAYER_H */

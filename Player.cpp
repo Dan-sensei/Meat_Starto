@@ -240,6 +240,7 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
     
     inmortalRespawn = false;
 
+    god = false;
 }
 
 Player::~Player() {
@@ -885,6 +886,9 @@ int Player::getAir() {
 }
 
 bool Player::isInmortal() {
+    if(god){
+        return god;
+    }
     return inmortal;
 }
 
@@ -985,4 +989,13 @@ bool Player::enemigosMasMas() {
 
 void Player::setActive(bool flag) {
     body.setActive(flag);
+}
+
+void Player::setGod() {
+    !god? god = true : god = false;
+    //std::cout << "Soy " << name << " : god=" << god << std::endl;
+}
+
+bool Player::getGod() {
+    return god;
 }
