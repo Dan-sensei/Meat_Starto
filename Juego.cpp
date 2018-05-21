@@ -180,19 +180,19 @@ void Juego::HandleEvents(){
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = true;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[42] = true;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[57] = true;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = true;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[15] = true;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[8] = true;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = true;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[7] = true;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[9] = true;
                                 break;
                         }
@@ -214,19 +214,19 @@ void Juego::HandleEvents(){
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = false;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[42] = false;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[57] = false;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = false;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[15] = false;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[8] = false;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = false;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = false;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[7] = false;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[9] = false;
                                 break;
                         }
@@ -340,7 +340,7 @@ void Juego::HandleEvents(){
 
             case renderEngine::rEvent::EventType::KeyPressed :
                 keys[event.getKeyCode()] = true;
-                //    std::cout << "Tecla " << event.getKeyCode() << std::endl;
+                    std::cout << "Tecla " << event.getKeyCode() << std::endl;
 
                 break;
 
@@ -424,10 +424,10 @@ void Juego::HandleEvents(){
         sfml->Instance().ChangeState(MenuPausa::Instance());
     }
 
-    if(keys[15]){
-        keys[15]=false;
+    //if(keys[15]){
+        //keys[15]=false;
         //sfml->Instance().ChangeState(MPuntuaciones::Instance());                 //P
-    }
+    //}
 }
 
 void Juego::Update(){
@@ -601,13 +601,14 @@ std::array<float, 2> Juego::getPlayerPosition() {
 }
 
 Juego::~Juego() {
-
+    /*
     delete[] keys;
     keys = nullptr;
     delete view;
     view = nullptr;
     delete backgroundView;
     backgroundView = nullptr;
+     */
     std::cout << "Destroying game==================================" << std::endl;
 }
 

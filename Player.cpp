@@ -51,7 +51,6 @@ Player::Player(int id_, std::string name_, float width_, float height_, float x_
     body = physicsEngine::Instance().createPlayer(width_, height_, x_, y_, t, bottom);
 
     onAir = 0;
-    level=3;
 
     hit=false;
     dead=false;
@@ -62,9 +61,9 @@ Player::Player(int id_, std::string name_, float width_, float height_, float x_
     int keyCodes[4][5] = 
     //   R      L       UP    HIT     /KILL
     {    3,     0,      22,     4,      28,
-        72,     71,     73,     4,      57,
-        -1,     10,     14,     4,       8,
-        13,     21,      6,     4,       9
+        72,     71,     73,    42,      57,
+        -1,     10,     14,    15,       8,
+        13,     21,      6,     7,       9
     };
     
     key_r       =   keyCodes[id][0];
@@ -75,7 +74,7 @@ Player::Player(int id_, std::string name_, float width_, float height_, float x_
     
     sprite.setOrigin(48/2, 40/2+4);
     sprite.setScale(1.4f, 1.6f);
-    
+
    /*MANO*/
     
     int width = AssetManager::GetTexture(texture).getXSize();
@@ -196,21 +195,20 @@ Player::Player(int id_, std::string name_, float width_, float height_, float x_
     controls = NULL;
     lvl1 = NULL;
     
-    escudo = false;
+    level = 3;
+    escudo = true;
+    lvlUp();
     
-     /*escudo*/
-    std::string sprite_name1 = "assets/powers/indicador_escudo.png";
+    int widthp = AssetManager::GetTexture("assets/powers/indicador_escudo.png").getXSize();
+    int heightp = AssetManager::GetTexture("assets/powers/indicador_escudo.png").getYSize();
     
-    int widthp = AssetManager::GetTexture(sprite_name1).getXSize();
-    int heightp = AssetManager::GetTexture(sprite_name1).getYSize();
-    
-    spescudo.setTexture(AssetManager::GetTexture(sprite_name1));
+    spescudo.setTexture(AssetManager::GetTexture("assets/powers/indicador_escudo.png"));
     spescudo.setOrigin(widthp / 2, heightp / 2);
     spescudo.setScale(1, 1);
     
-    lvlUp();
     inmortalRespawn = false;
 
+    god = false;
 }
 
 Player::~Player() {
@@ -256,10 +254,7 @@ void Player::update(){
     if(lvl1){
         lvl1->sprite.setPosition(sprite.getPosition()[0]-55,sprite.getPosition()[1]-120);
     }
-    if(escudo==true){
-        spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
-
-    }
+    
  
 }
 
@@ -428,7 +423,7 @@ void Player::movement(){
                 }
             }                                                                           
             // ===========================================================================
-            if(key_suicide != -1 && keys[key_suicide] && level>0 ){
+            if(key_suicide != -1 && keys[key_suicide] && level>0 && Mapa::Instance().getInit()){
                 std::cout << "BUM" << std::endl;
                 if(animator.GetCurrentAnimationName() != "xplota"){
                     sprite.setOrigin(90+48/2 , 100 + 40/2+4);
@@ -597,6 +592,7 @@ void Player::draw(){
     if(lvl1){
         lvl1->sprite.draw();
     }
+    
     if(escudo==true){
         spescudo.setPosition(sprite.getPosition()[0],sprite.getPosition()[1]);
         spescudo.draw();
@@ -777,8 +773,18 @@ void Player::transportToSecondPhase(float x, float y) {
     body.setPosition(x,y);
 }
 
+
+
+bool Player::isInmortal() {
+    if(god){
+        return god;
+    }
+    return inmortal;
+}
+
 void Player::lvlDown() {
     if(level>0){
+        std::cout << "SOY NIVEL" << level << ": LVL DOWN..." << std::endl;
         level--;
         
          switch(level){
@@ -808,6 +814,7 @@ void Player::lvlDown() {
 
 void Player::lvlUp() {
     if(level<4){
+        std::cout << "SOY NIVEL" << level << ": LVL UP!" << std::endl;
         level++;
         
         switch(level){
@@ -849,7 +856,6 @@ int Player::getMuertes()        {   return muertes;     }
 int Player::getEnemigos()       {   return enemigos;    }
 bool Player::getEscudo()        {   return escudo;      }
 int Player::getAir()            {   return onAir;       }
-bool Player::isInmortal()       {   return inmortal;    }
 int Player::getExp_levelup()    {   return exp_for_next_level;  }
 renderEngine::rSprite Player::getSprite()   {   return sprite;  }
 renderEngine::rSprite Player::getMano()     {   return mano;    }
@@ -870,3 +876,11 @@ bool Player::enemigosMasMas() {
     }
 }
 
+void Player::setGod() {
+    !god? god = true : god = false;
+    //std::cout << "Soy " << name << " : god=" << god << std::endl;
+}
+
+bool Player::getGod() {
+    return god;
+}

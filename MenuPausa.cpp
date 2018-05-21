@@ -215,11 +215,11 @@ void MenuPausa::MoveDown(){
 }
 
 
-/*void MenuPausa::PonInmortal(){
+void MenuPausa::PonInmortal(){
     for(int i=0; i<jugadores->size(); i++){
-      jugadores[0][i]->hazInmortal();
+      jugadores[0][i]->setGod();
     }
-}*/
+}
 
 void MenuPausa::Update(){
     int c_sens = 90;
@@ -335,10 +335,12 @@ void MenuPausa::stateMenu() {
                     if(god_mode==false){
                         menu[2].setString("God Mode ON");
                         god_mode=true;
+                        PonInmortal();
                     }
                     else{
                         menu[2].setString("God Mode OFF");     
                         god_mode=false; 
+                        PonInmortal();
                     }
                     break;
 

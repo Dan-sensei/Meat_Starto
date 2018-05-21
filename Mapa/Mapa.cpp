@@ -21,7 +21,7 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 25
+#define MAP_ITERATION 5
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -915,4 +915,11 @@ void Mapa::getThatVolumenDown() {
         currentSong->pause();
         currentSong->setVolume(0);
     }
+}
+
+void Mapa::setVolumeZero() {
+    if(currentSong->getVolume() > 0)
+        currentSong->setVolume(0);
+    else
+        currentSong->setVolume(50);
 }
