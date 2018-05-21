@@ -180,19 +180,19 @@ void Juego::HandleEvents(){
                             case 1:
                                 //std::cout << "J2" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[73] = true;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[42] = true;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[57] = true;
                                 break;
                             case 2:
                                 //std::cout << "J3" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[14] = true;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[15] = true;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[8] = true;
                                 break;
                             case 3:
                                 //std::cout << "J4" << std::endl;
                                 if(event.getJoystickButton()==0 && event.getJoystickId()==i) keys[6] = true;
-                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[4] = true;
+                                if(event.getJoystickButton()==2 && event.getJoystickId()==i) keys[7] = true;
                                 if(event.getJoystickButton()==3 && event.getJoystickId()==i) keys[9] = true;
                                 break;
                         }
@@ -601,13 +601,14 @@ std::array<float, 2> Juego::getPlayerPosition() {
 }
 
 Juego::~Juego() {
-
+    /*
     delete[] keys;
     keys = nullptr;
     delete view;
     view = nullptr;
     delete backgroundView;
     backgroundView = nullptr;
+     */
     std::cout << "Destroying game==================================" << std::endl;
 }
 

@@ -92,8 +92,8 @@ Player::Player(int id, std::string name, float width_, float height_, float x_, 
                 //KeyCode                
                 key_r=-1;
                 key_l=10;
-                key_up=14;
                 key_hit=15;
+                key_up=14;
                 //key_suicide=-1;
                 key_suicide=8;
         break;

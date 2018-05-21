@@ -46,6 +46,7 @@ public:
     void stopCurrentSong();
     void changeNextSong();
     void changeNextSong(rMusic* target);
+    void setVolumeZero();
     
     void changeSpriteSheet(std::string path);
     void setPlayers(std::vector<Player*>* ready);

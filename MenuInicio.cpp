@@ -534,10 +534,12 @@ void MenuInicio::stateMenu() {
                     if(sonido==false){
                         menuop[0].setString("Sound ON");
                         sonido=true;
+                        Mapa::Instance().setVolumeZero();
                     }
                     else{
                         menuop[0].setString("Sound OFF");     
                         sonido=false; 
+                        Mapa::Instance().setVolumeZero();
                     }
                     break;
 
