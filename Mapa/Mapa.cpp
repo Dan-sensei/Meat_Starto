@@ -21,7 +21,7 @@
 #include "../AssetManager.h"
 
 #define SCALE 65.f
-#define MAP_ITERATION 30
+#define MAP_ITERATION 16
 #define TAM_LISTA 7
 #define BACKGROUND_SCALE 1.9
 #define altura_minijuego 9
@@ -185,15 +185,15 @@
     initText->setFont(initFont);
     initText->setCharacterSize(250);
     initText->setFillColor('k');
-    
+
     THE_ARID_FLATS.openFromFile("assets/Sounds/THE_ARID_FLATS.ogg");
     THE_ARID_FLATS.setLoop(true);
     THE_ARID_FLATS.play();
-    
+
     DISCO_DESCENT.openFromFile("assets/Sounds/DISCO_DESCENT.ogg");
     currentSong = &THE_ARID_FLATS;
     nextSong = &DISCO_DESCENT;
-    
+
     std::cout << "THE_ARID_FLATS - " << &THE_ARID_FLATS << std::endl;
     std::cout << "DISCO DESCENT - " << &DISCO_DESCENT << std::endl;
     switchSong = false;
@@ -299,7 +299,7 @@ void Mapa::CargaNodo(std::list<Nodo> &lista, Factory::NodeStruct const& nodo, in
     for(int i = 0; i < nodo.Powers.size(); ++i){
         lista.back().addPower(nodo.Powers[i].id, x_ + nodo.Powers[i].xMin, x_ + nodo.Powers[i].xMax, y_ + nodo.Powers[i].y);
     }
-    
+
     // CARGO LAS XPLOTATOS
     //std::cout << "XP " << nodo.xPlotatos.size() << std::endl;
     for(int i = 0; i < nodo.xPlotatos.size(); ++i){
@@ -518,11 +518,15 @@ void Mapa::leeRandom(){
         secondPhase = true;
         target = 15;
     }
+    else if(longitud == 4){
+        target = 6;
+        CargaNodo(hex_list, NODOS[6], x_max, y_max);
+    }
     else {
-   
+
             r = physicsEngine::Instance().genIntRandom(0, matriz_v2[nodo_actual].size()-1);
             target = matriz_v2[nodo_actual][r];
-        
+
         CargaNodo(hex_list, NODOS[target], x_max, y_max);
     }
 
@@ -563,10 +567,10 @@ void Mapa::updateMini() {
     if(stopCurrentSongBool){
         getThatVolumenDown();
     }
-    
+
     if(switchSong){
         getThatVolumenDown();
-        
+
         if(nextSong->getVolume() < 100)
             nextSong->setVolume(nextSong->getVolume()+5);
         if(nextSong->getVolume() >= 95){
@@ -577,7 +581,7 @@ void Mapa::updateMini() {
             currentSong = nextSong;
         }
     }
-    
+
     //UPDATE DEL INICIO DEL JUEGO
     updateInit();
 
@@ -609,12 +613,12 @@ void Mapa::updateInit() {
         float x_text = renderEngine::Instance().getViewCenter()[0];
         float y_text = renderEngine::Instance().getViewCenter()[1];
         initText->setPosition(x_text,y_text);
-        
+
         for(int i = 0; i < players->size(); ++i){
             Player* ready = (*players)[i];
             ready->setActive(true);
         }
-        
+
         float time = initClock.getElapsedTime().asSeconds();
         if(time < 5){
             initText->setString("Get ready!");
@@ -666,28 +670,28 @@ void Mapa::update(){
             switchSong = true;
         }
     }
-    
+
     if(TRANSPORT_STARTO){
         for(int i = 0; i< players->size(); ++i) {
             Player* ready = (*players)[i];
             ready->transportToSecondPhase(transportation.getPosition()[0] + 27*70, transportation.getPosition()[1] + 20*70);
         }
     }
-        
+
 }
 
 void Mapa::renderBackground() {
     //EMPIEZO A RENDERIZAR
-    
+
     background1.draw();
     background2.draw();
-    
+
     float viewCenterX = renderEngine::Instance().getViewCenter()[0];
     float viewWidth = renderEngine::Instance().getViewSize()[0]/2;
     float textureXSize = AssetManager::GetTexture("assets/LUS.png").getXSize();
 
     for(int i= 0; i < LIGHTS.size(); ++i){
-        
+
         if(LIGHTS[i].getPosition()[0] + textureXSize/2 > viewCenterX - viewWidth  && LIGHTS[i].getPosition()[0] - textureXSize/2 < viewCenterX + viewWidth  ){
             LIGHTS[i].draw();
         }
@@ -910,7 +914,7 @@ void Mapa::stopCurrentSong() {
 void Mapa::getThatVolumenDown() {
     if(currentSong->getVolume() > 0)
         currentSong->setVolume(currentSong->getVolume()-10);
-    
+
     if( currentSong->getVolume() <= 10){
         currentSong->pause();
         currentSong->setVolume(0);
