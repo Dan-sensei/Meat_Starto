@@ -17,6 +17,7 @@
 #include <iostream>
 #include "renderEngine/renderEngine.h"
 #include "Player.h"
+#include "AssetManager.h"
 
 
 class Hud {
