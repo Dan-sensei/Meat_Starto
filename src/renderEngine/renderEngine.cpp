@@ -95,14 +95,15 @@ renderEngine::renderEngine(const renderEngine& orig) {}
 renderEngine::rTexture::rTexture() {}
 renderEngine::rTexture::rTexture(std::string path) {    text.loadFromFile(path);}
 
-void            renderEngine::rTexture::loadFromFile(std::string path)  {   text.loadFromFile(path);    }
+void renderEngine::rTexture::loadFromFile(std::string path)  {   text.loadFromFile(path);    }
 void renderEngine::rTexture::loadFromImage(renderEngine::rImage im, renderEngine::rIntRect ir) {
     text.loadFromImage(im.getImage(),ir.getIntRect());
 
 }
 
-int             renderEngine::rTexture::getXSize()                      {   text.getSize().x;           }
-int             renderEngine::rTexture::getYSize()                      {   text.getSize().y;           }
+
+int             renderEngine::rTexture::getXSize()                      {  return  text.getSize().x;           }
+int             renderEngine::rTexture::getYSize()                      {  return  text.getSize().y;           }
 sf::Texture*    renderEngine::rTexture::getTexture()                    {   return &text;               }
 
 
