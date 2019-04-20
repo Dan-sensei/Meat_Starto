@@ -48,7 +48,7 @@ MenuInicio::MenuInicio() {
     logo.setTexture(AssetManager::GetTexture(logo_name));
     logo.setOrigin(widthl / 2, heightl / 2);
     logo.setScale(0.00037*width,0.00037*width);
-    logo.setPosition(posx, posy-height/4);
+    logo.setPosition(posx, posy-height/3 );
     
     tam=0.05;
     logo1.setTexture(AssetManager::GetTexture(logo_name));
@@ -640,7 +640,7 @@ void MenuInicio::Handle(){
     posy = sfml->Instance().getViewCenter()[1];
         
     personaje.setPosition(posx-width/11.5, posy-height/19);
-    logo.setPosition(posx-width/40, posy-height/9);
+    logo.setPosition(posx-width/40, posy-height/3);
 
 
                 
