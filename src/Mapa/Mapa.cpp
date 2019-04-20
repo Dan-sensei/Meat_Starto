@@ -163,9 +163,9 @@
     //INICIO DEL JUEGO
     bInit = false;
     initClock.restart();
-    initBloques = new bloque;
+    initBloques = new bloque();
 
-    t = new physicsEngine::type;
+    t = new physicsEngine::type();
     t->id = 1;
     t->data = this;
 

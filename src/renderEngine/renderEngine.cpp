@@ -168,8 +168,8 @@ std::array<float, 2>    renderEngine::rView::getCenter  () {
 //============================= RELOJ =============================//
 renderEngine::rClock::rClock() {}
 
-renderEngine::rTime renderEngine::rClock::restart() {clock.restart();}
-renderEngine::rTime renderEngine::rClock::getElapsedTime() {clock.getElapsedTime();}
+renderEngine::rTime renderEngine::rClock::restart() { return rTime(clock.restart()) ;}
+renderEngine::rTime renderEngine::rClock::getElapsedTime() { return rTime(clock.getElapsedTime()) ;}
 
 //============================= EVENTOS =============================//
 renderEngine::rEvent::rEvent() {}
@@ -189,6 +189,10 @@ renderEngine::rTime::rTime() {}
 renderEngine::rTime::rTime(float sec){
     time = sf::seconds(sec);
 }
+renderEngine::rTime::rTime(sf::Time tim){
+    time = tim;
+}
+
 
 float renderEngine::rTime::asSeconds        ()  {   return time.asSeconds();}
 float renderEngine::rTime::asMilliseconds   ()  {   return time.asMilliseconds();}

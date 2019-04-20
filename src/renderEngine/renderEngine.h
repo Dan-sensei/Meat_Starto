@@ -172,7 +172,8 @@ public:
         public:
             rTime();
             rTime(float sec);
-            
+            rTime(sf::Time tim);
+
             float asSeconds();                      //TIEMPO EN SEGUNDOS
             float asMilliseconds();                 //TIEMPO EN MILISEGUNDOS
             float asMicroseconds();                 //TIEMPO EN MICROSEGUNDOS
