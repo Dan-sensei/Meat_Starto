@@ -17,6 +17,10 @@
 #include "math.h"
 #include <Box2D/Box2D.h>
 
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
 class pBody {   // Façade de b2Body, dado que no deberían existir sin un mundo donde ponerlos, lo creo como una Nested Class dentro de PhysicsEngine
                 // Con una clase independiente se puede crear múltiples instancias de pBodies, y referenciarlos desde otras clases
     public:
